@@ -1,0 +1,616 @@
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - ERROR - parser.py:9 - Config file not found.
+PyLongslit - ERROR - parser.py:10 - Make sure a "config.json" file exists. 
+See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - parser.py:14 - Config file found. Loading ...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - ERROR - parser.py:9 - Config file not found.
+PyLongslit - ERROR - parser.py:10 - Make sure a "config.json" file exists. 
+See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading ...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - ERROR - mkspecbias.py:24 - Bias list not found.
+PyLongslit - ERROR - mkspecbias.py:25 - Make sure a bias list is provided in the "config.json" file.See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - ERROR - mkspecbias.py:24 - Bias list not found.
+PyLongslit - ERROR - mkspecbias.py:25 - Make sure a bias list is provided in the "config.json" file. See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - ERROR - mkspecbias.py:24 - Directory with raw bias files not found.
+PyLongslit - ERROR - mkspecbias.py:25 - Make sure the directory is provided in the "config.json" file. See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:14 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:15 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:16 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:17 - ysize = 2102
+PyLongslit - ERROR - mkspecbias.py:23 - Directory with raw bias files not found.
+PyLongslit - ERROR - mkspecbias.py:24 - Make sure the directory is provided in the "config.json" file. See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - ERROR - utils.py:35 - Directory /hej/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias not found.
+PyLongslit - ERROR - utils.py:36 - Make sure the directory is provided correctlyin the "config.json" file. See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - ---Using the following parameters:---
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - ERROR - utils.py:35 - Directory /hej/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias not found.
+PyLongslit - ERROR - utils.py:36 - Make sure the directory is provided correctly in the "config.json" file. See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - ERROR - utils.py:35 - Directory /hej/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias not found.
+PyLongslit - ERROR - utils.py:36 - Make sure the directory is provided correctly in the "config.json" file. See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+ ['ALDh140351.fits', 'ALDh140360.fits', 'ALDh140353.fits', 'ALDh140354.fits', 'ALDh140357.fits', 'ALDh140356.fits', 'ALDh140361.fits', 'ALDh140355.fits', 'ALDh140358.fits', 'ALDh140352.fits', 'ALDh140359.fits']
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - mkspecbias.py:41 - Processing file:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - mkspecbias.py:41 - Processing file:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - mkspecbias.py:41 - Processing file:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:15 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:16 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:17 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:18 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:23 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:24 - Files used for bias processing:
+
+PyLongslit - INFO - mkspecbias.py:41 - Processing file:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - mkspecbias.py:16 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:17 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:18 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:19 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:24 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:25 - Files used for bias processing:
+
+PyLongslit - INFO - utils.py:89 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - mkspecbias.py:43 - Processing file:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading parameters...
+PyLongslit - INFO - parser.py:25 - Parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing:
+
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the wanted dimensions.
+PyLongslit - ERROR - utils.py:84 - Expected (2102, 500), got (50, 2148).
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing:
+
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the wanted dimensions.
+PyLongslit - ERROR - utils.py:84 - Expected (2102, 500), got (50, 2148).
+PyLongslit - ERROR - utils.py:85 - Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing:
+
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the wanted dimensions.
+PyLongslit - ERROR - utils.py:84 - Expected (2102, 500), got (50, 2148).Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing:
+
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the wanted dimensions.
+PyLongslit - ERROR - utils.py:84 - Expected (2102, 500), got (50, 2148).
+Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing:
+
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the user dimensions set in the "config.json" file.
+PyLongslit - ERROR - utils.py:86 - Expected (2102, 500), got (50, 2148).
+Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing:
+
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the user dimensions set in the "config.json" file.
+PyLongslit - ERROR - utils.py:86 - Expected (2102, 500), got (50, 2148).
+Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the user dimensions set in the "config.json" file.
+PyLongslit - ERROR - utils.py:86 - Expected (2102, 500), got (50, 2148).
+Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 12 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - ERROR - utils.py:83 - Dimensions of file ALHh090031.fits do not match the user dimensions set in the "config.json" file.
+PyLongslit - ERROR - utils.py:86 - Expected (2102, 500), got (50, 2148).
+Check all files in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias and try again.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - mkspecbias.py:49 - Processing file:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140351.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140360.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140353.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140354.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140357.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140356.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140361.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140355.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140358.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140352.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - 
+Processing file: ALDh140359.fits
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140351.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140360.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140353.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140354.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140357.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140356.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140361.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140355.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140358.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140352.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140359.fits
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140351.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140360.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140353.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140354.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140357.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140356.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140361.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140355.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140358.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140352.fits
+
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140359.fits
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:49 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:20 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:21 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:22 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:23 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:29 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:30 - Files used for bias processing
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140359.fits

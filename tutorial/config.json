@@ -1,0 +1,11 @@
+{
+    "detector": {
+        "xsize": 500,
+        "ysize": 2102, 
+        "spectral_dir": "y"
+    },
+
+    "bias": {
+        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias"
+    }
+}
