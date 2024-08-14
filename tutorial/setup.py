@@ -21,7 +21,7 @@ from astropy.table import Table, Column
 from astropy.table import QTable
 from astropy.io import fits
 from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
-from astropy.modeling.models import Gaussian1D, Chebyshev2D
+from astropy.modeling.models import Gaussian1D, Chebyshev2D, Const1D
 from astropy.modeling.fitting import LevMarLSQFitter
 
 from photutils.aperture import RectangularAperture, aperture_photometry
