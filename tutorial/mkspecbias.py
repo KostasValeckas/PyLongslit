@@ -2,20 +2,15 @@ import numpy
 from astropy.io import fits
 from logger import logger
 from parser import detector_params, bias_params, output_dir
-from astropy.visualization import ImageNormalize, LogStretch
-import matplotlib.pyplot as plt
-from utils import FileList, check_dimensions, show_overscan, write_to_fits
-import numpy as np
+from utils import FileList, check_dimensions, show_overscan, open_fits, write_to_fits
 
 """
 Module for creating a master bias frame from raw bias frames.
 """
 
-
 def run_bias():
 
     # Extract the detector parameters
-
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
 
@@ -63,11 +58,7 @@ def run_bias():
     # and stack them in the bigbias array
     for i, file in enumerate(file_list):
 
-        try:
-            rawbias = fits.open(bias_params["bias_dir"] + file)
-        # user might have forgotten to add a slash at the end of the path
-        except FileNotFoundError:
-            rawbias = fits.open(bias_params["bias_dir"] + "/" + file)
+        rawbias = open_fits(bias_params["bias_dir"], file)
 
         logger.info(f"Processing file: {file}")
 

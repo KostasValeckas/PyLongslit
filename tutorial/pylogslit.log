@@ -2243,3 +2243,489 @@ PyLongslit - INFO - mkspecbias.py:85 - Subtracted the median value of the oversc
 PyLongslit - INFO - mkspecbias.py:97 - Bias frames processed.
 PyLongslit - INFO - mkspecbias.py:98 - Attaching header and writing to disc...
 PyLongslit - INFO - mkspecbias.py:105 - Master bias frame written to disc at in ./output, filename master_bias.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100964.05363636363
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :105239.5030909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100827.38118181817
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :107277.78406060606
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100686.77187878788
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100930.1580909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106088.49696969696
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106064.31290909092
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106630.83042424242
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100964.05363636363
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :105239.5030909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100827.38118181817
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :107277.78406060606
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100686.77187878788
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100930.1580909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106088.49696969696
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106064.31290909092
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106630.83042424242
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100964.05363636363
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :105239.5030909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100827.38118181817
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :107277.78406060606
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100686.77187878788
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100930.1580909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106088.49696969696
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106064.31290909092
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106630.83042424242
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100964.05363636363
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :105239.5030909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100827.38118181817
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :107277.78406060606
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100686.77187878788
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100930.1580909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106088.49696969696
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106064.31290909092
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106630.83042424242
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100964.05363636363
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :105239.5030909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100827.38118181817
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :107277.78406060606
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100686.77187878788
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100930.1580909091
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106088.49696969696
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106064.31290909092
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106630.83042424242
+PyLongslit - INFO - mkspecflat.py:101 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:112 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:113 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:120 - Master flat frame written to disc in ./output, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:23 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:24 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:25 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:26 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:33 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecflat.py:34 - Overscan region: x: 0:499, y: 2066:2099
+PyLongslit - INFO - utils.py:162 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:164 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:170 - File opened successfully.
+PyLongslit - INFO - mkspecflat.py:41 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:42 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:150 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:55 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:66 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140230.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11286.036666666667
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100964.05363636363
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130384.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11366.807515151515
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :105239.5030909091
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140219.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11292.90309090909
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100827.38118181817
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130388.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11353.06109090909
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :107277.78406060606
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140238.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11304.791393939395
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100686.77187878788
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh140211.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11296.419454545454
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :100930.1580909091
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130386.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11357.703818181819
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106088.49696969696
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130385.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11359.170242424243
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106064.31290909092
+
+PyLongslit - INFO - mkspecflat.py:74 - Processing file: ALDh130387.fits
+PyLongslit - INFO - mkspecflat.py:84 - Subtracted the median value of the overscan : 11354.732848484848
+PyLongslit - INFO - mkspecflat.py:89 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:95 - Normalising frame with the median of the frame :106630.83042424242
+
+PyLongslit - INFO - mkspecflat.py:101 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:112 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:113 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:120 - Master flat frame written to disc in ./output, filename master_flat.fits

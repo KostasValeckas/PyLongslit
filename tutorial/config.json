@@ -14,7 +14,11 @@
     },
 
     "flat": {
-        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/flats"
+        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/flats",
+        "norm_area_start_x": 100,
+        "norm_area_end_x": 400,
+        "norm_area_start_y": 100,
+        "norm_area_end_y": 1300
     },
 
     "output": {
