@@ -81,6 +81,31 @@ def open_fits(dir_path, file_name):
 
     return hdul
 
+def write_to_fits(data, header, file_name, path):
+    """
+    A more robust wrapper for 'astropy.io.fits.writeto'.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The data to write to the file.
+
+    header : Header
+        The header to write to the file.
+
+    file_name : str
+        The name of the file to write to.
+    
+    path : str
+        The path to the directory to write the file to.
+    """
+
+    try:
+        fits.writeto(path + file_name, data, header, overwrite=True)
+    # acount for missing slashes in the path
+    except FileNotFoundError:
+        fits.writeto(path + "/" + file_name, data, header, overwrite=True)
+
 
 def check_dimensions(FileList: FileList, x, y):
     """

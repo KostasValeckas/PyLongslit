@@ -4,7 +4,7 @@ from logger import logger
 from parser import detector_params, bias_params, output_dir
 from astropy.visualization import ImageNormalize, LogStretch
 import matplotlib.pyplot as plt
-from utils import FileList, check_dimensions, show_overscan
+from utils import FileList, check_dimensions, show_overscan, write_to_fits
 import numpy as np
 
 """
@@ -100,14 +100,10 @@ def run_bias():
     # Write out result to fitsfile
     hdr = rawbias[0].header
 
-    # TODO probably make this a function in utils
-    try:
-        fits.writeto(output_dir + "/master_bias.fits", medianbias, hdr, overwrite=True)
-    except FileNotFoundError:
-        fits.writeto(output_dir + "master_bias.fits", medianbias, hdr, overwrite=True)
+    write_to_fits(medianbias, hdr, output_dir + "master_bias.fits", output_dir)
 
     logger.info(
-        "Master bias frame written to disc at : " + output_dir + "/master_bias.fits"
+        f"Master bias frame written to disc at in {output_dir}, filename master_bias.fits"
     )
 
 
