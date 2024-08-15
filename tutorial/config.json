@@ -4,9 +4,9 @@
         "ysize": 2102, 
         "spectral_dir": "y",
         "overscan_x_start": 0,
-        "overscan_x_end": 512,
+        "overscan_x_end": 499,
         "overscan_y_start": 2066,
-        "overscan_y_end": 2102
+        "overscan_y_end": 2099
     },
 
     "bias": {
@@ -15,5 +15,9 @@
 
     "flat": {
         "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/flats"
+    },
+
+    "output": {
+        "out_dir": "./output"
     }
 }

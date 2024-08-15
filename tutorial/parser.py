@@ -1,5 +1,6 @@
 import json
 from logger import logger
+import os
 
 # Open the config file
 try:
@@ -22,5 +23,10 @@ data = json.load(file)
 detector_params = data["detector"]
 bias_params = data["bias"]
 flat_params = data["flat"]
+output_dir = data["output"]["out_dir"]
 
-logger.info("User parameters loaded successfully.")
+if not os.path.exists(output_dir):
+    logger.info(f"Output directory {output_dir} not found. Creating...")
+    os.makedirs(output_dir)
+
+logger.info("User parameters loaded successfully.") 
