@@ -5,12 +5,17 @@ Utility functions for PyLongslit.
 from logger import logger
 import os
 from astropy.io import fits
+import numpy as np
+from parser import detector_params, flat_params
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+
 
 class FileList:
     def __init__(self, path):
 
         """
-        A class that reads all filenames from a directory 
+        A class that reads all filenames from a directory
         and counts them. Made iterable so files can be looped over.
 
         Parameters
@@ -29,25 +34,52 @@ class FileList:
         num_files : int
             The number of files in the directory.
         """
-        
+
         self.path = path
 
         if not os.path.exists(self.path):
             logger.error(f"Directory {self.path} not found.")
             logger.error(
                 "Make sure the directory is provided correctly "
-                "in the \"config.json\" file. "
+                'in the "config.json" file. '
                 "See the docs at:\n"
                 "https://kostasvaleckas.github.io/PyLongslit/"
-                )
+            )
             exit()
 
         self.files = os.listdir(self.path)
 
         self.num_files = len(self.files)
-        
+
     def __iter__(self):
         return iter(self.files)
+
+
+def open_fits(dir_path, file_name):
+    """
+    A more robust wrapper for 'astropy.io.fits.open'.
+
+    Parameters
+    ----------
+    dir_path : str
+        The path to the directory containing the file.
+
+    file_name : str
+        The name of the file to open.
+
+    Returns
+    -------
+    hdul : HDUList
+        An HDUList object containing the data from the file.
+    """
+
+    try:
+        hdul = fits.open(dir_path + file_name)
+    # acount for the user forgetting to add a slash at the end of the path
+    except FileNotFoundError:
+        hdul = fits.open(dir_path + "/" + file_name)
+
+    return hdul
 
 
 def check_dimensions(FileList: FileList, x, y):
@@ -72,16 +104,15 @@ def check_dimensions(FileList: FileList, x, y):
     """
 
     for file in FileList:
-        try:
-            hdul = fits.open(FileList.path + file)
-        except FileNotFoundError:
-            hdul = fits.open(FileList.path + "/" + file)
+
+        hdul = open_fits(FileList.path, file)
 
         data = hdul[1].data
 
         if data.shape != (y, x):
-            logger.error(f"Dimensions of file {file} do not match the user "
-                         "dimensions set in the \"config.json\" file."
+            logger.error(
+                f"Dimensions of file {file} do not match the user "
+                'dimensions set in the "config.json" file.'
             )
             logger.error(
                 f"Expected ({y}, {x}), got {data.shape}."
@@ -90,8 +121,58 @@ def check_dimensions(FileList: FileList, x, y):
             exit()
 
         hdul.close()
-        
+
     logger.info("All files have the correct dimensions.")
     return None
 
-    
+
+def show_overscan():
+    """
+    Show the user defined ovsercan region.
+
+    Fetches a raw flat frame from the user defined directory
+    and displays the overscan region overlayed on it.
+    """
+
+    logger.info("Showing the overscan region on a raw flat frame for user inspection...")
+
+    logger.info("Opening the first file in the flat directory...")
+    # read the names of the flat files from the directory
+    file_list = FileList(flat_params["flat_dir"])
+
+    # open the first file in the directory
+    raw_flat = open_fits(flat_params["flat_dir"], file_list.files[0])
+    logger.info("File opened successfully.")
+
+    data = np.array(raw_flat[1].data)
+
+    log_data = np.log10(data)
+
+    # show the overscan region overlayed on a raw flat frame
+    plt.imshow(log_data, cmap="gray")
+
+    # Add rectangular box to show the overscan region
+    width = detector_params["overscan_x_end"] - detector_params["overscan_x_start"]
+    height = detector_params["overscan_y_end"] - detector_params["overscan_y_start"]
+
+    rect = Rectangle(
+        (detector_params["overscan_x_start"], detector_params["overscan_y_start"]),
+        width,
+        height,
+        linewidth=1,
+        edgecolor="r",
+        facecolor="none",
+        linestyle="--",
+        label="Overscan Region Limit",
+    )
+    plt.gca().add_patch(rect)
+    plt.gca().invert_yaxis()
+    plt.legend()
+    plt.xlabel("Pixels in x-direction")
+    plt.ylabel("Pixels in y-direction")
+    plt.title(
+        "Overscan region overlayed on a raw flat frame with logaritghmic normalization.\n"
+        "The overscan region should be dark compared to the rest of the frame.\n"
+        "If it is not, check the overscan region definition in the config file."
+    )
+    plt.show()

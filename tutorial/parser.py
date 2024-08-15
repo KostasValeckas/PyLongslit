@@ -21,5 +21,6 @@ data = json.load(file)
 
 detector_params = data["detector"]
 bias_params = data["bias"]
+flat_params = data["flat"]
 
 logger.info("User parameters loaded successfully.")

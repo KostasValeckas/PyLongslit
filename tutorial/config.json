@@ -2,10 +2,18 @@
     "detector": {
         "xsize": 500,
         "ysize": 2102, 
-        "spectral_dir": "y"
+        "spectral_dir": "y",
+        "overscan_x_start": 0,
+        "overscan_x_end": 512,
+        "overscan_y_start": 2066,
+        "overscan_y_end": 2102
     },
 
     "bias": {
         "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias"
+    },
+
+    "flat": {
+        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/flats"
     }
 }

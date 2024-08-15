@@ -2,8 +2,10 @@ import numpy
 from astropy.io import fits
 from logger import logger
 from parser import detector_params, bias_params
-from utils import FileList
-from utils import check_dimensions
+from astropy.visualization import ImageNormalize, LogStretch
+import matplotlib.pyplot as plt
+from utils import FileList, check_dimensions, create_grid_pattern
+import numpy as np
 
 """
 Module for creating a master bias frame from raw bias frames.
@@ -16,35 +18,62 @@ def run_bias():
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
 
+    overscan_x_start = detector_params["overscan_x_start"]
+    overscan_x_end = detector_params["overscan_x_end"]
+    overscan_y_start = detector_params["overscan_y_start"]
+    overscan_y_end = detector_params["overscan_y_end"]
 
+    #TODO: specify what direction is the spectral direction
     logger.info("Bias procedure running...")
     logger.info("Using the following parameters:")
     logger.info(f"xsize = {xsize}")
     logger.info(f"ysize = {ysize}")
-    #TODO: specify what direction is the spectral direction
-
-    # read the names of the bias files from the list
+    
+    # read the names of the bias files from the directory
     file_list = FileList(bias_params["bias_dir"])
 
-    logger.info(f"Found {file_list.num_files} bias frames.")
-    logger.info(f"Files used for bias processing")
+    if overscan_x_end != 0 and overscan_y_end != 0:
+        logger.info("Non - zero overscan region is defined.")
+        logger.info(
+            f"Overscan region: x: {overscan_x_start}:{overscan_x_end}," 
+            f" y: {overscan_y_start}:{overscan_y_end}"
+        )
 
-    print("\n")
+        # show the selected overscan region for the user to inspect  
+
+        #dummy pattern to illustrate the detector:
+        tile = create_grid_pattern(xsize, ysize)
+        
+        # Display the tile
+        plt.imshow(tile, cmap='gray')
+        plt.gca().invert_yaxis()
+        plt.title('Uniform Vertically Lined Tile')
+        plt.xlabel('Pixels in x direction')
+        plt.ylabel('Pixels in y direction')
+        plt.show()
+
+
+    logger.info(f"Found {file_list.num_files} bias frames.")
+    logger.info(f"Files used for bias processing:")
+
+    print("------------------------------------")
     for file in file_list: print(file)
-    print("\n")
+    print("------------------------------------")
 
     # Check if all files have the wanted dimensions
     # Will exit if they don't
     check_dimensions(file_list, xsize, ysize)
 
-    # Read in the raw bias frames and subtact mean of overscan region
+    # initialize a big array to hold all the bias frames for stacking
     bigbias = numpy.zeros((file_list.num_files, ysize, xsize), float)
-    # bigbias = numpy.zeros((nframes,3,3))
+
+    # loop over all the bias files, subtract the median value of the overscan
+    # and stack them in the bigbias array
     for i,file in enumerate(file_list):
 
-        # user might have forgotten to add a slash at the end of the path
         try:
             rawbias = fits.open(bias_params["bias_dir"] + file)
+        # user might have forgotten to add a slash at the end of the path
         except FileNotFoundError:
             rawbias = fits.open(bias_params["bias_dir"] + "/" + file)
         

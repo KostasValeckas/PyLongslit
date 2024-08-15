@@ -614,3 +614,1194 @@ PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140355.fits
 PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140358.fits
 PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140352.fits
 PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:57 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:58 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:57 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:58 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:61 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:62 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:61 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:62 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:61 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:62 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:59 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:60 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:59 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:60 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:83 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:60 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:61 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:28 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:29 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:30 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:31 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:38 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:61 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:62 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:60 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:61 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:60 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:61 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:60 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:61 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:60 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:61 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:84 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:63 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:64 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:67 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:68 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:67 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:68 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:67 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:68 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:67 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:68 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:67 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:68 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:67 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:68 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:91 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:65 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:66 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:65 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:66 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:65 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:66 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:68 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:69 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:92 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:39 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:66 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:67 - Files used for bias processing:
+PyLongslit - INFO - utils.py:94 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:90 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:61 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:62 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:85 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:63 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:64 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:87 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:35 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:36 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:65 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:66 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:89 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:62 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:63 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:86 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:56 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:57 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:57 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:58 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:57 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:58 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:81 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:58 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:59 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:58 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:59 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:82 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:25 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:27 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:28 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:29 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:30 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:36 - Non - zero overscan region is defined.
+PyLongslit - INFO - mkspecbias.py:37 - Overscan region: x: 0:512, y: 2066:2102
+PyLongslit - INFO - mkspecbias.py:56 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:57 - Files used for bias processing:
+PyLongslit - INFO - utils.py:95 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140351.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140360.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140353.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140354.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140357.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140356.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140361.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140355.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140358.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140352.fits
+PyLongslit - INFO - mkspecbias.py:80 - Processing file: ALDh140359.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:16 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:26 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:137 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:139 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:145 - File opened successfully.
