@@ -64,9 +64,7 @@ def run_bias():
 
         data = numpy.array(rawbias[1].data)
 
-        # convert from cartesian to array coordinates
         # TODO: if this is needed more - move it to utils
-
         if overscan_x_end != 0 and overscan_y_end != 0:
             overscan_mean = numpy.mean(
                 data[overscan_y_start:overscan_y_end, overscan_x_start:overscan_y_end]
@@ -91,7 +89,7 @@ def run_bias():
     # Write out result to fitsfile
     hdr = rawbias[0].header
 
-    write_to_fits(medianbias, hdr, output_dir + "master_bias.fits", output_dir)
+    write_to_fits(medianbias, hdr, "master_bias.fits", output_dir)
 
     logger.info(
         f"Master bias frame written to disc at in {output_dir}, filename master_bias.fits"

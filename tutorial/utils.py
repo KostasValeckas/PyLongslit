@@ -101,10 +101,11 @@ def write_to_fits(data, header, file_name, path):
     """
 
     try:
-        fits.writeto(path + file_name, data, header, overwrite=True)
+        fits.writeto(path + "/" + file_name, data, header, overwrite=True)
     # acount for missing slashes in the path
     except FileNotFoundError:
-        fits.writeto(path + "/" + file_name, data, header, overwrite=True)
+        fits.writeto(path + file_name, data, header, overwrite=True)
+        
 
 
 def check_dimensions(FileList: FileList, x, y):
@@ -150,16 +151,13 @@ def check_dimensions(FileList: FileList, x, y):
     logger.info("All files have the correct dimensions.")
     return None
 
-
-def show_overscan():
+def show_flat():
     """
-    Show the user defined ovsercan region.
+    Shows the first flat-frame flot the user defined flat-directory.
 
-    Fetches a raw flat frame from the user defined directory
-    and displays the overscan region overlayed on it.
+    This is used together with ´show_overscan()´ and ´show_flat_norm_region()´
+    for sanity checks of the user defined regions.
     """
-
-    logger.info("Showing the overscan region on a raw flat frame for user inspection...")
 
     logger.info("Opening the first file in the flat directory...")
     # read the names of the flat files from the directory
@@ -175,6 +173,20 @@ def show_overscan():
 
     # show the overscan region overlayed on a raw flat frame
     plt.imshow(log_data, cmap="gray")
+
+
+def show_overscan():
+    """
+    Show the user defined ovsercan region.
+
+    Fetches a raw flat frame from the user defined directory
+    and displays the overscan region overlayed on it.
+    """
+
+    logger.info("Showing the overscan region on a raw flat frame for user inspection...")
+
+    show_flat()
+
 
     # Add rectangular box to show the overscan region
     width = detector_params["overscan_x_end"] - detector_params["overscan_x_start"]
@@ -199,5 +211,46 @@ def show_overscan():
         "Overscan region overlayed on a raw flat frame with logaritghmic normalization.\n"
         "The overscan region should be dark compared to the rest of the frame.\n"
         "If it is not, check the overscan region definition in the config file."
+    )
+    plt.show()
+
+def show_flat_norm_region():
+    """
+    Show the user defined flat normalization region.
+
+    Fetches a raw flat frame from the user defined directory
+    and displays the normalization region overlayed on it.
+    """
+
+    logger.info("Showing the normalization region on a raw flat frame for user inspection...")
+
+    show_flat()
+
+    # Add rectangular box to show the overscan region
+    width = flat_params["norm_area_end_x"] \
+                - flat_params["norm_area_start_x"]
+    height = flat_params["norm_area_end_y"] \
+                - flat_params["norm_area_start_y"]
+
+    rect = Rectangle(
+        (flat_params["norm_area_start_x"],
+         flat_params["norm_area_start_y"]),
+        width,
+        height,
+        linewidth=1,
+        edgecolor="r",
+        facecolor="none",
+        linestyle="--",
+        label="Region used for estimation of normalization factor",
+    )
+    plt.gca().add_patch(rect)
+    plt.gca().invert_yaxis()
+    plt.legend()
+    plt.xlabel("Pixels in x-direction")
+    plt.ylabel("Pixels in y-direction")
+    plt.title(
+        "Region used for estimation of normalization factor overlayed on a raw flat frame.\n"
+        "The region should somewhat brightly illuminated with no abnormalities or artifacts.\n"
+        "If it is not, check the normalization region definition in the config file."
     )
     plt.show()
