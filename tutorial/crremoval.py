@@ -1,7 +1,7 @@
 import astroscrappy
 from logger import logger
 import glob
-from parser import detector_params, crr_params
+from parser import detector_params, crr_params, skip_science_or_standard_bool
 
 import os as os
 
@@ -32,6 +32,15 @@ def run_crremoval():
     logger.info(f"gain = {gain}")
     logger.info(f"read_out_noise = {read_out_noise}")
 
+
+    if skip_science_or_standard_bool == 0:
+        logger.critical(
+            "Both skip_science and skip_standard are set to \"true\" in the "
+            "config file. There is nothing to perform the reduction on."
+        )
+        logger.error("Set at least one of them \"false\" and try again.")
+
+        exit()
 
 
     # Path to folder with science frames

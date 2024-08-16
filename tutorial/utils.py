@@ -256,14 +256,4 @@ def show_flat_norm_region():
     plt.show()
 
 
-def read_science_and_standard():
-    """
-    Reads standard star or science frames.
-
-    Warns the user if one or the other is missing.
-
-    Terminates the program if both are missing.
-    """
-
-    use_science = science_params["use_science"]
-    use_standard = standard_params["use_standard"]
+        
