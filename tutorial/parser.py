@@ -24,6 +24,7 @@ detector_params = data["detector"]
 bias_params = data["bias"]
 flat_params = data["flat"]
 output_dir = data["output"]["out_dir"]
+crr_params = data["crr_removal"]
 
 if not os.path.exists(output_dir):
     logger.info(f"Output directory {output_dir} not found. Creating...")

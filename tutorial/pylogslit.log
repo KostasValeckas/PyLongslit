@@ -4119,3 +4119,13 @@ PyLongslit - INFO - mkspecflat.py:147 - Flat frames processed.
 PyLongslit - INFO - mkspecflat.py:150 - Mean pixel value of the final master flat-field: 0.9999990480732525
 PyLongslit - INFO - mkspecflat.py:162 - Attaching header and writing to disc...
 PyLongslit - INFO - mkspecflat.py:169 - Master flat frame written to disc in ./output, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/pylogslit.log.
+PyLongslit - INFO - parser.py:17 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:30 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:31 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:32 - gain = 0.16
+PyLongslit - INFO - crremoval.py:33 - read_out_noise = 4.3

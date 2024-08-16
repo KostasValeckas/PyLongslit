@@ -6,7 +6,9 @@
         "overscan_x_start": 0,
         "overscan_x_end": 499,
         "overscan_y_start": 2066,
-        "overscan_y_end": 2099
+        "overscan_y_end": 2099,
+        "gain": 0.16,
+        "read_out_noise": 4.3
     },
 
     "bias": {
@@ -23,5 +25,22 @@
 
     "output": {
         "out_dir": "./output"
+    },
+
+    "crr_removal" : {
+        "frac": 0.01,
+        "objlim": 15,
+        "sigclip": 5.0,
+        "niter": 5
+    },
+
+    "science" : {
+        "use_science": true,
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/science"
+    },
+
+    "standard" : {
+        "use_standard": true,
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/standard"
     }
 }

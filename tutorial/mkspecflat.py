@@ -13,6 +13,16 @@ Module for creating a master flat from from raw flat frames.
 
 def run_flats():
 
+    """
+    Driver for the flat-fielding procedure.
+
+    The function reads the raw flat frames from the directory specified in the
+    'flat_dir' parameter in the 'config.json' file. It then subtracts the
+    overscan region, subtracts the master bias frame and normalizes the frames
+    by the median value of the frame. The final master flat-field is written to
+    disc in the output directory.
+    """
+
     # Extract the detector parameters
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]

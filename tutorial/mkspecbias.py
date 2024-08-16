@@ -10,6 +10,15 @@ Module for creating a master bias frame from raw bias frames.
 
 def run_bias():
 
+    """
+    Driver for the bias procedure. 
+
+    The function reads the raw bias frames from the directory specified in the
+    'bias_dir' parameter in the 'config.json' file. It then subtracts the
+    overscan region, stacks the frames and calculates the median value at each
+    pixel. The final master bias frame is written to disc in the output directory.
+    """
+
     # Extract the detector parameters
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]

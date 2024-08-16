@@ -6,7 +6,7 @@ from logger import logger
 import os
 from astropy.io import fits
 import numpy as np
-from parser import detector_params, flat_params
+from parser import detector_params, flat_params, science_params, standard_params
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
@@ -254,3 +254,16 @@ def show_flat_norm_region():
         "If it is not, check the normalization region definition in the config file."
     )
     plt.show()
+
+
+def read_science_and_standard():
+    """
+    Reads standard star or science frames.
+
+    Warns the user if one or the other is missing.
+
+    Terminates the program if both are missing.
+    """
+
+    use_science = science_params["use_science"]
+    use_standard = standard_params["use_standard"]
