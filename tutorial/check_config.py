@@ -62,9 +62,18 @@ def check_dirs(any_errors):
     """
     A driver loop for `check_directory` method.
 
-    Loops over all the raw input directories in the configuration file
-    """
+    Loops over all the raw input directories in the configuration file.
 
+    Parameters
+    ----------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+
+    Returns
+    -------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+    """
 
     any_errors = check_directory(
         bias_params["bias_dir"],
@@ -117,7 +126,7 @@ def check_dirs(any_errors):
     if not any_errors:
         print("\n")
         logger.info("All input and output directories are found and not empty.")
-     
+
     return any_errors
 
 
@@ -125,6 +134,16 @@ def check_regions(any_errors):
     """
     Check that rectangles defined by the user in the configuration file
     for overscan and flat normalization regions are valid.
+
+    Parameters
+    ----------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+
+    Returns
+    -------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found. 
     """
 
     # check overscan region
@@ -176,10 +195,19 @@ def check_regions(any_errors):
     return any_errors
 
 
-
 def check_detector(any_errors):
     """
     Visualize the overscan and flat normalization regions on a raw flat frame.
+
+    Parameters
+    ----------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+
+    Returns
+    -------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
     """
 
     try:
@@ -187,7 +215,8 @@ def check_detector(any_errors):
         # show overscan
         if detector_params["overscan"]["use_overscan"]:
             logger.info(
-                "Showing the overscan region on a raw flat frame " "for user inspection..."
+                "Showing the overscan region on a raw flat frame "
+                "for user inspection..."
             )
             show_overscan()
 
@@ -213,7 +242,7 @@ def check_detector(any_errors):
             and not flat_params["user_custom_norm_area"]
         ):
             logger.info("No regions are set to be shown in the configuration file.")
-    
+
     except:
         logger.warning("Could not show detector regions.")
         logger.warning("Check for any previous warnings.")
@@ -227,7 +256,47 @@ def check_detector(any_errors):
 
     return any_errors
 
-if __name__ == "__main__":
+
+def check_for_negative_params(any_errors):
+    """
+    Checks for negative physical parameters in the configuration file.
+
+    Does not check overscan , but it checked in `check_regions`.
+
+    Parameters
+    ----------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+
+    Returns
+    -------
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+    """
+    # TODO re-use this list globally
+    params = [
+        detector_params,
+        bias_params,
+        flat_params,
+        science_params,
+        standard_params,
+        arc_params,
+    ]
+    for param in params:
+        for key, value in param.items():
+            if isinstance(value, (int, float)) and value < 0:
+                logger.warning(
+                    f"Negative value found for {key} in the configuration file."
+                )
+                logger.warning("All physical parameters should be positive.")
+                any_errors = True
+    return any_errors
+
+
+def run_config_checks():
+    """
+    A driver function for running all the configuration checks.
+    """
 
     any_errors = False
 
@@ -236,6 +305,8 @@ if __name__ == "__main__":
     logger.info("Checking directories...")
 
     any_errors = check_dirs(any_errors)
+
+    print("\n------------------------------------")
 
     logger.info("Checking user-defined detector regions...")
 
@@ -248,18 +319,33 @@ if __name__ == "__main__":
 
     print("\n------------------------------------\n")
 
+    # check if at least one of the science or standard star frames are present
 
-    #check if at least one of the science or standard star frames are present
-
+    logger.info(
+        "Checking if at least one of the science or standard star frames are present..."
+    )
     return_code = check_science_and_standard()
 
     if return_code == 0:
         any_errors = True
-    
-    if any_errors: 
+
+    print("\n------------------------------------\n")
+
+    logger.info("Checking for negative physical parameters...")
+
+    any_errors = check_for_negative_params(any_errors)
+
+    print("\n------------------------------------\n")
+
+    if any_errors:
         logger.warning("Errors found in the configuration file.")
-        logger.warning("Check the warnings.") 
+        logger.warning("Check the warnings.")
 
     else:
-        logger.info("CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.")
         logger.info("NO ERRORS FOUND.")
+        logger.info("CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.")
+
+
+if __name__ == "__main__":
+
+    run_config_checks()
