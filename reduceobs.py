@@ -6,21 +6,61 @@ from utils import FileList, open_fits, write_to_fits
 from logger import logger
 import matplotlib.pyplot as plt
 import os
+from parser import obs_file_dict
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
 exposures (science, standard star and arc lamps).
 """
 
-def read_crr_files():
+def check_crr_files():
     """
     Read the cosmic ray removed files.
     """
-    file_list = FileList(output_dir)
-    files = file_list.get_files()
-    for file in files:
-        # Process each file here
-        pass
+
+    logger.info("Check if all raw observations have gone through cosmic-ray removal...")
+
+    all_files_crr_done = True
+    
+    for group in obs_file_dict:
+        group_files = obs_file_dict[group]
+        found = False
+        num_files = 0
+        for file in group_files:
+            if glob.glob(output_dir + "/crr_" + file):
+                found = True
+                num_files += 1
+                
+        if not found:
+            logger.critical(
+                f"No {group} files have undergone cosmic-ray removal."
+            )
+            logger.critical("Execute cosmic ray removal before this procedure")
+            
+            
+            exit()
+
+        if num_files != len(group_files):
+            logger.warning(
+                f"Only {num_files} out of {len(group_files)} {group} "
+                "files have been through cosmic-ray removal."
+            )
+
+            all_files_crr_done = False
+            
+        else: logger.info(
+            f"All {group} files have undergone cosmic-ray removal."
+        )
+             
+        if all_files_crr_done:
+            logger.info(
+                "All raw observations have undergone crr_removal."
+            )
+            logger.info("Proceeding with bias subraction and flat fielding.")
+             
+        
+        
+    exit()
 
     
 
@@ -75,6 +115,10 @@ def reduce_group(group):
     FLAT = FLAT_HDU[0].data
 
     logger.info("Master flat frame found and loaded.")
+
+    logger.info(f"Fetching cosmic-ray removed files from {output_dir} ...")
+
+    check_crr_files()
 
     exit()
         

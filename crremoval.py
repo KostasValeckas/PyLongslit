@@ -2,14 +2,12 @@ import astroscrappy
 from logger import logger
 from parser import detector_params, crr_params, skip_science_or_standard_bool
 from parser import output_dir
-from parser import science_params, standard_params
+from parser import science_params, standard_params, arc_params
 from utils import FileList, open_fits, write_to_fits
-import matplotlib.pyplot as plt
-from skimage import exposure
+
 
 import os as os
 
-from skimage import exposure
 
 """
 Module for removing cosmic rays from raw science and standard star frames.
@@ -117,6 +115,9 @@ def run_crremoval():
         star_file_list = FileList(standard_params["standard_dir"])
         science_file_list = FileList(science_params["science_dir"])
 
+    #TODO: check if it makes sense to crr arc frames
+    arc_file_list = FileList(arc_params["arc_dir"]) 
+
     if star_file_list is not None:
         logger.info(
             f"Removing cosmic rays from {star_file_list.num_files} "
@@ -142,6 +143,19 @@ def run_crremoval():
         print("------------------------------------")
 
         remove_cosmics(science_file_list, sigclip, frac, objlim, niter)
+
+    logger.info(
+        f"Removing cosmic rays from {arc_file_list.num_files} arc frames:"
+    )
+
+    print("------------------------------------")
+    for file in arc_file_list:
+        print(file)
+    print("------------------------------------")
+
+    remove_cosmics(arc_file_list, sigclip, frac, objlim, niter)
+
+
 
     logger.info("Cosmic-ray removal procedure finished.")
 

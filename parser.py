@@ -96,7 +96,43 @@ def check_science_and_standard():
     else:
 
         return 3
-
+    
 
 
 skip_science_or_standard_bool = check_science_and_standard()
+
+
+
+# Create a dictionary to hold the file information
+obs_file_dict = {}
+
+if skip_science_or_standard_bool == 0: pass
+
+else:    
+    # Get the list of files in the science directory
+    if skip_science_or_standard_bool == 2:
+        logger.info("Skipping science frames.")
+        science_files = []
+    else:
+        science_dir = science_params["science_dir"]
+        science_files = os.listdir(science_dir)
+    
+    obs_file_dict["science"] = science_files
+
+    # Get the list of files in the standard directory
+    if skip_science_or_standard_bool == 1:
+        logger.info("Skipping standard star frames.")
+        standard_files = []
+    else:
+        standard_dir = standard_params["standard_dir"]
+        standard_files = os.listdir(standard_dir)
+
+    obs_file_dict["standard_star"] = standard_files
+
+    # Get the list of files in the arc directory
+
+    arc_dir = arc_params["arc_dir"]
+    arc_files = os.listdir(arc_dir)
+
+    obs_file_dict["arc_lamp"] = arc_files
+
