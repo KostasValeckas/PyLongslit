@@ -21,7 +21,7 @@ from astropy.table import Table, Column
 from astropy.table import QTable
 from astropy.io import fits
 from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
-from astropy.modeling.models import Gaussian1D, Chebyshev2D
+from astropy.modeling.models import Gaussian1D, Chebyshev2D, Const1D
 from astropy.modeling.fitting import LevMarLSQFitter
 
 from photutils.aperture import RectangularAperture, aperture_photometry
@@ -86,17 +86,17 @@ IDtolerance = 5. #Tolerance for deleting lines in fitting arcdata.
 
 # Parameters for REIDENTIFY
 FITTING_MODEL_REID = 'Chebyshev' # 2-D fitting function
-ORDER_SPATIAL_REID = 3
-ORDER_WAVELEN_REID = 5
+ORDER_SPATIAL_REID = 5
+ORDER_WAVELEN_REID = 6
 STEP_REID = 5  # Reidentification step size in pixels (spatial direction)
 NSUM_REID = 5 
 TOL_REID = 25 # tolerence to lose a line in pixels
 
 # Parameters for APALL (sky fitting and aperture extract after sky subtraction)
 ## parameters for finding aperture
-NSUM_AP = 20
-FWHM_AP = 20
-STEP_AP = 20  # Recentering step size in pixels (dispersion direction)
+NSUM_AP = 10
+FWHM_AP = 10
+STEP_AP = 10  # Recentering step size in pixels (dispersion direction)
 
 #Weight function for optimal extraction
 def gaussweight(x, mu, sig):
@@ -109,9 +109,9 @@ SIGMA_APSKY = 3
 ITERS_APSKY = 5
 ## parameters for aperture tracing
 FITTING_MODEL_APTRACE = 'Chebyshev'
-ORDER_APTRACE = 5
-SIGMA_APTRACE = 1
-ITERS_APTRACE = 5
+ORDER_APTRACE = 3
+SIGMA_APTRACE = 3
+ITERS_APTRACE = 5 
 # The fitting is done by SIGMA_APTRACE-sigma ITERS_APTRACE-iters clipped on the
 # residual of data. 
 
@@ -144,10 +144,10 @@ if DISPAXIS == 2:
 elif DISPAXIS != 1:
     raise ValueError('DISPAXIS must be 1 or 2 (it is now {:d})'.format(DISPAXIS))
 
-OBJNEXP = objhdu[0].header['NEXP']
-OBJEXPTIME = objhdu[0].header['EXPTIME']*OBJNEXP
+OBJEXPTIME = objhdu[0].header['EXPTIME']
 OBJAIRMASS = objhdu[0].header['AIRMASS']
 OBJNAME = objhdu[0].header['OBJECT']
+OBJNEXP = objhdu[0].header['NEXP']
 STDEXPTIME = stdhdu[0].header['EXPTIME']
 STDAIRMASS = stdhdu[0].header['AIRMASS']
 STDNAME = stdhdu[0].header['OBJECT']

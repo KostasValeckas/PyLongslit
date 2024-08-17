@@ -3,11 +3,8 @@ import glob as glob
 from astropy.io import fits
 
 """
-This is a python program to reduce the observation frames 
-(both Science and Standard Star).
-
-This script is not meant to be called directly, but rather to be imported
-and called from reducscience.py or reducestd.py.
+Module for reducing (bias subtraction, flat division) and combining 
+exposures (science, standard star and arc lamps).
 """
 
 

@@ -1,5 +1,7 @@
 # PyLongslit
 
+* DEVELOPING GROUNDS - FEEL FREE TO LOOK AROUND - BUT DO NOT RUN THIS CODE
+
 PyLongslit is simple Python software for reduction of astronomical long-slit spectra.
 As for now, the software is tested and designed to work with data from 
 [ALFOSC](https://www.not.iac.es/instruments/alfosc/) at the

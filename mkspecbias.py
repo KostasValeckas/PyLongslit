@@ -1,45 +1,89 @@
-
 import numpy
-from astropy.io import fits
+from logger import logger
+from parser import detector_params, bias_params, output_dir
+from utils import FileList, check_dimensions, open_fits, write_to_fits
+from overscan import subtract_overscan_from_frame
 
 """
-This is a python program to make a BIAS frame
+Module for creating a master bias frame from raw bias frames.
 """
 
-# THESE HAVE TO BE SET MANUALLY
-ysize = 2102
-xsize = 500
+def run_bias():
 
-print('Script running')
-print('\n ---Using the following parameters:---\n')
-print(f'ysize = {ysize}')
-print(f'xsize = {xsize}')
-print('----------------------------------------\n')
+    """
+    Driver for the bias procedure. 
 
-#Read in the raw bias frames and subtact mean of overscan region 
+    The function reads the raw bias frames from the directory specified in the
+    'bias_dir' parameter in the 'config.json' file. It then subtracts the
+    overscan region, stacks the frames and calculates the median value at each
+    pixel. The final master bias frame is written to disc in the output directory.
+    """
 
-list = open('specbias.list')
+    # Extract the detector parameters
+    xsize = detector_params["xsize"]
+    ysize = detector_params["ysize"]
 
-nframes = len(list.readlines())
-list.seek(0)
+    use_overscan = detector_params["overscan"]["use_overscan"]
 
-bigbias = numpy.zeros((nframes,ysize,xsize),float)
-#bigbias = numpy.zeros((nframes,3,3))
-for i in range(0,nframes):
-   print('Image number:', i)
-   rawbias = fits.open(str.rstrip(list.readline()))
-   print('Info on file:')
-   print(rawbias.info())
-   data = numpy.array(rawbias[1].data)
-   mean = numpy.mean(data[2066:ysize-5,0:xsize-1])
-   data = data - mean
-   print('Subtracted the median value of the overscan :',mean)
-   bigbias[i-1,0:ysize-1,0:xsize-1] = data[0:ysize-1,0:xsize-1]
-list.close()
+    # TODO: specify what direction is the spectral direction
+    logger.info("Bias procedure running...")
+    logger.info("Using the following parameters:")
+    logger.info(f"xsize = {xsize}")
+    logger.info(f"ysize = {ysize}")
 
-##Calculate bias is median at each pixel
-medianbias = numpy.median(bigbias,axis=0)
+    # read the names of the bias files from the directory
+    file_list = FileList(bias_params["bias_dir"])
 
-#Write out result to fitsfile
-hdr = rawbias[0].header
-fits.writeto('BIAS.fits',medianbias,hdr,overwrite=True)
+    logger.info(f"Found {file_list.num_files} bias frames.")
+    logger.info(f"Files used for bias processing:")
+
+    print("------------------------------------")
+    for file in file_list:
+        print(file)
+    print("------------------------------------")
+
+    # Check if all files have the wanted dimensions
+    # Will exit if they don't
+    check_dimensions(file_list, xsize, ysize)
+
+    # initialize a big array to hold all the bias frames for stacking
+    bigbias = numpy.zeros((file_list.num_files, ysize, xsize), float)
+
+    # loop over all the bias files, subtract the median value of the overscan
+    # and stack them in the bigbias array
+    for i, file in enumerate(file_list):
+
+        rawbias = open_fits(bias_params["bias_dir"], file)
+
+        logger.info(f"Processing file: {file}")
+
+        data = numpy.array(rawbias[1].data)
+
+        if use_overscan: data = subtract_overscan_from_frame(data)
+
+        bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = \
+            data[0 : ysize - 1, 0 : xsize - 1]
+
+        # close the file handler
+        rawbias.close()
+
+        logger.info(f"File {file} processed.\n")
+
+    # Calculate bias as median at each pixel
+    medianbias = numpy.median(bigbias, axis=0)
+
+    logger.info("Bias frames processed.")
+    logger.info("Attaching header and writing to disc...")
+
+    # Write out result to fitsfile
+    hdr = rawbias[0].header
+
+    write_to_fits(medianbias, hdr, "master_bias.fits", output_dir)
+
+    logger.info(
+        f"Master bias frame written to disc at in {output_dir}, filename master_bias.fits"
+    )
+
+
+if __name__ == "__main__":
+    run_bias()
