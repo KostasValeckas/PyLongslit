@@ -1,27 +1,83 @@
 import numpy as np
 import glob as glob
 from astropy.io import fits
+from parser import detector_params, output_dir
+from utils import FileList, open_fits, write_to_fits
+from logger import logger
+import matplotlib.pyplot as plt
+import os
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
 exposures (science, standard star and arc lamps).
 """
 
+def read_crr_files():
+    """
+    Read the cosmic ray removed files.
+    """
+    file_list = FileList(output_dir)
+    files = file_list.get_files()
+    for file in files:
+        # Process each file here
+        pass
 
-def reduce_obs(ysize, xsize, centers, standard_star_reduction = False):
-    print('Script running')
-    print('\n ---Using the following parameters:---\n')
-    print(f'ysize = {ysize}')
-    print(f'xsize = {xsize}')
-    print(f'Is this a standard star reduction? = {standard_star_reduction}\n')
-    print(f'Object centers: {centers}\n')
-    print('\n -------------------------------------\n')
+    
+
+def reduce_frame():
+    """
+    Performs overscan subtraction, bias subtraction 
+    and flat fielding of a single frame.
+    """
+
+    pass
 
 
-    BIASframe = fits.open('../rawbias/BIAS.fits')
-    BIAS = np.array(BIASframe[0].data)
-    FLATframe = fits.open('../rawflats/Flat.fits')
-    FLAT = np.array(FLATframe[0].data)
+def reduce_group(group):
+
+
+    if (group != 'science') and (group != 'standard') and (group != 'arc'):
+        logger.critical(
+            "Invalid group name. Use 'science', 'standard' or 'arc'. Exiting..."
+        )
+        os._exit(0)
+
+    # Extract the detector parameters
+    xsize = detector_params["xsize"]
+    ysize = detector_params["ysize"]
+
+    use_overscan = detector_params["overscan"]["use_overscan"]
+
+    # Fetch bias and flat master frames
+
+    logger.info("Fetching the master bias frame...")
+
+    try:
+        BIAS_HDU = open_fits(output_dir, "master_bias.fits")
+    except FileNotFoundError:
+        logger.critical(f"Master bias frame not found in {output_dir}.")
+        logger.error("Make sure you have excecuted the bias procdure first.")
+        exit()
+
+    BIAS = BIAS_HDU[0].data
+
+    logger.info("Master bias frame found and loaded.")
+
+    logger.info("Fetching the master flat frame...")
+
+    try:
+        FLAT_HDU = open_fits(output_dir, "master_flat.fits")
+    except FileNotFoundError:
+        logger.critical(f"Master flat frame not found in {output_dir}.")
+        logger.error("Make sure you have excecuted the flat procdure first.")
+        exit()
+
+    FLAT = FLAT_HDU[0].data
+
+    logger.info("Master flat frame found and loaded.")
+
+    exit()
+        
 
     rawimages = sorted(glob.glob("crr*.fits"))
 
@@ -125,3 +181,13 @@ def reduce_obs(ysize, xsize, centers, standard_star_reduction = False):
             print("\n\n\033[91m\n\nATTENTION:\033[0m THIS REDUCTION HAS BEEN RUN AS A SCIENCE OBJECT REDUCTION")
             print("If this is a standard star reduction, please use \"reducestd.py\" script," +
             "and re-run both the standard star and science object reductions. \n\n")
+
+def reduce_all():
+    """
+    Reduce all the science frames in the directory.
+    """
+
+    reduce_group("science")
+
+if __name__ == "__main__":
+    reduce_all()

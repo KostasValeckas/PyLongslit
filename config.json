@@ -15,11 +15,11 @@
     },
 
     "bias": {
-        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/bias"
+        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/bias"
     },
 
     "flat": {
-        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/flats",
+        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/flats",
         "user_custom_norm_area": true,
         "norm_area_start_x": 100,
         "norm_area_end_x": 400,
@@ -40,15 +40,15 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/science"
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science"
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/standard"
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard"
     },
 
     "arc" : {
-        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/arcs"
+        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/arcs"
     }
 }

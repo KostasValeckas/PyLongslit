@@ -15,7 +15,8 @@ from skimage import exposure
 Module for removing cosmic rays from raw science and standard star frames.
 """
 
-#TODO is there a sensful way to make QA plots for crremoval?
+# TODO is there a sensful way to make QA plots for crremoval?
+
 
 def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter):
     """
@@ -62,7 +63,7 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter):
         # Replace data array with cleaned image
         hdu[1].data = clean_arr
 
-        logger.info(f"Cosmic rays removed on {file}.")      
+        logger.info(f"Cosmic rays removed on {file}.")
 
         logger.info(f"Writing output to disc...")
 
