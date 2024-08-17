@@ -3,12 +3,15 @@
         "xsize": 500,
         "ysize": 2102, 
         "spectral_dir": "y",
-        "overscan_x_start": 0,
-        "overscan_x_end": 499,
-        "overscan_y_start": 2066,
-        "overscan_y_end": 2099,
         "gain": 0.16,
-        "read_out_noise": 4.3
+        "read_out_noise": 4.3,
+        "overscan" : {
+            "use_overscan": true,
+            "overscan_x_start": 0,
+            "overscan_x_end": 499,
+            "overscan_y_start": 2066,
+            "overscan_y_end": 2099
+        }
     },
 
     "bias": {
@@ -17,6 +20,7 @@
 
     "flat": {
         "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/flats",
+        "user_custom_norm_area": true,
         "norm_area_start_x": 100,
         "norm_area_end_x": 400,
         "norm_area_start_y": 100,
@@ -42,5 +46,9 @@
     "standard" : {
         "skip_standard": false,
         "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/standard"
+    },
+
+    "arc" : {
+        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/arcs"
     }
 }

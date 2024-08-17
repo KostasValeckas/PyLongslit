@@ -1,8 +1,8 @@
 import numpy
-from astropy.io import fits
 from logger import logger
 from parser import detector_params, bias_params, output_dir
-from utils import FileList, check_dimensions, show_overscan, open_fits, write_to_fits
+from utils import FileList, check_dimensions, open_fits, write_to_fits
+from overscan import subtract_overscan_from_frame
 
 """
 Module for creating a master bias frame from raw bias frames.
@@ -23,10 +23,7 @@ def run_bias():
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
 
-    overscan_x_start = detector_params["overscan_x_start"]
-    overscan_x_end = detector_params["overscan_x_end"]
-    overscan_y_start = detector_params["overscan_y_start"]
-    overscan_y_end = detector_params["overscan_y_end"]
+    use_overscan = detector_params["overscan"]["use_overscan"]
 
     # TODO: specify what direction is the spectral direction
     logger.info("Bias procedure running...")
@@ -36,17 +33,6 @@ def run_bias():
 
     # read the names of the bias files from the directory
     file_list = FileList(bias_params["bias_dir"])
-
-    if overscan_x_end != 0 and overscan_y_end != 0:
-        logger.info("Non - zero overscan region is defined.")
-        logger.info(
-            f"Overscan region: x: {overscan_x_start}:{overscan_x_end},"
-            f" y: {overscan_y_start}:{overscan_y_end}"
-        )
-
-        # Show the overscan region on a flat fram for Quality Assesment
-
-        show_overscan()
 
     logger.info(f"Found {file_list.num_files} bias frames.")
     logger.info(f"Files used for bias processing:")
@@ -73,21 +59,15 @@ def run_bias():
 
         data = numpy.array(rawbias[1].data)
 
-        # TODO: if this is needed more - move it to utils
-        if overscan_x_end != 0 and overscan_y_end != 0:
-            overscan_mean = numpy.mean(
-                data[overscan_y_start:overscan_y_end, overscan_x_start:overscan_y_end]
-            )
+        if use_overscan: data = subtract_overscan_from_frame(data)
 
-            data = data - overscan_mean
-            logger.info(
-                f"Subtracted the median value of the overscan : {overscan_mean}\n"
-            )
-
-        bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
+        bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = \
+            data[0 : ysize - 1, 0 : xsize - 1]
 
         # close the file handler
         rawbias.close()
+
+        logger.info(f"File {file} processed.\n")
 
     # Calculate bias as median at each pixel
     medianbias = numpy.median(bigbias, axis=0)

@@ -35,6 +35,7 @@ logger.info("User parameters loaded successfully.")
 crr_params = data["crr_removal"]
 science_params = data["science"]
 standard_params = data["standard"]
+arc_params = data["arc"]
 
 
 
@@ -93,9 +94,6 @@ def check_science_and_standard():
         return 2
     
     else:
-        logger.info(
-            "Both science and standard star frames will be reduced."
-        )
 
         return 3
 

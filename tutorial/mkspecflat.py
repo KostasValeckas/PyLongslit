@@ -3,12 +3,56 @@ from astropy.io import fits
 from logger import logger
 from parser import detector_params, flat_params, output_dir
 from utils import FileList, check_dimensions, open_fits, write_to_fits
-from utils import show_overscan, show_flat_norm_region
+from utils import show_flat
+from overscan import subtract_overscan_from_frame
 import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
 
 """
 Module for creating a master flat from from raw flat frames.
 """
+
+def show_flat_norm_region():
+    """
+    Show the user defined flat normalization region.
+
+    Fetches a raw flat frame from the user defined directory
+    and displays the normalization region overlayed on it.
+    """
+
+    logger.info("Showing the normalization region on a raw flat frame for user inspection...")
+
+    show_flat()
+
+    # Add rectangular box to show the overscan region
+    width = flat_params["norm_area_end_x"] \
+                - flat_params["norm_area_start_x"]
+    height = flat_params["norm_area_end_y"] \
+                - flat_params["norm_area_start_y"]
+
+    rect = Rectangle(
+        (flat_params["norm_area_start_x"],
+         flat_params["norm_area_start_y"]),
+        width,
+        height,
+        linewidth=1,
+        edgecolor="r",
+        facecolor="none",
+        linestyle="--",
+        label="Region used for estimation of normalization factor",
+    )
+    plt.gca().add_patch(rect)
+    plt.gca().invert_yaxis()
+    plt.legend()
+    plt.xlabel("Pixels in x-direction")
+    plt.ylabel("Pixels in y-direction")
+    plt.title(
+        "Region used for estimation of normalization factor overlayed on a raw flat frame.\n"
+        "The region should somewhat brightly illuminated with no abnormalities or artifacts.\n"
+        "If it is not, check the normalization region definition in the config file."
+    )
+    plt.show()
+
 
 
 def run_flats():
@@ -27,17 +71,14 @@ def run_flats():
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
 
-    # overscan area (if any)
-    overscan_x_start = detector_params["overscan_x_start"]
-    overscan_x_end = detector_params["overscan_x_end"]
-    overscan_y_start = detector_params["overscan_y_start"]
-    overscan_y_end = detector_params["overscan_y_end"]
+    use_overscan = detector_params["overscan"]["use_overscan"]
 
-    # used defined area used for normalization
-    norm_start_x = flat_params["norm_area_start_x"]
-    norm_end_x = flat_params["norm_area_end_x"]
-    norm_start_y = flat_params["norm_area_start_y"]
-    norm_end_y = flat_params["norm_area_end_y"]
+    if flat_params["user_custom_norm_area"]:
+        # used defined area used for normalization
+        norm_start_x = flat_params["norm_area_start_x"]
+        norm_end_x = flat_params["norm_area_end_x"]
+        norm_start_y = flat_params["norm_area_start_y"]
+        norm_end_y = flat_params["norm_area_end_y"]
 
     # TODO: specify what direction is the spectral direction
     logger.info("Flat-field procedure running...")
@@ -47,24 +88,6 @@ def run_flats():
 
     # read the names of the flat files from the directory
     file_list = FileList(flat_params["flat_dir"])
-
-    if overscan_x_end != 0 and overscan_y_end != 0:
-        logger.info("Non - zero overscan region is defined.")
-        logger.info(
-            f"Overscan region: x: {overscan_x_start}:{overscan_x_end},"
-            f" y: {overscan_y_start}:{overscan_y_end}"
-        )
-        # Show the overscan region on a flat fram for Quality Assesment
-        show_overscan()
-
-    if norm_end_x != 0 and norm_end_y != 0:
-        logger.info("Normalisation region is defined.")
-        logger.info(
-            f"Normalisation region: x: {norm_start_x}:{norm_end_x},"
-            f" y: {norm_start_y}:{norm_end_y}"
-        )
-        # Show the normalisation region on a flat frame for Quality Assesment
-        show_flat_norm_region()
 
     logger.info(f"Found {file_list.num_files} flat frames.")
     logger.info(f"Files used for flat-fielding:")
@@ -112,14 +135,9 @@ def run_flats():
         data = numpy.array(rawflat[1].data)
 
         # TODO: if this is needed more - move it to utils
-        if overscan_x_end != 0 and overscan_y_end != 0:
-            overscan_mean = numpy.mean(
-                data[overscan_y_start:overscan_y_end, overscan_x_start:overscan_y_end]
-            )
-            data = data - overscan_mean
-            logger.info(
-                f"Subtracted the median value of the overscan : {overscan_mean}"
-            )
+        if use_overscan:
+            
+            data = subtract_overscan_from_frame(data)
 
         data = data - BIAS
         logger.info("Subtracted the bias.")
@@ -129,7 +147,7 @@ def run_flats():
         # Normalise the frame
 
         #if normalization region is provided:
-        if norm_end_x != 0 and norm_end_y != 0:
+        if flat_params["user_custom_norm_area"]:
             norm = numpy.median(
                 bigflat[i, norm_start_y:norm_end_y, norm_start_x:norm_end_x]
             )
@@ -142,6 +160,8 @@ def run_flats():
 
         # close the file handler
         rawflat.close()
+
+        logger.info(f"File {file} processed.\n")
 
     logger.info("Normalizing the final master flat-field....")
 
@@ -159,7 +179,7 @@ def run_flats():
 
     logger.info(
         "Mean pixel value of the final master flat-field: "
-        f"{numpy.nanmean(medianflat)}"
+        f"{round(numpy.nanmean(medianflat),5)} (should be 1.0)."
     )
 
     # check if the median is 1 to within 5 decimal places
