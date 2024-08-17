@@ -255,5 +255,3 @@ def show_flat_norm_region():
     )
     plt.show()
 
-
-        

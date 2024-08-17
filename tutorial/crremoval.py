@@ -1,30 +1,93 @@
 import astroscrappy
 from logger import logger
-import glob
 from parser import detector_params, crr_params, skip_science_or_standard_bool
+from parser import output_dir
+from parser import science_params, standard_params
+from utils import FileList, open_fits, write_to_fits
+import matplotlib.pyplot as plt
+from skimage import exposure
 
 import os as os
 
-from astropy.io import fits
+from skimage import exposure
 
 """
 Module for removing cosmic rays from raw science and standard star frames.
 """
+
+#TODO is there a sensful way to make QA plots for crremoval?
+
+def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter):
+    """
+    A wrapper for astroscrappy.detect_cosmics.
+
+    Writes the cosmic-ray removed image to disc in the output directory
+    with the prefix 'crr_'.
+
+    Parameters
+    ----------
+    file_list : FileList
+        A list of files to remove cosmic rays from.
+
+    sigclip : float
+        Laplacian-to-noise limit for cosmic ray detection.
+
+    sigfrac : float
+        Fractional detection limit for neighboring pixels.
+
+    objlim : float
+        Minimum contrast between Laplacian image and the fine structure image.
+
+    niter : int
+        Number of iterations to perform.
+    """
+
+    for file in file_list:
+
+        logger.info(f"Removing cosmic rays from {file}...")
+
+        hdu = open_fits(file_list.path, file)
+
+        _, clean_arr = astroscrappy.detect_cosmics(
+            hdu[1].data,
+            sigclip=sigclip,
+            sigfrac=sigfrac,
+            objlim=objlim,
+            cleantype="medmask",
+            niter=niter,
+            sepmed=True,
+            verbose=True,
+        )
+
+        # Replace data array with cleaned image
+        hdu[1].data = clean_arr
+
+        logger.info(f"Cosmic rays removed on {file}.")      
+
+        logger.info(f"Writing output to disc...")
+
+        write_to_fits(hdu[1].data, hdu[0].header, "crr_" + file, output_dir)
+
+        logger.info(
+            f"Cosmic-ray removed file written to disc at in {output_dir}, "
+            f"filename crr_{file}."
+        )
+
+        hdu.close()
 
 
 def run_crremoval():
 
     # initiate user parameters
 
-    #detecctor
+    # detecctor
     gain = detector_params["gain"]
     read_out_noise = detector_params["read_out_noise"]
 
     # astroscrappy.detect_cosmics
-
+    sigclip = crr_params["sigclip"]
     frac = crr_params["frac"]
     objlim = crr_params["objlim"]
-    sigclip = crr_params["sigclip"]
     niter = crr_params["niter"]
 
     logger.info("Cosmic-ray removal procedure running...")
@@ -32,57 +95,55 @@ def run_crremoval():
     logger.info(f"gain = {gain}")
     logger.info(f"read_out_noise = {read_out_noise}")
 
-
     if skip_science_or_standard_bool == 0:
         logger.critical(
-            "Both skip_science and skip_standard are set to \"true\" in the "
+            'Both skip_science and skip_standard are set to "true" in the '
             "config file. There is nothing to perform the reduction on."
         )
-        logger.error("Set at least one of them \"false\" and try again.")
+        logger.error('Set at least one of them "false" and try again.')
 
         exit()
 
+    elif skip_science_or_standard_bool == 1:
+        star_file_list = None
+        science_file_list = FileList(science_params["science_dir"])
 
-    # Path to folder with science frames
-    for nn in glob.glob("*crr*.fits"):
-        os.remove(nn)
-        print(nn)
+    elif skip_science_or_standard_bool == 2:
+        star_file_list = FileList(standard_params["standard_dir"])
+        science_file_list = None
 
-    # Try to open raw_science.list, if it doesn't exist, open raw_std.list
-    try:
-        files = open('raw_science.list')
-        print("\nScience observation list found: Using raw_science.list\n")
-    except FileNotFoundError:
-        try:
-            files = open('raw_std.list')
-            print("\nStandard star observation list found: Using raw_std.list\n")
-        except FileNotFoundError:
-            raise FileNotFoundError(
-                "Either raw_science.list or raw_std.list needs to be provided."
-            )
+    else:
+        star_file_list = FileList(standard_params["standard_dir"])
+        science_file_list = FileList(science_params["science_dir"])
 
+    if star_file_list is not None:
+        logger.info(
+            f"Removing cosmic rays from {star_file_list.num_files} "
+            "standard star frames:"
+        )
 
-    for n in files:
-        n = n.strip() # Remove leading/trailing whitespaces
-        fitsfile = fits.open(str(n))
-        filename = os.path.basename(n)
-        print('Removing cosmics from file: ' + filename + '...')
-            
-        crmask, clean_arr = astroscrappy.detect_cosmics(fitsfile[1].data, sigclip=sigclip, sigfrac=frac, objlim=objlim, cleantype='medmask', niter=niter, sepmed=True, verbose=True)
+        print("------------------------------------")
+        for file in star_file_list:
+            print(file)
+        print("------------------------------------")
 
-    # Replace data array with cleaned image
-        fitsfile[1].data = clean_arr
+        remove_cosmics(star_file_list, sigclip, frac, objlim, niter)
 
-    # Try to retain info of corrected pixel if extension is present.
-        try:
-            fitsfile[2].data[crmask] = 16 #Flag value for removed cosmic ray
-        except:
-            print("No bad-pixel extension present. No flag set for corrected pixels")
+    if science_file_list is not None:
+        logger.info(
+            f"Removing cosmic rays from {science_file_list.num_files} "
+            "science frames:"
+        )
 
-    # Update file
-        fitsfile.writeto("crr"+filename, output_verify='fix')
+        print("------------------------------------")
+        for file in science_file_list:
+            print(file)
+        print("------------------------------------")
 
-    files.close()
+        remove_cosmics(science_file_list, sigclip, frac, objlim, niter)
+
+    logger.info("Cosmic-ray removal procedure finished.")
+
 
 if __name__ == "__main__":
     run_crremoval()

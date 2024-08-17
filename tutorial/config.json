@@ -35,12 +35,12 @@
     },
 
     "science" : {
-        "skip_science": true,
+        "skip_science": false,
         "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/science"
     },
 
     "standard" : {
-        "skip_standard": true,
+        "skip_standard": false,
         "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/tutorial/raw/standard"
     }
 }
