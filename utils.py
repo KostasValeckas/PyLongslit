@@ -52,6 +52,9 @@ class FileList:
 
         self.files = os.listdir(self.path)
 
+        # sort alphabetically for consistency in naming
+        self.files.sort()
+
         self.num_files = len(self.files)
 
     def __iter__(self):
@@ -213,50 +216,6 @@ def show_flat():
 
     # show the overscan region overlayed on a raw flat frame
     plt.imshow(norm_data, cmap="gray")
-
-def show_objects():
-    """
-    Plot the user-defined object regions on a raw science and 
-    standard star frames together with user defined object centrums.
-    """
-
-    logger.info("Opening the first file in the science directory...")
-    # read the names of the flat files from the directory
-    file_list = FileList(science_params["science_dir"])
-
-    # open the first file in the directory
-    raw_science = open_fits(science_params["science_dir"], file_list.files[0])
-    logger.info("File opened successfully.")
-
-    data = np.array(raw_science[1].data)
-
-    data_equalized = hist_normalize(data)
-    
-    # show the overscan region overlayed on a raw flat frame
-    plt.imshow(data_equalized, cmap="gray")
-
-    plt.show()
-
-    """
-
-    # plot the object regions
-    for region in science_params["obj_regions"]:
-        x1, x2 = region["x1"], region["x2"]
-        y1, y2 = region["y1"], region["y2"]
-
-        rect = Rectangle((x1, y1), x2 - x1, y2 - y1, edgecolor="red", facecolor="none")
-
-        plt.gca().add_patch(rect)
-
-    # plot the object centrums
-    for center in science_params["obj_centers"]:
-        x, y = center["x"], center["y"]
-
-        plt.scatter(x, y, color="red")
-
-    """
-
-
 
 
 

@@ -15,25 +15,32 @@ Module for reducing (bias subtraction, flat division) and combining
 exposures (science, standard star and arc lamps).
 """
 
-def show_objects():
-    """
-    Plot the user-defined object regions on a raw science and 
-    standard star frames together with user defined object centrums.
-    """
 
-    logger.info("Opening the first file in the science directory...")
-    # read the names of the flat files from the directory
-    file_list = FileList(science_params["science_dir"])
+def show_object(path, file_name, center):
+    """
+    Plot the user-defined object regions on raw science and
+    standard star frames together with user defined object centrums for
+    quality inspection.
+
+    Parameters
+    ----------
+    path : str
+        The path to the file directory.
+
+    file_name : str
+        The name of the file to open.
+
+    center : int
+        The user defined object center.
+    """
 
     # open the first file in the directory
-    raw_science = open_fits(science_params["science_dir"], file_list.files[1])
+    raw_science = open_fits(path, file_name)
     logger.info("File opened successfully.")
 
-    data = np.array(raw_science[1].data)
+    data = np.array(raw_science[0].data)
 
     data_equalized = hist_normalize(data)
-    
-
 
     # get the object regions and centrums
 
@@ -42,8 +49,6 @@ def show_objects():
     spec_start = object_regions["object_spec_start"]
     spec_end = object_regions["object_spec_end"]
     spat_offset = object_regions["object_include_spat_region"]
-
-    center = science_params["obj_centers"][0]
 
     # construct the rectangle for the object region
 
@@ -54,22 +59,47 @@ def show_objects():
 
     height = spec_end - spec_start
 
-
-    rect = Rectangle((x_start, y_start), width, height, edgecolor="red", facecolor="none", alpha=1.0, linewidth=0.5)
+    rect = Rectangle(
+        (x_start, y_start),
+        width,
+        height,
+        edgecolor="red",
+        facecolor="none",
+        alpha=0.7,
+        linewidth=0.5,
+        label="Object region",
+    )
 
     plt.gca().add_patch(rect)
 
     # plot estimated object center
 
-    plt.axvline(x=center, color="red", linestyle="--", alpha=1.0, linewidth=0.5)
+    plt.axvline(
+        x=center,
+        color="red",
+        linestyle="--",
+        alpha=0.7,
+        linewidth=0.5,
+        label="Estimated object center",
+    )
 
     # show the overscan region overlayed on a raw flat frame
     plt.imshow(data_equalized, cmap="gray")
 
+    plt.gca().invert_yaxis()
+    plt.legend()
+    plt.xlabel("Pixels in x-direction")
+    plt.ylabel("Pixels in y-direction")
+
+    plt.legend()
+
+    plt.title(
+        f"Showing user defined object region and center for {file_name}\n"
+        "Make sure that the object region encapsulates the object trace and \n"
+        "the center line is on top of the object. If not, adjust the configuration file."
+    )
 
     plt.show()
-
-
 
 
 def read_crr_files():
@@ -106,6 +136,11 @@ def read_crr_files():
     logger.info(f"Found {len(standard_files)} cosmic-ray removed standard star files.")
     logger.info(f"Found {len(arc_files)} cosmic-ray removed arc files.")
 
+    #sort alphabetically to correctly match the centers
+
+    science_files.sort()
+    standard_files.sort()
+
     return science_files, standard_files, arc_files
 
 
@@ -125,8 +160,6 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan):
     logger.info("Dividing by the master flat frame...")
 
     frame = frame / master_flat
-
-
 
     pass
 
@@ -177,7 +210,36 @@ def reduce_all():
 
         list_files(standard_files)
 
+        centers = standard_params["obj_centers"]
 
+        if len(centers) != len(standard_files):
+            logger.error(
+                "The number of object centers must be equal to "
+                "the number of standard star frames."
+            )
+            logger.error("Check the configuration file and try again.")
+
+            exit()
+
+        for i, file in enumerate(standard_files):
+
+            logger.info(f"Reducing frame {file} ...")
+
+            # centers should be in the same order as the files
+            show_object(output_dir, file, centers[i])
+
+            hdu = open_fits(output_dir, file)
+
+            data = hdu[0].data
+
+            data = reduce_frame(data, BIAS, FLAT, use_overscan)
+
+    if skip_science_or_standard_bool == 1:
+        logger.warning("Skipping standard star reduction as requested...")
+    else:
+        logger.info("Reducing following standard star frames:")
+
+        list_files(standard_files)
 
         centers = standard_params["obj_centers"]
 
@@ -190,10 +252,12 @@ def reduce_all():
 
             exit()
 
-        
-        for file in standard_files:
-            
+        for i, file in enumerate(standard_files):
+
             logger.info(f"Reducing frame {file} ...")
+
+            # centers should be in the same order as the files
+            show_object(output_dir, file, centers[i])
 
             hdu = open_fits(output_dir, file)
 
@@ -201,9 +265,9 @@ def reduce_all():
 
             data = reduce_frame(data, BIAS, FLAT, use_overscan)
 
+
+
     exit()
-
-
     if len(centers) != n_rawimages:
         raise ValueError(
             "The number of centers must be equal to the number of raw images"
