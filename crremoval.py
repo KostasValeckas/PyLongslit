@@ -4,6 +4,7 @@ from parser import detector_params, crr_params, skip_science_or_standard_bool
 from parser import output_dir
 from parser import science_params, standard_params, arc_params
 from utils import FileList, open_fits, write_to_fits, check_dimensions
+from utils import list_files
 
 
 import os as os
@@ -147,10 +148,7 @@ def run_crremoval():
             "standard star frames:"
         )
 
-        print("------------------------------------")
-        for file in star_file_list:
-            print(file)
-        print("------------------------------------")
+        list_files(star_file_list)
 
         remove_cosmics(star_file_list, sigclip, frac, objlim, niter, "std")
 
@@ -160,19 +158,13 @@ def run_crremoval():
             "science frames:"
         )
 
-        print("------------------------------------")
-        for file in science_file_list:
-            print(file)
-        print("------------------------------------")
+        list_files(science_file_list)
 
         remove_cosmics(science_file_list, sigclip, frac, objlim, niter, "science")
 
     logger.info(f"Removing cosmic rays from {arc_file_list.num_files} arc frames:")
 
-    print("------------------------------------")
-    for file in arc_file_list:
-        print(file)
-    print("------------------------------------")
+    list_files(arc_file_list)
 
     remove_cosmics(arc_file_list, sigclip, frac, objlim, niter, "arc")
 

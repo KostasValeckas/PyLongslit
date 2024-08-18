@@ -2,6 +2,7 @@ import numpy
 from logger import logger
 from parser import detector_params, bias_params, output_dir
 from utils import FileList, check_dimensions, open_fits, write_to_fits
+from utils import list_files
 from overscan import subtract_overscan_from_frame
 
 """
@@ -37,10 +38,7 @@ def run_bias():
     logger.info(f"Found {file_list.num_files} bias frames.")
     logger.info(f"Files used for bias processing:")
 
-    print("------------------------------------")
-    for file in file_list:
-        print(file)
-    print("------------------------------------")
+    list_files(file_list)
 
     # Check if all files have the wanted dimensions
     # Will exit if they don't

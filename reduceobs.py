@@ -3,7 +3,7 @@ import glob as glob
 from astropy.io import fits
 from parser import detector_params, output_dir, skip_science_or_standard_bool
 from parser import science_params, standard_params, arc_params
-from utils import FileList, open_fits, write_to_fits
+from utils import FileList, open_fits, write_to_fits, list_files, hist_normalize
 from logger import logger
 import matplotlib.pyplot as plt
 from overscan import subtract_overscan_from_frame
@@ -13,6 +13,49 @@ import os
 Module for reducing (bias subtraction, flat division) and combining 
 exposures (science, standard star and arc lamps).
 """
+
+def show_objects():
+    """
+    Plot the user-defined object regions on a raw science and 
+    standard star frames together with user defined object centrums.
+    """
+
+    logger.info("Opening the first file in the science directory...")
+    # read the names of the flat files from the directory
+    file_list = FileList(science_params["science_dir"])
+
+    # open the first file in the directory
+    raw_science = open_fits(science_params["science_dir"], file_list.files[0])
+    logger.info("File opened successfully.")
+
+    data = np.array(raw_science[1].data)
+
+    data_equalized = hist_normalize(data)
+    
+    # show the overscan region overlayed on a raw flat frame
+    plt.imshow(data_equalized, cmap="gray")
+
+    plt.show()
+
+    """
+
+    # plot the object regions
+    for region in science_params["obj_regions"]:
+        x1, x2 = region["x1"], region["x2"]
+        y1, y2 = region["y1"], region["y2"]
+
+        rect = Rectangle((x1, y1), x2 - x1, y2 - y1, edgecolor="red", facecolor="none")
+
+        plt.gca().add_patch(rect)
+
+    # plot the object centrums
+    for center in science_params["obj_centers"]:
+        x, y = center["x"], center["y"]
+
+        plt.scatter(x, y, color="red")
+
+    """
+
 
 
 def read_crr_files():
@@ -116,9 +159,13 @@ def reduce_all():
     if skip_science_or_standard_bool == 1:
         logger.warning("Skipping standard star reduction as requested...")
     else:
-        logger.info("Reducing standard star frames...")
+        logger.info("Reducing following standard star frames:")
 
-        centers = standard_params["centers"]
+        list_files(standard_files)
+
+
+
+        centers = standard_params["obj_centers"]
 
         if len(centers) != len(standard_files):
             logger.error(
@@ -129,22 +176,18 @@ def reduce_all():
 
             exit()
 
+        
         for file in standard_files:
+            
+            logger.info(f"Reducing frame {file} ...")
+
             hdu = open_fits(output_dir, file)
 
-            data = hdu[1].data
+            data = hdu[0].data
 
-            # Subtract the bias
-            data = data - BIAS
+            data = reduce_frame(data, BIAS, FLAT, use_overscan)
 
-            # Divide by the flat
-            data = data / FLAT
-
-            write_to_fits(data, hdu[0].header, file, output_dir)
-
-            logger.info(f"Reduced standard star frame {file}.")
-
-            hdu.close()
+    exit()
 
 
     if len(centers) != n_rawimages:

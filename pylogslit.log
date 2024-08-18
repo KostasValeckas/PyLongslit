@@ -1130,3 +1130,423 @@ PyLongslit - INFO - reduceobs.py:97 - Fetching cosmic-ray removed files from ./o
 PyLongslit - INFO - reduceobs.py:46 - Found 2 cosmic-ray removed science files.
 PyLongslit - INFO - reduceobs.py:47 - Found 1 cosmic-ray removed standard star files.
 PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:86 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:97 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:99 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:110 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:112 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:49 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:50 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduceobs.py:119 - Reducing standard star frames...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:86 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:97 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:99 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:110 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:112 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:49 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:50 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduceobs.py:119 - Reducing standard star frames...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:86 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:97 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:99 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:110 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:112 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:49 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:50 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduceobs.py:119 - Reducing standard star frames...
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11373.8759765625
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - reduceobs.py:64 - Subtracting the master bias frame...
+PyLongslit - INFO - reduceobs.py:68 - Dividing by the master flat frame...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:30 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:31 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:32 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:33 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:38 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:39 - Files used for bias processing:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140351.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11312.520981356653
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140351.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140360.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11299.584927430618
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140360.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140353.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11305.499787453695
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140353.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140354.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11305.5673771786
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140354.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140357.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11304.051011113135
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140357.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140356.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11300.778891115564
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140356.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140361.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11300.49790490071
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140361.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140355.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11301.945102325864
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140355.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140358.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11305.309042327079
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140358.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140352.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11310.450962531122
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140352.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: ALDh140359.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11299.004918928767
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:68 - File ALDh140359.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:73 - Bias frames processed.
+PyLongslit - INFO - mkspecbias.py:74 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecbias.py:81 - Master bias frame written to disc at in ./output, filename master_bias.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:92 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh140230.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11286.232282747313
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :100964.07675957977
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh140230.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh130384.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11366.999392724843
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :105239.51099168032
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh130384.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh140219.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11293.106273152365
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :100827.36910184004
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh140219.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh130388.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11353.269387259366
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :107277.78162385376
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh130388.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh140238.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11304.988522499545
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :100686.7764923787
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh140238.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh140211.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11296.611040262344
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :100930.17495597254
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh140211.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh130386.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11357.92985971944
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :106088.47455517095
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh130386.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh130385.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11359.36873747495
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :106064.31317179813
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh130385.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: ALDh130387.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11354.932106637518
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :106630.83290824073
+
+PyLongslit - INFO - mkspecflat.py:161 - File ALDh130387.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:163 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:174 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:177 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:189 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:196 - Master flat frame written to disc in ./output, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:116 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:117 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:118 - gain = 0.16
+PyLongslit - INFO - crremoval.py:119 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:146 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from ALDh120217.fits...
+PyLongslit - INFO - crremoval.py:85 - Cosmic rays removed on ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:87 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:95 - Cosmic-ray removed file written to disc at in ./output, filename crr_std_ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:156 - Removing cosmic rays from 2 science frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from ALDh120178.fits...
+PyLongslit - INFO - crremoval.py:85 - Cosmic rays removed on ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:87 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:95 - Cosmic-ray removed file written to disc at in ./output, filename crr_science_ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from ALDh120177.fits...
+PyLongslit - INFO - crremoval.py:85 - Cosmic rays removed on ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:87 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:95 - Cosmic-ray removed file written to disc at in ./output, filename crr_science_ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:165 - Removing cosmic rays from 2 arc frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from ALDh120176.fits...
+PyLongslit - INFO - crremoval.py:85 - Cosmic rays removed on ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:87 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:95 - Cosmic-ray removed file written to disc at in ./output, filename crr_arc_ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from ALDh120179.fits...
+PyLongslit - INFO - crremoval.py:85 - Cosmic rays removed on ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:87 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:95 - Cosmic-ray removed file written to disc at in ./output, filename crr_arc_ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:171 - Cosmic-ray removal procedure finished.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:86 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:97 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:99 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:110 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:112 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:49 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:50 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduceobs.py:119 - Reducing following standard star frames:
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11373.8759765625
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - reduceobs.py:64 - Subtracting the master bias frame...
+PyLongslit - INFO - reduceobs.py:68 - Dividing by the master flat frame...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:86 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:97 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:99 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:110 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:112 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:49 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:50 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduceobs.py:119 - Reducing following standard star frames:
+PyLongslit - INFO - reduceobs.py:139 - Reducing frame crr_std_ALDh120217.fits ...
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11373.8759765625
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - reduceobs.py:64 - Subtracting the master bias frame...
+PyLongslit - INFO - reduceobs.py:68 - Dividing by the master flat frame...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:321 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/flats was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/arcs was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:327 - Checking user-defined detector regions...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:321 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/flats was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/arcs was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:327 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:209 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:332 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:233 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - overscan.py:23 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:165 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:171 - File opened successfully.
+PyLongslit - INFO - check_config.py:245 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:165 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:171 - File opened successfully.
+PyLongslit - INFO - check_config.py:340 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:350 - Checking for negative physical parameters...
+PyLongslit - INFO - check_config.py:361 - NO ERRORS FOUND.
+PyLongslit - INFO - check_config.py:362 - CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:186 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:192 - File opened successfully.
+PyLongslit - INFO - utils.py:186 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:192 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:186 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:192 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:187 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:193 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:223 - Opening the first file in the science directory...
+PyLongslit - INFO - utils.py:229 - File opened successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:321 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/flats was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/arcs was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:327 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:209 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:332 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:233 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - overscan.py:23 - Showing the overscan region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:202 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:208 - File opened successfully.
+PyLongslit - INFO - check_config.py:245 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:202 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:208 - File opened successfully.
+PyLongslit - INFO - check_config.py:340 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:350 - Checking for negative physical parameters...
+PyLongslit - INFO - check_config.py:361 - NO ERRORS FOUND.
+PyLongslit - INFO - check_config.py:362 - CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:23 - Opening the first file in the science directory...
+PyLongslit - INFO - reduceobs.py:29 - File opened successfully.

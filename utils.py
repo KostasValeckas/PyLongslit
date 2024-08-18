@@ -8,9 +8,10 @@ from logger import logger
 import os
 from astropy.io import fits
 import numpy as np
-from parser import flat_params
+from parser import detector_params, flat_params, science_params 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from skimage import exposure
 
 
 class FileList:
@@ -153,6 +154,42 @@ def check_dimensions(FileList: FileList, x, y):
     logger.info("All files have the correct dimensions.")
     return None
 
+def hist_normalize(data, z_thresh=3):
+    """
+    Aggresive normalization of used for showing detail in raw frames.
+
+    First performs outlier rejection based on Z-scores and then
+    applies histogram equalization.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The data to normalize.
+
+    z_thresh : float
+        The Z-score threshold for outlier rejection.
+
+    Returns
+    -------
+    data_equalized : numpy.ndarray
+        The normalized data.
+    """
+
+
+    # Calculate the Z-scores
+    mean = np.mean(data)
+    std = np.std(data)
+    z_scores = (data - mean) / std
+
+    # Remove outliers by setting them to the mean or a capped value
+    data_no_outliers = np.where(np.abs(z_scores) > z_thresh, mean, data)
+
+
+    # Now apply histogram equalization
+    data_equalized = exposure.equalize_hist(data_no_outliers)
+
+    return data_equalized
+
 def show_flat():
     """
     Shows the first flat-frame in the user defined flat-directory.
@@ -172,7 +209,69 @@ def show_flat():
 
     data = np.array(raw_flat[1].data)
 
-    log_data = np.log10(data)
+    norm_data = hist_normalize(data)
 
     # show the overscan region overlayed on a raw flat frame
-    plt.imshow(log_data, cmap="gray")
+    plt.imshow(norm_data, cmap="gray")
+
+def show_objects():
+    """
+    Plot the user-defined object regions on a raw science and 
+    standard star frames together with user defined object centrums.
+    """
+
+    logger.info("Opening the first file in the science directory...")
+    # read the names of the flat files from the directory
+    file_list = FileList(science_params["science_dir"])
+
+    # open the first file in the directory
+    raw_science = open_fits(science_params["science_dir"], file_list.files[0])
+    logger.info("File opened successfully.")
+
+    data = np.array(raw_science[1].data)
+
+    data_equalized = hist_normalize(data)
+    
+    # show the overscan region overlayed on a raw flat frame
+    plt.imshow(data_equalized, cmap="gray")
+
+    plt.show()
+
+    """
+
+    # plot the object regions
+    for region in science_params["obj_regions"]:
+        x1, x2 = region["x1"], region["x2"]
+        y1, y2 = region["y1"], region["y2"]
+
+        rect = Rectangle((x1, y1), x2 - x1, y2 - y1, edgecolor="red", facecolor="none")
+
+        plt.gca().add_patch(rect)
+
+    # plot the object centrums
+    for center in science_params["obj_centers"]:
+        x, y = center["x"], center["y"]
+
+        plt.scatter(x, y, color="red")
+
+    """
+
+
+
+
+
+def list_files(file_list: FileList):
+    """
+    List all files in a FileList object.
+
+    Parameters
+    ----------
+    file_list : FileList
+        A FileList object containing filenames.
+    """
+
+    print("------------------------------------")
+    for file in file_list:
+        print(file)
+    print("------------------------------------")
+    return None
