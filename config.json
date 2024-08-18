@@ -11,12 +11,6 @@
             "overscan_x_end": 499,
             "overscan_y_start": 2066,
             "overscan_y_end": 2099
-        },
-        "object_region": {
-            "use_obj_region": true,
-            "object_spec_start": 50,
-            "object_spec_end": 1750,
-            "object_include_spat_region": 100
         }
     },
 
@@ -46,14 +40,12 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science",
-        "obj_centers": [249, 273]
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science"
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard",
-        "obj_centers": [245]
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard"
     },
 
     "arc" : {
