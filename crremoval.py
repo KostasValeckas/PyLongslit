@@ -3,7 +3,7 @@ from logger import logger
 from parser import detector_params, crr_params, skip_science_or_standard_bool
 from parser import output_dir
 from parser import science_params, standard_params, arc_params
-from utils import FileList, open_fits, write_to_fits
+from utils import FileList, open_fits, write_to_fits, check_dimensions
 
 
 import os as os
@@ -16,7 +16,7 @@ Module for removing cosmic rays from raw science and standard star frames.
 # TODO is there a sensful way to make QA plots for crremoval?
 
 
-def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter):
+def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
     """
     A wrapper for astroscrappy.detect_cosmics.
 
@@ -37,12 +37,32 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter):
     objlim : float
         Minimum contrast between Laplacian image and the fine structure image.
 
+    group : str
+        The group of files to remove cosmic rays from. Used for naming
+        the output files for easier sorting in next step.
+
+        Avaialble options: "science", "std", "arc"
+
     niter : int
         Number of iterations to perform.
     """
 
-    for file in file_list:
+    # check the group parameter:
+    if group not in ["science", "std", "arc"]:
+        logger.error(
+            "The group parameter must be one of the following: "
+            "'science', 'std', 'arc'."
+        )
+        exit()
 
+    # check dimensions - this is the last part where we need to do this,
+    # since this is the last step with raw data
+    logger.info("Checking detector dimensions of the files...")
+    check_dimensions(file_list, detector_params["xsize"], detector_params["ysize"])
+
+
+
+    for file in file_list:
         logger.info(f"Removing cosmic rays from {file}...")
 
         hdu = open_fits(file_list.path, file)
@@ -65,18 +85,21 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter):
 
         logger.info(f"Writing output to disc...")
 
-        write_to_fits(hdu[1].data, hdu[0].header, "crr_" + file, output_dir)
+        filename = "crr_" + group + "_" + file
+
+        write_to_fits(
+            hdu[1].data, hdu[0].header, filename, output_dir
+        )
 
         logger.info(
             f"Cosmic-ray removed file written to disc at in {output_dir}, "
-            f"filename crr_{file}."
+            f"filename {filename}."
         )
 
         hdu.close()
 
 
 def run_crremoval():
-
     # initiate user parameters
 
     # detecctor
@@ -115,8 +138,8 @@ def run_crremoval():
         star_file_list = FileList(standard_params["standard_dir"])
         science_file_list = FileList(science_params["science_dir"])
 
-    #TODO: check if it makes sense to crr arc frames
-    arc_file_list = FileList(arc_params["arc_dir"]) 
+    # TODO: check if it makes sense to crr arc frames
+    arc_file_list = FileList(arc_params["arc_dir"])
 
     if star_file_list is not None:
         logger.info(
@@ -129,7 +152,7 @@ def run_crremoval():
             print(file)
         print("------------------------------------")
 
-        remove_cosmics(star_file_list, sigclip, frac, objlim, niter)
+        remove_cosmics(star_file_list, sigclip, frac, objlim, niter, "std")
 
     if science_file_list is not None:
         logger.info(
@@ -142,20 +165,16 @@ def run_crremoval():
             print(file)
         print("------------------------------------")
 
-        remove_cosmics(science_file_list, sigclip, frac, objlim, niter)
+        remove_cosmics(science_file_list, sigclip, frac, objlim, niter, "science")
 
-    logger.info(
-        f"Removing cosmic rays from {arc_file_list.num_files} arc frames:"
-    )
+    logger.info(f"Removing cosmic rays from {arc_file_list.num_files} arc frames:")
 
     print("------------------------------------")
     for file in arc_file_list:
         print(file)
     print("------------------------------------")
 
-    remove_cosmics(arc_file_list, sigclip, frac, objlim, niter)
-
-
+    remove_cosmics(arc_file_list, sigclip, frac, objlim, niter, "arc")
 
     logger.info("Cosmic-ray removal procedure finished.")
 

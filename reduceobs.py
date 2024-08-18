@@ -1,87 +1,80 @@
 import numpy as np
 import glob as glob
 from astropy.io import fits
-from parser import detector_params, output_dir
+from parser import detector_params, output_dir, skip_science_or_standard_bool
+from parser import science_params, standard_params, arc_params
 from utils import FileList, open_fits, write_to_fits
 from logger import logger
 import matplotlib.pyplot as plt
+from overscan import subtract_overscan_from_frame
 import os
-from parser import obs_file_dict
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
 exposures (science, standard star and arc lamps).
 """
 
-def check_crr_files():
+
+def read_crr_files():
     """
-    Read the cosmic ray removed files.
+    Read the cosmic-ray removed files from the output directory and
+    perform some checks.
+
+    Returns
+    -------
+    science_files : list
+        A list of cosmic-ray removed science files.
+
+    standard_files : list
+        A list of cosmic-ray removed standard star files.
+
+    arc_files : list
+        A list of cosmic-ray removed arc files.
     """
 
-    logger.info("Check if all raw observations have gone through cosmic-ray removal...")
+    science_files = []
+    standard_files = []
+    arc_files = []
 
-    all_files_crr_done = True
-    
-    for group in obs_file_dict:
-        group_files = obs_file_dict[group]
-        found = False
-        num_files = 0
-        for file in group_files:
-            if glob.glob(output_dir + "/crr_" + file):
-                found = True
-                num_files += 1
-                
-        if not found:
-            logger.critical(
-                f"No {group} files have undergone cosmic-ray removal."
-            )
-            logger.critical("Execute cosmic ray removal before this procedure")
-            
-            
-            exit()
+    for file in os.listdir(output_dir):
+        if file.startswith("crr") or file.startswith("/crr"):
+            if "science" in file:
+                science_files.append(file)
+            elif "std" in file:
+                standard_files.append(file)
+            elif "arc" in file:
+                arc_files.append(file)
 
-        if num_files != len(group_files):
-            logger.warning(
-                f"Only {num_files} out of {len(group_files)} {group} "
-                "files have been through cosmic-ray removal."
-            )
+    logger.info(f"Found {len(science_files)} cosmic-ray removed science files.")
+    logger.info(f"Found {len(standard_files)} cosmic-ray removed standard star files.")
+    logger.info(f"Found {len(arc_files)} cosmic-ray removed arc files.")
 
-            all_files_crr_done = False
-            
-        else: logger.info(
-            f"All {group} files have undergone cosmic-ray removal."
-        )
-             
-        if all_files_crr_done:
-            logger.info(
-                "All raw observations have undergone crr_removal."
-            )
-            logger.info("Proceeding with bias subraction and flat fielding.")
-             
-        
-        
-    exit()
+    return science_files, standard_files, arc_files
 
-    
 
-def reduce_frame():
+def reduce_frame(frame, master_bias, master_flat, use_overscan):
     """
-    Performs overscan subtraction, bias subtraction 
+    Performs overscan subtraction, bias subtraction
     and flat fielding of a single frame.
     """
+
+    if use_overscan:
+        frame = subtract_overscan_from_frame(frame)
+
+    logger.info("Subtracting the master bias frame...")
+
+    frame = frame - master_bias
+
+    logger.info("Dividing by the master flat frame...")
+
+    frame = frame / master_flat
+
+
 
     pass
 
 
-def reduce_group(group):
-
-
-    if (group != 'science') and (group != 'standard') and (group != 'arc'):
-        logger.critical(
-            "Invalid group name. Use 'science', 'standard' or 'arc'. Exiting..."
-        )
-        os._exit(0)
-
+def reduce_all():
     # Extract the detector parameters
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
@@ -118,120 +111,145 @@ def reduce_group(group):
 
     logger.info(f"Fetching cosmic-ray removed files from {output_dir} ...")
 
-    check_crr_files()
+    science_files, standard_files, arc_files = read_crr_files()
 
-    exit()
-        
+    if skip_science_or_standard_bool == 1:
+        logger.warning("Skipping standard star reduction as requested...")
+    else:
+        logger.info("Reducing standard star frames...")
 
-    rawimages = sorted(glob.glob("crr*.fits"))
+        centers = standard_params["centers"]
 
-    n_rawimages = len(rawimages)
+        if len(centers) != len(standard_files):
+            logger.error(
+                "The number of object centers must be equal to "
+                "the number of standard star frames."
+            )
+            logger.error("Check the configuration file and try again.")
 
-    print('Number of raw images:', n_rawimages)
+            exit()
 
-    outnames = [f'sub{n}.fits' for n in range(1, n_rawimages+1)]
+        for file in standard_files:
+            hdu = open_fits(output_dir, file)
+
+            data = hdu[1].data
+
+            # Subtract the bias
+            data = data - BIAS
+
+            # Divide by the flat
+            data = data / FLAT
+
+            write_to_fits(data, hdu[0].header, file, output_dir)
+
+            logger.info(f"Reduced standard star frame {file}.")
+
+            hdu.close()
+
 
     if len(centers) != n_rawimages:
         raise ValueError(
-            'The number of centers must be equal to the number of raw images'
-            )
+            "The number of centers must be equal to the number of raw images"
+        )
 
-    #Read the raw file, subtract overscan, bias and divide by the flat
+    # Read the raw file, subtract overscan, bias and divide by the flat
     for n in range(0, n_rawimages):
         spec = fits.open(rawimages[n])
-        print('Info on file:')
+        print("Info on file:")
         print(spec.info())
         specdata = np.array(spec[1].data)
-        mean = np.mean(specdata[2067:ysize-5,10:xsize-1])
+        mean = np.mean(specdata[2067 : ysize - 5, 10 : xsize - 1])
         specdata = specdata - mean
-        print('Subtracted the median value of the overscan :',mean)
-        specdata = (specdata-BIAS)/FLAT
+        print("Subtracted the median value of the overscan :", mean)
+        specdata = (specdata - BIAS) / FLAT
         hdr = spec[0].header
-        specdata1 = specdata[50:1750,centers[n]-100:centers[n]+100] 
+        specdata1 = specdata[50:1750, centers[n] - 100 : centers[n] + 100]
         print(outnames[n])
-        fits.writeto(outnames[n],specdata1,hdr,overwrite=True)
+        fits.writeto(outnames[n], specdata1, hdr, overwrite=True)
 
-    #Add and rotate
+    # Add and rotate
 
     sum = np.zeros_like(fits.open(outnames[0])[0].data)
 
     for n in range(0, n_rawimages):
-            sub = fits.open(outnames[n])
-            sum = sub[0].data
-
+        sub = fits.open(outnames[n])
+        sum = sub[0].data
 
     rot = np.rot90(sum, k=3)
     hduout = fits.PrimaryHDU(rot)
-    hduout.header.extend(hdr, strip=True, update=True,
-            update_first=False, useblanks=True, bottom=False)
-    hduout.header['DISPAXIS'] = 1
-    hduout.header['NEXP'] = len(rawimages)
-    hduout.header['CRVAL1'] = 1
-    hduout.header['CRVAL2'] = 1
-    hduout.header['CRPIX1'] = 1
-    hduout.header['CRPIX2'] = 1
-    hduout.header['CRVAL1'] = 1
-    hduout.header['CRVAL1'] = 1
-    hduout.header['CDELT1'] = 1
-    hduout.header['CDELT2'] = 1
+    hduout.header.extend(
+        hdr, strip=True, update=True, update_first=False, useblanks=True, bottom=False
+    )
+    hduout.header["DISPAXIS"] = 1
+    hduout.header["NEXP"] = len(rawimages)
+    hduout.header["CRVAL1"] = 1
+    hduout.header["CRVAL2"] = 1
+    hduout.header["CRPIX1"] = 1
+    hduout.header["CRPIX2"] = 1
+    hduout.header["CRVAL1"] = 1
+    hduout.header["CRVAL1"] = 1
+    hduout.header["CDELT1"] = 1
+    hduout.header["CDELT2"] = 1
     hduout.writeto(
-        "../obj.fits" if not standard_star_reduction else "../std.fits",
-        overwrite=True
+        "../obj.fits" if not standard_star_reduction else "../std.fits", overwrite=True
     )
 
-
-    #Arcframe
-    arclist = open('raw_arcs.list')
+    # Arcframe
+    arclist = open("raw_arcs.list")
     nframes = len(arclist.readlines())
     arclist.seek(0)
 
-    specdata = np.zeros((ysize,xsize),float)
-    for i in range(0,nframes):
+    specdata = np.zeros((ysize, xsize), float)
+    for i in range(0, nframes):
         spec = fits.open(str.rstrip(arclist.readline()))
         data = spec[1].data
-        if ((len(data[0,:]) != xsize) or (len(data[:,0]) != ysize)): sys.exit(spec.name + ' has wrong image size')
+        if (len(data[0, :]) != xsize) or (len(data[:, 0]) != ysize):
+            sys.exit(spec.name + " has wrong image size")
         specdata += data
-    mean = np.mean(specdata[2067:ysize-5,10:xsize-1])
+    mean = np.mean(specdata[2067 : ysize - 5, 10 : xsize - 1])
     specdata = specdata - mean
-    print('Subtracted the median value of the overscan :',mean)
-    specdata = (specdata-BIAS)/FLAT
+    print("Subtracted the median value of the overscan :", mean)
+    specdata = (specdata - BIAS) / FLAT
     hdr = spec[0].header
-    center = int((centers[0])/1.)
-    specdata1 = specdata[50:1750,center-100:center+100]
+    center = int((centers[0]) / 1.0)
+    specdata1 = specdata[50:1750, center - 100 : center + 100]
     rot = np.rot90(specdata1, k=3)
     hduout = fits.PrimaryHDU(rot)
-    hduout.header.extend(hdr, strip=True, update=True,
-            update_first=False, useblanks=True, bottom=False)
-    hduout.header['DISPAXIS'] = 1
-    hduout.header['CRVAL1'] = 1
-    hduout.header['CRVAL2'] = 1
-    hduout.header['CRPIX1'] = 1
-    hduout.header['CRPIX2'] = 1
-    hduout.header['CRVAL1'] = 1
-    hduout.header['CRVAL1'] = 1
-    hduout.header['CDELT1'] = 1
-    hduout.header['CDELT2'] = 1
+    hduout.header.extend(
+        hdr, strip=True, update=True, update_first=False, useblanks=True, bottom=False
+    )
+    hduout.header["DISPAXIS"] = 1
+    hduout.header["CRVAL1"] = 1
+    hduout.header["CRVAL2"] = 1
+    hduout.header["CRPIX1"] = 1
+    hduout.header["CRPIX2"] = 1
+    hduout.header["CRVAL1"] = 1
+    hduout.header["CRVAL1"] = 1
+    hduout.header["CDELT1"] = 1
+    hduout.header["CDELT2"] = 1
     hduout.writeto(
         "../arcsub.fits" if not standard_star_reduction else "../arcsub_std.fits",
-        overwrite=True
+        overwrite=True,
     )
 
     if standard_star_reduction:
-            print("\n\n\033[91m\n\nATTENTION:\033[0m THIS REDUCTION HAS BEEN RUN AS A STANDARD STAR REDUCTION")
-            print("If this is an object reduction, please use \"reducescience.py\" script, "  +
-            "and re-run both the standard star and science object reductions. \n\n")
+        print(
+            "\n\n\033[91m\n\nATTENTION:\033[0m THIS REDUCTION HAS BEEN RUN AS A STANDARD STAR REDUCTION"
+        )
+        print(
+            'If this is an object reduction, please use "reducescience.py" script, '
+            + "and re-run both the standard star and science object reductions. \n\n"
+        )
 
     else:
-            print("\n\n\033[91m\n\nATTENTION:\033[0m THIS REDUCTION HAS BEEN RUN AS A SCIENCE OBJECT REDUCTION")
-            print("If this is a standard star reduction, please use \"reducestd.py\" script," +
-            "and re-run both the standard star and science object reductions. \n\n")
+        print(
+            "\n\n\033[91m\n\nATTENTION:\033[0m THIS REDUCTION HAS BEEN RUN AS A SCIENCE OBJECT REDUCTION"
+        )
+        print(
+            'If this is a standard star reduction, please use "reducestd.py" script,'
+            + "and re-run both the standard star and science object reductions. \n\n"
+        )
 
-def reduce_all():
-    """
-    Reduce all the science frames in the directory.
-    """
-
-    reduce_group("science")
 
 if __name__ == "__main__":
     reduce_all()

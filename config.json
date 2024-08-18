@@ -40,12 +40,14 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science"
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/science",
+        "obj_centers": [250, 273]
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard"
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw/standard",
+        "obj_centers": [251]
     },
 
     "arc" : {

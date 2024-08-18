@@ -751,3 +751,382 @@ PyLongslit - INFO - reduceobs.py:21 - Check if all raw observations have gone th
 PyLongslit - INFO - reduceobs.py:47 - All science files have undergone cosmic-ray removal.
 PyLongslit - INFO - reduceobs.py:47 - All standard_star files have undergone cosmic-ray removal.
 PyLongslit - INFO - reduceobs.py:47 - All arc_lamp files have undergone cosmic-ray removal.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:106 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:107 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:108 - gain = 0.16
+PyLongslit - INFO - crremoval.py:109 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:136 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:106 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:107 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:108 - gain = 0.16
+PyLongslit - INFO - crremoval.py:109 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:136 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:59 - Removing cosmic rays from ALDh120217.fits...
+PyLongslit - INFO - crremoval.py:77 - Cosmic rays removed on ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:79 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:85 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:149 - Removing cosmic rays from 2 science frames:
+PyLongslit - INFO - crremoval.py:59 - Removing cosmic rays from ALDh120178.fits...
+PyLongslit - INFO - crremoval.py:77 - Cosmic rays removed on ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:79 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:85 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:59 - Removing cosmic rays from ALDh120177.fits...
+PyLongslit - INFO - crremoval.py:77 - Cosmic rays removed on ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:79 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:85 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:161 - Removing cosmic rays from 2 arc frames:
+PyLongslit - INFO - crremoval.py:59 - Removing cosmic rays from ALDh120176.fits...
+PyLongslit - INFO - crremoval.py:77 - Cosmic rays removed on ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:79 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:85 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:59 - Removing cosmic rays from ALDh120179.fits...
+PyLongslit - INFO - crremoval.py:77 - Cosmic rays removed on ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:79 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:85 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:170 - Cosmic-ray removal procedure finished.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:113 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:114 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:115 - gain = 0.16
+PyLongslit - INFO - crremoval.py:116 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:143 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120217.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:156 - Removing cosmic rays from 2 science frames:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120178.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120177.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:168 - Removing cosmic rays from 2 arc frames:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120176.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120179.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:177 - Cosmic-ray removal procedure finished.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:113 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:114 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:115 - gain = 0.16
+PyLongslit - INFO - crremoval.py:116 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:143 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:60 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120217.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:156 - Removing cosmic rays from 2 science frames:
+PyLongslit - INFO - crremoval.py:60 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120178.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120177.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:168 - Removing cosmic rays from 2 arc frames:
+PyLongslit - INFO - crremoval.py:60 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120176.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120179.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:92 - Cosmic-ray removed file written to disc at in ./output, filename crr_ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:177 - Cosmic-ray removal procedure finished.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:115 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:116 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:117 - gain = 0.16
+PyLongslit - INFO - crremoval.py:118 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:145 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:60 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120217.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:94 - Cosmic-ray removed file written to disc at in ./output, filename crr_std_ALDh120217.fits.
+PyLongslit - INFO - crremoval.py:158 - Removing cosmic rays from 2 science frames:
+PyLongslit - INFO - crremoval.py:60 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120178.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:94 - Cosmic-ray removed file written to disc at in ./output, filename crr_science_ALDh120178.fits.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120177.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:94 - Cosmic-ray removed file written to disc at in ./output, filename crr_science_ALDh120177.fits.
+PyLongslit - INFO - crremoval.py:170 - Removing cosmic rays from 2 arc frames:
+PyLongslit - INFO - crremoval.py:60 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120176.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:94 - Cosmic-ray removed file written to disc at in ./output, filename crr_arc_ALDh120176.fits.
+PyLongslit - INFO - crremoval.py:66 - Removing cosmic rays from ALDh120179.fits...
+PyLongslit - INFO - crremoval.py:84 - Cosmic rays removed on ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:86 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:94 - Cosmic-ray removed file written to disc at in ./output, filename crr_arc_ALDh120179.fits.
+PyLongslit - INFO - crremoval.py:179 - Cosmic-ray removal procedure finished.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:68 - Fetching the master bias frame...
+PyLongslit - CRITICAL - reduceobs.py:73 - Master bias frame not found in ./output.
+PyLongslit - ERROR - reduceobs.py:74 - Make sure you have excecuted the bias procdure first.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:29 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:30 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:31 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:32 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:37 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:38 - Files used for bias processing:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140351.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11312.520981356653
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140351.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140360.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11299.584927430618
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140360.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140353.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11305.499787453695
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140353.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140354.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11305.5673771786
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140354.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140357.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11304.051011113135
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140357.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140356.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11300.778891115564
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140356.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140361.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11300.49790490071
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140361.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140355.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11301.945102325864
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140355.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140358.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11305.309042327079
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140358.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140352.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11310.450962531122
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140352.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:58 - Processing file: ALDh140359.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11299.004918928767
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecbias.py:70 - File ALDh140359.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:75 - Bias frames processed.
+PyLongslit - INFO - mkspecbias.py:76 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecbias.py:83 - Master bias frame written to disc at in ./output, filename master_bias.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:92 - Found 9 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:153 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:106 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:125 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh140230.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11286.232282747313
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :100964.07675957977
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh140230.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh130384.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11366.999392724843
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :105239.51099168032
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh130384.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh140219.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11293.106273152365
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :100827.36910184004
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh140219.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh130388.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11353.269387259366
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :107277.78162385376
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh130388.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh140238.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11304.988522499545
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :100686.7764923787
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh140238.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh140211.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11296.611040262344
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :100930.17495597254
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh140211.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh130386.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11357.92985971944
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :106088.47455517095
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh130386.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh130385.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11359.36873747495
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :106064.31317179813
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh130385.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:133 - Processing file: ALDh130387.fits
+PyLongslit - INFO - overscan.py:83 - Subtracting overscan...
+PyLongslit - INFO - overscan.py:95 - Mean overscan value: 11354.932106637518
+PyLongslit - INFO - overscan.py:100 - Overscan subtracted successfully.
+PyLongslit - INFO - mkspecflat.py:143 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:158 - Normalising frame with the median of the frame :106630.83290824073
+
+PyLongslit - INFO - mkspecflat.py:164 - File ALDh130387.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:166 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:177 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:180 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:192 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:199 - Master flat frame written to disc in ./output, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:68 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:79 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:81 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:92 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:94 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:68 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:79 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:81 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:92 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:94 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:68 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:79 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:81 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:92 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:94 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:68 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:79 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:81 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:92 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:94 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:33 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:34 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:35 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - reduceobs.py:71 - Fetching the master bias frame...
+PyLongslit - INFO - reduceobs.py:82 - Master bias frame found and loaded.
+PyLongslit - INFO - reduceobs.py:84 - Fetching the master flat frame...
+PyLongslit - INFO - reduceobs.py:95 - Master flat frame found and loaded.
+PyLongslit - INFO - reduceobs.py:97 - Fetching cosmic-ray removed files from ./output ...
+PyLongslit - INFO - reduceobs.py:46 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduceobs.py:47 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduceobs.py:48 - Found 2 cosmic-ray removed arc files.
