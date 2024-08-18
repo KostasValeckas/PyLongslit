@@ -8,6 +8,7 @@ from logger import logger
 import matplotlib.pyplot as plt
 from overscan import subtract_overscan_from_frame
 import os
+from matplotlib.patches import Rectangle
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
@@ -25,36 +26,49 @@ def show_objects():
     file_list = FileList(science_params["science_dir"])
 
     # open the first file in the directory
-    raw_science = open_fits(science_params["science_dir"], file_list.files[0])
+    raw_science = open_fits(science_params["science_dir"], file_list.files[1])
     logger.info("File opened successfully.")
 
     data = np.array(raw_science[1].data)
 
     data_equalized = hist_normalize(data)
     
+
+
+    # get the object regions and centrums
+
+    object_regions = detector_params["object_region"]
+
+    spec_start = object_regions["object_spec_start"]
+    spec_end = object_regions["object_spec_end"]
+    spat_offset = object_regions["object_include_spat_region"]
+
+    center = science_params["obj_centers"][0]
+
+    # construct the rectangle for the object region
+
+    x_start = center - spat_offset
+    y_start = spec_start
+
+    width = 2 * spat_offset
+
+    height = spec_end - spec_start
+
+
+    rect = Rectangle((x_start, y_start), width, height, edgecolor="red", facecolor="none", alpha=1.0, linewidth=0.5)
+
+    plt.gca().add_patch(rect)
+
+    # plot estimated object center
+
+    plt.axvline(x=center, color="red", linestyle="--", alpha=1.0, linewidth=0.5)
+
     # show the overscan region overlayed on a raw flat frame
     plt.imshow(data_equalized, cmap="gray")
 
+
     plt.show()
 
-    """
-
-    # plot the object regions
-    for region in science_params["obj_regions"]:
-        x1, x2 = region["x1"], region["x2"]
-        y1, y2 = region["y1"], region["y2"]
-
-        rect = Rectangle((x1, y1), x2 - x1, y2 - y1, edgecolor="red", facecolor="none")
-
-        plt.gca().add_patch(rect)
-
-    # plot the object centrums
-    for center in science_params["obj_centers"]:
-        x, y = center["x"], center["y"]
-
-        plt.scatter(x, y, color="red")
-
-    """
 
 
 
