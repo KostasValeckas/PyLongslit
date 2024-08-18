@@ -60,7 +60,7 @@ def reduce_obs(ysize, xsize, centers, standard_star_reduction = False):
 
     for n in range(0, n_rawimages):
             sub = fits.open(outnames[n])
-            sum = sub[0].data
+            sum += sub[0].data
 
 
     rot = np.rot90(sum, k=3)
