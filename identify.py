@@ -24,8 +24,12 @@ from scipy.optimize import curve_fit
 from numpy.polynomial import Chebyshev
 from astropy.io import fits
 
+from logger import logger
+from parser import output_dir
+
 __version__ = 'standalone'
 
+#TODO this is not how we want the paths to be defined
 code_dir = os.path.dirname(os.path.abspath(__file__))
 calib_dir = os.path.join(code_dir, 'database/')
 
@@ -963,7 +967,7 @@ if __name__ == '__main__':
     linelist_fname = args.lines
     dispaxis = args.axis
 
-    #TODO: this has to go away also
+    #TODO: this has to go away also 
     #If the pixel file exist then read it.
     if os.path.exists('database/idarc.dat'): 
        print('Found a preexisting pixel table.')

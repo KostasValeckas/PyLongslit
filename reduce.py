@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from overscan import subtract_overscan_from_frame
 import os
 from matplotlib.patches import Rectangle
+from utils import check_rotation, flip_and_rotate
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
@@ -77,6 +78,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan):
 
     return frame
 
+
 def reduce_group(file_list, BIAS, FLAT, use_overscan):
 
     """
@@ -96,26 +98,34 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan):
     use_overscan : bool
         Whether to use the overscan subtraction or not.
     """
-    
+
     for file in file_list:
-        
+
         logger.info(f"Reducing frame {file} ...")
-        
+
         hdu = open_fits(output_dir, file)
-        
+
         data = hdu[0].data
-        
+
         data = reduce_frame(data, BIAS, FLAT, use_overscan)
-        
+
+        # check if the frame needs to be rotated or flipped -
+        # later steps rely on x being the dispersion axis
+        # with wavelength increasing with pixel number
+
+        transpose, flip = check_rotation()
+
+        # transpose and/or flip the frame if needed
+        if transpose or flip:
+            data = flip_and_rotate(data, transpose, flip)
+
         logger.info("Frame reduced, writing to disc...")
-        
+
         write_name = file.replace("crr_", "reduced_")
-        
+
         write_to_fits(data, hdu[0].header, write_name, output_dir)
-        
-        logger.info(
-            f"Frame written to directory {output_dir}, filename {write_name}"
-        )
+
+        logger.info(f"Frame written to directory {output_dir}, filename {write_name}")
 
 
 def reduce_all():

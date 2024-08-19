@@ -1,8 +1,11 @@
 {
     "detector": {
         "xsize": 500,
-        "ysize": 2102, 
-        "spectral_dir": "y",
+        "ysize": 2102,
+        "dispersion": { 
+            "spectral_dir": "y",
+            "wavelength_grows_with_pixel": true
+        },
         "gain": 0.16,
         "read_out_noise": 4.3,
         "overscan" : {

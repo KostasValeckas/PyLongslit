@@ -234,3 +234,85 @@ def list_files(file_list: FileList):
         print(file)
     print("------------------------------------")
     return None
+
+def check_rotation():
+    """
+    Check if the raw frames need to be rotated.
+
+    Returns
+    -------
+    transpose : bool
+        If True, the raw frames need to be transposed.
+
+    flip : bool
+        If True, the raw frames need to be flipped.
+    """
+
+    disp_ax = detector_params["dispersion"]["spectral_dir"]
+    disp_dir = detector_params["dispersion"]["wavelength_grows_with_pixel"]
+
+    if disp_ax == "x":
+        pass
+
+    elif disp_ax == "y":
+        transpose = True
+
+    else:
+        logger.error(
+            'The "dispersion" key in the "detector" section of the '
+            'config.json file must be either "x" or "y".'
+        )
+        exit()
+
+    if disp_dir == True:
+        flip = False
+
+    elif disp_dir == False:
+        flip = True
+
+    else:
+        logger.error(
+            'The "wavelength_grows_with_pixel" key in the "dispersion" '
+            'section of the config.json file must be either "true" or "false".'
+        )
+        exit()
+
+    return transpose, flip
+
+    
+
+
+def flip_and_rotate(frame_data, transpose, flip):
+    """
+    The PyLongslit default orientation is dispersion in the x-direction,
+    with wavelength increasing from left to right.
+
+    If the raw frames are not oriented this way, this function will
+    flip and rotate the frames so they are.
+
+    Parameters
+    ----------
+    frame_data : numpy.ndarray
+        The data to flip and rotate.
+
+    transpose : bool
+        If True, transpose the data.
+
+    flip : bool
+        If True, flip the data.
+
+    Returns
+    -------
+    frame_data : numpy.ndarray
+        The flipped and rotated data.
+    """
+
+    if transpose:
+        logger.info("Rotating image to make x the spectral direction...")
+        frame_data = np.rot90(frame_data)
+
+    if flip:
+        logger.info("Flipping the image to make wavelengths increase with x-pixels...")
+        frame_data = np.flip(frame_data, axis=1)
+
+    return frame_data
