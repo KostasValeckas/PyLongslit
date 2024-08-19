@@ -35,6 +35,7 @@ def NN_mod_gaussian(x, bg, mu, sigma, logamp):
     amp = 10**logamp
     return bg + amp * np.exp(-0.5*(x-mu)**4/sigma**2)
 
+#TODO this is not how we want the array to be defined
 def create_pixel_array(hdr, dispaxis):
     """Load reference array from header using CRVAL, CDELT, CRPIX along dispersion axis"""
     if dispaxis not in [1, 2]:
@@ -53,7 +54,7 @@ def create_pixel_array(hdr, dispaxis):
     pix_array = p + s*(np.arange(N) - (r/binning - 1))
     return pix_array
 
-
+#TODO we do not use PyNOT - this might just be deleted?
 # -- Function to call from PyNOT.main
 def create_pixtable(arc_image, grism_name, pixtable_name, linelist_fname, order_wl=4, app=None):
     """
@@ -172,7 +173,7 @@ class GraphicInterface(QMainWindow):
     def __init__(self, arc_fname='', grism_name='', pixtable='', linelist_fname='', output='',
                  dispaxis=2, order_wl=3, parent=None, locked=False):
         QMainWindow.__init__(self, parent)
-        self.setWindowTitle('PyNOT: Identify Arc Lines')
+        self.setWindowTitle('PyNOT: Identify Arc Lines') #TODO - this is not PyNOT
         self._main = QWidget()
         self.setCentralWidget(self._main)
         self.pix = np.array([])
@@ -294,7 +295,7 @@ class GraphicInterface(QMainWindow):
         edit_menu.addAction(clear_fit_action)
         edit_menu.addAction(save_fit_action)
         if locked:
-            update_cache_action = QAction("Update PyNOT cache", self)
+            update_cache_action = QAction("Update PyNOT cache", self) #TODO we are not using PyNOT
             update_cache_action.triggered.connect(self.update_cache)
             edit_menu.addSeparator()
             edit_menu.addAction(update_cache_action)
@@ -401,7 +402,7 @@ class GraphicInterface(QMainWindow):
 
         self.ax2 = self.fig.add_axes([0.15, 0.10, 0.82, 0.25])
         self.ax2.plot([], [], 'k+')
-        self.ax2.set_xlim(0, 2048)
+        self.ax2.set_xlim(0, 2048) #TODO this should be set to the actual limits of the data
         self.ax2.set_ylim(0, 1)
         self.ax2.set_xlabel("Pixel Coordinate")
         self.ax2.set_ylabel("Ref. Wavelength")
@@ -424,8 +425,8 @@ class GraphicInterface(QMainWindow):
             linelist_fname = QFileDialog.getOpenFileName(self, 'Open Linelist', current_dir, filters)
             linelist_fname = str(linelist_fname[0])
             if self.first_time_open:
-                print(" [INFO] - Don't worry about the warning above. It's an OS warning that can not be suppressed.")
-                print("          Everything works as it should")
+                print(" [INFO] - Don't worry about the warning above. It's an OS warning that can not be suppressed.") #TODO: these prints we want to change
+                print("          Everything works as it should") #TODO: actually all prints should be changed to logger
                 self.first_time_open = False
 
         if linelist_fname:
@@ -457,7 +458,7 @@ class GraphicInterface(QMainWindow):
             arc_fname = str(arc_fname[0])
             if self.first_time_open:
                 print(" [INFO] - Don't worry about the warning above. It's an OS warning that can not be suppressed.")
-                print("          Everything works as it should")
+                print("          Everything works as it should") #TODO fix these prints
                 self.first_time_open = False
 
         if arc_fname:
@@ -469,7 +470,7 @@ class GraphicInterface(QMainWindow):
                     imghdr = hdu[1].header
                     primhdr.update(imghdr)
             if 'DISPAXIS' in primhdr.keys():
-                self.dispaxis = primhdr['DISPAXIS']
+                self.dispaxis = primhdr['DISPAXIS'] #TODO this is not how we want to set the dispaxis - this is header dependent
             elif 'TELESCOP' in primhdr:
                 if primhdr['TELESCOP'] == 'NOT':
                     if 'Vert' in primhdr['ALAPRTNM']:
@@ -482,7 +483,7 @@ class GraphicInterface(QMainWindow):
                         QMessageBox.critical(None, 'Invalid Aperture', error_msg)
                         return
 
-            if primhdr['CLAMP2'] == 1 or primhdr['CLAMP1'] == 1:
+            if primhdr['CLAMP2'] == 1 or primhdr['CLAMP1'] == 1: #TODO definetly don't want this - too hardcoded
                 # Load HeNe linelist
                 linelist_fname = os.path.join(calib_dir, 'mylines_vac.dat')
                 self.load_linelist_fname(linelist_fname)
@@ -511,7 +512,7 @@ class GraphicInterface(QMainWindow):
             filters = "All files (*)"
             filename = QFileDialog.getOpenFileName(self, 'Open Pixeltable', current_dir, filters)
             filename = str(filename[0])
-            if self.first_time_open:
+            if self.first_time_open: #TODO fix these prints
                 print(" [INFO] - Don't worry about the warning above. It's an OS warning that can not be suppressed.")
                 print("          Everything works as it should")
                 self.first_time_open = False
@@ -553,7 +554,7 @@ class GraphicInterface(QMainWindow):
                     QMessageBox.critical(None, 'Not enough lines identified', 'You need to identify at least 3 lines')
                     return False
                 else:
-                    order = int(self.poly_order.text())
+                    order = int(self.poly_order.text()) #TODO: this has to go away
                     tab_file.write("# Pixel Table for ALFOSC grism: %s\n" % self.grism_name)
                     tab_file.write("# order = %i\n#\n" % order)
                     tab_file.write("# Pixel    Wavelength [Å]\n")
@@ -563,7 +564,7 @@ class GraphicInterface(QMainWindow):
         else:
             return False
 
-    def update_cache(self):
+    def update_cache(self): #TODO this cache stuff I don't think we want
         if self.grism_name == '':
             QMessageBox.critical(None, "No grism name defined", "The grism name has not been defined.")
         msg = "Are you sure you want to update the PyNOT pixel table for %s" % self.grism_name
@@ -585,7 +586,7 @@ class GraphicInterface(QMainWindow):
         poly_fit = self.cheb_fit.convert(kind=np.polynomial.Polynomial)
         if fname:
             with open(fname, 'w') as output:
-                output.write("# PyNOT wavelength solution for grism: %s\n" % self.grism_name)
+                output.write("# PyNOT wavelength solution for grism: %s\n" % self.grism_name) #TODO: fix these prints
                 output.write("# Raw arc-frame filename: %s\n" % self.arc_fname)
                 output.write("# Wavelength residual = %.2f Å\n" % self._scatter)
                 output.write("# Polynomial coefficients:  C_0 + C_1*x + C_2*x^2 ... \n")
@@ -863,7 +864,7 @@ class GraphicInterface(QMainWindow):
             self.set_dataview()
             self._fit_view = 'data'
         else:
-            print(" [ERROR] - Unknown value of _fit_view: %r" % self._fit_view)
+            print(" [ERROR] - Unknown value of _fit_view: %r" % self._fit_view) #TODO: definetly take a look at this?
             print("  How did that happen??!!")
             self.set_dataview()
             self._fit_view = 'data'
@@ -878,7 +879,7 @@ class GraphicInterface(QMainWindow):
         pixvals, wavelengths = self.get_table_values()
         mask = ~np.isnan(wavelengths)
         order = int(self.poly_order.text())
-        if np.sum(~np.isnan(wavelengths)) < order:
+        if np.sum(~np.isnan(wavelengths)) < order: #TODO: take a look at this
             msg = "Not enough data points to perform fit!\n"
             msg += "Choose a lower polynomial order or identify more lines."
             QMessageBox.critical(None, 'Not enough data to fit', msg)
@@ -944,19 +945,25 @@ class GraphicInterface(QMainWindow):
 
 if __name__ == '__main__':
     from argparse import ArgumentParser
+    
     parser = ArgumentParser(description='Spectral Line Identification')
+    
     parser.add_argument("filename", type=str, nargs='?', default='',
                         help="Raw arc-line spectrum")
+    
     parser.add_argument("--lines", type=str, default='',
                         help="Linelist filename containing reference wavelengths")
+    
     parser.add_argument("--axis", type=int, default=2,
                         help="Dispersion axis 1: horizontal, 2: vertical  [default=2]")
+    
     args = parser.parse_args()
 
     arc_fname = args.filename
     linelist_fname = args.lines
     dispaxis = args.axis
 
+    #TODO: this has to go away also
     #If the pixel file exist then read it.
     if os.path.exists('database/idarc.dat'): 
        print('Found a preexisting pixel table.')
