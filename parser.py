@@ -32,6 +32,7 @@ if not os.path.exists(output_dir):
 
 logger.info("User parameters loaded successfully.") 
 
+instrument_params = data["instrument"]
 crr_params = data["crr_removal"]
 science_params = data["science"]
 standard_params = data["standard"]

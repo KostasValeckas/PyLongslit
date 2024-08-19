@@ -1,10 +1,15 @@
 {
+    "instrument": {
+        "name": "ALFOSC",
+        "disperser": "Grating #4"
+    },
+
     "detector": {
         "xsize": 500,
         "ysize": 2102,
         "dispersion": { 
             "spectral_dir": "y",
-            "wavelength_grows_with_pixel": true
+            "wavelength_grows_with_pixel": false
         },
         "gain": 0.16,
         "read_out_noise": 4.3,
