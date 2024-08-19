@@ -494,7 +494,8 @@ class GraphicInterface(QMainWindow):
                 else:
                     order = int(self.poly_order.text())
                     tab_file.write(
-                        f"# Pixel Table for instrument {instrument_params['name']}, disperser: {instrument_params['disperser']}\n"
+                        f"# Pixel Table for instrument {instrument_params['name']}, "
+                        f"disperser: {instrument_params['disperser']}\n"
                     )
                     tab_file.write("# order = %i\n#\n" % order)
                     tab_file.write("# Pixel    Wavelength [Å]\n")
@@ -521,8 +522,9 @@ class GraphicInterface(QMainWindow):
         if fname:
             with open(fname, "w") as output:
                 output.write(
-                    "# PyNOT wavelength solution for grism: %s\n" % self.grism_name
-                )  # TODO: fix these prints
+                    "#Wavelength solution for instrument %s, disperser: %s\n"
+                    % (instrument_params["name"], instrument_params["disperser"])
+                ) 
                 output.write("# Raw arc-frame filename: %s\n" % self.arc_fname)
                 output.write("# Wavelength residual = %.2f Å\n" % self._scatter)
                 output.write("# Polynomial coefficients:  C_0 + C_1*x + C_2*x^2 ... \n")
@@ -802,10 +804,6 @@ class GraphicInterface(QMainWindow):
             self.set_dataview()
             self._fit_view = "data"
         else:
-            print(
-                " [ERROR] - Unknown value of _fit_view: %r" % self._fit_view
-            )  # TODO: definetly take a look at this?
-            print("  How did that happen??!!")
             self.set_dataview()
             self._fit_view = "data"
 
@@ -819,7 +817,7 @@ class GraphicInterface(QMainWindow):
         pixvals, wavelengths = self.get_table_values()
         mask = ~np.isnan(wavelengths)
         order = int(self.poly_order.text())
-        if np.sum(~np.isnan(wavelengths)) < order:  # TODO: take a look at this
+        if np.sum(~np.isnan(wavelengths)) < order: 
             msg = "Not enough data points to perform fit!\n"
             msg += "Choose a lower polynomial order or identify more lines."
             QMessageBox.critical(None, "Not enough data to fit", msg)
