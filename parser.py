@@ -9,12 +9,14 @@ try:
 except FileNotFoundError:
 
     logger.error("Config file not found.")
-    logger.error("Make sure a \"config.json\" file exists. \n"
-                "See the docs at:\n"
-                "https://kostasvaleckas.github.io/PyLongslit/")
-    
+    logger.error(
+        'Make sure a "config.json" file exists. \n'
+        "See the docs at:\n"
+        "https://kostasvaleckas.github.io/PyLongslit/"
+    )
+
     exit()
-    
+
 logger.info("Config file found. Loading user parameters...")
 
 data = json.load(file)
@@ -30,19 +32,25 @@ if not os.path.exists(output_dir):
     logger.info(f"Output directory {output_dir} not found. Creating...")
     os.makedirs(output_dir)
 
-logger.info("User parameters loaded successfully.") 
+logger.info("User parameters loaded successfully.")
 
 instrument_params = data["instrument"]
 crr_params = data["crr_removal"]
 science_params = data["science"]
 standard_params = data["standard"]
 arc_params = data["arc"]
+wavecalib_params = data["wavecalib"]
 
+wavecalib_params["N_REID"] = (
+    detector_params["xsize"] // wavecalib_params["STEP_REID"]
+    if detector_params["dispersion"]["spectral_dir"] == "y"
+    else detector_params["ysize"] // wavecalib_params["STEP_REID"]
+)
 
 
 def check_science_and_standard():
     """
-    Sanity checks for whether the user wants to use science frames, 
+    Sanity checks for whether the user wants to use science frames,
     standard star frames, or both for the given run.
 
     Warns the user if one or the other is missing.
@@ -52,14 +60,14 @@ def check_science_and_standard():
     Returns
     -------
     A return code : int
-        0 - skip standard star and science reductions 
+        0 - skip standard star and science reductions
         (only bias and flats are possible).
 
         1 - skip standard star reduction.
 
         2 - skip science reduction.
 
-        3 - skip none.    
+        3 - skip none.
     """
 
     skip_science = science_params["skip_science"]
@@ -69,7 +77,7 @@ def check_science_and_standard():
 
     if skip_science and skip_standard:
         logger.warning(
-            "Both skip_science and skip_standard are set to \"true\" "
+            'Both skip_science and skip_standard are set to "true" '
             "in the config file. Only bias and flat operations can be performed"
         )
         logger.warning("Pipeline will crash if you proceed beyond flats.")
@@ -80,11 +88,10 @@ def check_science_and_standard():
             "Standard star reduction is set to be skipped in the config file. "
             "This is okay if this is your intention - only the science frames "
             "will be reduced."
-
         )
 
         return 1
-    
+
     if skip_science:
         logger.warning(
             "Science reduction is set to be skipped in the config file. "
@@ -93,12 +100,10 @@ def check_science_and_standard():
         )
 
         return 2
-    
+
     else:
 
         return 3
-    
 
 
 skip_science_or_standard_bool = check_science_and_standard()
-
