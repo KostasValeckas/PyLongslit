@@ -133,7 +133,7 @@ class GraphicInterface(QMainWindow):
     def __init__(
         self,
         arc_fname="master_arc.fits",
-        output="",
+        output=output_dir + "/idarc.dat",
         order_wl=3,
         parent=None,
         locked=False,
@@ -462,11 +462,11 @@ class GraphicInterface(QMainWindow):
     def done(self):
         msg = "Save the line identifications and continue?"
         messageBox = QMessageBox()
-        messageBox.setText(msg)
+        messageBox.setText(msg) 
         messageBox.setStandardButtons(QMessageBox.Cancel | QMessageBox.Save)
         retval = messageBox.exec_()
         if retval == QMessageBox.Save:
-            success = self.save_pixtable(self.output_fname)
+            success = self.save_pixtable()
             if success:
                 self.message = "ok"
                 self.close()
@@ -481,6 +481,7 @@ class GraphicInterface(QMainWindow):
             fname = str(path[0])
 
         if fname:
+            
             with open(fname, "w") as tab_file:
                 pixvals, wavelengths = self.get_table_values()
                 mask = ~np.isnan(wavelengths)
@@ -504,6 +505,7 @@ class GraphicInterface(QMainWindow):
                         np.column_stack([pixvals, wavelengths]),
                         fmt=" %8.2f   %8.2f",
                     )
+                    logger.info(f"Pixel table saved to {fname}")
             return True
         else:
             return False
@@ -892,5 +894,10 @@ if __name__ == "__main__":
     # Launch App:
     qapp = QApplication(sys.argv)
     app = GraphicInterface()
+    logger.info(
+        "See the docs at "
+        "https://kostasvaleckas.github.io/PyLongslit/identify.html. "
+        "on how to manually identify the lines."
+    )
     app.show()
     qapp.exec_()

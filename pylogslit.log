@@ -3785,3 +3785,59 @@ PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
 PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
 PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
 PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:902 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:900 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:901 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - CRITICAL - identify.py:476 - HERE
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:902 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - CRITICAL - identify.py:476 - HERE
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:900 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:901 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:897 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:18 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:33 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:897 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - identify.py:508 - Pixel table saved to /home/kostasvaleckas/Documents/DAWN/PyLongslit/output/idarc.dat
