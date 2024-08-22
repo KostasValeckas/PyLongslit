@@ -11,6 +11,8 @@ from astropy.table import Table, Column
 from utils import open_fits
 import matplotlib.pyplot as plt
 from astropy.stats import gaussian_fwhm_to_sigma
+from astropy.modeling.models import Gaussian1D, Chebyshev2D, Const1D
+from astropy.modeling.fitting import LevMarLSQFitter
 
 
 def read_pixtable():
@@ -123,14 +125,40 @@ def reidentify(pixnumber, wavelength, master_arc):
             # dummy x_array around cropped line for later fitting
             x_cropped = np.arange(len(cropped_spec)) + search_min
 
-            # set up some initial guesses for the Gaussian fit
-            
-            # amplitude:
-            A_init = np.max(cropped_spec)
-            # mean (line centrum - initial gues is same as the hand-identified line):
-            mean_init = peak_pix_init
-            # sigma (width of the line) - convert from user defined FWHM:
-            stddev_init = FWHM * gaussian_fwhm_to_sigma
+            # remove any nans and infs from the cropped spectrum
+            nan_inf_mask = np.isnan(cropped_spec) | np.isinf(cropped_spec)
+            x_cropped = x_cropped[~nan_inf_mask]
+            cropped_spec = cropped_spec[~nan_inf_mask]
+
+            # if empty array - keep looping
+            if len(cropped_spec) == 0: continue
+            else: 
+
+                # set up some initial guesses for the Gaussian fit
+
+                # amplitude:
+                A_init = np.max(cropped_spec)
+                # mean (line centrum - initial gues is same as the hand-identified line):
+                mean_init = peak_pix_init
+                # sigma (width of the line) - convert from user defined FWHM:
+                stddev_init = FWHM * gaussian_fwhm_to_sigma
+
+                # build a Gaussian fitter with an added constant
+                g_init = Gaussian1D(
+                    amplitude=A_init,
+                    mean=mean_init,
+                    stddev=stddev_init,
+                    bounds={"amplitude": (0, 2 * np.max(cropped_spec)), "stddev": (0, TOL_REID)},
+                )
+                const = Const1D(amplitude=np.mean(cropped_spec))
+                g_model = g_init + const
+
+                fitter = LevMarLSQFitter()
+
+
+                g_fit = fitter(g_model, x_cropped, cropped_spec)
+
+        logger.info("Re-identification done.")
                
             
 
