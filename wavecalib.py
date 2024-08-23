@@ -10,9 +10,11 @@ import numpy as np
 from astropy.table import Table, Column
 from utils import open_fits
 import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 from astropy.stats import gaussian_fwhm_to_sigma, gaussian_sigma_to_fwhm
 from astropy.modeling.models import Gaussian1D, Chebyshev2D, Const1D
 from astropy.modeling.fitting import LevMarLSQFitter
+import matplotlib
 
 
 def read_pixtable():
@@ -70,6 +72,57 @@ def get_master_arc():
 
     return master_arc
 
+def show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM):
+    """
+    Prepare the master reidentify plot and show it.
+
+    I.e. set the title, x-label, y-label and grid.
+    Do some formatting for of the axis.
+
+    Parameters
+    ----------
+    fig : matplotlib.figure.Figure
+        Figure object.
+
+    ax : matplotlib.axes._subplots.AxesSubplot
+        Axes object.
+
+    TOL_REID : float
+        Tolerance for pixel shift from hand-identified lines to Gaussian fit.
+
+    TOL_REID_FWHM : float
+        Tolerance for FWHM of the Gaussian fit.
+    
+    FWHM : float
+        Rough guess of FWHM of lines in pixels.
+    """
+
+    # this removes scientific notation for the y-axis
+    # to make more space for the subplots
+    for ax_row in ax:
+        for ax_col in ax_row:
+            formatter = ticker.ScalarFormatter(useOffset=False, useMathText=False, useLocale=False)
+            formatter.set_scientific(False)
+            ax_col.yaxis.set_major_formatter(formatter)
+
+
+    title_text = (
+        f"Reidentification Results. Green: accepted, Red: rejected. \n" 
+        f"Acceptance Criteria: \n"
+        f"Allowing deviation of {TOL_REID} in pixels from centrum guess. "
+        f"\n Allowing FWHM deviation of {TOL_REID_FWHM} pixels from initial FWHM guess of {FWHM} \n"
+        "Check that the accepted fits are in fact good fits."
+    )
+    
+
+    fig.suptitle(title_text, fontsize=11, va='top', ha='center')
+
+    # Add a single x-label and y-label for the entire figure
+    fig.text(0.5, 0.04, 'Pixels in spectral direction', ha='center', va='center', fontsize=12)
+    fig.text(0.04, 0.5, 'Counts (ADU)', ha='center', va='center', rotation='vertical', fontsize=12)
+    plt.show()
+    
+
 
 def reidentify(pixnumber, wavelength, master_arc):
     """
@@ -102,15 +155,22 @@ def reidentify(pixnumber, wavelength, master_arc):
     # centers of every step spacially
     spatialcoord = np.arange(0, (N_REID - 1) * STEP_REID, STEP_REID) + STEP_REID / 2
 
-    # loop over the spatial slices, and reidentify the lines
+    # the following parameters are used for QA plots
 
-    # this value allows to make cyclic subplots
+    # this offset value allows to make cyclic subplots, as we use the index 
+    # together with integer division and module to cycle through subplots
     j_offset = 0
+
     plot_height = 4
     plot_width = 3
-    fig, ax = plt.subplots(plot_height, plot_width, figsize=(12, 18))
+    figsize = (24, 20)
 
+    fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
+    
+    # we only do one QA plot - around the middle slice
+    plot_at_index = N_REID // 2
 
+    # loop over the spatial slices, and reidentify the lines
     for i in range(0, N_REID):
         # limits of the slice
         lower_cut, upper_cut = i * STEP_REID, (i + 1) * STEP_REID
@@ -125,11 +185,12 @@ def reidentify(pixnumber, wavelength, master_arc):
         peak_gauss_REID = []
 
 
+
         # re-identify every hand-identified line
         for j, peak_pix_init in enumerate(ID_init["peak"]):
             # limits of the peak
-            search_min = int(np.around(peak_pix_init - TOL_REID))
-            search_max = int(np.around(peak_pix_init + TOL_REID))
+            search_min = int(np.around(peak_pix_init - FWHM * 2))
+            search_max = int(np.around(peak_pix_init + FWHM * 2))
             # crop the spectrum around the line
             cropped_spec = reidentify_i[search_min:search_max]
             # dummy x_array around cropped line for later fitting
@@ -162,7 +223,7 @@ def reidentify(pixnumber, wavelength, master_arc):
                         "stddev": (0, TOL_REID),
                     },
                 )
-                const = Const1D(amplitude=np.mean(cropped_spec))
+                const = Const1D(amplitude=0)
                 g_model = g_init + const
 
                 # perform the fit
@@ -172,6 +233,11 @@ def reidentify(pixnumber, wavelength, master_arc):
                 # extract the fitted peak position and FWHM:
                 fit_center = g_fit.mean_0.value
                 fitted_FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
+
+                # this is the cyclic indexing mechanism for the QA plots
+                if i == plot_at_index:
+                    subplot_index = (j - j_offset) // plot_width, (j - j_offset) % plot_width
+            
 
                 # check if the fitted peak is within the tolerance of the hand-identified peak
                 if (
@@ -183,55 +249,43 @@ def reidentify(pixnumber, wavelength, master_arc):
                     or g_fit.amplitude_0.value < 1
                 ):
                     peak_gauss_REID.append(np.nan)
-                    if i == N_REID // 2:
-                        ax[
-                            (j - j_offset) // plot_width, (j - j_offset) % plot_width
-                        ].plot(x_cropped, cropped_spec, "x", color = 'black')
+                    if i == plot_at_index:
+                        # plot the rejected fits
+                        # plot the spectrum
+                        ax[subplot_index].plot(x_cropped, cropped_spec, "x", color='black')
+                        # plot the fit
                         x_fine = np.linspace(x_cropped[0], x_cropped[-1], 1000)
-                        ax[
-                            (j - j_offset) // plot_width, (j - j_offset) % plot_width
-                        ].plot(x_fine, g_fit(x_fine), color = 'red')
-                        ax[
-                            (j - j_offset) // plot_width, (j - j_offset) % plot_width
-                        ].set_title("Rejected", color = 'red', fontsize=11)
-
+                        ax[subplot_index].plot(x_fine, g_fit(x_fine), color='red')
                 else:
                     peak_gauss_REID.append(fit_center)
-                    if i == N_REID // 2:
-                        ax[
-                            (j - j_offset) // plot_width, (j - j_offset) % plot_width
-                        ].plot(x_cropped, cropped_spec, "x", color = 'black')
+                    if i == plot_at_index:
+                        # plot the accepted fits
+                        # plot the spectrum
+                        ax[subplot_index].plot(x_cropped, cropped_spec, "x", color='black')
+                        # plot the fit
                         x_fine = np.linspace(x_cropped[0], x_cropped[-1], 1000)
-                        ax[
-                            (j - j_offset) // plot_width, (j - j_offset) % plot_width
-                        ].plot(x_fine, g_fit(x_fine), color = 'green')
-                        ax[
-                            (j - j_offset) // plot_width, (j - j_offset) % plot_width
-                        ].set_title("Accepted", color = 'green', fontsize=11)  
+                        ax[subplot_index].plot(x_fine, g_fit(x_fine), color='green')
 
                 if (
+                    # this condition checks if the plot has been filled up
+                    # plots if so, and adjust the offset so a new 
+                    # plot can be created and filled up
                     (j - j_offset) // plot_width == plot_height - 1
                     and (j - j_offset) % plot_width == plot_width - 1
-                    and i == N_REID // 2
+                    and i == plot_at_index
                 ):
-                    print("plotting...")
-                    # plt.savefig(output_dir / f"reidentify_{i}.png")
-                    for ax_row in ax:
-                        for ax_col in ax_row:
-                            ax_col.tick_params(axis='both', which='both', length=0)
-                            ax_col.set_xticklabels([])
-                            ax_col.set_yticklabels([])
-                    fig.suptitle(
-                        f"Reidentification Results\n Acceptance Criteria: "
-                        f"Allowing deviation of {TOL_REID} in pixels from centrum guess, "
-                        f"\n Allowing FWHM deviation of {TOL_REID_FWHM} pixels from initial FWHM guess = {FWHM}",
-                    fontsize=10)
-                    plt.show()
-                    print(f"plotting done at j:{j}...")
+                    show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM)
                     j_offset += plot_width * plot_height
-                    fig, ax = plt.subplots(plot_height, plot_width, figsize=(12, 18))
+                    # prepare a new plot
+                    fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
+        
+        # last plot - plot the last plots even if master plot is not filled up
+        if i == plot_at_index:
+            show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM)
+
+        # slice done 
         logger.info(f"Slice {i} reidentified. Reidentified {np.sum(~np.isnan(peak_gauss_REID))} lines out of {len(ID_init)}.\n----")
-    logger.info("Re-identification done.")
+    logger.info("Re-identification completed. Starting fitting procedure...")
 
 
 def run_wavecalib(): 
