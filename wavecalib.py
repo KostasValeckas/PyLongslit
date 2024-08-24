@@ -1,21 +1,33 @@
-# =============================================================================
-# reidentify
-# =============================================================================
-# For REIDENTIFY, I used astropy.modeling.models.Chebyshev2D
-# Read idarc
-
 from logger import logger
 from parser import wavecalib_params, output_dir
 import numpy as np
-from astropy.table import Table, Column
+from astropy.table import Table
 from utils import open_fits
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from astropy.stats import gaussian_fwhm_to_sigma, gaussian_sigma_to_fwhm
-from astropy.modeling.models import Gaussian1D, Chebyshev2D, Const1D
+from astropy.modeling.models import Chebyshev2D, Const1D
 from astropy.modeling.fitting import LevMarLSQFitter
-import matplotlib
 from numpy.polynomial.chebyshev import chebfit, chebval
+from utils import write_to_fits
+
+from astropy.modeling import Fittable1DModel, Parameter
+import numpy as np
+
+class GeneralizedNormal1D(Fittable1DModel):
+    """
+    This is a generalized normal distribution model for 
+    fitting the lines in the arc spectrum - it works like a Gaussian
+    but has a shape parameter beta that controls the flatness of the peak.
+    """
+    amplitude = Parameter(default=1)
+    mean = Parameter(default=0)
+    stddev = Parameter(default=1)
+    beta = Parameter(default=5)  # Shape parameter
+
+    @staticmethod
+    def evaluate(x, amplitude, mean, stddev, beta):
+        return amplitude * np.exp(-((np.abs(x - mean) / stddev) ** beta))
 
 
 def read_pixtable():
@@ -134,7 +146,7 @@ def show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM):
     )
     plt.show()
 
-
+#TODO: see if this can be optimized
 def reidentify(pixnumber, wavelength, master_arc):
     """
 
@@ -174,7 +186,6 @@ def reidentify(pixnumber, wavelength, master_arc):
     # these are the coordinates of the middle of the slices used in the reidentification
     # these correspond to the spatial coordinates, functioning as y-axis in 2d-fitting
     spatialcoord = np.arange(0, N_REID * STEP_REID, STEP_REID) + STEP_REID / 2
-    print(spatialcoord)
 
     # the following parameters are used for QA plots
 
@@ -231,16 +242,19 @@ def reidentify(pixnumber, wavelength, master_arc):
                 mean_init = peak_pix_init
                 # sigma (width of the line) - convert from user defined FWHM:
                 stddev_init = FWHM * gaussian_fwhm_to_sigma
-
-                # build a Gaussian fitter with an added constant
-                g_init = Gaussian1D(
+                
+                # build a Generalized Normal fitter with an added constant
+                g_init = GeneralizedNormal1D(
                     amplitude=A_init,
                     mean=mean_init,
                     stddev=stddev_init,
+                    beta=2,  # Initial guess for beta
                     bounds={
                         "amplitude": (0, 2 * np.max(cropped_spec)),
-                        "stddev": (0, TOL_REID),
-                    },
+                        "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
+                        # beta > 2 flattens peak, beta > 20 is almost a step function
+                        "beta": (2, 20)
+                    }
                 )
                 const = Const1D(amplitude=0)
                 g_model = g_init + const
@@ -344,61 +358,68 @@ def reidentify(pixnumber, wavelength, master_arc):
     return line_REID
 
 
-def fit_slices(line_REID: dict):
-    # TODO: define the shape of the input_dict better
-    # TODO: do we even need this?
+def fit_1d_QA(line_REID: dict, figsize=(18, 12)):
     """
-    Fit the reidentified lines.
+    Fit the reidentified lines through detector middle for QA.
 
     Parameters
     ----------
     line_REID : dict
         Reidentified lines.
-
-
-    Returns
-    -------
-    coeff : dict
-        Coefficients for every slice.
-
-    fitfull : dict
-        Full fit for every slice.
     """
+
+    # set up the plot
+    plt.figure(figsize=figsize)
 
     # extract the polynomial order parameter for the fit
     ORDER_WAVELEN_REID = wavecalib_params["ORDER_WAVELEN_REID"]
     logger.info(
-        f"Starting fitting routine with the user defined polynomial order {ORDER_WAVELEN_REID}..."
+        f"Fitting a 1d wavelength solution of order {ORDER_WAVELEN_REID} to reidentified lines..."
     )
 
-    # container for the coefficients for every slice
-    coeff = {}
-    # TODO: TBD
-    fitfull = {}
+    # find the middle key of line_REID dictionary
+    middle_key = len(line_REID) // 2
 
-    for key, table in line_REID.items():
-        # fit the polynomial
-        coeff[key], fitfull[key] = chebfit(
-            table["peak_pix"], table["wavelength"], deg=ORDER_WAVELEN_REID, full=True
-        )
+    # ready the data
+    pixels = line_REID[str(middle_key)]["peak_pix"]
+    wavelengths = line_REID[str(middle_key)]["wavelength"]
 
-    return coeff, fitfull
+    # fit the data
+    coeff = chebfit(pixels, wavelengths, deg=ORDER_WAVELEN_REID)
 
+    # plot data
+    plt.plot(pixels, wavelengths, "x", label="Reidentified lines")
+    # overplot the fit
+    x_fine = np.linspace(pixels[0], pixels[-1], 1000)
+    plt.plot(x_fine, chebval(x_fine, coeff), label="Fit")
+    plt.xlabel("Pixels")
+    plt.ylabel("Wavelength (Å)")
+    plt.title(
+        "1D fit to reidentified lines through the middle of the detector.\n"
+        "Inspect the fit for any irregularities.\n"
+        f"You have fitted a polynomial if order {ORDER_WAVELEN_REID}."
+    )
+    plt.legend()
+    plt.show()
+    
 
-def fit_2d(line_REID :dict):
+def fit_2d(line_REID: dict):
 
-    # number of reidentification slices along the spacial direction
-    N_REID = wavecalib_params["N_REID"]
-    # how many pixels to sum over at every step
-    STEP_REID = wavecalib_params["STEP_REID"]
+    logger.info("Preparing to fit a 2d polynomial through whole delector...")
+
     # extract the polynomial order parameter for the fit in spectral direction
     ORDER_WAVELEN_REID = wavecalib_params["ORDER_WAVELEN_REID"]
     # extract the polynomial order parameter for the fit in spatial direction
     ORDER_SPATIAL_REID = wavecalib_params["ORDER_SPATIAL_REID"]
 
-    spectral_pixels = [] # corresponding to x in the 2d-fit
-    spacial_pixels = [] # corresponding to y in the 2d-fit
-    wavelength_values = [] # corresponding to z in the 2d-fit
+    logger.info(
+        f"Fitting a 2d wavelength solution of order {ORDER_WAVELEN_REID} in spectral direction and "
+        f"order {ORDER_SPATIAL_REID} in spatial direction to reidentified lines..."
+    )
+
+    spectral_pixels = []  # corresponding to x in the 2d-fit
+    spacial_pixels = []  # corresponding to y in the 2d-fit
+    wavelength_values = []  # corresponding to z in the 2d-fit
 
     # fill up the lists with the values from the reidentified lines
     for table in line_REID.values():
@@ -422,8 +443,146 @@ def fit_2d(line_REID :dict):
 
     fit2D_REID = fitter(coeff_init, spectral_pixels, spacial_pixels, wavelength_values)
 
+    logger.info("2D fit done.")
+
     return fit2D_REID
 
+
+def construct_wavelength_map(fit2D_REID, master_arc):
+    """
+    Construct the wavelength map by evaluating the fit at every pixel.
+
+    Parameters
+    ----------
+    fit2D_REID : `~astropy.modeling.models.Chebyshev2D`
+        2D fit model.
+
+    master_arc : array
+        Master arc image.
+
+    Returns
+    -------
+    wavelength_map : 2D array
+        Wavelength map.
+    """
+
+    # get the shape of the master arc - use it for wavelength map
+    x,y =  master_arc[0].data.shape
+
+    # create a grid of coordinates
+    spac_coords, spec_coords = np.mgrid[:x, :y]
+
+    # evaluate the fit at every pixel
+    logger.info("Constructing a wavelength map through whole detector...")
+    logger.info("Evaluating the 2D fit at every pixel...")
+    wavelength_map = fit2D_REID(spec_coords, spac_coords)
+
+    # check for negative values or nans or infs in the wavelength map
+    if np.any(wavelength_map < 0) or np.any(np.isnan(wavelength_map)) or np.any(
+        np.isinf(wavelength_map)
+    ):
+        logger.error(
+            "Negative values, NaNs or Infs found in the wavelength map. "
+            "Check the fit and the data."
+        )
+
+    return wavelength_map
+
+
+def plot_verticals(wavelength_map, num_slices=10, figsize = (18, 12)):
+    """
+    Plot vertical slices of the wavelength map for QA of the lines tilts.
+
+    Parameters
+    ----------
+    wavelength_map : 2D array
+        Wavelength map.
+    """
+
+    plt.figure(figsize=figsize)
+
+    # this is the index of the column to which we will compare other values to
+    middle_col = wavelength_map.shape[0] // 2
+
+    # width of the slice, used for looping. We add an extra slice nunber
+    # to the denominator to avoid the noise at the beginning of the spectrum
+    slice_width = wavelength_map.shape[1] // (num_slices + 1)
+
+    # create an array of indexes for the slices
+    # these are equally distributed along the spectral direction
+    # don't start from 0, noise is expected there
+    indexes = np.arange(slice_width, wavelength_map.shape[1] - slice_width, slice_width)
+
+    # construct spacial axis for plotting
+    spacial_axis = np.arange(wavelength_map.shape[0])
+
+    for i in indexes:
+        vertical_slice = wavelength_map[:,i]
+        # we want the relative difference to the middle column
+        diff = vertical_slice - vertical_slice[middle_col]
+        
+        plt.plot(spacial_axis, diff, label = f"Spectral pixel : {i}")
+
+    plt.xlabel("Pixels in spatial direction")
+    plt.ylabel("Relative Wavelength Difference from spacial centrum (Å)")
+    plt.title(
+        "Vertical Slices - Relative Differences from middle.\n"
+        "This plot shows how wavelengths change along the spatial direction "
+        "for a series of detector columns.\n"
+        "Some difference is expected, but it should be small, smooth and continuous.\n"
+        "If not, try lowering the STEP_REID parameter in the config file."
+    )
+
+    plt.legend()
+    plt.show()
+
+    
+
+def plot_wavemap(wavelength_map, figsize = (18, 12)):
+
+    plt.figure(figsize=figsize)
+    plt.imshow(wavelength_map, origin="lower")
+    plt.colorbar(label="Wavelength (Å)")
+    plt.title(
+        "Wavelength map (wavelengths mapped to every pixel of the detector)\n"
+        "Inspect the map for any irregularities - it should be a smooth continuum.\n"
+        "Also, check if the wavelengths are as expected for your instrument."
+    )
+    plt.xlabel("Pixels in spectral direction")
+    plt.ylabel("Pixels in spatial direction")
+    plt.show()
+
+def plot_wavelengthcalib_QA(wavelength_map):
+    """
+    Plot the wavelength calibration QA plots.
+
+    Parameters
+    ----------
+    wavelength_map : 2D array
+        Wavelength map.
+    """
+
+    logger.info("Preparing wavelength calibration QA plots...")
+    plot_wavemap(wavelength_map)
+    plot_verticals(wavelength_map)
+
+def write_waveimage_to_disc(wavelength_map, master_arc):
+    """
+    Write the wavelength calibration results (waveimage) to disc.
+
+    Parameters
+    ----------
+    wavelength_map : 2D array
+        Wavelength map.
+    """
+
+    logger.info("Writing wavelength calibration results to disc...")
+
+    # steal header from master_arc
+    header=master_arc[0].header
+    write_to_fits(wavelength_map, header, "wavelength_map.fits", output_dir)
+
+    logger.info("Wavelength calibration results written to disc.")
 
 
 def run_wavecalib():
@@ -443,9 +602,18 @@ def run_wavecalib():
     logger.info("Reidentification done.")
     logger.info("Starting the fitting routine...")
 
-    fit_slices(reidentified_lines)
+    fit_1d_QA(reidentified_lines)
 
     fit_2d_results = fit_2d(reidentified_lines)
+
+    wavelength_map = construct_wavelength_map(fit_2d_results, master_arc)
+
+    plot_wavelengthcalib_QA(wavelength_map)
+
+    write_waveimage_to_disc(wavelength_map, master_arc)
+
+    logger.info("Wavelength calibration routine done.")
+    print("\n-----------------------------\n")
 
 
 if __name__ == "__main__":
