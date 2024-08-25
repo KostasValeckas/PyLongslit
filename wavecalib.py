@@ -146,7 +146,7 @@ def show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM):
     )
     plt.show()
 
-#TODO: see if this can be optimized
+#TODO: see if this can be optimized runtime-wise
 def reidentify(pixnumber, wavelength, master_arc):
     """
 

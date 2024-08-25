@@ -14150,3 +14150,120 @@ PyLongslit - INFO - wavecalib.py:565 - Preparing wavelength calibration QA plots
 PyLongslit - INFO - wavecalib.py:579 - Writing wavelength calibration results to disc...
 PyLongslit - INFO - wavecalib.py:585 - Wavelength calibration results written to disc.
 PyLongslit - INFO - wavecalib.py:615 - Wavelength calibration routine done.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - extract_1d_new.py:8 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:4 - Getting reduced frames
+PyLongslit - INFO - extract_1d_new.py:5 - Reduced frames obtained
+PyLongslit - INFO - extract_1d_new.py:10 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:79 - Both skip_science and skip_standard are set to "true" in the config file. Only bias and flat operations can be performed
+PyLongslit - WARNING - parser.py:83 - Pipeline will crash if you proceed beyond flats.
+PyLongslit - INFO - extract_1d_new.py:21 - Extracting 1D spectra
+PyLongslit - ERROR - extract_1d_new.py:9 - Both skip_science and skip_standard parameters are set to true in the configuration file.
+PyLongslit - ERROR - extract_1d_new.py:13 - No extraction can be performed. Exitting...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:79 - Both skip_science and skip_standard are set to "true" in the config file. Only bias and flat operations can be performed
+PyLongslit - WARNING - parser.py:83 - Pipeline will crash if you proceed beyond flats.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - ERROR - extract_1d_new.py:11 - Both skip_science and skip_standard parameters are set to true in the configuration file.
+PyLongslit - ERROR - extract_1d_new.py:15 - No extraction can be performed. Exitting...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:87 - Standard star reduction is set to be skipped in the config file. This is okay if this is your intention - only the science frames will be reduced.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - WARNING - extract_1d_new.py:20 - Standard star extraction is set to be skipped in the config file.
+PyLongslit - WARNING - extract_1d_new.py:23 - Will only extract science spectra.
+PyLongslit - INFO - extract_1d_new.py:31 - Found 2 science frames
+PyLongslit - INFO - extract_1d_new.py:58 - Found 3 frames
+PyLongslit - INFO - extract_1d_new.py:67 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:87 - Standard star reduction is set to be skipped in the config file. This is okay if this is your intention - only the science frames will be reduced.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - WARNING - extract_1d_new.py:20 - Standard star extraction is set to be skipped in the config file.
+PyLongslit - WARNING - extract_1d_new.py:23 - Will only extract science spectra.
+PyLongslit - INFO - extract_1d_new.py:31 - Found 2 science frames
+PyLongslit - INFO - extract_1d_new.py:67 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:96 - Science reduction is set to be skipped in the config file. This is okay if this is your intention - only standard star will be reduced.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - WARNING - extract_1d_new.py:36 - Science extraction is set to be skipped in the config file.
+PyLongslit - WARNING - extract_1d_new.py:39 - Will only extract standard star spectra.
+PyLongslit - INFO - extract_1d_new.py:47 - Found 1 standard star frames
+PyLongslit - INFO - extract_1d_new.py:67 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:79 - Both skip_science and skip_standard are set to "true" in the config file. Only bias and flat operations can be performed
+PyLongslit - WARNING - parser.py:83 - Pipeline will crash if you proceed beyond flats.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - ERROR - extract_1d_new.py:11 - Both skip_science and skip_standard parameters are set to true in the configuration file.
+PyLongslit - ERROR - extract_1d_new.py:15 - No extraction can be performed. Exitting...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:58 - Found 3 frames
+PyLongslit - INFO - extract_1d_new.py:67 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:65 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:58 - Found 3 frames:
+PyLongslit - INFO - extract_1d_new.py:67 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:31 - Found 3 frames:
+PyLongslit - INFO - extract_1d_new.py:84 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:31 - Found 3 frames:
+PyLongslit - INFO - extract_1d_new.py:84 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:96 - Science reduction is set to be skipped in the config file. This is okay if this is your intention - only standard star will be reduced.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - WARNING - extract_1d_new.py:66 - Science extraction is set to be skipped in the config file.
+PyLongslit - WARNING - extract_1d_new.py:69 - Will only extract standard star spectra.
+PyLongslit - INFO - extract_1d_new.py:31 - Found 1 frames:
+PyLongslit - INFO - extract_1d_new.py:84 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:79 - Both skip_science and skip_standard are set to "true" in the config file. Only bias and flat operations can be performed
+PyLongslit - WARNING - parser.py:83 - Pipeline will crash if you proceed beyond flats.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - ERROR - extract_1d_new.py:47 - Both skip_science and skip_standard parameters are set to true in the configuration file.
+PyLongslit - ERROR - extract_1d_new.py:51 - No extraction can be performed. Exitting...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - WARNING - parser.py:87 - Standard star reduction is set to be skipped in the config file. This is okay if this is your intention - only the science frames will be reduced.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - WARNING - extract_1d_new.py:56 - Standard star extraction is set to be skipped in the config file.
+PyLongslit - WARNING - extract_1d_new.py:59 - Will only extract science spectra.
+PyLongslit - INFO - extract_1d_new.py:31 - Found 2 frames:
+PyLongslit - INFO - extract_1d_new.py:84 - 1D spectra extracted
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:82 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:31 - Found 3 frames:
+PyLongslit - INFO - extract_1d_new.py:84 - 1D spectra extracted
