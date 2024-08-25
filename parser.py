@@ -47,6 +47,8 @@ wavecalib_params["N_REID"] = (
     else detector_params["ysize"] // wavecalib_params["STEP_REID"]
 )
 
+extract_params = data["extract"]
+
 
 def check_science_and_standard():
     """

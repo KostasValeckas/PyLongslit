@@ -76,6 +76,11 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan):
 
     frame = frame / master_flat
 
+    # Handle NaNs and Infs
+    if np.isnan(frame).any() or np.isinf(frame).any():
+        logger.warning("NaNs or Infs detected in the frame. Replacing with zero.")
+        frame = np.nan_to_num(frame, nan=0.0, posinf=0.0, neginf=0.0)
+
     return frame
 
 

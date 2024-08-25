@@ -68,5 +68,9 @@
         "TOL_REID_FWHM": 3,
         "ORDER_WAVELEN_REID": 5,
         "ORDER_SPATIAL_REID": 5       
+    },
+
+    "extract" : {
+        "NSUM_AP": 10
     }
 }
