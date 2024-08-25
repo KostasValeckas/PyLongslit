@@ -49,6 +49,12 @@ wavecalib_params["N_REID"] = (
 
 extract_params = data["extract"]
 
+extract_params["N_APALL"] = (
+    detector_params["xsize"] // extract_params["NSUM_AP"]
+    if detector_params["dispersion"]["spectral_dir"] == "y"
+    else detector_params["ysize"] // extract_params["NSUM_AP"]
+)
+
 
 def check_science_and_standard():
     """
