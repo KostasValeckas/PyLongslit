@@ -71,6 +71,10 @@
     },
 
     "extract" : {
-        "NSUM_AP": 10
+        "NSUM_AP": 10,
+        "FWHM_AP": 7,
+        "SIGMA_APSKY": 3.0,
+        "ITERS_APSKY": 5,
+        "ORDER_APSKY": 2
     }
 }
