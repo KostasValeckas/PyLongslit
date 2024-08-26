@@ -218,6 +218,47 @@ def show_flat():
     plt.imshow(norm_data, cmap="gray")
 
 
+def show_frame(data, title, figsize = (18,12), normalize = True, new_figure = True, show = True):
+    """
+    This method is used to plot any frames passed the `reduce`
+    procedure. It is used for visual inspection of the data.
+    It assumes all data passed to it as aligned in a certain
+    direction (this is done in the `reduce` procedure). Data is 
+    normalized before plotting.
+
+    Parameters
+    ----------
+    data : numpy.ndarray
+        The data to plot.
+
+    title : str
+        The title of the plot.
+
+    figsize : tuple
+        The size of the figure.
+
+    new_figure : bool
+        If True, create a new figure
+
+    show : bool
+        If True, show the plot.
+    """
+
+    # normalize to show detail
+    if normalize: data = hist_normalize(data)
+
+    # start the figure
+
+    if new_figure: plt.figure(figsize=figsize)
+
+    plt.imshow(data, cmap="gray")
+    plt.title(title)
+    plt.xlabel("Pixels in spectral direction")
+    plt.ylabel("Pixels in spatial direction")
+    if show: plt.show()
+
+
+
 
 def list_files(file_list: FileList):
     """

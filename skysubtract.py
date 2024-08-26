@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
+from utils import show_frame
 
 
 def get_reduced_group(*prefixes):
@@ -38,7 +39,7 @@ def get_reduced_group(*prefixes):
 
 def get_reduced_frames():
     """
-    Driver for `get_reduced_frames` that acounts for skip_science or/and
+    Driver for `get_reduced_frames` that acounts for skip_science and/or
     skip_standard parameters.
 
     Returns
@@ -94,21 +95,20 @@ def choose_obj_centrum(file_list, figsize=(18, 12)):
     -------
     center_dict : dict
         A dictionary containing the chosen centers of the objects.
+        Format: {filename: (x, y)}
     """
 
     logger.info("Starting object-choosing GUI. Follow the instructions on the plots.")
 
     # used for more readable plotting code
-    def plot_title(file):
-        return (
-            f"Object position estimation for {file}.\n"
-            "Press on the object on a spectral point with no sky-lines "
-            "(but away from detector edges.) \n"
-            "You can try several times. Press 'q' or close plot when done."
-        )
+    plot_title = lambda file: f"Object position estimation for {file}.\n" \
+    "Press on the object on a spectral point with no bright sky-lines (but away from detector edges.)" \
+    "\nYou can try several times. Press 'q' or close plot when done."
 
+    # cointainer ti store the clicked points - this will be returned
     center_dict = {}
 
+    # this is the event we connect to the interactive plot
     def onclick(event):
         x = int(event.xdata)
         y = int(event.ydata)
@@ -118,27 +118,24 @@ def choose_obj_centrum(file_list, figsize=(18, 12)):
 
         # Remove any previously clicked points
         plt.cla()
-        # the plotting code below is repeated twice, but this is more stable
-        # for the event function (it uses non-local variables)
-        plt.imshow(norm_data, cmap="gray")
-        plt.title(plot_title(file))
+
+        show_frame(data, plot_title(file), new_figure=False, show=False)
 
         # Color the clicked point
         plt.scatter(x, y, marker="x", color="red", s=50, label="Selected point")
         plt.legend()
         plt.draw()  # Update the plot
 
+    # loop over the files and display the interactive plot
     for file in file_list:
-        plt.figure(figsize=figsize)
+        
 
         frame = open_fits(output_dir, file)
         data = frame[0].data
-        norm_data = hist_normalize(data)
-
-        plt.imshow(norm_data, cmap="gray")
+        
+        plt.figure(figsize=figsize)
         plt.connect("button_press_event", onclick)
-        plt.title(plot_title(file))
-        plt.show()
+        show_frame(data, plot_title(file), new_figure=False)
 
     logger.info("Object centers chosen successfully:")
     print(center_dict, "\n------------------------------------")
@@ -177,17 +174,52 @@ def refine_obj_center(x, slice, clicked_center, FWHM_AP):
 
     logger.info("Refining the object center...")
 
+    # assume center is at the maximum of the slice
     center = x[np.argmax(slice)]
 
+    # check if the center is within the expected region (2FWHM from the clicked point)
     if center < clicked_center - 2 * FWHM_AP or center > clicked_center + 2 * FWHM_AP:
         logger.warning("The estimated object center is outside the expected region.")
         logger.warning("Using the user-clicked point as the center.")
+        logger.warning("This is okay if this is on detector edge or a singular occurence.")
         center = clicked_center
 
     return center
 
 
 def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
+    """
+    From a user inputted object center guess, tries to refine the object centrum,
+    and then estimates the sky region around the object.
+
+    Parameters
+    ----------
+    slice_spec : array
+        The slice of the data.
+
+    spatial_center_guess : int
+        The user clicked center of the object.
+
+    FWHM_AP : int
+        The FWHM of the object.
+
+    Returns
+    -------
+    x_spec : array
+        The x-axis of the slice.
+
+    x_sky : array
+        The x-axis of the sky region.
+
+    sky_val : array
+        The values of the sky region.
+
+    sky_left : int
+        The left boundary of the sky region.
+
+    sky_right : int
+        The right boundary of the sky region.
+    """
 
     x_spec = np.arange(len(slice_spec))
 
@@ -212,7 +244,37 @@ def fit_sky_one_column(
     ITERS_APSKY,
     ORDER_APSKY,
 ):
+    """
+    In a detector slice, evaluates the sky region using `estimate_sky_regions`,
+    removes the outlies using sigma-clipping, and fits the sky using a Chebyshev polynomial.
 
+    Parameters
+    ----------
+    slice_spec : array
+        The slice of the data.
+
+    spatial_center_guess : int
+        The user clicked center of the object.
+    
+    FWHM_AP : int
+        The FWHM of the object.
+
+    SIGMA_APSKY : float
+        The sigma value for sigma-clipping in the sky fitting.
+
+    ITERS_APSKY : int
+        The number of iterations for sigma-clipping in the sky fitting.
+
+    ORDER_APSKY : int
+        The order of the Chebyshev polynomial to fit the sky.
+
+    Returns
+    -------
+    sky_fit : array
+        The fitted sky background (evaluated fit).
+    """
+
+    # sky region for this column
     x_spec, x_sky, sky_val, _, _ = estimate_sky_regions(
         slice_spec, spatial_center_guess, FWHM_AP
     )
@@ -234,14 +296,48 @@ def fit_sky_one_column(
 def fit_sky_QA(
     slice_spec,
     spatial_center_guess,
-    spectral_center,
-    NSUM_AP,
+    spectral_column,
     FWHM_AP,
     SIGMA_APSKY,
     ITERS_APSKY,
     ORDER_APSKY,
     figsize=(18, 12),
 ):
+    """
+    A QA method for the sky fitting. Performs the sky-fitting routine 
+    for one column of the detector, and plots the results.
+
+    This is used for used insection, before looping through the whole detector
+    in the `make_sky_map` method.
+
+    Parameters
+    ----------
+    slice_spec : array
+        The slice of the data.
+
+    spatial_center_guess : int
+        The user clicked spacial center of the object.
+
+    spectral_column : int
+        The spectral column to extract
+
+    FWHM_AP : int
+        The FWHM of the object.
+
+    SIGMA_APSKY : float
+        The sigma value for sigma-clipping in the sky fitting.
+
+    ITERS_APSKY : int
+        The number of iterations for sigma-clipping in the sky fitting.
+
+    ORDER_APSKY : int
+        The order of the Chebyshev polynomial to fit the sky.
+
+    figsize : tuple
+        The size of the figure to be displayed.
+        Default is (18, 12).
+    """
+
     x_spec, _, _, sky_left, sky_right = estimate_sky_regions(
         slice_spec, spatial_center_guess, FWHM_AP
     )
@@ -256,7 +352,7 @@ def fit_sky_QA(
     plt.plot(
         x_spec,
         slice_spec,
-        label=f"Detector slice around spectral pixel {spectral_center} +/- {NSUM_AP//2}",
+        label=f"Detector slice around spectral pixel {spectral_column}",
     )
     plt.plot(x_spec, sky_fit, label="Sky fit")
     plt.xlabel("Pixels (spatial direction)")
@@ -271,16 +367,48 @@ def fit_sky_QA(
 
 
 def make_sky_map(
-    data, spatial_center_guess, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
+    filename, data, spatial_center_guess, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
 ):
-    """ """
+    """
+    Loops through the detector columns, and fits the sky background for each one.
+    Each column is fitted using the `fit_sky_one_column` method. Constructs
+    an image of the sky-background on the detector.
 
+    Parameters
+    ----------
+    data : array
+        The frame detector data.
+
+    spatial_center_guess : int
+        User-clicked spatial center of the object.
+
+    FWHM_AP : int
+        The FWHM of the object.
+
+    SIGMA_APSKY : float
+        The sigma value for sigma-clipping in the sky fitting.
+
+    ITERS_APSKY : int
+        The number of iterations for sigma-clipping in the sky fitting.
+
+    ORDER_APSKY : int
+        The order of the Chebyshev polynomial to fit the sky.
+
+    Returns
+    -------
+    sky_map : array
+        Sky-background fit evaluated at every pixel
+    """
+
+    # get detector shape
     n_spacial = data.shape[0]
     n_spectal = data.shape[1]
 
+    # evaluate the sky column-wise and insert in this array
     sky_map = np.zeros((n_spacial, n_spectal))
 
     for column in range(n_spectal):
+        logger.info(f"Fitting sky for spectal pixel {column}...")
         slice_spec = data[:, column]
         sky_fit = fit_sky_one_column(
             slice_spec,
@@ -291,34 +419,58 @@ def make_sky_map(
             ORDER_APSKY,
         )
         sky_map[:, column] = sky_fit
+        logger.info(f"Sky fit for spectral pixel {column} complete.")
+        print("------------------------------------")
 
-    norm_sky_map = hist_normalize(sky_map)
-    plt.imshow(norm_sky_map, cmap="gray")
-    plt.title("Sky map")
-    plt.show()
+    #plot QA
+    title = f"Evaluated sky-background for {filename}"
+
+    show_frame(sky_map, title)
+
 
     return sky_map
 
 
 def remove_sky_background(center_dict):
-    """ 
+    """
+    For all reduced files, takes user estimate spacial object center,
+    performs sky fitting QA using `fit_sky_QA`, constructs a sky map
+    for every frame using `m̀ake_sky_map` and subtracts it from the reduced
+    frame.
+
+    Parameters
+    ----------  
+    center_dict : dict
+        A dictionary containing the user clicked object centers.
+        Format: {filename: (x, y)}
+
+    Returns
+    -------
+    subtracted_frames : dict
+        A dictionary containing the sky-subtracted frames.
+        Format: {filename: data}
     """
 
-    # user-defined size of the aperture slicing in extraction
-    NSUM_AP = extract_params["NSUM_AP"]
+    # user-defined paramteres relevant for sky-subtraction
+
+    # user-guess of FWHM of the object
     FWHM_AP = extract_params["FWHM_AP"]
+    # sigma clipping parameters
     SIGMA_APSKY = extract_params["SIGMA_APSKY"]
     ITERS_APSKY = extract_params["ITERS_APSKY"]
+    # order of the sky-fit
     ORDER_APSKY = extract_params["ORDER_APSKY"]
 
+    # final container - this keeps the results
     subtracted_frames = {}
 
-    for key in center_dict.keys():
+    # every key in the dict is a filename
+    for file in center_dict.keys():
 
-        frame = open_fits(output_dir, key)
+        frame = open_fits(output_dir, file)
         data = frame[0].data
 
-        clicked_point = center_dict[key]
+        clicked_point = center_dict[file]
 
         # start with a QA at user defined point
         spacial_center_guess = clicked_point[1]
@@ -330,14 +482,15 @@ def remove_sky_background(center_dict):
             slice_spec,
             spacial_center_guess,
             spectral_center_guess,
-            NSUM_AP,
             FWHM_AP,
             SIGMA_APSKY,
             ITERS_APSKY,
             ORDER_APSKY,
         )
 
+        # create the sky map and subtract
         sky_map = make_sky_map(
+            file,
             data,
             spacial_center_guess,
             FWHM_AP,
@@ -348,33 +501,48 @@ def remove_sky_background(center_dict):
 
         skysub_data = data - sky_map
 
-        norm_data = hist_normalize(skysub_data)
+        #plot QA
 
-        plt.imshow(norm_data, cmap="gray")
-        plt.title("Sky-subtracted frame")
-        plt.show()
+        title = f"Sky-subtracted frame {file}"
 
-        key = key.replace("reduced_", "skysub_")
+        show_frame(skysub_data, title)
+
+        # create new filename for later handling
+        key = file.replace("reduced_", "skysub_")
 
         subtracted_frames[key] = skysub_data
 
     return subtracted_frames
 
 def write_sky_subtracted_frames_to_disc(subtracted_frames):
+    """
+    Writes sky-subtracted frames to the output directory.
 
-    for key, data in subtracted_frames.items():
+    Parameters
+    ----------
+    subtracted_frames : dict
+        A dictionary containing the sky-subtracted frames.
+        Format: {filename: data}
+    """
+
+    for filename, data in subtracted_frames.items():
+        
         # steal header from the original file
-        read_key = key.replace("skysub_", "reduced_")
+        # switch back to reduced filename to steal header 
+        # TODO: this is a bit hacky, maybe refactor
+        read_key = filename.replace("skysub_", "reduced_")
         hdul = open_fits(output_dir, read_key)
         header = hdul[0].header
-        write_name = key
-        write_to_fits(data, header, write_name, output_dir)
-        logger.info(f"Frame written to directory {output_dir}, filename {write_name}") 
+        # write the frame to the output directory
+        write_to_fits(data, header, filename, output_dir)
+        logger.info(f"Frame written to directory {output_dir}, filename {filename}") 
 
 
 def run_sky_subtraction():
     """
+    Driver for the sky-subtraction process.
     """
+
     logger.info("Starting the 1d extraction process...")
 
     reduced_files = get_reduced_frames()
@@ -384,6 +552,9 @@ def run_sky_subtraction():
     subtracted_frames = remove_sky_background(center_dict)
 
     write_sky_subtracted_frames_to_disc(subtracted_frames)
+
+    logger.info("Sky subtraction complete.")
+    print("\n------------------------------------")
 
 
 if __name__ == "__main__":
