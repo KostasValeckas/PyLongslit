@@ -7,35 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
-from utils import show_frame
-
-
-def get_reduced_group(*prefixes):
-    """
-    Helper method to retrieve the names of the
-    reduced frames (science or standard) from the output directory.
-
-    Parameters
-    ----------
-    prefixes : str
-        Prefixes of the files to be retrieved.
-        Example: "reduced_science", "reduced_std"
-
-    Returns
-    -------
-    reduced_files : list
-        A list of reduced files.
-    """
-
-    file_list = os.listdir(output_dir)
-
-    reduced_files = [file for file in file_list if file.startswith(prefixes)]
-
-    logger.info(f"Found {len(reduced_files)} frames:")
-    list_files(reduced_files)
-
-    return reduced_files
-
+from utils import show_frame, get_file_group, choose_obj_centrum
 
 def get_reduced_frames():
     """
@@ -62,85 +34,45 @@ def get_reduced_frames():
         )
         logger.warning("Will only extract science spectra.")
 
-        reduced_files = get_reduced_group("reduced_science")
+        reduced_files = get_file_group("reduced_science")
 
     elif skip_science_or_standard_bool == 2:
 
         logger.warning("Science extraction is set to be skipped in the config file.")
         logger.warning("Will only extract standard star spectra.")
 
-        reduced_files = get_reduced_group("reduced_std")
+        reduced_files = get_file_group("reduced_std")
 
     else:
 
-        reduced_files = get_reduced_group("reduced_science", "reduced_std")
+        reduced_files = get_file_group("reduced_science", "reduced_std")
 
     return reduced_files
 
-
-def choose_obj_centrum(file_list, figsize=(18, 12)):
+def choose_obj_centrum_sky(file_list):
     """
-    An interactive method to choose the center of the object on the frame.
+    A wrapper for `choose_obj_centrum` that is used in the sky-subtraction routine.
 
     Parameters
     ----------
     file_list : list
-        A list of filenames to be reduced.
-
-    figsize : tuple
-        The size of the figure to be displayed.
-        Default is (18, 12).
+        A list of filenames.
 
     Returns
     -------
     center_dict : dict
-        A dictionary containing the chosen centers of the objects.
-        Format: {filename: (x, y)}
+        A dictionary containing the user clicked object centers.
+        Format: {filename: (x, y)} 
     """
-
-    logger.info("Starting object-choosing GUI. Follow the instructions on the plots.")
 
     # used for more readable plotting code
     plot_title = lambda file: f"Object position estimation for {file}.\n" \
     "Press on the object on a spectral point with no bright sky-lines (but away from detector edges.)" \
     "\nYou can try several times. Press 'q' or close plot when done."
 
-    # cointainer ti store the clicked points - this will be returned
-    center_dict = {}
+    titles = [plot_title(file) for file in file_list]
 
-    # this is the event we connect to the interactive plot
-    def onclick(event):
-        x = int(event.xdata)
-        y = int(event.ydata)
-
-        # put the clicked point in the dictionary
-        center_dict[file] = (x, y)
-
-        # Remove any previously clicked points
-        plt.cla()
-
-        show_frame(data, plot_title(file), new_figure=False, show=False)
-
-        # Color the clicked point
-        plt.scatter(x, y, marker="x", color="red", s=50, label="Selected point")
-        plt.legend()
-        plt.draw()  # Update the plot
-
-    # loop over the files and display the interactive plot
-    for file in file_list:
-        
-
-        frame = open_fits(output_dir, file)
-        data = frame[0].data
-        
-        plt.figure(figsize=figsize)
-        plt.connect("button_press_event", onclick)
-        show_frame(data, plot_title(file), new_figure=False)
-
-    logger.info("Object centers chosen successfully:")
-    print(center_dict, "\n------------------------------------")
-
-    return center_dict
+    return choose_obj_centrum(file_list, titles)
 
 
 def refine_obj_center(x, slice, clicked_center, FWHM_AP):
@@ -547,7 +479,7 @@ def run_sky_subtraction():
 
     reduced_files = get_reduced_frames()
 
-    center_dict = choose_obj_centrum(reduced_files)
+    center_dict = choose_obj_centrum_sky(reduced_files)
 
     subtracted_frames = remove_sky_background(center_dict)
 

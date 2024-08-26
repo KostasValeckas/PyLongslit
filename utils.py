@@ -8,7 +8,7 @@ from logger import logger
 import os
 from astropy.io import fits
 import numpy as np
-from parser import detector_params, flat_params, science_params 
+from parser import detector_params, flat_params, science_params, output_dir
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import exposure
@@ -356,4 +356,96 @@ def flip_and_rotate(frame_data, transpose, flip):
         logger.info("Flipping the image to make wavelengths increase with x-pixels...")
         frame_data = np.flip(frame_data, axis=1)
 
-    return frame_data
+
+
+def get_file_group(*prefixes):
+    """
+    Helper method to retrieve the names of the
+    reduced frames (science or standard) from the output directory.
+
+    Parameters
+    ----------
+    prefixes : str
+        Prefixes of the files to be retrieved.
+        Example: "reduced_science", "reduced_std"
+
+    Returns
+    -------
+    reduced_files : list
+        A list of reduced files.
+    """
+
+    file_list = os.listdir(output_dir)
+
+    files = [file for file in file_list if file.startswith(prefixes)]
+
+    if len(files) == 0:
+        logger.warning(f"No files found with prefixes {prefixes}.")
+
+    logger.info(f"Found {len(files)} frames:")
+    list_files(files)
+
+    return files
+
+def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
+    #TODO: titles list is a bit hacky, should be refactored
+    """
+    An interactive method to choose the center of the object on the frame.
+
+    Parameters
+    ----------
+    file_list : list
+        A list of filenames to be reduced.
+
+    titles : list
+        A list of titles for the plots, matching the file_list.
+
+    figsize : tuple
+        The size of the figure to be displayed.
+        Default is (18, 12).
+
+    Returns
+    -------
+    center_dict : dict
+        A dictionary containing the chosen centers of the objects.
+        Format: {filename: (x, y)}
+    """
+
+    logger.info("Starting object-choosing GUI. Follow the instructions on the plots.")
+
+    # cointainer ti store the clicked points - this will be returned
+    center_dict = {}
+
+    # this is the event we connect to the interactive plot
+    def onclick(event):
+        x = int(event.xdata)
+        y = int(event.ydata)
+
+        # put the clicked point in the dictionary
+        center_dict[file] = (x, y)
+
+        # Remove any previously clicked points
+        plt.cla()
+
+        show_frame(data, titles[i], new_figure=False, show=False)
+
+        # Color the clicked point
+        plt.scatter(x, y, marker="x", color="red", s=50, label="Selected point")
+        plt.legend()
+        plt.draw()  # Update the plot
+
+    # loop over the files and display the interactive plot
+    for i,file in enumerate(file_list):
+        
+
+        frame = open_fits(output_dir, file)
+        data = frame[0].data
+        
+        plt.figure(figsize=figsize)
+        plt.connect("button_press_event", onclick)
+        show_frame(data, titles[i], new_figure=False)
+
+    logger.info("Object centers chosen successfully:")
+    print(center_dict, "\n------------------------------------")
+
+    return center_dict
