@@ -449,3 +449,46 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     print(center_dict, "\n------------------------------------")
 
     return center_dict
+
+def refine_obj_center(x, slice, clicked_center, FWHM_AP):
+    """
+    Refine the object center based on the slice of the data.
+
+    Try a simple numerical estimation of the object center, and check
+    if it is within the expected region. If not, use the clicked point.
+
+    Used it in the `trace_sky` method.
+
+    Parameters
+    ----------
+    x : array
+        The x-axis of the slice.
+
+    slice : array
+        The slice of the data.
+
+    clicked_center : int
+        The center of the object clicked by the user.
+
+    FWHM_AP : int
+        The FWHM of the object.
+
+    Returns
+    -------
+    center : int
+        The refined object center.
+    """
+
+    logger.info("Refining the object center...")
+
+    # assume center is at the maximum of the slice
+    center = x[np.argmax(slice)]
+
+    # check if the center is within the expected region (2FWHM from the clicked point)
+    if center < clicked_center - 2 * FWHM_AP or center > clicked_center + 2 * FWHM_AP:
+        logger.warning("The estimated object center is outside the expected region.")
+        logger.warning("Using the user-clicked point as the center.")
+        logger.warning("This is okay if this is on detector edge or a singular occurence.")
+        center = clicked_center
+
+    return center

@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from astropy.modeling.fitting import LevMarLSQFitter
 from astropy.modeling import Fittable1DModel, Parameter
 from astropy.modeling.models import Const1D
+from utils import refine_obj_center
 
 class GeneralizedNormal1D(Fittable1DModel):
     """
@@ -87,11 +88,11 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
         beta=2,  # Initial guess for beta
         bounds={
             # allow the amplitude to vary by 2 times the guess
-            "amplitude": (amplitude_guess, 2 * amplitude_guess),
+            "amplitude": (0, 1.1 * amplitude_guess),
             # allow the mean to vary by 3 FWHM
             "mean": (spacial_center - 3 * FWHM_AP, spacial_center + 3 * FWHM_AP),
-            # allow the stddev to vary by 2 FWHM, but assume at least one pixel
-            "stddev": (gaussian_fwhm_to_sigma, 2 * FWHM_AP * gaussian_fwhm_to_sigma),
+            # allow the stddev to vary by 2 FWHM
+            "stddev": (gaussian_fwhm_to_sigma, 4*FWHM_AP*gaussian_fwhm_to_sigma),
             "beta": (2, 20)
         }
     )
@@ -103,23 +104,38 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
     fitter = LevMarLSQFitter()
     g_fit = fitter(g_model, x, val)
 
-    print(g_fit)
+    #print(g_fit)
 
     #plot the results
-    plt.figure()
-    plt.plot(x, val, label="Data")
-    plt.plot(x, g_fit(x), label="Fit")
-    plt.axhline(y=g_fit.amplitude.value, color="red", linestyle="--", label="Fitted amplitude")
-    plt.show()
+    #plt.figure()
+    #plt.plot(x, val, label="Data")
+    #plt.plot(x, g_fit(x), label="Fit")
+    #plt.axhline(y=g_fit.amplitude.value, color="red", linestyle="--", label="Fitted amplitude")
+    #plt.show()
+
     
     # extract the fitted peak position and FWHM:
     fit_center = g_fit.mean.value
     fitted_FWHM = g_fit.stddev.value * gaussian_sigma_to_fwhm
+    amplitude = g_fit.amplitude.value
 
-    return fit_center, fitted_FWHM, g_fit.amplitude.value
+    # TODO - take absolute values of noise, and compare for better
+    # fitting
+
+    # this is a simple creteria but seems to be stable enough 
+    # TODO: make this more sophisticated
+    if amplitude < np.max(val) * 0.99:
+        return None, None
+    
+    #plot QA
+    plt.plot(x, val, label="Data")
+    plt.plot(x, g_fit(x), label="Fit")
+    plt.show()
+    
+    return fit_center, fitted_FWHM
 
 def find_obj_frame(filename, spacial_center, FWHM_AP):
-    
+
     # open the file
     hdul = open_fits(output_dir, filename)
     data = hdul[0].data
@@ -127,25 +143,68 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     # final containers for the results
     centers = []
     FWHMs = []
-    amps = []
+
 
     # loop through the columns and find obj in each
-    for i in range(data.shape[1]):
+    #for i in range(data.shape[1]):
+    for i in range(500):
         x = np.arange(data.shape[0])
         val = data[:, i]
-        center, FWHM, amp = find_obj_one_column(x, val, spacial_center, FWHM_AP)
+
+        center, FWHM = find_obj_one_column(x, val, spacial_center, FWHM_AP)
 
         centers.append(center)
         FWHMs.append(FWHM)
-        amps.append(amp)
 
-    # plot the results
-    plt.figure()
-    plt.plot(centers, label="Fitted center")
-    plt.plot(FWHMs, label="Fitted FWHM")
-    plt.plot(amps, label="Fitted amplitude")
-    print(centers)
+    plt.plot(centers, "+", label="Fitted center")
     plt.show()
+    plt.plot(FWHMs, "+", color="green", linestyle="--", label="FWHM")
+    plt.show()
+
+def refine_obj_centers(center_dict, FWHM_AP):
+    #TODO: move this to utils and use in sky subtraction
+    """
+    Refines the object centers.
+
+    Driver for the `refine_obj_center` function.
+
+    Parameters
+    ----------
+    center_dict : dict
+        A dictionary containing the object centers.
+        Format: {filename: (x, y)}
+
+    Returns
+    -------
+    refined_centers : dict
+        A dictionary containing the refined object centers.
+        Format: {filename: (x, y)}
+    """
+
+    logger.info("Refining object centers...")
+
+    refined_centers = {}
+
+    for filename, center in center_dict.items():
+        logger.info(f"Refining object center for {filename}...")
+        
+        # open the file
+        hdul = open_fits(output_dir, filename)
+        data = hdul[0].data
+
+        # get slice at where user defined the point
+        slice = data[:, center[0]]
+        x_slice = np.arange(slice.shape[0])
+                     
+        refined_spat_center = refine_obj_center(x_slice, slice, center[1], FWHM_AP)
+
+        refined_centers[filename] = (center[0], refined_spat_center)
+
+    logger.info("Refinement done.")
+    print(refined_centers)
+    print("------------------------------------")
+
+    return refined_centers
 
 def find_obj(center_dict):
 
@@ -169,7 +228,9 @@ def run_obj_trace():
     # get the user-guess for the object center
     center_dict = choose_obj_centrum_obj_trace(filenames)
 
-    find_obj(center_dict)
+    refined_centers = refine_obj_centers(center_dict, extract_params["FWHM_AP"])
+
+    find_obj(refined_centers)
 
 
 if __name__ == "__main__":

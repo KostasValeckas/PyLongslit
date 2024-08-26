@@ -8,6 +8,7 @@ import numpy as np
 from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
 from utils import show_frame, get_file_group, choose_obj_centrum
+from utils import refine_obj_center
 
 def get_reduced_frames():
     """
@@ -75,48 +76,7 @@ def choose_obj_centrum_sky(file_list):
     return choose_obj_centrum(file_list, titles)
 
 
-def refine_obj_center(x, slice, clicked_center, FWHM_AP):
-    """
-    Refine the object center based on the slice of the data.
 
-    Try a simple numerical estimation of the object center, and check
-    if it is within the expected region. If not, use the clicked point.
-
-    Used it in the `trace_sky` method.
-
-    Parameters
-    ----------
-    x : array
-        The x-axis of the slice.
-
-    slice : array
-        The slice of the data.
-
-    clicked_center : int
-        The center of the object clicked by the user.
-
-    FWHM_AP : int
-        The FWHM of the object.
-
-    Returns
-    -------
-    center : int
-        The refined object center.
-    """
-
-    logger.info("Refining the object center...")
-
-    # assume center is at the maximum of the slice
-    center = x[np.argmax(slice)]
-
-    # check if the center is within the expected region (2FWHM from the clicked point)
-    if center < clicked_center - 2 * FWHM_AP or center > clicked_center + 2 * FWHM_AP:
-        logger.warning("The estimated object center is outside the expected region.")
-        logger.warning("Using the user-clicked point as the center.")
-        logger.warning("This is okay if this is on detector edge or a singular occurence.")
-        center = clicked_center
-
-    return center
 
 
 def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
