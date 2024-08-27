@@ -12,6 +12,7 @@ from astropy.modeling.models import Const1D
 from utils import refine_obj_center
 import matplotlib.pyplot as plt
 from utils import hist_normalize
+from numpy.polynomial.chebyshev import chebfit, chebval
 
 
 class GeneralizedNormal1D(Fittable1DModel):
@@ -134,10 +135,10 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
 
     signal_to_noise = estimate_signal_to_noise(val, amplitude)
 
-    # plot QA
-    # plt.plot(x, val, label="Data")
-    # plt.plot(x, g_fit(x), label="Fit")
-    # plt.show()
+    #plot QA
+    #plt.plot(x, val, label="Data")
+    #plt.plot(x, g_fit(x), label="Fit")
+    #plt.show()
 
     return fit_center, fitted_FWHM, signal_to_noise
 
@@ -304,6 +305,7 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
 
     # loop through the columns and find obj in each
     for i in range(data.shape[1]):
+    #for i in range(data.shape[1]):
         x = np.arange(data.shape[0])
         val = data[:, i]
 
@@ -319,6 +321,34 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     obj_start_index, obj_end_index = interactive_adjust_obj_limits(
         data, centers, signal_to_noise_array, SNR_initial_guess
     )
+
+    # make a dummy x_array for fitting
+    x = np.arange(len(centers))
+
+    # for centers and FWHMs, mask everythong below obj_start_index and above obj_end_index
+
+    good_centers = np.array(centers)[obj_start_index:obj_end_index]
+    good_FWHMs = np.array(FWHMs)[obj_start_index:obj_end_index]
+    good_x = x[obj_start_index:obj_end_index]
+
+
+    centers_fit = chebfit(good_x, good_centers, deg=3)
+
+    # plot the results
+    plt.figure()
+    plt.plot(x, centers, label="Data")
+    plt.plot(x, chebval(x, centers_fit), label="Fit")
+    plt.show()
+
+    fwhm_fit = chebfit(good_x, good_FWHMs, deg=3)
+
+    # plot the results
+    plt.figure()
+    plt.plot(x, FWHMs, label="Data")
+    plt.plot(x, chebval(x, fwhm_fit), label="Fit")
+    plt.show()
+
+
 
 
 def refine_obj_centers(center_dict, FWHM_AP):

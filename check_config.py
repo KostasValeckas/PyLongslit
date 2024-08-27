@@ -169,19 +169,6 @@ def check_regions(any_errors):
             logger.warning("End coordinates must be larger than start coordinates.")
             any_errors = True
 
-    
-
-    # check object region
-    object_region = detector_params["object_region"]
-    
-    #TODO: Take into acount spectral direction
-    if object_region["use_obj_region"]:
-        if (
-            object_region["object_spec_start"] < 0
-            or object_region["object_spec_end"] > ysize
-        ):
-            logger.warning("Object region is not within the detector area.")
-            any_errors = True
 
     # check flat normalization region
     if flat_params["user_custom_norm_area"]:

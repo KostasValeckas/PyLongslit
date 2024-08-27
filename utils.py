@@ -356,6 +356,8 @@ def flip_and_rotate(frame_data, transpose, flip):
         logger.info("Flipping the image to make wavelengths increase with x-pixels...")
         frame_data = np.flip(frame_data, axis=1)
 
+    return frame_data
+
 
 
 def get_file_group(*prefixes):
