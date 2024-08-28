@@ -1,8 +1,9 @@
 from parser import output_dir
-from utils import open_fits, list_files
+from utils import open_fits, list_files, get_skysub_files
 from logger import logger
 import os
 import numpy as np
+from photutils.aperture import RectangularAperture
 
 def load_wavelength_map():
     
@@ -35,6 +36,10 @@ def load_object_traces():
         logger.info(f"Found {len(filenames)} object traces:")
         list_files(filenames)
 
+    
+    # sort as this is needed when cross referencing with skysubbed files
+    filenames.sort()
+
     # this is the container that will be returned
     trace_dict = {}
 
@@ -61,6 +66,16 @@ def load_object_traces():
     
     return trace_dict
 
+def extract_object_optimal(wavelength_map, trace_data, skysubbed_frame):
+
+
+    pixel, center, wavelength = trace_data
+
+    # Open the skysubbed frame
+    hdul = open_fits(output_dir, skysubbed_frame)
+    skysubbed_data = hdul[0].data
+
+    pass
 
 
 def run_extract_1d():
@@ -70,6 +85,13 @@ def run_extract_1d():
     wavelength_map = load_wavelength_map()
 
     trace_dir = load_object_traces()
+
+    skysubbed_files = get_skysub_files()
+
+    if len(skysubbed_files) != len(trace_dir):
+        logger.error("Number of skysubbed files and object traces do not match.")
+        logger.error("Re-run both procedures or remove left-over files.")
+        exit()
 
     logger.info("extract_1d done")
 

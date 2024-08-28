@@ -390,6 +390,32 @@ def get_file_group(*prefixes):
 
     return files
 
+def get_skysub_files():
+    """
+    Wrapper for ´get_file_group´ that returns the filenames of the skysubtracted,
+    and performs some sanity checks.
+
+    Returns
+    -------
+    filenames : list
+        A list of filenames of the skysubtracted files.
+    """
+
+    logger.info("Getting skysubtracted files...")
+
+    filenames = get_file_group("skysub")
+
+    if len(filenames) == 0:
+        logger.error("No skysubtracted files found.")
+        logger.error("Make sure you run the sky-subraction routine first.")
+        exit()
+
+    # sort as this is needed when cross referencing with traces
+    filenames.sort()
+
+    return filenames
+
+
 
 def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     # TODO: titles list is a bit hacky, should be refactored

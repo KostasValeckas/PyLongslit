@@ -4,7 +4,7 @@ from astropy.modeling.models import Gaussian1D
 from parser import extract_params, output_dir
 import numpy as np
 from astropy.stats import gaussian_fwhm_to_sigma, gaussian_sigma_to_fwhm
-from utils import get_file_group, open_fits, write_to_fits, choose_obj_centrum
+from utils import open_fits, write_to_fits, choose_obj_centrum, get_skysub_files
 import matplotlib.pyplot as plt
 from astropy.modeling.fitting import LevMarLSQFitter
 from astropy.modeling import Fittable1DModel, Parameter
@@ -35,27 +35,6 @@ class GeneralizedNormal1D(Fittable1DModel):
         return amplitude * np.exp(-((np.abs(x - mean) / stddev) ** beta))
 
 
-def get_skysub_files():
-    """
-    Wrapper for ´get_file_group´ that returns the filenames of the skysubtracted,
-    and performs some sanity checks.
-
-    Returns
-    -------
-    filenames : list
-        A list of filenames of the skysubtracted files.
-    """
-
-    logger.info("Getting skysubtracted files...")
-
-    filenames = get_file_group("skysub")
-
-    if len(filenames) == 0:
-        logger.error("No skysubtracted files found.")
-        logger.error("Make sure you run the sky-subraction routine first.")
-        exit()
-
-    return filenames
 
 
 def choose_obj_centrum_obj_trace(file_list):
