@@ -87,6 +87,7 @@ def open_fits(dir_path, file_name):
 
     return hdul
 
+
 def write_to_fits(data, header, file_name, path):
     """
     A more robust wrapper for 'astropy.io.fits.writeto'.
@@ -101,7 +102,7 @@ def write_to_fits(data, header, file_name, path):
 
     file_name : str
         The name of the file to write to.
-    
+
     path : str
         The path to the directory to write the file to.
     """
@@ -111,7 +112,6 @@ def write_to_fits(data, header, file_name, path):
     # acount for missing slashes in the path
     except FileNotFoundError:
         fits.writeto(path + file_name, data, header, overwrite=True)
-        
 
 
 def check_dimensions(FileList: FileList, x, y):
@@ -157,6 +157,7 @@ def check_dimensions(FileList: FileList, x, y):
     logger.info("All files have the correct dimensions.")
     return None
 
+
 def hist_normalize(data, z_thresh=3):
     """
     Aggresive normalization of used for showing detail in raw frames.
@@ -178,7 +179,6 @@ def hist_normalize(data, z_thresh=3):
         The normalized data.
     """
 
-
     # Calculate the Z-scores
     mean = np.mean(data)
     std = np.std(data)
@@ -187,11 +187,11 @@ def hist_normalize(data, z_thresh=3):
     # Remove outliers by setting them to the mean or a capped value
     data_no_outliers = np.where(np.abs(z_scores) > z_thresh, mean, data)
 
-
     # Now apply histogram equalization
     data_equalized = exposure.equalize_hist(data_no_outliers)
 
     return data_equalized
+
 
 def show_flat():
     """
@@ -218,12 +218,14 @@ def show_flat():
     plt.imshow(norm_data, cmap="gray")
 
 
-def show_frame(data, title, figsize = (18,12), normalize = True, new_figure = True, show = True):
+def show_frame(
+    data, title, figsize=(18, 12), normalize=True, new_figure=True, show=True
+):
     """
     This method is used to plot any frames passed the `reduce`
     procedure. It is used for visual inspection of the data.
     It assumes all data passed to it as aligned in a certain
-    direction (this is done in the `reduce` procedure). Data is 
+    direction (this is done in the `reduce` procedure). Data is
     normalized before plotting.
 
     Parameters
@@ -245,19 +247,20 @@ def show_frame(data, title, figsize = (18,12), normalize = True, new_figure = Tr
     """
 
     # normalize to show detail
-    if normalize: data = hist_normalize(data)
+    if normalize:
+        data = hist_normalize(data)
 
     # start the figure
 
-    if new_figure: plt.figure(figsize=figsize)
+    if new_figure:
+        plt.figure(figsize=figsize)
 
     plt.imshow(data, cmap="gray")
     plt.title(title)
     plt.xlabel("Pixels in spectral direction")
     plt.ylabel("Pixels in spatial direction")
-    if show: plt.show()
-
-
+    if show:
+        plt.show()
 
 
 def list_files(file_list: FileList):
@@ -275,6 +278,7 @@ def list_files(file_list: FileList):
         print(file)
     print("------------------------------------")
     return None
+
 
 def check_rotation():
     """
@@ -320,8 +324,6 @@ def check_rotation():
 
     return transpose, flip
 
-    
-
 
 def flip_and_rotate(frame_data, transpose, flip):
     """
@@ -359,7 +361,6 @@ def flip_and_rotate(frame_data, transpose, flip):
     return frame_data
 
 
-
 def get_file_group(*prefixes):
     """
     Helper method to retrieve the names of the
@@ -389,8 +390,9 @@ def get_file_group(*prefixes):
 
     return files
 
+
 def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
-    #TODO: titles list is a bit hacky, should be refactored
+    # TODO: titles list is a bit hacky, should be refactored
     """
     An interactive method to choose the center of the object on the frame.
 
@@ -437,12 +439,11 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
         plt.draw()  # Update the plot
 
     # loop over the files and display the interactive plot
-    for i,file in enumerate(file_list):
-        
+    for i, file in enumerate(file_list):
 
         frame = open_fits(output_dir, file)
         data = frame[0].data
-        
+
         plt.figure(figsize=figsize)
         plt.connect("button_press_event", onclick)
         show_frame(data, titles[i], new_figure=False)
@@ -451,6 +452,7 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     print(center_dict, "\n------------------------------------")
 
     return center_dict
+
 
 def refine_obj_center(x, slice, clicked_center, FWHM_AP):
     """
@@ -490,7 +492,134 @@ def refine_obj_center(x, slice, clicked_center, FWHM_AP):
     if center < clicked_center - 2 * FWHM_AP or center > clicked_center + 2 * FWHM_AP:
         logger.warning("The estimated object center is outside the expected region.")
         logger.warning("Using the user-clicked point as the center.")
-        logger.warning("This is okay if this is on detector edge or a singular occurence.")
+        logger.warning(
+            "This is okay if this is on detector edge or a singular occurence."
+        )
         center = clicked_center
 
     return center
+
+
+def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
+    # TODO - modify returns - choose between return obj or return sky
+    # or maybe return just the sky_left, sky_righrt and let other modules
+    # take care of the rest
+    """
+    From a user inputted object center guess, tries to refine the object centrum,
+    and then estimates the sky region around the object.
+
+    Parameters
+    ----------
+    slice_spec : array
+        The slice of the data.
+
+    spatial_center_guess : int
+        The user clicked center of the object.
+
+    FWHM_AP : int
+        The FWHM of the object.
+
+    Returns
+    -------
+    x_spec : array
+        The x-axis of the slice.
+
+    x_sky : array
+        The x-axis of the sky region.
+
+    sky_val : array
+        The values of the sky region.
+
+    sky_left : int
+        The left boundary of the sky region.
+
+    sky_right : int
+        The right boundary of the sky region.
+    """
+
+    x_spec = np.arange(len(slice_spec))
+
+    center = refine_obj_center(x_spec, slice_spec, spatial_center_guess, FWHM_AP)
+
+    # QA for sky region selection
+    sky_left = center - 2 * FWHM_AP
+    sky_right = center + 2 * FWHM_AP
+
+    return center, sky_left, sky_right
+
+
+def show_1d_fit_QA(
+    x_data,
+    y_data,
+    x_fit_values=None,
+    y_fit_values=None,
+    residuals=None,
+    x_label=None,
+    y_label=None,
+    legend_label=None,
+    title=None,
+    figsize=(18, 12),
+):
+    """
+    A method to plot the 1D fit and residuals for QA purposes.
+
+    Parameters
+    ----------
+    x_data : array
+        The x-axis data.
+    
+    y_data : array
+        The y-axis data.
+
+    x_fit_values : array, optional
+        The x-axis values of the evaluated fit.
+
+    y_fit_values : array, optional
+        The y-axis values of the evaluated fit.
+
+    residuals : array, optional
+        The residuals of the fit.
+
+    x_label : str, optional
+        The x-axis label.
+
+    y_label : str, optional
+        The y-axis label.
+
+    legend_label : str, optional
+        The label for the data.
+
+    title : str, optional
+        The title of the plot.
+
+    figsize : tuple, optional
+        The size of the figure.
+    """
+
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
+
+    ax1.plot(
+        x_data,
+        y_data,
+        "x",
+        color="green",
+        label=legend_label,
+    )
+
+    ax1.plot(x_fit_values, y_fit_values, label="Fit")
+    ax1.set_ylabel(y_label)
+    ax1.legend()
+
+    ax2.plot(x_data, residuals, "x", color="red", label = "Residuals")
+    ax2.set_xlabel(x_label)
+    ax2.set_ylabel(y_label)
+    ax2.axhline(0, color="black", linestyle="--")
+    ax2.legend()
+
+    # setting the x-axis to be shared between the two plots
+    ax1.set_xlim(ax2.get_xlim())
+    ax1.set_xticks([])
+
+    fig.suptitle(title)
+
+    plt.show()

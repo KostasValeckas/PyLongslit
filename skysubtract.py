@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
-from utils import show_frame, get_file_group, choose_obj_centrum
+from utils import show_frame, get_file_group, choose_obj_centrum, estimate_sky_regions
 from utils import refine_obj_center
 
 def get_reduced_frames():
@@ -79,55 +79,6 @@ def choose_obj_centrum_sky(file_list):
 
 
 
-def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
-    """
-    From a user inputted object center guess, tries to refine the object centrum,
-    and then estimates the sky region around the object.
-
-    Parameters
-    ----------
-    slice_spec : array
-        The slice of the data.
-
-    spatial_center_guess : int
-        The user clicked center of the object.
-
-    FWHM_AP : int
-        The FWHM of the object.
-
-    Returns
-    -------
-    x_spec : array
-        The x-axis of the slice.
-
-    x_sky : array
-        The x-axis of the sky region.
-
-    sky_val : array
-        The values of the sky region.
-
-    sky_left : int
-        The left boundary of the sky region.
-
-    sky_right : int
-        The right boundary of the sky region.
-    """
-
-    x_spec = np.arange(len(slice_spec))
-
-    center = refine_obj_center(x_spec, slice_spec, spatial_center_guess, FWHM_AP)
-
-    # QA for sky region selection
-    sky_left = center - 2 * FWHM_AP
-    sky_right = center + 2 * FWHM_AP
-
-    # create sky value arrays by excludint the object region
-    sky_val = np.concatenate((slice_spec[:sky_left], slice_spec[sky_right:]))
-    x_sky = np.concatenate((x_spec[:sky_left], x_spec[sky_right:]))
-
-    return x_spec, x_sky, sky_val, sky_left, sky_right
-
-
 def fit_sky_one_column(
     slice_spec,
     spatial_center_guess,
@@ -167,9 +118,16 @@ def fit_sky_one_column(
     """
 
     # sky region for this column
-    x_spec, x_sky, sky_val, _, _ = estimate_sky_regions(
+    _, sky_left, sky_right = estimate_sky_regions(
         slice_spec, spatial_center_guess, FWHM_AP
     )
+
+    # x array for the fit
+    x_spec = np.arange(len(slice_spec))
+
+    # select the sky region in x and sky arrays
+    x_sky = np.concatenate((x_spec[:sky_left], x_spec[sky_right:]))
+    sky_val = np.concatenate((slice_spec[:sky_left], slice_spec[sky_right:]))
 
     # mask the outliers
     clip_mask = sigma_clip(sky_val, sigma=SIGMA_APSKY, maxiters=ITERS_APSKY).mask
@@ -230,12 +188,15 @@ def fit_sky_QA(
         Default is (18, 12).
     """
 
-    x_spec, _, _, sky_left, sky_right = estimate_sky_regions(
+    refined_center, sky_left, sky_right = estimate_sky_regions(
         slice_spec, spatial_center_guess, FWHM_AP
     )
 
+    #dummy x array for plotting
+    x_spec = np.arange(len(slice_spec))
+
     sky_fit = fit_sky_one_column(
-        slice_spec, spatial_center_guess, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
+        slice_spec, refined_center, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
     )
 
     plt.figure(figsize=figsize)

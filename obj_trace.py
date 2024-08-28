@@ -13,6 +13,9 @@ from utils import refine_obj_center
 import matplotlib.pyplot as plt
 from utils import hist_normalize
 from numpy.polynomial.chebyshev import chebfit, chebval
+from utils import estimate_sky_regions
+from utils import show_1d_fit_QA
+import os
 
 
 class GeneralizedNormal1D(Fittable1DModel):
@@ -93,11 +96,15 @@ def estimate_signal_to_noise(data, fitted_amplitude):
 
 def find_obj_one_column(x, val, spacial_center, FWHM_AP):
 
+    refined_center, sky_left, sky_right = estimate_sky_regions(
+        val, spacial_center, FWHM_AP
+    )
+
     amplitude_guess = np.max(val)
 
     # build a Generalized Normal fitter with an added constant
     g_init = GeneralizedNormal1D(
-        amplitude=amplitude_guess,
+        amplitude=refined_center,
         mean=spacial_center,
         stddev=FWHM_AP * gaussian_fwhm_to_sigma,
         beta=2,  # Initial guess for beta
@@ -115,9 +122,13 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
     # const = Const1D(amplitude=np.mean(val))
     g_model = g_init  # + const
 
+    # get the area only around the object
+    obj_x = x[sky_left:sky_right]
+    obj_val = val[sky_left:sky_right]
+
     # perform the fit
     fitter = LevMarLSQFitter()
-    g_fit = fitter(g_model, x, val)
+    g_fit = fitter(g_model, obj_x, obj_val)
 
     # print(g_fit)
 
@@ -135,10 +146,10 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
 
     signal_to_noise = estimate_signal_to_noise(val, amplitude)
 
-    #plot QA
-    #plt.plot(x, val, label="Data")
-    #plt.plot(x, g_fit(x), label="Fit")
-    #plt.show()
+    # plot QA
+    # plt.plot(x, val, label="Data")
+    # plt.plot(x, g_fit(x), label="Fit")
+    # plt.show()
 
     return fit_center, fitted_FWHM, signal_to_noise
 
@@ -238,7 +249,6 @@ def interactive_adjust_obj_limits(
         )
         ax1.legend()
         ax1.set_ylabel("Spacial pixel")
-        
 
         # plot the object image for visual referrence
         ax2.clear()
@@ -262,8 +272,6 @@ def interactive_adjust_obj_limits(
         # setting the x-axis to be shared between the two plots
         ax1.set_xlim(ax2.get_xlim())
         ax1.set_xticks([])
-
-        
 
         fig.canvas.draw()
 
@@ -289,6 +297,47 @@ def interactive_adjust_obj_limits(
     return start_index, end_index
 
 
+def show_obj_trace_QA(
+    good_x,
+    x_fit,
+    good_centers,
+    center_fit_values,
+    FWHM_fit_values,
+    good_FWHMs,
+    resid_centers,
+    resid_FWHMs,
+    filename,
+):
+
+    # plot the result of center finding for QA
+    show_1d_fit_QA(
+        good_x,
+        good_centers,
+        x_fit_values=x_fit,
+        y_fit_values=center_fit_values,
+        residuals=resid_centers,
+        x_label="Spectral pixel",
+        y_label="Spatial pixel",
+        legend_label="Fitted centers for every detector column",
+        title=f"Center finding QA for {filename}.\n Ensure the fit is good and residuals are random."
+        "\nIf not, adjust the fit parameters in the config file.",
+    )
+
+    # plot the result of FWHM finding for QA
+    show_1d_fit_QA(
+        good_x,
+        good_FWHMs,
+        x_fit_values=x_fit,
+        y_fit_values=FWHM_fit_values,
+        residuals=resid_FWHMs,
+        x_label="Spectral pixel",
+        y_label="Spatial pixels",
+        legend_label="Fitted FWHMs for every detector column",
+        title=f"FWHM finding QA for {filename}.\n Ensure the fit is good and residuals are random."
+        "\nIf not, adjust the fit parameters in the config file.",
+    )
+
+
 def find_obj_frame(filename, spacial_center, FWHM_AP):
 
     # get initial guess for SNR
@@ -305,7 +354,7 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
 
     # loop through the columns and find obj in each
     for i in range(data.shape[1]):
-    #for i in range(data.shape[1]):
+        # for i in range(data.shape[1]):
         x = np.arange(data.shape[0])
         val = data[:, i]
 
@@ -331,70 +380,37 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     good_FWHMs = np.array(FWHMs)[obj_start_index:obj_end_index]
     good_x = x[obj_start_index:obj_end_index]
 
-
     centers_fit = chebfit(good_x, good_centers, deg=3)
-
-    # plot the results
-    plt.figure()
-    plt.plot(x, centers, label="Data")
-    plt.plot(x, chebval(x, centers_fit), label="Fit")
-    plt.show()
-
     fwhm_fit = chebfit(good_x, good_FWHMs, deg=3)
 
-    # plot the results
-    plt.figure()
-    plt.plot(x, FWHMs, label="Data")
-    plt.plot(x, chebval(x, fwhm_fit), label="Fit")
-    plt.show()
+    # dummy x array for plotting the fit
+    x_fit = np.linspace(good_x[0], good_x[-1], 1000)
 
+    centers_fit_val = chebval(x_fit, centers_fit)
+    fwhm_fit_val = chebval(x_fit, fwhm_fit)
 
+    # evaluate the fit at every pixel
+    centers_fit_pix = chebval(good_x, centers_fit)
+    fwhm_fit_pix = chebval(good_x, fwhm_fit)
 
+    # residuals
+    resid_centers = good_centers - centers_fit_pix
+    resid_FWHMs = good_FWHMs - fwhm_fit_pix
 
-def refine_obj_centers(center_dict, FWHM_AP):
-    # TODO: move this to utils and use in sky subtraction
-    """
-    Refines the object centers.
+    # show QA
+    show_obj_trace_QA(
+        good_x,
+        x_fit,
+        good_centers,
+        centers_fit_val,
+        fwhm_fit_val,
+        good_FWHMs,
+        resid_centers,
+        resid_FWHMs,
+        filename,
+    )
 
-    Driver for the `refine_obj_center` function.
-
-    Parameters
-    ----------
-    center_dict : dict
-        A dictionary containing the object centers.
-        Format: {filename: (x, y)}
-
-    Returns
-    -------
-    refined_centers : dict
-        A dictionary containing the refined object centers.
-        Format: {filename: (x, y)}
-    """
-
-    logger.info("Refining object centers...")
-
-    refined_centers = {}
-
-    for filename, center in center_dict.items():
-        logger.info(f"Refining object center for {filename}...")
-
-        # open the file
-        hdul = open_fits(output_dir, filename)
-        data = hdul[0].data
-
-        # get slice at where user defined the point
-        slice = data[:, center[0]]
-        x_slice = np.arange(slice.shape[0])
-
-        refined_spat_center = refine_obj_center(x_slice, slice, center[1], FWHM_AP)
-
-        refined_centers[filename] = (center[0], refined_spat_center)
-
-    logger.info("Refinement done.")
-    print(refined_centers)
-    print("------------------------------------")
-
-    return refined_centers
+    return good_x, centers_fit_val, fwhm_fit_val
 
 
 def find_obj(center_dict):
@@ -402,12 +418,48 @@ def find_obj(center_dict):
     # extract the user-guess for the FWHM of the object
     FWHM_AP = extract_params["FWHM_AP"]
 
+    # this is the container for the results
+    obj_dict = {}
+
     # loop through the files
     for filename, center in center_dict.items():
         logger.info(f"Finding object in {filename}...")
         # we only need the spatial center
         spacial_center = center[1]
-        find_obj_frame(filename, spacial_center, FWHM_AP)
+        good_x, centers_fit_val, fwhm_fit_val = find_obj_frame(
+            filename, spacial_center, FWHM_AP
+        )
+        obj_dict[filename] = (good_x, centers_fit_val, fwhm_fit_val)
+
+    return obj_dict
+
+
+def write_obj_trace_results(obj_dict):
+
+    for filename, (good_x, centers_fit_val, fwhm_fit_val) in obj_dict.items():
+
+        # prepare a filename
+        filename = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+
+        logger.info(f"Writing object trace results to {filename}...")
+
+        # change to output directory
+        os.chdir(output_dir)
+
+        # write to the file
+        with open(filename, "w") as f:
+            for x, center, fwhm in zip(good_x, centers_fit_val, fwhm_fit_val):
+                f.write(f"{x}\t{center}\t{fwhm}\n")
+
+        # close the file
+        f.close()
+
+        # change back to the working directory
+        os.chdir("..")
+
+        logger.info(
+            f"Object trace results written to directory {output_dir}, filename: {filename}."
+        )
 
 
 def run_obj_trace():
@@ -418,9 +470,12 @@ def run_obj_trace():
     # get the user-guess for the object center
     center_dict = choose_obj_centrum_obj_trace(filenames)
 
-    refined_centers = refine_obj_centers(center_dict, extract_params["FWHM_AP"])
+    obj_dict = find_obj(center_dict)
 
-    find_obj(refined_centers)
+    write_obj_trace_results(obj_dict)
+
+    logger.info("Object tracing routine finished.")
+    print("----------------------------\n")
 
 
 if __name__ == "__main__":

@@ -10,6 +10,7 @@ from astropy.modeling.models import Chebyshev2D, Const1D
 from astropy.modeling.fitting import LevMarLSQFitter
 from numpy.polynomial.chebyshev import chebfit, chebval
 from utils import write_to_fits
+from utils import show_1d_fit_QA
 
 from astropy.modeling import Fittable1DModel, Parameter
 import numpy as np
@@ -358,7 +359,7 @@ def reidentify(pixnumber, wavelength, master_arc):
     return line_REID
 
 
-def fit_1d_QA(line_REID: dict, figsize=(18, 12)):
+def fit_1d_QA(line_REID: dict):
     """
     Fit the reidentified lines through detector middle for QA.
 
@@ -367,9 +368,6 @@ def fit_1d_QA(line_REID: dict, figsize=(18, 12)):
     line_REID : dict
         Reidentified lines.
     """
-
-    # set up the plot
-    plt.figure(figsize=figsize)
 
     # extract the polynomial order parameter for the fit
     ORDER_WAVELEN_REID = wavecalib_params["ORDER_WAVELEN_REID"]
@@ -387,20 +385,28 @@ def fit_1d_QA(line_REID: dict, figsize=(18, 12)):
     # fit the data
     coeff = chebfit(pixels, wavelengths, deg=ORDER_WAVELEN_REID)
 
+    # evaluate for the QA fit
+    x_fit_values = np.linspace(pixels.min(), pixels.max(), 1000)
+    y_fit_values = chebval(x_fit_values, coeff)
+
+    # prepare residuals for the QA plot
+    residuals = wavelengths - chebval(pixels, coeff)
+
     # plot data
-    plt.plot(pixels, wavelengths, "x", label="Reidentified lines")
-    # overplot the fit
-    x_fine = np.linspace(pixels[0], pixels[-1], 1000)
-    plt.plot(x_fine, chebval(x_fine, coeff), label="Fit")
-    plt.xlabel("Pixels")
-    plt.ylabel("Wavelength (Å)")
-    plt.title(
-        "1D fit to reidentified lines through the middle of the detector.\n"
-        "Inspect the fit for any irregularities.\n"
-        f"You have fitted a polynomial if order {ORDER_WAVELEN_REID}."
+    show_1d_fit_QA(
+        pixels,
+        wavelengths,
+        x_fit_values=x_fit_values,
+        y_fit_values=y_fit_values,
+        residuals=residuals,
+        x_label="Pixels in spectral direction",
+        y_label="Wavelength (Å)",
+        legend_label="Reidentified lines",
+        title="1D fit of reidentified lines through the middle of the detector.\n"\
+            "Check the fit and residuals for any irregularities.\n"\
+            "If needed, change relative parameters in the config file."
     )
-    plt.legend()
-    plt.show()
+   
     
 
 def fit_2d(line_REID: dict):
