@@ -73,7 +73,7 @@ def estimate_signal_to_noise(data, fitted_amplitude):
     return fitted_amplitude / noise
 
 
-def find_obj_one_column(x, val, spacial_center, FWHM_AP):
+def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
 
     refined_center, sky_left, sky_right = estimate_sky_regions(
         val, spacial_center, FWHM_AP
@@ -82,19 +82,17 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
     amplitude_guess = np.max(val)
 
     # build a Generalized Normal fitter with an added constant
-    g_init = GeneralizedNormal1D(
-        amplitude=refined_center,
-        mean=spacial_center,
+    g_init = Gaussian1D(
+        amplitude=amplitude_guess,
+        mean=refined_center,
         stddev=FWHM_AP * gaussian_fwhm_to_sigma,
-        beta=2,  # Initial guess for beta
         bounds={
             # allow the amplitude to vary by 2 times the guess
             "amplitude": (0, 1.1 * amplitude_guess),
-            # allow the mean to vary by 3 FWHM
-            "mean": (spacial_center - 3 * FWHM_AP, spacial_center + 3 * FWHM_AP),
-            # allow the stddev to vary by 2 FWHM
-            "stddev": (gaussian_fwhm_to_sigma, 4 * FWHM_AP * gaussian_fwhm_to_sigma),
-            "beta": (2, 20),
+            # allow the mean to vary by FWHM
+            "mean": (refined_center - FWHM_AP, refined_center + FWHM_AP),
+            # allow the stddev to start at 0.1 pixel and vary by 2 FWHM
+            "stddev": (0.1 * gaussian_fwhm_to_sigma, 2 * FWHM_AP * gaussian_fwhm_to_sigma)
         },
     )
 
@@ -111,17 +109,18 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP):
 
     # print(g_fit)
 
-    # plot the results
-    # plt.figure()
-    # plt.plot(x, val, label="Data")
-    # plt.plot(x, g_fit(x), label="Fit")
-    # plt.axhline(y=g_fit.amplitude.value, color="red", linestyle="--", label="Fitted amplitude")
-    # plt.show()
 
     # extract the fitted peak position and FWHM:
     fit_center = g_fit.mean.value
     fitted_FWHM = g_fit.stddev.value * gaussian_sigma_to_fwhm
     amplitude = g_fit.amplitude.value
+
+    # TODO REFACTOR THIS
+    if fit_center <= refined_center - FWHM_AP or \
+        fit_center >= refined_center + FWHM_AP or \
+        fitted_FWHM >= 2*FWHM_AP or fitted_FWHM <= 0.1 or \
+        amplitude <= 0 or amplitude >= 1.1 * amplitude_guess:
+            logger.warning(f"Fit failed for column {column_index}.")
 
     signal_to_noise = estimate_signal_to_noise(val, amplitude)
 
@@ -200,7 +199,7 @@ def find_obj_position(
 
 
 def interactive_adjust_obj_limits(
-    image, center_data, signal_to_noise_array, SNR_initial_guess, figsize=(18, 12)
+    image, center_data, FWHM_data, signal_to_noise_array, SNR_initial_guess, figsize=(18, 12)
 ):
     # TODO: this is laggy and slow, optimize
 
@@ -338,7 +337,7 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
         val = data[:, i]
 
         center, FWHM, signal_to_noise = find_obj_one_column(
-            x, val, spacial_center, FWHM_AP
+            x, val, spacial_center, FWHM_AP, i
         )
 
         centers.append(center)
@@ -347,11 +346,11 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
 
     # interactive user refinment of object limits
     obj_start_index, obj_end_index = interactive_adjust_obj_limits(
-        data, centers, signal_to_noise_array, SNR_initial_guess
+        data, centers, FWHMs, signal_to_noise_array, SNR_initial_guess
     )
 
     # make a dummy x_array for fitting
-    x = np.arange(len(centers))
+    x = np.arange(data.shape[1])
 
     # for centers and FWHMs, mask everythong below obj_start_index and above obj_end_index
 

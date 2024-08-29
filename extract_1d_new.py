@@ -6,12 +6,16 @@ import numpy as np
 from photutils.aperture import RectangularAperture
 import matplotlib.pyplot as plt
 from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
+from scipy.interpolate import interp1d
+from wavecalib import load_fit2d_REID_from_disc
 
 #Weight function for optimal extraction
 def gaussweight(x, mu, sig):
     return np.exp(-0.5*(x-mu)**2/sig**2) / (np.sqrt(2.*np.pi)*sig)
 
 def load_wavelength_map():
+
+    #TODO - not used. Keep while developing amd then removes
     
     logger.info("Loading wavelength map")
     try:
@@ -86,7 +90,7 @@ def estimate_variance(data, gain, read_out_noise):
 
     
 
-def extract_object_optimal(wavelength_map, trace_data, skysubbed_frame, gain, read_out_noise):
+def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
 
     """
     Extraction algorithm taken from Horne, K. (1986). 
@@ -97,6 +101,9 @@ def extract_object_optimal(wavelength_map, trace_data, skysubbed_frame, gain, re
 
     pixel, center, FWHM = trace_data
 
+
+
+    
     # Open the skysubbed frame
     hdul = open_fits(output_dir, skysubbed_frame)
     
@@ -125,23 +132,18 @@ def extract_object_optimal(wavelength_map, trace_data, skysubbed_frame, gain, re
         ) / np.sum(weight ** 2 / variance[:, i]))
         spec_var.append(np.sum(weight) / np.sum(weight ** 2 / variance[:, i]))
 
-    spec = np.array(spec)
-    spec_var = np.array(spec_var)
+    spec = np.array(spec) / 300
+    spec_var = np.array(spec_var) / (30**2)
 
-    spec = spec
-    spec_var = spec_var
-
-    plt.plot(pixel, spec)
-    plt.plot(pixel, 1/(spec_var))
+    plt.plot(pixel, spec, label = "Extracted spectrum")
+    plt.plot(pixel, np.sqrt(spec_var), label = "Error")
+    plt.legend()
     plt.show()
 
+    return pixel, spec, spec_var
 
 
-
-
-    
-
-def extract_objects(skysubbed_files, trace_dir , wavelength_map):
+def extract_objects(skysubbed_files, trace_dir):
 
     logger.info("Extracting 1D spectra")
 
@@ -156,15 +158,34 @@ def extract_objects(skysubbed_files, trace_dir , wavelength_map):
 
         trace_data = trace_dir[filename_obj]
 
-        extract_object_optimal(wavelength_map, trace_data, filename, gain, read_out_noise)
+        pixel, spec, spec_var = extract_object_optimal(trace_data, filename, gain, read_out_noise)
+
+        wavelength_calibrate(pixel, trace_data[1], spec)
+
+
+def wavelength_calibrate(pixels, centers, spec):
+
+    fit2d_REID = load_fit2d_REID_from_disc()
+
+    ap_wavelen = fit2d_REID(pixels, centers)
+
+    wavelen_homogenous = np.linspace(ap_wavelen[0], ap_wavelen[-1], len(spec))
+    
+    f = interp1d(ap_wavelen, spec, fill_value="extrapolate", kind="cubic")
+    spec_calibrated = f(wavelen_homogenous)
+
+    plt.plot(wavelen_homogenous, spec_calibrated)
+    plt.show()
+
+
+
+
+
 
 
 
 def run_extract_1d():
     logger.info("Running extract_1d")
-
-    # load wavelength map
-    wavelength_map = load_wavelength_map()
 
     trace_dir = load_object_traces()
 
@@ -175,7 +196,7 @@ def run_extract_1d():
         logger.error("Re-run both procedures or remove left-over files.")
         exit()
 
-    extract_objects(skysubbed_files, trace_dir, wavelength_map)
+    extract_objects(skysubbed_files, trace_dir)
 
     logger.info("extract_1d done")
 

@@ -11,6 +11,8 @@ from astropy.modeling.fitting import LevMarLSQFitter
 from numpy.polynomial.chebyshev import chebfit, chebval
 from utils import write_to_fits
 from utils import show_1d_fit_QA
+import pickle
+import os
 
 from astropy.modeling import Fittable1DModel, Parameter
 import numpy as np
@@ -573,6 +575,8 @@ def plot_wavelengthcalib_QA(wavelength_map):
     plot_verticals(wavelength_map)
 
 def write_waveimage_to_disc(wavelength_map, master_arc):
+    #TODO this is not used anymore - keep until done developing,
+    # then remove it
     """
     Write the wavelength calibration results (waveimage) to disc.
 
@@ -589,6 +593,57 @@ def write_waveimage_to_disc(wavelength_map, master_arc):
     write_to_fits(wavelength_map, header, "wavelength_map.fits", output_dir)
 
     logger.info("Wavelength calibration results written to disc.")
+
+def write_fit2d_REID_to_disc(fit2D_REID):
+    """
+    Write the 2D fit results to disc.
+
+    Parameters
+    ----------
+    fit2D_REID : `~astropy.modeling.models.Chebyshev2D`
+        2D fit model.
+    """
+
+    logger.info("Writing 2D fit results to disc...")
+
+    #change to output directory dir
+    os.chdir(output_dir)
+
+    # Write fit2D_REID to disk
+    with open('fit2D_REID.pkl', 'wb') as file:
+        pickle.dump(fit2D_REID, file)
+
+    #change back to original directory
+
+    os.chdir("..")
+
+    logger.info(f"2D fit results written to disc in {output_dir}, filename fit2D_REID.pkl.")
+
+def load_fit2d_REID_from_disc():
+    """
+    Load the 2D fit results from disc.
+
+    Returns
+    -------
+    fit2D_REID : `~astropy.modeling.models.Chebyshev2D`
+        2D fit model.
+    """
+
+    logger.info("Loading 2D fit results from disc...")
+
+    #change to output directory dir
+    os.chdir(output_dir)
+
+    # Load fit2D_REID from disk
+    with open('fit2D_REID.pkl', 'rb') as file:
+        fit2D_REID = pickle.load(file)
+
+    logger.info("2D fit results loaded.")
+
+    #change back to original directory
+    os.chdir("..")
+
+    return fit2D_REID
 
 
 def run_wavecalib():
@@ -611,6 +666,8 @@ def run_wavecalib():
     fit_1d_QA(reidentified_lines)
 
     fit_2d_results = fit_2d(reidentified_lines)
+
+    write_fit2d_REID_to_disc(fit_2d_results)
 
     wavelength_map = construct_wavelength_map(fit_2d_results, master_arc)
 
