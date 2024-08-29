@@ -389,7 +389,7 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
         filename,
     )
 
-    return good_x, centers_fit_val, fwhm_fit_val
+    return good_x, centers_fit_pix, fwhm_fit_pix
 
 
 def find_obj(center_dict):

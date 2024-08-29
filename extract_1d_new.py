@@ -1,9 +1,15 @@
-from parser import output_dir
-from utils import open_fits, list_files, get_skysub_files
+from parser import output_dir, detector_params
+from utils import open_fits, list_files, get_skysub_files, show_frame
 from logger import logger
 import os
 import numpy as np
 from photutils.aperture import RectangularAperture
+import matplotlib.pyplot as plt
+from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
+
+#Weight function for optimal extraction
+def gaussweight(x, mu, sig):
+    return np.exp(-0.5*(x-mu)**2/sig**2) / (np.sqrt(2.*np.pi)*sig)
 
 def load_wavelength_map():
     
@@ -66,16 +72,92 @@ def load_object_traces():
     
     return trace_dict
 
-def extract_object_optimal(wavelength_map, trace_data, skysubbed_frame):
+def estimate_variance(data, gain, read_out_noise):
+
+    """
+    Taken from Horne, K. (1986). 
+    An optimal extraction algorithm for CCD spectroscopy.
+    Publications of the Astronomical Society of the Pacific, 
+    98(609), 609-617, eq. 12.
+    """
+
+    return (read_out_noise/ gain) **2 + np.abs(data) 
 
 
-    pixel, center, wavelength = trace_data
+    
+
+def extract_object_optimal(wavelength_map, trace_data, skysubbed_frame, gain, read_out_noise):
+
+    """
+    Extraction algorithm taken from Horne, K. (1986). 
+    An optimal extraction algorithm for CCD spectroscopy.
+    Publications of the Astronomical Society of the Pacific, 
+    98(609), 609-617.
+    """
+
+    pixel, center, FWHM = trace_data
 
     # Open the skysubbed frame
     hdul = open_fits(output_dir, skysubbed_frame)
+    
     skysubbed_data = hdul[0].data
+    x_row_array = np.arange(skysubbed_data.shape[0])
 
-    pass
+    variance = estimate_variance(skysubbed_data, gain, read_out_noise)
+
+    # these are the containers that will be filled for every value
+    spec = []
+    spec_var = []
+
+    print(len(center))
+
+    for i in range(len(center)):
+
+        obj_center = center[i]
+        obj_fwhm = FWHM[i] * gaussian_fwhm_to_sigma
+        weight = gaussweight(x_row_array, obj_center, obj_fwhm)
+
+        skysubbed_data_slice = skysubbed_data[:, int(pixel[0])+i]
+        
+
+        spec.append(np.sum(
+            skysubbed_data_slice * weight / variance[:, i]
+        ) / np.sum(weight ** 2 / variance[:, i]))
+        spec_var.append(np.sum(weight) / np.sum(weight ** 2 / variance[:, i]))
+
+    spec = np.array(spec)
+    spec_var = np.array(spec_var)
+
+    spec = spec
+    spec_var = spec_var
+
+    plt.plot(pixel, spec)
+    plt.plot(pixel, 1/(spec_var))
+    plt.show()
+
+
+
+
+
+    
+
+def extract_objects(skysubbed_files, trace_dir , wavelength_map):
+
+    logger.info("Extracting 1D spectra")
+
+    # get gain and read out noise parameters
+    gain = detector_params["gain"]
+    read_out_noise = detector_params["read_out_noise"]
+
+    for filename in skysubbed_files:
+        logger.info(f"Extracting 1D spectrum from {filename}")
+
+        filename_obj = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+
+        trace_data = trace_dir[filename_obj]
+
+        extract_object_optimal(wavelength_map, trace_data, filename, gain, read_out_noise)
+
 
 
 def run_extract_1d():
@@ -92,6 +174,8 @@ def run_extract_1d():
         logger.error("Number of skysubbed files and object traces do not match.")
         logger.error("Re-run both procedures or remove left-over files.")
         exit()
+
+    extract_objects(skysubbed_files, trace_dir, wavelength_map)
 
     logger.info("extract_1d done")
 
