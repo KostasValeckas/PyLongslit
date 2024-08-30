@@ -1,0 +1,423 @@
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:188 - Running extract_1d
+PyLongslit - INFO - extract_1d_new.py:35 - Loading object traces
+PyLongslit - INFO - extract_1d_new.py:46 - Found 4 object traces:
+PyLongslit - INFO - extract_1d_new.py:75 - All object traces loaded.
+PyLongslit - INFO - utils.py:404 - Getting skysubtracted files...
+PyLongslit - INFO - utils.py:388 - Found 4 frames:
+PyLongslit - INFO - extract_1d_new.py:148 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_science_ALHh050196.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_science_ALHh050197.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_std_ALHh050089.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_std_ALHh050090.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:201 - extract_1d done
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:192 - Running extract_1d
+PyLongslit - INFO - extract_1d_new.py:35 - Loading object traces
+PyLongslit - INFO - extract_1d_new.py:46 - Found 4 object traces:
+PyLongslit - INFO - extract_1d_new.py:75 - All object traces loaded.
+PyLongslit - INFO - utils.py:404 - Getting skysubtracted files...
+PyLongslit - INFO - utils.py:388 - Found 4 frames:
+PyLongslit - INFO - extract_1d_new.py:148 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_science_ALHh050196.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_science_ALHh050197.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_std_ALHh050089.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:155 - Extracting 1D spectrum from skysub_std_ALHh050090.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:205 - extract_1d done
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d_new.py:190 - Running extract_1d
+PyLongslit - INFO - extract_1d_new.py:35 - Loading object traces
+PyLongslit - INFO - extract_1d_new.py:46 - Found 4 object traces:
+PyLongslit - INFO - extract_1d_new.py:75 - All object traces loaded.
+PyLongslit - INFO - utils.py:404 - Getting skysubtracted files...
+PyLongslit - INFO - utils.py:388 - Found 4 frames:
+PyLongslit - INFO - extract_1d_new.py:143 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d_new.py:150 - Extracting 1D spectrum from skysub_science_ALHh050196.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:150 - Extracting 1D spectrum from skysub_science_ALHh050197.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:150 - Extracting 1D spectrum from skysub_std_ALHh050089.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:150 - Extracting 1D spectrum from skysub_std_ALHh050090.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d_new.py:203 - extract_1d done
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:7 - Ready
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:7 - Staring the process of producing the sensitivity function
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:7 - Staring the process of producing the sensitivity function
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:7 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:13 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:14 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:14 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:15 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:21 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d.py:215 - Running extract_1d
+PyLongslit - INFO - extract_1d.py:35 - Loading object traces
+PyLongslit - INFO - extract_1d.py:46 - Found 4 object traces:
+PyLongslit - INFO - extract_1d.py:75 - All object traces loaded.
+PyLongslit - INFO - utils.py:404 - Getting skysubtracted files...
+PyLongslit - INFO - utils.py:388 - Found 4 frames:
+PyLongslit - INFO - extract_1d.py:140 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_science_ALHh050196.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_science_ALHh050197.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_std_ALHh050089.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_std_ALHh050090.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:194 - Writing extracted 1D spectra to disc
+PyLongslit - INFO - extract_1d.py:205 - 1d_science_ALHh050196.dat written to disc in directory ./output_alt
+PyLongslit - INFO - extract_1d.py:205 - 1d_science_ALHh050197.dat written to disc in directory ./output_alt
+PyLongslit - INFO - extract_1d.py:205 - 1d_std_ALHh050089.dat written to disc in directory ./output_alt
+PyLongslit - INFO - extract_1d.py:205 - 1d_std_ALHh050090.dat written to disc in directory ./output_alt
+PyLongslit - INFO - extract_1d.py:212 - All extracted 1D spectra written to disc
+PyLongslit - INFO - extract_1d.py:230 - extract_1d done
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - extract_1d.py:215 - Running extract_1d
+PyLongslit - INFO - extract_1d.py:35 - Loading object traces
+PyLongslit - INFO - extract_1d.py:46 - Found 4 object traces:
+PyLongslit - INFO - extract_1d.py:75 - All object traces loaded.
+PyLongslit - INFO - utils.py:404 - Getting skysubtracted files...
+PyLongslit - INFO - utils.py:388 - Found 4 frames:
+PyLongslit - INFO - extract_1d.py:140 - Extracting 1D spectra
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_science_ALHh050196.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_science_ALHh050197.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_std_ALHh050089.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:151 - Extracting 1D spectrum from skysub_std_ALHh050090.fits
+PyLongslit - INFO - wavecalib.py:632 - Loading 2D fit results from disc...
+PyLongslit - INFO - wavecalib.py:641 - 2D fit results loaded.
+PyLongslit - INFO - extract_1d.py:194 - Writing extracted 1D spectra to disc
+PyLongslit - INFO - extract_1d.py:205 - 1d_science_ALHh050196.dat written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt
+PyLongslit - INFO - extract_1d.py:205 - 1d_science_ALHh050197.dat written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt
+PyLongslit - INFO - extract_1d.py:205 - 1d_std_ALHh050089.dat written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt
+PyLongslit - INFO - extract_1d.py:205 - 1d_std_ALHh050090.dat written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt
+PyLongslit - INFO - extract_1d.py:212 - All extracted 1D spectra written to disc
+PyLongslit - INFO - extract_1d.py:230 - extract_1d done
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:52 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:54 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:66 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:66 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:68 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:66 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:73 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - ERROR - sensitivity_function.py:59 - Wavelengths in the reference spectrum are not equally spaced.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:71 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:72 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:73 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:73 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:73 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:73 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:74 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:84 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:86 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:87 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:85 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:31 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:34 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:35 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:89 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:32 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:35 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:36 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:91 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:32 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:35 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:36 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:92 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:32 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:35 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:36 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:112 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:112 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:125 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:127 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:129 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:129 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:129 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:134 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:134 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:134 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:134 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:138 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:138 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:138 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:135 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - sensitivity_function.py:135 - Staring the process of producing the sensitivity function...
+PyLongslit - INFO - sensitivity_function.py:33 - Found 2 standard star spectra:
+PyLongslit - WARNING - sensitivity_function.py:36 - Multiple standard star spectra found. Software only supports one.
+PyLongslit - WARNING - sensitivity_function.py:37 - Using the first one.

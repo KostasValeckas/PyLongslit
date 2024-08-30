@@ -1,0 +1,15 @@
+* Overscan check will need flats at bias levels - make overscan check active only in check_config.py
+* Give flats an extra look about normalization area - maybe consult an expert
+* Logger just keeps dumping to same file - move logger to output_dir, make logger adaptable to different levels or verbosity
+* Fit initiation should be moved to utils - for now too much repeated code.
+* make object FWHM different for sky and object tracing
+* go through all imports
+
+* Develop combine and transform at the very end
+
+NICE-TO-HAVE for the future:
+* Interpolation function used now is being depricated - look into swapping it out.
+* Animated plots in the fitting processes
+* When utils get too inflated, chop up into several models (fitting, plotting, utils) or alike.
+* the filelist object in utils could use a refactor - specially in combinning with open_fits method
+* most data loading code assume that the raw data will be in hdul[1].data - make this more robust

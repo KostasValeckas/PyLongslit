@@ -36,7 +36,8 @@
     },
 
     "output": {
-        "out_dir": "./output_alt"
+        "out_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt"
+
     },
 
     "crr_removal" : {
@@ -48,12 +49,19 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/science"
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/science",
+        "exptime": 300,
+        "airmass": 1.000118678
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/standard"
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/standard",
+        "exptime": 60,
+        "airmass": 1.030792009,
+        "starname": "BD332642",
+        "flux_file_path": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/bd33a.oke"
+
     },
 
     "arc" : {
