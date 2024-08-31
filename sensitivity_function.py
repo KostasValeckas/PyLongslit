@@ -6,6 +6,7 @@ import os
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 from numpy.polynomial.chebyshev import chebfit, chebval
+import pickle
 
 
 def read_sensfunc_params():
@@ -79,10 +80,16 @@ def convert_from_AB_mag_to_flux(mag, ref_wavelength):
     return flux
 
 def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, bandwidth, exptime):    
+
+    #TODO: Clean up in naming!
     
     flux_converted = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
 
     counts_pr_sec = counts/exptime
+
+    flux_converted = flux_converted[(ref_wavelength >= np.min(wavelength)) & (ref_wavelength <= np.max(wavelength))]
+    ref_wavelength = ref_wavelength[(ref_wavelength >= np.min(wavelength)) & (ref_wavelength <= np.max(wavelength))]
+    
 
     # Interpolate counts per second onto reference wavelength
     interpolated_counts = interp1d(wavelength, counts_pr_sec)(ref_wavelength)
@@ -97,7 +104,7 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, bandwi
 
 def fit_sensfunc(wavelength, sens_points):
 
-    coeff = chebfit(wavelength, sens_points, deg = 9)
+    coeff = chebfit(wavelength[500:], sens_points[500:], deg = 9)
 
     fit_eval = chebval(wavelength, coeff)
 
@@ -105,6 +112,8 @@ def fit_sensfunc(wavelength, sens_points):
     plt.plot(wavelength, fit_eval, label = "fit")
     plt.legend()
     plt.show()
+
+    print(coeff)
 
     return coeff
 
@@ -127,6 +136,43 @@ def flux_standard_QA(coeff, wavelength, counts, ref_wavelength, ref_flux):
 
     plt.show()
 
+    #TODO: write to disc for debugging, remove later
+
+    os.chdir(output_dir)
+
+    with open("std_spec.dat", "wb") as f:
+        pickle.dump((wavelength, fluxed_counts), f)
+
+    f.close()
+    
+
+def write_sensfunc_to_disc(coeff):
+
+    logger.info("Writing sensitivity function coefficients to disk...")
+
+    os.chdir(output_dir)
+        
+    
+    with open("sens_coeff.dat", "wb") as f:
+        pickle.dump(coeff, f)
+    
+    logger.info(
+        f"Sensitivity function coefficients written to {output_dir}, filename : sens_coeff.dat."
+    )
+
+
+def load_sensfunc_from_disc():
+    logger.info("Loading sensitivity function coefficients from disk...")
+
+    os.chdir(output_dir)
+
+    with open("sens_coeff.dat", "rb") as f:
+        coeff = pickle.load(f)
+
+    logger.info("Sensitivity function coefficients loaded.")
+
+    return coeff
+
 
 
 
@@ -140,11 +186,17 @@ def run_sensitivity_function():
 
     ref_wavelength, ref_flux, bandwith = load_ref_spec(flux_file)
 
-    _, sens_points = refrence_counts_to_flux(obs_wavelength, obs_counts, ref_wavelength, ref_flux, bandwith, exptime)
+    ref_wavelength_temp = ref_wavelength
+
+    ref_wavelength, sens_points = refrence_counts_to_flux(obs_wavelength, obs_counts, ref_wavelength, ref_flux, bandwith, exptime)
     
     coeff = fit_sensfunc(ref_wavelength, sens_points)
 
-    flux_standard_QA(coeff, obs_wavelength, obs_counts, ref_wavelength, ref_flux)
+    # TODO: clean up when done developing!
+
+    flux_standard_QA(coeff, obs_wavelength, obs_counts, ref_wavelength_temp, ref_flux)
+
+    write_sensfunc_to_disc(coeff)
 
 
 
