@@ -629,7 +629,7 @@ def load_fit2d_REID_from_disc():
         2D fit model.
     """
 
-    logger.info("Loading 2D fit results from disc...")
+    logger.info("Loading 2D wavelength solution from disc...")
 
     #change to output directory dir
     os.chdir(output_dir)
@@ -638,7 +638,7 @@ def load_fit2d_REID_from_disc():
     with open('fit2D_REID.pkl', 'rb') as file:
         fit2D_REID = pickle.load(file)
 
-    logger.info("2D fit results loaded.")
+    logger.info("Wavelength solution loaded.")
 
     #change back to original directory
     os.chdir("..")
