@@ -1,5 +1,5 @@
 from parser import output_dir, detector_params
-from utils import open_fits, list_files, get_skysub_files, show_frame
+from utils import open_fits, list_files, get_skysub_files, get_filenames
 from logger import logger
 import os
 import numpy as np
@@ -9,33 +9,16 @@ from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
 from scipy.interpolate import interp1d
 from wavecalib import load_fit2d_REID_from_disc
 
-#Weight function for optimal extraction
-def gaussweight(x, mu, sig):
-    return np.exp(-0.5*(x-mu)**2/sig**2) / (np.sqrt(2.*np.pi)*sig)
-
-def load_wavelength_map():
-
-    #TODO - not used. Keep while developing amd then removes
-    
-    logger.info("Loading wavelength map")
-    try:
-        hdul = open_fits(output_dir, "wavelength_map.fits")
-    except FileNotFoundError:
-        logger.error("Wavelength map not found.")
-        logger.error("Run the wavelength calibration procedure first.")
-        exit()
-
-    data = hdul[0].data
-    logger.info("Wavelength map loaded")
-
-    return data
 
 def load_object_traces():
+    """
+    Loads the object traces from the output directory.
+    """
 
     logger.info("Loading object traces")
 
     # Get all filenames from output_dir starting with "obj_"
-    filenames = [filename for filename in os.listdir(output_dir) if filename.startswith("obj_")]
+    filenames = get_filenames(startswith="obj_")
 
     if len(filenames) == 0:
         logger.error("No object traces found.")
@@ -75,6 +58,40 @@ def load_object_traces():
     logger.info("All object traces loaded.")
     
     return trace_dict
+
+def gaussweight(x, mu, sig):
+    """
+    This method calculates the probability that a photon is detected at a certain
+    spacial pixel on the detector row. This is used in `extract_object_optimal`
+    , as the P factor in the Horne (1986) optimal extraction algorithm.
+
+    Parameters
+    ----------
+    x : array-like
+        The pixel values.
+
+    mu : float
+        The center of the Gaussian object profile.
+
+    sig : float
+        The standard deviation of the Gaussian object profile.
+
+    Returns
+    -------
+    array-like
+        The weight for each pixel in the extraction aperture (normalized).
+    """
+
+    P = np.exp(-0.5*(x-mu)**2/sig**2) / (np.sqrt(2.*np.pi)*sig)
+
+    if np.round(P.sum(), decimals = 0) != 1:
+        logger.warning(
+            "Probability distribution for extraction aperture not normalized correctly."
+        )
+        logger.warning(f"Sum of probabilities: {P.sum()}")
+
+    return P
+
 
 def estimate_variance(data, gain, read_out_noise):
 

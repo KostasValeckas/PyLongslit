@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from overscan import subtract_overscan_from_frame
 import os
 from matplotlib.patches import Rectangle
-from utils import check_rotation, flip_and_rotate
+from utils import check_rotation, flip_and_rotate, get_filenames
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
@@ -34,18 +34,9 @@ def read_crr_files():
         A list of cosmic-ray removed arc files.
     """
 
-    science_files = []
-    standard_files = []
-    arc_files = []
-
-    for file in os.listdir(output_dir):
-        if file.startswith("crr") or file.startswith("/crr"):
-            if "science" in file:
-                science_files.append(file)
-            elif "std" in file:
-                standard_files.append(file)
-            elif "arc" in file:
-                arc_files.append(file)
+    science_files = get_filenames(startswith="crr_science")
+    standard_files = get_filenames(startswith="crr_std")
+    arc_files = get_filenames(startswith="crr_arc")
 
     logger.info(f"Found {len(science_files)} cosmic-ray removed science files.")
     logger.info(f"Found {len(standard_files)} cosmic-ray removed standard star files.")

@@ -4,7 +4,7 @@ Module to combine arc frames into a single master arc frame.
 
 from logger import logger
 from parser import output_dir
-from utils import FileList, open_fits, write_to_fits, list_files
+from utils import FileList, open_fits, write_to_fits, list_files, get_filenames
 import os
 import numpy as np
 
@@ -12,11 +12,7 @@ def combine_arcs():
 
     logger.info("Fetching reduced arc frimes...")
 
-    arc_files = []
-
-    for file in os.listdir(output_dir):
-        if file.startswith("reduced_arc"):
-                arc_files.append(file)
+    arc_files = get_filenames(startswith="reduced_arc")
 
     if  len(arc_files) == 0:
         logger.critical("No reduced arc files found.")

@@ -114,6 +114,55 @@ def write_to_fits(data, header, file_name, path):
         fits.writeto(path + file_name, data, header, overwrite=True)
 
 
+def get_filenames(starts_with=None, ends_with=None, contains=None):
+    """
+    Get a list of filenames from the output directory based on the given criteria.
+
+    Parameters
+    ----------
+    starts_with : str, optional
+        The filenames should start with this string.
+        If None, not used.
+
+    ends_with : str, optional
+        The filenames should end with this string.
+        If None, not used.
+
+    contains : str, optional
+        The filenames should contain this string.
+        If None, not used.
+
+    Returns
+    -------
+    filenames : list
+        A list of filenames that match the criteria.
+    """
+
+    filenames = os.listdir(output_dir)
+
+    # Initialize sets for each condition
+    starts_with_set = (
+        set(filenames)
+        if starts_with is None
+        else {filename for filename in filenames if filename.startswith(starts_with)}
+    )
+    ends_with_set = (
+        set(filenames)
+        if ends_with is None
+        else {filename for filename in filenames if filename.endswith(ends_with)}
+    )
+    contains_set = (
+        set(filenames)
+        if contains is None
+        else {filename for filename in filenames if contains in filename}
+    )
+
+    # Find the intersection of all sets
+    filtered_filenames = starts_with_set & ends_with_set & contains_set
+
+    return list(filtered_filenames)
+
+
 def check_dimensions(FileList: FileList, x, y):
     """
     Check that dimensions of all files in a FileList match the wanted dimensions.
@@ -390,6 +439,7 @@ def get_file_group(*prefixes):
 
     return files
 
+
 def get_skysub_files():
     """
     Wrapper for ´get_file_group´ that returns the filenames of the skysubtracted,
@@ -414,7 +464,6 @@ def get_skysub_files():
     filenames.sort()
 
     return filenames
-
 
 
 def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
@@ -509,18 +558,11 @@ def refine_obj_center(x, slice, clicked_center, FWHM_AP):
         The refined object center.
     """
 
-    logger.info("Refining the object center...")
-
     # assume center is at the maximum of the slice
     center = x[np.argmax(slice)]
 
     # check if the center is within the expected region (2FWHM from the clicked point)
     if center < clicked_center - 3 * FWHM_AP or center > clicked_center + 3 * FWHM_AP:
-        logger.warning("The estimated object center is outside the expected region.")
-        logger.warning("Using the user-clicked point as the center.")
-        logger.warning(
-            "This is okay if this is on detector edge or a singular occurence."
-        )
         center = clicked_center
 
     return center
@@ -593,7 +635,7 @@ def show_1d_fit_QA(
     ----------
     x_data : array
         The x-axis data.
-    
+
     y_data : array
         The y-axis data.
 
@@ -636,7 +678,7 @@ def show_1d_fit_QA(
     ax1.set_ylabel(y_label)
     ax1.legend()
 
-    ax2.plot(x_data, residuals, "x", color="red", label = "Residuals")
+    ax2.plot(x_data, residuals, "x", color="red", label="Residuals")
     ax2.set_xlabel(x_label)
     ax2.set_ylabel(y_label)
     ax2.axhline(0, color="black", linestyle="--")

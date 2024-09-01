@@ -84,6 +84,7 @@
         "SIGMA_APSKY": 3.0,
         "ITERS_APSKY": 5,
         "ORDER_APSKY": 2,
-        "SNR": 5
+        "SNR": 5,
+        "OBJ_FIT_DEG": 3
     }
 }

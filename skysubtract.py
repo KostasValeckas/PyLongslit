@@ -9,6 +9,7 @@ from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
 from utils import show_frame, get_file_group, choose_obj_centrum, estimate_sky_regions
 from utils import refine_obj_center
+from tqdm import tqdm
 
 def get_reduced_frames():
     """
@@ -74,9 +75,6 @@ def choose_obj_centrum_sky(file_list):
     titles = [plot_title(file) for file in file_list]
 
     return choose_obj_centrum(file_list, titles)
-
-
-
 
 
 def fit_sky_one_column(
@@ -260,8 +258,8 @@ def make_sky_map(
     # evaluate the sky column-wise and insert in this array
     sky_map = np.zeros((n_spacial, n_spectal))
 
-    for column in range(n_spectal):
-        logger.info(f"Fitting sky for spectal pixel {column}...")
+    logger.info(f"Creating sky map for {filename}...")
+    for column in tqdm(range(n_spectal), desc=f"Fitting sky background for {filename}"):
         slice_spec = data[:, column]
         sky_fit = fit_sky_one_column(
             slice_spec,
@@ -272,8 +270,6 @@ def make_sky_map(
             ORDER_APSKY,
         )
         sky_map[:, column] = sky_fit
-        logger.info(f"Sky fit for spectral pixel {column} complete.")
-        print("------------------------------------")
 
     #plot QA
     title = f"Evaluated sky-background for {filename}"
@@ -351,6 +347,9 @@ def remove_sky_background(center_dict):
             ITERS_APSKY,
             ORDER_APSKY,
         )
+
+        logger.info(f"Sky map created for {file}")
+        logger.info("Subtracting the sky background...")
 
         skysub_data = data - sky_map
 
