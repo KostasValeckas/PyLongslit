@@ -691,3 +691,46 @@ def show_1d_fit_QA(
     fig.suptitle(title)
 
     plt.show()
+
+def load_spec_data(group = "science"):
+    """
+    Loads the science or standard star spectra from the output directory.
+
+    Parameters
+    ----------
+    group : str
+        The group of files to load.
+        Options: "science", "standard".
+    """
+
+    if group != "science" and group != "standard":
+        logger.error('The "group" parameter must be either "science" or "standard".')
+        exit()
+
+    filenames = get_filenames(
+        starts_with="1d_science" if group == "science" else "1d_std",
+    )
+
+    if len(filenames) == 0:
+        logger.error(f"No {group} spectra found.")
+        logger.error("Run the extract 1d procedure first.")
+        logger.error(
+            f'If you have already run the procedure, check the "skip_{group}" parameter in the config file.'
+        )
+        exit()   
+
+    # container for the spectra
+    spectra = {}
+
+    # make sure we are in the output directory
+    os.chdir(output_dir)
+
+    for filename in filenames:
+        data = np.loadtxt(filename, skiprows=2)
+        wavelength = data[:,0]
+        counts = data[:,1]
+
+        spectra[filename] = (wavelength, counts)
+
+    return spectra
+

@@ -1,66 +1,35 @@
 from logger import logger
 from parser import output_dir, science_params
-from utils import list_files
+from utils import load_spec_data
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from sensitivity_function import load_sensfunc_from_disc
 from numpy.polynomial.chebyshev import chebval
 
-def load_sciece_spec():
-    #TODO: combine this with the load_standard_star_spec function, move to utils.py
-
-    filenames = [filename for filename in os.listdir(output_dir) if filename.startswith("1d_science")]
-
-    if len(filenames) == 0:
-        logger.error("No science spectra found.")
-        logger.error("Run the extract 1d procedure first.")
-        logger.error("If you have already run the procedure, check the \"skip_science\" parameter in the config file.")
-        exit()
-
-    
-    logger.info(f"Found {len(filenames)} science spectra:")
-    list_files(filenames)
-
-    os.chdir(output_dir)
-
-    # container for the spectra
-    spectra = {}
-
-    for filename in filenames:
-        data = np.loadtxt(filename, skiprows=2)
-        wavelength = data[:,0]
-        counts = data[:,1]
-
-        spectra[filename] = (wavelength, counts)
-
-
-    return spectra
-
 
 def calibrate_spectrum(wavelength, counts, sens_coeffs, exptime):
 
-    print(sens_coeffs)
+    # evaluate the sensitivity at the wavelength points
+    # and convert back from logspaces
+    conv_factors = 10**chebval(wavelength, sens_coeffs)
 
-    conv_factors = chebval(wavelength, sens_coeffs)
-
-
-    plt.plot(conv_factors)
-    plt.title("Conversion factors")
-    plt.show()
-
-    print(exptime)
-
+    # divide by exposure time and multiply by evaluated sensitivity
     calibrated_flux = (counts/exptime) * conv_factors
-
-    plt.plot(wavelength, calibrated_flux)
-    plt.show()
 
     return calibrated_flux
 
+def plot_calibrated_spectrum(filename, wavelength, calibrated_flux, figsize=(18,12)):
+
+    plt.figure(figsize=figsize) 
+    plt.plot(wavelength, calibrated_flux, label="Calibrated flux")
+    plt.xlabel("Wavelength [Å]")
+    plt.ylabel("Flux [erg/s/cm2/Å]")
+    plt.title(f"Calibrated flux for {filename}")
+    plt.show()
+
 
 def calibrate_flux(spectra, sens_coeffs):
-    # TODO probably don't need this wrapper - just call calibrate_spectrum directly
 
     exptime = science_params["exptime"]
 
@@ -68,9 +37,13 @@ def calibrate_flux(spectra, sens_coeffs):
     calibrated_spectra = {}
 
     for filename, (wavelength, counts) in spectra.items():
+        # calibrate the spectrum
         calibrated_flux = calibrate_spectrum(wavelength, counts, sens_coeffs, exptime)
-
+        # save the calibrated spectrum
         calibrated_spectra[filename] = (wavelength, calibrated_flux)
+        # plot for QA
+        plot_calibrated_spectrum(filename, wavelength, calibrated_flux)
+
 
     return calibrated_spectra
 
@@ -99,7 +72,7 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
 def run_flux_calib():
     logger.info("Running flux calibration...")
 
-    spectra = load_sciece_spec()
+    spectra = load_spec_data(group = "science")
 
     sens_coeffs = load_sensfunc_from_disc()
 

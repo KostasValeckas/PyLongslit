@@ -1,13 +1,13 @@
 from logger import logger
 import numpy as np
-from parser import output_dir, detector_params, standard_params, sens_params
+from parser import output_dir, standard_params, sens_params, flux_params
 from utils import list_files
 import os
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 from numpy.polynomial.chebyshev import chebfit, chebval
 import pickle
-from utils import get_filenames, show_1d_fit_QA
+from utils import get_filenames, show_1d_fit_QA, load_spec_data
 
 
 def read_sensfunc_params():
@@ -39,31 +39,19 @@ def read_sensfunc_params():
 
 def load_standard_star_spec():
 
-    filenames = get_filenames(starts_with="1d_std")
+    spectra = load_spec_data("standard")
 
-    if len(filenames) == 0:
-        logger.error("No standard star spectra found.")
-        logger.error("Run the extract 1d procedure first.")
-        logger.error(
-            'If you have already run the procedure, check the "skip_standard" parameter in the config file.'
+    if len(spectra) > 1:
+        logger.warning(
+            "Multiple standard star spectra found. Software only supports one."
         )
-        exit()
-
-    else:
-        logger.info(f"Found {len(filenames)} standard star spectra:")
-        list_files(filenames)
-        if len(filenames) > 1:
-            logger.warning(
-                "Multiple standard star spectra found. Software only supports one."
-            )
-            logger.warning(f"Using the first one - {filenames[0]}.")
+        logger.warning(f"Using the first one - {list(spectra.keys())[0]}.")
 
     os.chdir(output_dir)
 
-    data = np.loadtxt(filenames[0], skiprows=2)
 
-    wavelength = data[:, 0]
-    counts = data[:, 1]
+    wavelength = spectra[list(spectra.keys())[0]][0]
+    counts = spectra[list(spectra.keys())[0]][1]
 
     logger.info("Standard star spectrum loaded.")
 
@@ -104,6 +92,57 @@ def load_ref_spec(file_path):
 
     return wavelength, flux
 
+def estimate_transmission_factor(wavelength, airmass):
+    """
+    Estimates the transmission factor of the atmosphere at the given wavelength.
+
+    Uses the extinction curve of the observatory, and 
+    F_true / F_obs = 10 ** -(0.4 * A * X) where A is the extinction AB mag / airmass
+    and X is the airmass.
+
+    Parameters:
+    -----------
+    wavelength : numpy.ndarray
+        Wavelength of the observed spectrum in Ångström.
+
+    airmass : float
+        Airmass of the observation.
+
+    Returns:
+    --------
+    
+    """
+
+    # load extinction file - should be AB magnitudes / air mass
+    extinction_file_name = flux_params["path_extinction_curve"]
+
+    # open the file
+
+    #make sure we are in the output_dir
+    os.chdir(output_dir)
+
+    try:
+        data = np.loadtxt(extinction_file_name)
+    except FileNotFoundError:
+        logger.error("Extinction file not found.")
+        logger.error("Check the path in the config file.")
+        exit()
+
+    wavelength_ext = data[:, 0]
+    extinction = data[:, 1]
+
+    # interpolate the extinction file onto the wavelength grid of the object spectrum
+    f = interp1d(wavelength_ext, extinction, kind="cubic")
+    ext_interp1d = f(wavelength)
+
+    # multiply the extinction by the airmass
+    extinction = ext_interp1d * airmass
+
+
+    return extinction_converted
+
+
+
 
 def convert_from_AB_mag_to_flux(mag, ref_wavelength):
     """
@@ -133,6 +172,7 @@ def convert_from_AB_mag_to_flux(mag, ref_wavelength):
 def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptime):
     """
     Estimates the conversion factors between counts and flux across the spectrum.
+    Applies extinction correction for the conversion factors.
 
     Parameters:
     -----------

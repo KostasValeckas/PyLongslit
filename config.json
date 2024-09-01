@@ -90,5 +90,9 @@
 
     "sensfunc": {
         "fit_order": 11
+    },
+
+    "flux_calib": {
+        "path_extinction_curve": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/lapalma.dat"
     }
 }

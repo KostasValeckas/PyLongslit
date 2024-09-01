@@ -57,6 +57,8 @@ extract_params["N_APALL"] = (
 
 sens_params = data["sensfunc"]
 
+flux_params = data["flux_calib"]
+
 def check_science_and_standard():
     """
     Sanity checks for whether the user wants to use science frames,
