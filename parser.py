@@ -55,6 +55,7 @@ extract_params["N_APALL"] = (
     else detector_params["ysize"] // extract_params["NSUM_AP"]
 )
 
+sens_params = data["sensfunc"]
 
 def check_science_and_standard():
     """
