@@ -34,9 +34,9 @@ def read_crr_files():
         A list of cosmic-ray removed arc files.
     """
 
-    science_files = get_filenames(startswith="crr_science")
-    standard_files = get_filenames(startswith="crr_std")
-    arc_files = get_filenames(startswith="crr_arc")
+    science_files = get_filenames(starts_with="crr_science")
+    standard_files = get_filenames(starts_with="crr_std")
+    arc_files = get_filenames(starts_with="crr_arc")
 
     logger.info(f"Found {len(science_files)} cosmic-ray removed science files.")
     logger.info(f"Found {len(standard_files)} cosmic-ray removed standard star files.")

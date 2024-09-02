@@ -12,7 +12,7 @@ def combine_arcs():
 
     logger.info("Fetching reduced arc frimes...")
 
-    arc_files = get_filenames(startswith="reduced_arc")
+    arc_files = get_filenames(starts_with="reduced_arc")
 
     if  len(arc_files) == 0:
         logger.critical("No reduced arc files found.")

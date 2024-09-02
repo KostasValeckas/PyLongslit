@@ -92,13 +92,13 @@ def load_ref_spec(file_path):
 
     return wavelength, flux
 
-def estimate_transmission_factor(wavelength, airmass):
+def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA = False):
     """
     Estimates the transmission factor of the atmosphere at the given wavelength.
 
     Uses the extinction curve of the observatory, and 
-    F_true / F_obs = 10 ** -(0.4 * A * X) where A is the extinction AB mag / airmass
-    and X is the airmass.
+    F_true / F_obs = 10 ** (0.4 * A * X) where A is the extinction AB mag / airmass
+    and X is the airmass. I.e. the transmission factor is 10 ** (0.4 * A * X).
 
     Parameters:
     -----------
@@ -108,10 +108,19 @@ def estimate_transmission_factor(wavelength, airmass):
     airmass : float
         Airmass of the observation.
 
+    figsize : tuple
+        Size of the QA plot.
+
+    show_QA : bool
+        If True, the QA plot of the extinction curve and transmission factor is shown.
+
     Returns:
     --------
-    
+    transmission_factor : numpy.ndarray
+        Transmission factor of the atmosphere at the given wavelength.
     """
+
+    logger.info("Estimating the transmission factor of the atmosphere...")
 
     # load extinction file - should be AB magnitudes / air mass
     extinction_file_name = flux_params["path_extinction_curve"]
@@ -129,18 +138,40 @@ def estimate_transmission_factor(wavelength, airmass):
         exit()
 
     wavelength_ext = data[:, 0]
-    extinction = data[:, 1]
+    extinction_data = data[:, 1]
 
     # interpolate the extinction file onto the wavelength grid of the object spectrum
-    f = interp1d(wavelength_ext, extinction, kind="cubic")
+    f = interp1d(wavelength_ext, extinction_data, kind="cubic")
     ext_interp1d = f(wavelength)
 
     # multiply the extinction by the airmass
     extinction = ext_interp1d * airmass
 
+    transmission_factor = 10 ** (0.4 * extinction)
 
-    return extinction_converted
+    if show_QA:
 
+        # plot the transmission factor and extinction curve for QA purposes
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
+
+        ax1.plot(wavelength_ext, extinction_data, color = "black", label="Extinction Curve")
+        ax1.set_xlabel("Wavelength (Å)")
+        ax1.set_ylabel("Extinction (AB mag / airmass)")
+        ax1.legend()
+
+        ax2.plot(wavelength, 1/transmission_factor, color = "black", label="Calculated Transmission Factor")
+        ax2.set_xlabel("Wavelength (Å)")
+        ax2.set_ylabel("Transmission Factor (Observed flux / True flux)")
+        ax2.legend()
+
+        fig.suptitle(
+            "Extinction curve and transmission factor of the atmosphere.\n"
+            "These are calculated based on the user provided extinction curve for the observatory.\n"
+            "Make sure the extinction curve is correct and the transmission factor is reasonable."
+        )
+        plt.show()
+
+    return transmission_factor
 
 
 
@@ -203,8 +234,15 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptim
     # firstly, convert the reference spectrum to flux units
     ref_flux_converted = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
 
-    # convert counts to counts per second
-    counts_pr_sec = counts / exptime
+    # convert counts to counts per second - still prior to extinction correction
+    counts_pr_sec_with_atmosphere = counts / exptime
+
+    # Estimate the transmission factor of the atmosphere at the given wavelength
+    # and apply it to the observed spectrum
+
+    transmission_factor = estimate_transmission_factor(wavelength, standard_params["airmass"], show_QA=True)
+
+    counts_pr_sec = counts_pr_sec_with_atmosphere * transmission_factor
 
     # Crop the reference spectrum to the wavelength range of the observed spectrum
     ref_flux_converted_croppped = ref_flux_converted[
@@ -286,16 +324,20 @@ def flux_standard_QA(coeff, wavelength, counts, ref_wavelength, ref_flux, figsiz
     # Calculate the conversion factors, convert back from log space.
     conv_factors = 10**chebval(wavelength, coeff)
 
+    # Estimate the transmission factor of the atmosphere at the given wavelength
+    # and apply it to the observed spectrum
+    transmission_factor = estimate_transmission_factor(wavelength, standard_params["airmass"])
+
     # Flux the standard star spectrum
-    fluxed_counts = (counts / standard_params["exptime"]) * conv_factors
+    fluxed_counts = (counts * transmission_factor / standard_params["exptime"]) * conv_factors
 
     # Convert the reference spectrum to flux units
     converted_ref_spec = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
 
     plt.figure(figsize=figsize)
 
-    plt.plot(wavelength, fluxed_counts, label="Fluxed standard star spec")
-    plt.plot(ref_wavelength, converted_ref_spec, label="Reference spectrum")
+    plt.plot(wavelength, fluxed_counts, color = "green", label="Fluxed standard star spec")
+    plt.plot(ref_wavelength, converted_ref_spec, color = "black", label="Reference spectrum")
     plt.legend()
     plt.title(
         "Fluxed standard star spectrum vs reference spectrum.\n"

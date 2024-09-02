@@ -13,6 +13,9 @@ from utils import write_to_fits
 from utils import show_1d_fit_QA
 import pickle
 import os
+from tqdm import tqdm
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import time
 
 from astropy.modeling import Fittable1DModel, Parameter
 import numpy as np
@@ -205,22 +208,23 @@ def reidentify(pixnumber, wavelength, master_arc):
     # we only do one QA plot - around the middle slice
     plot_at_index = N_REID // 2
 
+    # the fits for every slice are very likely very similar, we save the values
+    # for the first slice and load them as initial guesses for the rest of the slices
+    guess_cache = {}
+
     # loop over the spatial slices, and reidentify the lines
-    for i in range(0, N_REID):
+    for i in tqdm(range(0, N_REID), desc="Reidentifying lines", unit="slice"):
         # limits of the slice
         lower_cut, upper_cut = i * STEP_REID, (i + 1) * STEP_REID
         # sum over the slice
         reidentify_i = np.sum(master_arc[0].data[lower_cut:upper_cut, :], axis=0)
-
-        logger.info(
-            f"Reidentifying slice (spacial coordinates) {lower_cut}:{upper_cut}..."
-        )
 
         # container for the reidentified lines for this slice
         peak_gauss_REID = []
 
         # re-identify every hand-identified line
         for j, peak_pix_init in enumerate(ID_init["peak"]):
+            start_time = time.time()
             # limits of the peak
             search_min = int(np.around(peak_pix_init - FWHM * 2))
             search_max = int(np.around(peak_pix_init + FWHM * 2))
@@ -234,6 +238,7 @@ def reidentify(pixnumber, wavelength, master_arc):
             x_cropped = x_cropped[~nan_inf_mask]
             cropped_spec = cropped_spec[~nan_inf_mask]
 
+
             # if empty array - keep looping
             if len(cropped_spec) == 0:
                 continue
@@ -246,25 +251,56 @@ def reidentify(pixnumber, wavelength, master_arc):
                 # sigma (width of the line) - convert from user defined FWHM:
                 stddev_init = FWHM * gaussian_fwhm_to_sigma
                 
-                # build a Generalized Normal fitter with an added constant
-                g_init = GeneralizedNormal1D(
-                    amplitude=A_init,
-                    mean=mean_init,
-                    stddev=stddev_init,
-                    beta=2,  # Initial guess for beta
-                    bounds={
-                        "amplitude": (0, 2 * np.max(cropped_spec)),
-                        "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
-                        # beta > 2 flattens peak, beta > 20 is almost a step function
-                        "beta": (2, 20)
-                    }
-                )
+                if i == 1:
+                    # build a Generalized Normal fitter with an added constant
+                    g_init = GeneralizedNormal1D(
+                        amplitude=A_init,
+                        mean=mean_init,
+                        stddev=stddev_init,
+                        beta=2,  # Initial guess for beta
+                        bounds={
+                            "amplitude": (0, 2 * np.max(cropped_spec)),
+                            "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
+                            # beta > 2 flattens peak, beta > 20 is almost a step function
+                            "beta": (2, 20)
+                        }
+                    )
+                else:
+                    if str(peak_pix_init) in guess_cache.keys():
+                        g_init = GeneralizedNormal1D(
+                            amplitude=guess_cache[str(peak_pix_init)][0],
+                            mean=guess_cache[str(peak_pix_init)][1],
+                            stddev=guess_cache[str(peak_pix_init)][2],
+                            beta=guess_cache[str(peak_pix_init)][3],  # Initial guess for beta
+                            bounds={
+                                "amplitude": (0, 2 * np.max(cropped_spec)),
+                                "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
+                                # beta > 2 flattens peak, beta > 20 is almost a step function
+                                "beta": (2, 20)
+                            }
+                        )
+                    else:
+                        # build a Generalized Normal fitter with an added constant
+                        g_init = GeneralizedNormal1D(
+                            amplitude=A_init,
+                            mean=mean_init,
+                            stddev=stddev_init,
+                            beta=2,  # Initial guess for beta
+                            bounds={
+                                "amplitude": (0, 2 * np.max(cropped_spec)),
+                                "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
+                                # beta > 2 flattens peak, beta > 20 is almost a step function
+                                "beta": (2, 20)
+                            }
+                        )
                 const = Const1D(amplitude=0)
                 g_model = g_init + const
 
                 # perform the fit
                 fitter = LevMarLSQFitter()
+                fit_start_time = time.time()
                 g_fit = fitter(g_model, x_cropped, cropped_spec)
+                fit_end_time = time.time()
 
                 # extract the fitted peak position and FWHM:
                 fit_center = g_fit.mean_0.value
@@ -297,6 +333,8 @@ def reidentify(pixnumber, wavelength, master_arc):
                         ax[subplot_index].plot(x_fine, g_fit(x_fine), color="red")
                 else:
                     peak_gauss_REID.append(fit_center)
+                    if i == 1:
+                        guess_cache[str(peak_pix_init)] = (g_fit.amplitude_0.value, g_fit.mean_0.value, g_fit.stddev_0.value, g_fit.beta_0.value)
                     if i == plot_at_index:
                         # plot the accepted fits
                         # plot the spectrum
@@ -319,7 +357,8 @@ def reidentify(pixnumber, wavelength, master_arc):
                     j_offset += plot_width * plot_height
                     # prepare a new plot
                     fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
-
+                end_loop_time = time.time()
+                
         # last plot - plot the last plots even if master plot is not filled up
         if i == plot_at_index:
             show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM)
@@ -332,10 +371,6 @@ def reidentify(pixnumber, wavelength, master_arc):
                 "Check the tolerance values in the config file if this warning continues to appear."
             )
             continue
-
-        logger.info(
-            f"Slice {i} reidentified. Reidentified {n_good_reids} lines out of {len(ID_init)}.\n----"
-        )
 
         # store the reidentified lines in the master container
 
@@ -357,6 +392,7 @@ def reidentify(pixnumber, wavelength, master_arc):
                 spacial=spatialcoord[i] * np.ones(np.sum(mask)),
             )
         )
+
 
     return line_REID
 
