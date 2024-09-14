@@ -25,7 +25,8 @@ def plot_calibrated_spectrum(filename, wavelength, calibrated_flux, figsize=(18,
     plt.plot(wavelength, calibrated_flux, label="Calibrated flux")
     plt.xlabel("Wavelength [Å]")
     plt.ylabel("Flux [erg/s/cm2/Å]")
-    plt.title(f"Calibrated flux for {filename}")
+    plt.title(f"Calibrated spectrum for {filename}")
+    plt.grid()
     plt.show()
 
 

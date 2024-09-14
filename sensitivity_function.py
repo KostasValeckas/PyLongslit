@@ -49,7 +49,6 @@ def load_standard_star_spec():
 
     os.chdir(output_dir)
 
-
     wavelength = spectra[list(spectra.keys())[0]][0]
     counts = spectra[list(spectra.keys())[0]][1]
 
@@ -92,11 +91,12 @@ def load_ref_spec(file_path):
 
     return wavelength, flux
 
-def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA = False):
+
+def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA=False):
     """
     Estimates the transmission factor of the atmosphere at the given wavelength.
 
-    Uses the extinction curve of the observatory, and 
+    Uses the extinction curve of the observatory, and
     F_true / F_obs = 10 ** (0.4 * A * X) where A is the extinction AB mag / airmass
     and X is the airmass. I.e. the transmission factor is 10 ** (0.4 * A * X).
 
@@ -127,7 +127,7 @@ def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA 
 
     # open the file
 
-    #make sure we are in the output_dir
+    # make sure we are in the output_dir
     os.chdir(output_dir)
 
     try:
@@ -154,12 +154,19 @@ def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA 
         # plot the transmission factor and extinction curve for QA purposes
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
-        ax1.plot(wavelength_ext, extinction_data, color = "black", label="Extinction Curve")
+        ax1.plot(
+            wavelength_ext, extinction_data, color="black", label="Extinction Curve"
+        )
         ax1.set_xlabel("Wavelength (Å)")
         ax1.set_ylabel("Extinction (AB mag / airmass)")
         ax1.legend()
 
-        ax2.plot(wavelength, 1/transmission_factor, color = "black", label="Calculated Transmission Factor")
+        ax2.plot(
+            wavelength,
+            1 / transmission_factor,
+            color="black",
+            label="Calculated Transmission Factor",
+        )
         ax2.set_xlabel("Wavelength (Å)")
         ax2.set_ylabel("Transmission Factor (Observed flux / True flux)")
         ax2.legend()
@@ -172,7 +179,6 @@ def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA 
         plt.show()
 
     return transmission_factor
-
 
 
 def convert_from_AB_mag_to_flux(mag, ref_wavelength):
@@ -223,10 +229,10 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptim
         Exposure time of the observation in seconds.
 
     Returns:
-    --------    
+    --------
     ref_wavelength_cropped : numpy.ndarray
         Cropped wavelength of the reference spectrum in Ångström.
-    
+
     conv_factors : numpy.ndarray
         Conversion factors between counts and flux across the spectrum.
     """
@@ -240,7 +246,9 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptim
     # Estimate the transmission factor of the atmosphere at the given wavelength
     # and apply it to the observed spectrum
 
-    transmission_factor = estimate_transmission_factor(wavelength, standard_params["airmass"], show_QA=True)
+    transmission_factor = estimate_transmission_factor(
+        wavelength, standard_params["airmass"], show_QA=True
+    )
 
     counts_pr_sec = counts_pr_sec_with_atmosphere * transmission_factor
 
@@ -258,7 +266,6 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptim
     # Estimate the conversion factors between counts and flux across the spectrum
     conv_factors = ref_flux_converted_croppped / interpolated_counts
 
-    
     return ref_wavelength_cropped, conv_factors
 
 
@@ -288,16 +295,16 @@ def fit_sensfunc(wavelength, sens_points):
 
     sens_points_log = np.log10(sens_points)
 
-    coeff = chebfit(wavelength, sens_points_log, deg = fit_degree)
+    coeff = chebfit(wavelength, sens_points_log, deg=fit_degree)
 
-    fit_eval = 10**(chebval(wavelength, coeff))
+    fit_eval = 10 ** (chebval(wavelength, coeff))
 
     residuals = sens_points - fit_eval
 
     show_1d_fit_QA(
-        wavelength, 
-        sens_points, 
-        x_fit_values=wavelength, 
+        wavelength,
+        sens_points,
+        x_fit_values=wavelength,
         y_fit_values=fit_eval,
         residuals=residuals,
         x_label="Wavelength (Å)",
@@ -305,16 +312,17 @@ def fit_sensfunc(wavelength, sens_points):
         legend_label="Fit",
         title=f"Sensitivity function fit of order {fit_degree}."
         "\nInspect the fit and residuals. "
-        "Deviations around the edges are hard to avoid and should be okay." 
+        "Deviations around the edges are hard to avoid and should be okay."
         "\nChange the fit degree in the config file if needed."
-        "\nNote that the fit is performed in log space."
-        )
+        "\nNote that the fit is performed in log space.",
+    )
 
-    
     return coeff
 
 
-def flux_standard_QA(coeff, wavelength, counts, ref_wavelength, ref_flux, figsize=(18, 12)):
+def flux_standard_QA(
+    coeff, wavelength, counts, ref_wavelength, ref_flux, figsize=(18, 12)
+):
 
     """
     Flux calibrates the standard star spectrum and compares it to the reference spectrum.
@@ -322,34 +330,40 @@ def flux_standard_QA(coeff, wavelength, counts, ref_wavelength, ref_flux, figsiz
     """
 
     # Calculate the conversion factors, convert back from log space.
-    conv_factors = 10**chebval(wavelength, coeff)
+    conv_factors = 10 ** chebval(wavelength, coeff)
 
     # Estimate the transmission factor of the atmosphere at the given wavelength
     # and apply it to the observed spectrum
-    transmission_factor = estimate_transmission_factor(wavelength, standard_params["airmass"])
+    transmission_factor = estimate_transmission_factor(
+        wavelength, standard_params["airmass"]
+    )
 
     # Flux the standard star spectrum
-    fluxed_counts = (counts * transmission_factor / standard_params["exptime"]) * conv_factors
+    fluxed_counts = (
+        counts * transmission_factor / standard_params["exptime"]
+    ) * conv_factors
 
     # Convert the reference spectrum to flux units
     converted_ref_spec = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
 
     plt.figure(figsize=figsize)
 
-    plt.plot(wavelength, fluxed_counts, color = "green", label="Fluxed standard star spec")
-    plt.plot(ref_wavelength, converted_ref_spec, color = "black", label="Reference spectrum")
+    plt.plot(
+        wavelength, fluxed_counts, color="green", label="Fluxed standard star spec"
+    )
+    plt.plot(
+        ref_wavelength, converted_ref_spec, color="black", label="Reference spectrum"
+    )
     plt.legend()
     plt.title(
         "Fluxed standard star spectrum vs reference spectrum.\n"
         "Check that the observed spectrum resembles the refference spectrum strongly -"
         "this valides the correctness of the sensitivity function.\n"
         "Deviations around the edges are hard to avoid and should be okay."
-
     )
     plt.xlabel("Wavelength (Å)")
     plt.ylabel("Flux (erg/s/cm^2/Å)")
     plt.show()
-
 
 
 def write_sensfunc_to_disc(coeff):
@@ -357,8 +371,7 @@ def write_sensfunc_to_disc(coeff):
     logger.info("Writing sensitivity function coefficients to disk...")
 
     os.chdir(output_dir)
-        
-    
+
     with open("sens_coeff.dat", "wb") as f:
         pickle.dump(coeff, f)
 

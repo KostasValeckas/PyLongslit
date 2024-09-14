@@ -268,7 +268,7 @@ def show_flat():
 
 
 def show_frame(
-    data, title, figsize=(18, 12), normalize=True, new_figure=True, show=True
+    inp_data, title, figsize=(18, 12), normalize=True, new_figure=True, show=True
 ):
     """
     This method is used to plot any frames passed the `reduce`
@@ -294,6 +294,8 @@ def show_frame(
     show : bool
         If True, show the plot.
     """
+
+    data = inp_data.copy()
 
     # normalize to show detail
     if normalize:
@@ -674,7 +676,7 @@ def show_1d_fit_QA(
         label=legend_label,
     )
 
-    ax1.plot(x_fit_values, y_fit_values, label="Fit")
+    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="black")
     ax1.set_ylabel(y_label)
     ax1.legend()
 
@@ -685,7 +687,7 @@ def show_1d_fit_QA(
     ax2.legend()
 
     # setting the x-axis to be shared between the two plots
-    ax1.set_xlim(ax2.get_xlim())
+    ax2.set_xlim(ax1.get_xlim())
     ax1.set_xticks([])
 
     fig.suptitle(title)
