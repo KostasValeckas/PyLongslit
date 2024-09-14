@@ -68,16 +68,21 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
 
         hdu = open_fits(file_list.path, file)
 
-        _, clean_arr = astroscrappy.detect_cosmics(
-            hdu[1].data,
-            sigclip=sigclip,
-            sigfrac=sigfrac,
-            objlim=objlim,
-            cleantype="medmask",
-            niter=niter,
-            sepmed=True,
-            verbose=True,
-        )
+        if group == "arc":
+            clean_arr = hdu[1].data
+
+        else:
+
+            _, clean_arr = astroscrappy.detect_cosmics(
+                hdu[1].data,
+                sigclip=sigclip,
+                sigfrac=sigfrac,
+                objlim=objlim,
+                cleantype="medmask",
+                niter=niter,
+                sepmed=True,
+                verbose=True,
+            )
 
         # Replace data array with cleaned image
         hdu[1].data = clean_arr

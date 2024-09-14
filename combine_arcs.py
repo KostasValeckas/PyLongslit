@@ -33,7 +33,7 @@ def combine_arcs():
         arc_data.append(hdu[0].data)
 
     # Calculate the mean of the arc frames
-    master_arc = np.mean(arc_data, axis=0)
+    master_arc = np.sum(arc_data, axis=0)
 
     logger.info("Master arc created successfully, writing to disc...")
 

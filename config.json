@@ -28,7 +28,7 @@
 
     "flat": {
         "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/flats",
-        "user_custom_norm_area": true,
+        "user_custom_norm_area": false,
         "norm_area_start_x": 100,
         "norm_area_end_x": 400,
         "norm_area_start_y": 100,
@@ -57,7 +57,7 @@
     "standard" : {
         "skip_standard": false,
         "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/standard",
-        "exptime": 60,
+        "exptime": 30,
         "airmass": 1.030792009,
         "starname": "BD332642",
         "flux_file_path": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/bd33a.oke"
@@ -70,12 +70,12 @@
 
     "wavecalib" : {
         "pixtable": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output/idarc.dat",
-        "STEP_REID": 5,
-        "FWHM": 4,
+        "STEP_REID": 1,
+        "FWHM": 3,
         "TOL_REID_MEAN": 1,
         "TOL_REID_FWHM": 3,
-        "ORDER_WAVELEN_REID": 5,
-        "ORDER_SPATIAL_REID": 5       
+        "ORDER_WAVELEN_REID": 4,
+        "ORDER_SPATIAL_REID": 3       
     },
 
     "extract" : {
