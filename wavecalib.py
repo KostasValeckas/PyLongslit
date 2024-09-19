@@ -134,7 +134,8 @@ def trace_line_tilt(sub_image, start_pixel, end_pixel, center_guess, FWHM):
     # extract the fitted peak position and FWHM:
     fit_center = g_fit.mean_0.value
     fitted_FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
-
+    
+    """
     # plot the spectrum
     plt.plot(spectral_coords, center_row_spec, "x-", color="black")
     # plot the fit
@@ -142,13 +143,14 @@ def trace_line_tilt(sub_image, start_pixel, end_pixel, center_guess, FWHM):
     plt.plot(x_fine, g_fit(x_fine), color="green")
     plt.axvline(fit_center, color="red")
     plt.show()
+    """
 
     all_centers = {}
     all_centers[center_row] = fit_center
 
     for i in range(center_row+1, sub_image.shape[0]):
 
-        print(i)
+        #print(i)
         
         center_guess = all_centers[i-1]
         center_row_spec = sub_image[i, :]
@@ -200,7 +202,7 @@ def trace_line_tilt(sub_image, start_pixel, end_pixel, center_guess, FWHM):
 
     for i in range(center_row-1, -1, -1):
 
-        print(i)
+        #print(i)
 
         center_guess = all_centers[i+1]
         center_row_spec = sub_image[i, :]
@@ -248,16 +250,10 @@ def trace_line_tilt(sub_image, start_pixel, end_pixel, center_guess, FWHM):
         all_centers[i] = fit_center
 
     all_centers_sorted = dict(sorted(all_centers.items()))
-    plt.plot(list(all_centers_sorted.keys()), list(all_centers_sorted.values()))
-    plt.show()
+    #plt.plot(list(all_centers_sorted.keys()), list(all_centers_sorted.values()))
+    #plt.show()
 
-
-
-
-
-
-            
-
+    return np.array(list(all_centers_sorted.values()))
 
 
 
@@ -268,22 +264,45 @@ def trace_tilts():
     logger.info("Tracing the tilts of the lines in the arc spectrum...")
 
     master_arc = get_master_arc()
-    pixel, _ = read_pixtable()
+    pixel, wavelength = read_pixtable()
 
     FWHM_guess = wavecalib_params["FWHM"]
 
-    for pixel in pixel:
+    # Initialize the mask array with True values
+    mask = np.ones(len(pixel), dtype=bool)
+
+    RMS_TOL = wavecalib_params["SPACIAL_RMS_TOL"]
+    
+    # Iterate through the array
+    for i in range(len(pixel) - 1):
+        if mask[i] == False: pass
+        else: 
+            if abs(pixel[i] - pixel[i + 1]) <= 2*FWHM_guess:
+                print(f"Masking at {pixel[i]} and {pixel[i+1]}")
+                mask[i] = False
+                mask[i+1] = False
+
+    pixel_masked = pixel[mask]
+
+    good_lines = {}
+
+    for pixel, wavelength in tqdm(zip(pixel_masked, wavelength[mask]), desc="Fitting lines", unit="line"):
+        print(pixel)
         start_pixel = int(pixel - 2 * FWHM_guess)
         end_pixel = int(pixel + 2 * FWHM_guess)
 
         sub_image = master_arc[0].data[:, start_pixel:end_pixel]
 
+        """
         plt.imshow(sub_image, origin="lower")
         plt.show()
+        """
 
         center_row = sub_image.shape[0] // 2
 
         spectral_coords = np.arange(start_pixel, end_pixel)
+
+        spacial_coords = np.arange(sub_image.shape[0])
 
         center_row_spec = sub_image[center_row, :]
 
@@ -323,9 +342,24 @@ def trace_tilts():
 
         sub_image = master_arc[0].data[:, start_pixel:end_pixel]
 
-        trace_line_tilt(sub_image, start_pixel, end_pixel, fit_center, FWHM_guess)
+        centers = trace_line_tilt(sub_image, start_pixel, end_pixel, fit_center, FWHM_guess)
 
-        exit()
+        coeff = chebfit(spacial_coords, centers, deg=4)
+
+        RMS = np.sqrt(np.mean((centers - chebval(spacial_coords, coeff))**2))
+
+        if RMS > RMS_TOL:
+            #plt.title(f"Rejected. RMS: {RMS}")
+            print("Rejected")
+        else:
+            #plt.title(f"Accepted. RMS: {RMS}")
+            good_lines[wavelength] = centers 
+
+        #plt.plot(spacial_coords, centers)
+        #plt.plot(spacial_coords, chebval(spacial_coords, coeff))
+        #plt.show()
+    
+    return good_lines  
 
 
 def show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM):
@@ -701,7 +735,7 @@ def fit_1d_QA(line_REID: dict):
     )
 
 
-def fit_2d(line_REID: dict):
+def fit_2d(good_lines: dict):
 
     logger.info("Preparing to fit a 2d polynomial through whole delector...")
 
@@ -715,20 +749,25 @@ def fit_2d(line_REID: dict):
         f"order {ORDER_SPATIAL_REID} in spatial direction to reidentified lines..."
     )
 
-    spectral_pixels = []  # corresponding to x in the 2d-fit
-    spacial_pixels = []  # corresponding to y in the 2d-fit
-    wavelength_values = []  # corresponding to z in the 2d-fit
+    N_SPACIAL = detector_params["xsize"] if detector_params["dispersion"]["spectral_dir"] == "y" else detector_params["ysize"] 
 
-    # fill up the lists with the values from the reidentified lines
-    for table in line_REID.values():
-        spectral_pixels.append(table["peak_pix"])
-        spacial_pixels.append(table["spacial"])
-        wavelength_values.append(table["wavelength"])
+    spacial_pixel_column = np.arange(0, N_SPACIAL)
 
+    spectral_pixels = np.array(list(good_lines.values())).flatten()  # corresponding to x in the 2d-fit
+    spacial_pixels = np.tile(spacial_pixel_column, len(good_lines))  # corresponding to y in the 2d-fit
+    # corresponding to z in the 2d-fit
+    wavelength_values = np.concatenate([np.full(N_SPACIAL, float(wl)) for wl in good_lines.keys()])
+
+    print(spectral_pixels.shape)
+    print(spacial_pixels.shape)
+    print(wavelength_values.shape)
+
+    """
     # flatten the lists
     spectral_pixels = np.concatenate(spectral_pixels)
     spacial_pixels = np.concatenate(spacial_pixels)
     wavelength_values = np.concatenate(wavelength_values)
+    
 
     wavelength_dict = {}
 
@@ -737,7 +776,7 @@ def fit_2d(line_REID: dict):
         spectral_coords = spectral_pixels[mask]
         spacial_coords = spacial_pixels[mask]
         wavelength_dict[wavelength] = {"spectral_coords": spectral_coords, "spacial_coords": spacial_coords}
-
+    """
 
     # set up the fitting model
 
@@ -750,28 +789,6 @@ def fit_2d(line_REID: dict):
 
     fit2D_REID = fitter(coeff_init, spectral_pixels, spacial_pixels, wavelength_values)
 
-
-    residuals = wavelength_values - fit2D_REID(spectral_pixels, spacial_pixels)
-
-    for item in wavelength_dict.items():
-        wavelength = item[0]
-        spectral_coords = item[1]["spectral_coords"]
-        spacial_coords = item[1]["spacial_coords"]
-        
-        # perform the fit
-        coeff = chebfit(spacial_coords, spectral_coords, deg=ORDER_SPATIAL_REID)
-
-        x_fine = np.linspace(spacial_coords[0], spacial_coords[-1], 1000)
-        
-        # evaluate the fit for the QA plot
-        y_fit_values = chebval(x_fine, coeff)
-        
-        plt.plot(spectral_coords, spacial_coords, "x", label="Reidentified lines")
-        plt.plot(y_fit_values, x_fine, label="2D fit")
-
-        plt.show()
-
-    logger.info("2D fit done.")
 
     return fit2D_REID
 
@@ -985,14 +1002,16 @@ def run_wavecalib():
 
     logger.info("Reidentifying the lines...")
 
-    reidentified_lines = reidentify(pixnumber, wavelength, master_arc)
+    #reidentified_lines = reidentify(pixnumber, wavelength, master_arc)
 
-    logger.info("Reidentification done.")
-    logger.info("Starting the fitting routine...")
+    #logger.info("Reidentification done.")
+    #logger.info("Starting the fitting routine...")
 
-    fit_1d_QA(reidentified_lines)
+    #fit_1d_QA(reidentified_lines)
 
-    fit_2d_results = fit_2d(reidentified_lines)
+    good_lines = trace_tilts()
+
+    fit_2d_results = fit_2d(good_lines)
 
     write_fit2d_REID_to_disc(fit_2d_results)
 
@@ -1005,7 +1024,7 @@ def run_wavecalib():
     logger.info("Wavelength calibration routine done.")
     print("\n-----------------------------\n")
 
-
+#
 if __name__ == "__main__":
     run_wavecalib()
     #trace_tilts()

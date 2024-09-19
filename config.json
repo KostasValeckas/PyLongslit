@@ -75,7 +75,8 @@
         "TOL_REID_MEAN": 1,
         "TOL_REID_FWHM": 3,
         "ORDER_WAVELEN_REID": 4,
-        "ORDER_SPATIAL_REID": 3       
+        "ORDER_SPATIAL_REID": 3,
+        "SPACIAL_RMS_TOL": 0.05       
     },
 
     "extract" : {
