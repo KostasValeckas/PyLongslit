@@ -30,10 +30,11 @@ class GeneralizedNormal1D(Fittable1DModel):
     but has a shape parameter beta that controls the flatness of the peak.
     """
 
-    amplitude = Parameter(default=1)
+    # the default values here are set to 0 as they are not used
+    amplitude = Parameter(default=0)
     mean = Parameter(default=0)
-    stddev = Parameter(default=1)
-    beta = Parameter(default=5)  # Shape parameter
+    stddev = Parameter(default=0)
+    beta = Parameter(default=0)  # Shape parameter
 
     @staticmethod
     def evaluate(x, amplitude, mean, stddev, beta):
@@ -95,271 +96,210 @@ def get_master_arc():
 
     return master_arc
 
-def trace_line_tilt(sub_image, start_pixel, end_pixel, center_guess, FWHM):
-    
-    center_row = sub_image.shape[0] // 2
 
-    spectral_coords = np.arange(start_pixel, end_pixel)
+def trace_line_tilt(
+    sub_image,
+    spectral_coords,
+    N_ROWS,
+    center_row,
+    fitter,
+    g_model,
+):
 
-    center_row_spec = sub_image[center_row, :]
+    all_params = {}
+    all_params[center_row] = {
+        "amplitude": g_model.amplitude_0.value,
+        "center": g_model.mean_0.value,
+        "FWHM": g_model.stddev_0.value * gaussian_sigma_to_fwhm,
+        "beta": g_model.beta_0.value,
+    }
 
-    A_init = np.max(center_row_spec)
-    
-    mean_init = center_guess
-        # sigma (width of the line) - convert from user defined FWHM:
-    stddev_init = FWHM * gaussian_fwhm_to_sigma
-
-    TOL_REID_FWHM = wavecalib_params["TOL_REID_FWHM"]
-
-    g_init = GeneralizedNormal1D(
-        amplitude=A_init,
-        mean=mean_init,
-        stddev=stddev_init,
-        beta=2,  # Initial guess for beta
-        bounds={
-            "amplitude": (0, 2 * np.max(center_row_spec)),
-            "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
-            # beta > 2 flattens peak, beta > 20 is almost a step function
-            "beta": (2, 20),
-        }
-    )
-
-    const = Const1D(amplitude=0)
-    g_model = g_init + const
-
-    # perform the fit
-    fitter = LevMarLSQFitter()
-    g_fit = fitter(g_model, spectral_coords, center_row_spec)
-
-    # extract the fitted peak position and FWHM:
-    fit_center = g_fit.mean_0.value
-    fitted_FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
-    
-    """
-    # plot the spectrum
-    plt.plot(spectral_coords, center_row_spec, "x-", color="black")
-    # plot the fit
-    x_fine = np.linspace(spectral_coords[0], spectral_coords[-1], 1000)
-    plt.plot(x_fine, g_fit(x_fine), color="green")
-    plt.axvline(fit_center, color="red")
-    plt.show()
-    """
-
-    all_centers = {}
-    all_centers[center_row] = fit_center
-
-    for i in range(center_row+1, sub_image.shape[0]):
-
-        #print(i)
-        
-        center_guess = all_centers[i-1]
-        center_row_spec = sub_image[i, :]
-
-        A_init = np.max(center_row_spec)
-        
-        mean_init = center_guess
-            # sigma (width of the line) - convert from user defined FWHM:
-        stddev_init = FWHM * gaussian_fwhm_to_sigma
-
-        TOL_REID_FWHM = wavecalib_params["TOL_REID_FWHM"]
-
-        g_init = GeneralizedNormal1D(
-            amplitude=A_init,
-            mean=mean_init,
-            stddev=stddev_init,
-            beta=2,  # Initial guess for beta
-            bounds={
-                "amplitude": (0, 2 * np.max(center_row_spec)),
-                "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
-                # beta > 2 flattens peak, beta > 20 is almost a step function
-                "beta": (2, 20),
-            }
-        )
-
-        const = Const1D(amplitude=0)
-        g_model = g_init + const
-
-        # perform the fit
-        fitter = LevMarLSQFitter()
-        g_fit = fitter(g_model, spectral_coords, center_row_spec)
-
-        # extract the fitted peak position and FWHM:
-        fit_center = g_fit.mean_0.value
-        fitted_FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
-
-        if False:
-
-            # plot the spectrum
-            plt.plot(spectral_coords, center_row_spec, "x-", color="black")
-            # plot the fit
-            x_fine = np.linspace(spectral_coords[0], spectral_coords[-1], 1000)
-            plt.plot(x_fine, g_fit(x_fine), color="green")
-            plt.axvline(fit_center, color="red")
-            #plt.show()
-            plt.show()
-    
-        all_centers[i] = fit_center
-
-    for i in range(center_row-1, -1, -1):
-
-        #print(i)
-
-        center_guess = all_centers[i+1]
-        center_row_spec = sub_image[i, :]
-
-        A_init = np.max(center_row_spec)
-        
-        mean_init = center_guess
-            # sigma (width of the line) - convert from user defined FWHM:
-        stddev_init = FWHM * gaussian_fwhm_to_sigma
-
-        TOL_REID_FWHM = wavecalib_params["TOL_REID_FWHM"]
-
-        g_init = GeneralizedNormal1D(
-            amplitude=A_init,
-            mean=mean_init,
-            stddev=stddev_init,
-            beta=2,  # Initial guess for beta
-            bounds={
-                "amplitude": (0, 2 * np.max(center_row_spec)),
-                "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
-                # beta > 2 flattens peak, beta > 20 is almost a step function
-                "beta": (2, 20),
-            }
-        )
-
-        const = Const1D(amplitude=0)
-        g_model = g_init + const
-
-        # perform the fit
-        fitter = LevMarLSQFitter()
-        g_fit = fitter(g_model, spectral_coords, center_row_spec)
-
-        # extract the fitted peak position and FWHM:
-        fit_center = g_fit.mean_0.value
-        fitted_FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
-        """
-        # plot the spectrum
-        plt.plot(spectral_coords, center_row_spec, "x-", color="black")
-        # plot the fit
-        x_fine = np.linspace(spectral_coords[0], spectral_coords[-1], 1000)
-        plt.plot(x_fine, g_fit(x_fine), color="green")
-        plt.axvline(fit_center, color="red")
-        #plt.show()
-        """
-        all_centers[i] = fit_center
-
-    all_centers_sorted = dict(sorted(all_centers.items()))
-    #plt.plot(list(all_centers_sorted.keys()), list(all_centers_sorted.values()))
+    #plt.plot(spectral_coords, sub_image[center_row, :])
+    #plt.plot(spectral_coords, g_model(spectral_coords))
     #plt.show()
 
-    return np.array(list(all_centers_sorted.values()))
+    for i in range(center_row + 1, N_ROWS):
+
+        center_row_spec = sub_image[i, :]
+        try:
+            g_fit = fitter(g_model, spectral_coords, center_row_spec)
+        except:
+            print(i)
+            print(spectral_coords.shape)
+            print(center_row_spec.shape)
+            plt.plot(spectral_coords, center_row_spec)
+            plt.show()
+            continue
+
+        all_params[i] = {
+            "amplitude": g_fit.amplitude_0.value,
+            "center": g_fit.mean_0.value,
+            "FWHM": g_fit.stddev_0.value * gaussian_sigma_to_fwhm,
+            "beta": g_fit.beta_0.value,
+        }
+
+        # update the fitter parameters
+        g_model.amplitude_0 = g_fit.amplitude_0.value
+        g_model.mean_0 = g_fit.mean_0.value
+        g_model.stddev_0 = g_fit.stddev_0.value
+        g_model.beta_0 = g_fit.beta_0.value
+        g_model.amplitude_1 = g_fit.amplitude_1.value
+
+    for i in range(center_row - 1, -1, -1):
+
+        center_row_spec = sub_image[i, :]
+
+        g_fit = fitter(g_model, spectral_coords, center_row_spec)
+
+        all_params[i] = {
+            "amplitude": g_fit.amplitude_0.value,
+            "center": g_fit.mean_0.value,
+            "FWHM": g_fit.stddev_0.value * gaussian_sigma_to_fwhm,
+            "beta": g_fit.beta_0.value,
+        }
+
+        # update the fitter parameters
+        g_model.amplitude_0 = g_fit.amplitude_0.value
+        g_model.mean_0 = g_fit.mean_0.value
+        g_model.stddev_0 = g_fit.stddev_0.value
+        g_model.beta_0 = g_fit.beta_0.value
+        g_model.amplitude_1 = g_fit.amplitude_1.value
+
+    all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
+    all_centers_sorted = np.sort(all_centers)
+
+    return all_centers_sorted
 
 
-
-def trace_tilts():
+def trace_tilts(pixel_array, wavelength_array, master_arc):
     """
     Trace the tilts of the lines in the arc spectrum.
     """
     logger.info("Tracing the tilts of the lines in the arc spectrum...")
 
-    master_arc = get_master_arc()
-    pixel, wavelength = read_pixtable()
+    N_ROWS = master_arc[0].data.shape[0]
+    center_row = N_ROWS // 2
+    spacial_coords = np.arange(N_ROWS)
 
     FWHM_guess = wavecalib_params["FWHM"]
 
-    # Initialize the mask array with True values
-    mask = np.ones(len(pixel), dtype=bool)
-
     RMS_TOL = wavecalib_params["SPACIAL_RMS_TOL"]
-    
-    # Iterate through the array
-    for i in range(len(pixel) - 1):
-        if mask[i] == False: pass
-        else: 
-            if abs(pixel[i] - pixel[i + 1]) <= 2*FWHM_guess:
-                print(f"Masking at {pixel[i]} and {pixel[i+1]}")
-                mask[i] = False
-                mask[i+1] = False
-
-    pixel_masked = pixel[mask]
 
     good_lines = {}
 
-    for pixel, wavelength in tqdm(zip(pixel_masked, wavelength[mask]), desc="Fitting lines", unit="line"):
-        print(pixel)
+    for pixel, wavelength in tqdm(
+        zip(pixel_array, wavelength_array), desc="Fitting lines", unit="line"
+    ):
+        
         start_pixel = int(pixel - 2 * FWHM_guess)
         end_pixel = int(pixel + 2 * FWHM_guess)
 
         sub_image = master_arc[0].data[:, start_pixel:end_pixel]
 
-        """
-        plt.imshow(sub_image, origin="lower")
-        plt.show()
-        """
-
-        center_row = sub_image.shape[0] // 2
-
         spectral_coords = np.arange(start_pixel, end_pixel)
-
-        spacial_coords = np.arange(sub_image.shape[0])
 
         center_row_spec = sub_image[center_row, :]
 
+        # initialize the fitter
         A_init = np.max(center_row_spec)
-        
         mean_init = pixel
-            # sigma (width of the line) - convert from user defined FWHM:
         stddev_init = FWHM_guess * gaussian_fwhm_to_sigma
-
+        beta_init = 2 # beta = 2 means simple Gaussian form
         TOL_REID_FWHM = wavecalib_params["TOL_REID_FWHM"]
 
         g_init = GeneralizedNormal1D(
             amplitude=A_init,
             mean=mean_init,
             stddev=stddev_init,
-            beta=2,  # Initial guess for beta
+            beta=beta_init,  # Initial guess for beta
+            # for bounds, accept a deviation of double from the initial guesses
             bounds={
-                "amplitude": (0, 2 * np.max(center_row_spec)),
+                "amplitude": (1, 2 * A_init),
+                "mean": (pixel - 2 * FWHM_guess, pixel + 2 * FWHM_guess),
                 "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
                 # beta > 2 flattens peak, beta > 20 is almost a step function
                 "beta": (2, 20),
-            }
+            },
         )
 
         const = Const1D(amplitude=0)
         g_model = g_init + const
-
-        # perform the fit
         fitter = LevMarLSQFitter()
+
+        # perform the fit to recenter and get good start values
+        
         g_fit = fitter(g_model, spectral_coords, center_row_spec)
 
         # extract the fitted peak position and FWHM:
         fit_center = g_fit.mean_0.value
+        FWHM_local = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
 
-        start_pixel = int(fit_center - 2 * FWHM_guess)
-        end_pixel = int(fit_center + 2 * FWHM_guess)
+        # get a better estimate of the center
+        start_pixel = int(fit_center - 2*FWHM_local)
+        end_pixel = int(fit_center + 2*FWHM_local)
 
         sub_image = master_arc[0].data[:, start_pixel:end_pixel]
+        spectral_coords = np.arange(start_pixel, end_pixel)
 
-        centers = trace_line_tilt(sub_image, start_pixel, end_pixel, fit_center, FWHM_guess)
+        # update the fitter parameters
+        g_model.amplitude_0 = g_fit.amplitude_0.value
+        g_model.mean_0 = g_fit.mean_0.value
+        g_model.stddev_0 = g_fit.stddev_0.value
+        g_model.beta_0 = g_fit.beta_0.value
+        g_model.amplitude_1 = g_fit.amplitude_1.value
+
+        centers = trace_line_tilt(
+            sub_image,
+            spectral_coords,
+            N_ROWS,
+            center_row,
+            fitter,
+            g_model,
+        )
 
         coeff = chebfit(spacial_coords, centers, deg=4)
 
-        RMS = np.sqrt(np.mean((centers - chebval(spacial_coords, coeff))**2))
+        RMS = np.sqrt(np.mean((centers - chebval(spacial_coords, coeff)) ** 2))
 
         if RMS > RMS_TOL:
-            #plt.title(f"Rejected. RMS: {RMS}")
+            # plt.title(f"Rejected. RMS: {RMS}")
             print("Rejected")
         else:
-            #plt.title(f"Accepted. RMS: {RMS}")
-            good_lines[wavelength] = centers 
+            offsets = centers - fit_center
 
-        #plt.plot(spacial_coords, centers)
-        #plt.plot(spacial_coords, chebval(spacial_coords, coeff))
-        #plt.show()
-    
-    return good_lines  
+            coeff_offsets = chebfit(spacial_coords, offsets, deg=4)
+
+            # print("offset centers", offsets.shape)
+            # print("centers", centers.shape)
+
+            print("fit at center row: ", chebval(center_row, coeff_offsets))
+
+            if abs(chebval(center_row, coeff_offsets)) > 0.1:
+                #plt.plot(
+                #    spacial_coords,
+                #    chebval(spacial_coords, coeff_offsets),
+                #    "x",
+                #    color="red",
+                #)
+                #print("Rejected")
+                #plt.show()
+                print("Rejected due to offset")
+                continue
+
+            #plt.plot(spacial_coords, offsets)
+            # plt.plot(spacial_coords[center_row], centers[center_row], color = "red")
+            #plt.plot(spacial_coords, chebval(spacial_coords, coeff_offsets))
+            # plt.axhline(0, color="red")
+            # plt.axvline(center_row, color="red")
+            #plt.show()
+
+            good_lines[wavelength] = offsets, centers, coeff_offsets
+
+            # plt.plot(spacial_coords, centers)
+            # plt.plot(spacial_coords, chebval(spacial_coords, coeff))
+            # plt.show()
+    #plt.show()
+    return good_lines
 
 
 def show_reidentify_QA_plot(fig, ax, TOL_REID, TOL_REID_FWHM, FWHM):
@@ -749,18 +689,32 @@ def fit_2d(good_lines: dict):
         f"order {ORDER_SPATIAL_REID} in spatial direction to reidentified lines..."
     )
 
-    N_SPACIAL = detector_params["xsize"] if detector_params["dispersion"]["spectral_dir"] == "y" else detector_params["ysize"] 
+    N_SPACIAL = (
+        detector_params["xsize"]
+        if detector_params["dispersion"]["spectral_dir"] == "y"
+        else detector_params["ysize"]
+    )
 
     spacial_pixel_column = np.arange(0, N_SPACIAL)
 
-    spectral_pixels = np.array(list(good_lines.values())).flatten()  # corresponding to x in the 2d-fit
-    spacial_pixels = np.tile(spacial_pixel_column, len(good_lines))  # corresponding to y in the 2d-fit
-    # corresponding to z in the 2d-fit
-    wavelength_values = np.concatenate([np.full(N_SPACIAL, float(wl)) for wl in good_lines.keys()])
+    spectral_pixels = np.array([])
+    offset_values = np.array([])
 
-    print(spectral_pixels.shape)
-    print(spacial_pixels.shape)
-    print(wavelength_values.shape)
+    for key in good_lines.keys():
+        offset_values = np.append(offset_values, good_lines[key][0])
+        spectral_pixels = np.append(spectral_pixels, good_lines[key][1])
+
+    spectral_pixels = spectral_pixels.flatten()
+    wavelength_values = offset_values.flatten()
+
+    spacial_pixels = np.tile(
+        spacial_pixel_column, len(good_lines)
+    )  # corresponding to y in the 2d-fit
+    # corresponding to z in the 2d-fit
+
+    print("spec", spectral_pixels.shape)
+    print("spacial", spacial_pixels.shape)
+    print("wave", wavelength_values.shape)
 
     """
     # flatten the lists
@@ -789,6 +743,32 @@ def fit_2d(good_lines: dict):
 
     fit2D_REID = fitter(coeff_init, spectral_pixels, spacial_pixels, wavelength_values)
 
+    residuals = wavelength_values - fit2D_REID(spectral_pixels, spacial_pixels)
+    RMS = np.sqrt(np.mean(residuals**2))
+
+    plt.figure(figsize=(10, 8))
+    plt.plot(spacial_pixels, residuals, "x")
+    plt.xlabel("Spacial Pixels")
+    plt.ylabel("Residuals (Å)")
+    plt.axhline(0, color="red", linestyle="--")
+    plt.title(f"Residuals of the 2D Fit. RMS: {RMS}")
+    plt.show()
+
+    plt.figure(figsize=(10, 8))
+    plt.plot(spectral_pixels, residuals, "x")
+    plt.xlabel("Specral Pixels")
+    plt.ylabel("Residuals (Å)")
+    plt.axhline(0, color="red", linestyle="--")
+    plt.title("Residuals of the 2D Fit")
+    plt.show()
+
+    plt.figure(figsize=(10, 8))
+    plt.scatter(spectral_pixels, spacial_pixels, c=residuals, cmap="viridis", s=5)
+    plt.colorbar(label="Residuals (Å)")
+    plt.xlabel("Spectral Pixels")
+    plt.ylabel("Spatial Pixels")
+    plt.title("Residuals of the 2D Fit")
+    plt.show()
 
     return fit2D_REID
 
@@ -836,7 +816,7 @@ def construct_wavelength_map(fit2D_REID, master_arc):
     return wavelength_map
 
 
-def plot_verticals(wavelength_map, num_slices=20, figsize=(18, 12)):
+def plot_verticals(fit2D_REID, good_lines: dict, figsize=(18, 12)):
     """
     Plot vertical slices of the wavelength map for QA of the lines tilts.
 
@@ -846,41 +826,39 @@ def plot_verticals(wavelength_map, num_slices=20, figsize=(18, 12)):
         Wavelength map.
     """
 
-    plt.figure(figsize=figsize)
+    # unpack goodlines:
+    offsets_1d = np.array([good_lines[key][0] for key in good_lines.keys()])
+    centers_1d = np.array([good_lines[key][1] for key in good_lines.keys()])
+    coeffs_1d = np.array([good_lines[key][2] for key in good_lines.keys()])
 
-    # this is the index of the column to which we will compare other values to
-    middle_col = wavelength_map.shape[0] // 2
+    spatial_coords = np.arange(len(offsets_1d[0]))
 
-    # width of the slice, used for looping. We add an extra slice nunber
-    # to the denominator to avoid the noise at the beginning of the spectrum
-    slice_width = wavelength_map.shape[1] // (num_slices + 1)
+    fig, axs = plt.subplots(1, 2, figsize=figsize)
 
-    # create an array of indexes for the slices
-    # these are equally distributed along the spectral direction
-    # don't start from 0, noise is expected there
-    indexes = np.arange(slice_width, wavelength_map.shape[1] - slice_width, slice_width)
+    for i, coeffs in enumerate(coeffs_1d):
+        central_spec = int(round(centers_1d[i][len(centers_1d[i]) // 2]))
+        axs[0].plot(
+            spatial_coords,
+            chebval(spatial_coords, coeffs),
+            label=f"Central spec: {central_spec}",
+        )
 
-    # construct spacial axis for plotting
-    spacial_axis = np.arange(wavelength_map.shape[0])
+    axs[0].set_title("Individual line tilt fits")
+    axs[0].set_xlabel("Spatial Pixels")
+    axs[0].set_ylabel("Fitted Offsets from Spatial Center")
+    axs[0].legend()
 
-    for i in indexes:
-        vertical_slice = wavelength_map[:, i]
-        # we want the relative difference to the middle column
-        diff = vertical_slice - vertical_slice[middle_col]
+    for spectral_array in centers_1d:
+        central_spec = int(round(spectral_array[len(spectral_array) // 2]))
+        offsets_2d = fit2D_REID(spectral_array, spatial_coords)
+        axs[1].plot(spatial_coords, offsets_2d, label=f"Central spec: {central_spec}")
 
-        plt.plot(spacial_axis, diff, label=f"Spectral pixel : {i}")
+    axs[1].set_title("2D Fit detector tilt fit")
+    axs[1].set_xlabel("Spatial Pixels")
+    axs[1].set_ylabel("Fitted Offsets from Spatial Center")
+    axs[1].legend()
 
-    plt.xlabel("Pixels in spatial direction")
-    plt.ylabel("Relative Wavelength Difference from spacial centrum (Å)")
-    plt.title(
-        "Vertical Slices - Relative Differences from middle.\n"
-        "This plot shows how wavelengths change along the spatial direction "
-        "for a series of detector columns.\n"
-        "Some difference is expected, but it should be small, smooth and continuous.\n"
-        "If not, try lowering the STEP_REID parameter in the config file."
-    )
-
-    plt.legend()
+    plt.tight_layout()
     plt.show()
 
 
@@ -899,7 +877,7 @@ def plot_wavemap(wavelength_map, figsize=(18, 12)):
     plt.show()
 
 
-def plot_wavelengthcalib_QA(wavelength_map):
+def plot_wavelengthcalib_QA(wavelength_map, good_lines: dict, fit2d_REID):
     """
     Plot the wavelength calibration QA plots.
 
@@ -911,7 +889,7 @@ def plot_wavelengthcalib_QA(wavelength_map):
 
     logger.info("Preparing wavelength calibration QA plots...")
     plot_wavemap(wavelength_map)
-    plot_verticals(wavelength_map)
+    plot_verticals(fit2d_REID, good_lines)
 
 
 def write_waveimage_to_disc(wavelength_map, master_arc):
@@ -1002,14 +980,14 @@ def run_wavecalib():
 
     logger.info("Reidentifying the lines...")
 
-    #reidentified_lines = reidentify(pixnumber, wavelength, master_arc)
+    # reidentified_lines = reidentify(pixnumber, wavelength, master_arc)
 
-    #logger.info("Reidentification done.")
-    #logger.info("Starting the fitting routine...")
+    # logger.info("Reidentification done.")
+    # logger.info("Starting the fitting routine...")
 
-    #fit_1d_QA(reidentified_lines)
+    # fit_1d_QA(reidentified_lines)
 
-    good_lines = trace_tilts()
+    good_lines = trace_tilts(pixnumber, wavelength, master_arc)
 
     fit_2d_results = fit_2d(good_lines)
 
@@ -1017,14 +995,15 @@ def run_wavecalib():
 
     wavelength_map = construct_wavelength_map(fit_2d_results, master_arc)
 
-    plot_wavelengthcalib_QA(wavelength_map)
+    plot_wavelengthcalib_QA(wavelength_map, good_lines, fit_2d_results)
 
     write_waveimage_to_disc(wavelength_map, master_arc)
 
     logger.info("Wavelength calibration routine done.")
     print("\n-----------------------------\n")
 
+
 #
 if __name__ == "__main__":
     run_wavecalib()
-    #trace_tilts()
+    # trace_tilts()

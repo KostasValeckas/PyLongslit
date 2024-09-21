@@ -74,8 +74,8 @@
         "FWHM": 3,
         "TOL_REID_MEAN": 1,
         "TOL_REID_FWHM": 3,
-        "ORDER_WAVELEN_REID": 4,
-        "ORDER_SPATIAL_REID": 3,
+        "ORDER_WAVELEN_REID": 1,
+        "ORDER_SPATIAL_REID": 4,
         "SPACIAL_RMS_TOL": 0.05       
     },
 
