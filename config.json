@@ -71,11 +71,11 @@
     "wavecalib" : {
         "pixtable": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output/idarc.dat",
         "STEP_REID": 1,
-        "FWHM": 3,
+        "FWHM": 5,
         "TOL_REID_MEAN": 1,
-        "TOL_REID_FWHM": 3,
+        "TOL_REID_FWHM": 5,
         "ORDER_WAVELEN_REID": 1,
-        "ORDER_SPATIAL_REID": 4,
+        "ORDER_SPATIAL_REID": 3,
         "SPACIAL_RMS_TOL": 0.05       
     },
 
