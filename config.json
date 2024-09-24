@@ -76,7 +76,9 @@
         "TOL_REID_FWHM": 5,
         "ORDER_WAVELEN_REID": 1,
         "ORDER_SPATIAL_REID": 3,
-        "SPACIAL_RMS_TOL": 0.05       
+        "SPACIAL_RMS_TOL": 0.05,
+        "TILT_REJECT_LINE_FRACTION": 0.25,
+        "TILT_TRACE_R2_TOL": 0.99      
     },
 
     "extract" : {

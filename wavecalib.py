@@ -100,7 +100,48 @@ def get_master_arc():
     return master_arc
 
 
-def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model):
+def arc_trace_warning(message):
+    """
+    A helper method for logging warnings during the arc tracing.
+    Mostly to avoid code repetition.
+    """
+
+    logger.warning(message)
+    logger.warning(
+        "This is expected for some lines, but pay attention "
+        "to the upcoming quality assessment plots."
+    )
+
+
+def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0.99):
+    """
+    Method for fitting seperate 1d arc lines.
+
+    Modifies the fitter object in place with the new fit.
+
+    Parameters
+    ----------
+    spectral_coords : array
+        Spectral coordinates.
+
+    center_row_spec : array
+        Center row spectrum.
+
+    fitter : `~astropy.modeling.fitting.LevMarLSQFitter`
+        Fitter object.
+
+    g_model : `~astropy.modeling.models.GeneralizedNormal1D`
+        Generalized normal distribution model.
+
+    R2_threshold : float
+        Threshold for R2 score. Used to determine if the fit is good.
+        Default is 0.99.
+
+    Returns
+    -------
+    bool
+        True if the fit is good, False otherwise.
+    """
 
     # Suppress warnings during fitting
     with warnings.catch_warnings():
@@ -109,7 +150,7 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model):
 
     R2 = r2_score(center_row_spec, g_fit(spectral_coords))
 
-    if R2 < 0.99:
+    if R2 < R2_threshold:
         return False
 
     # update the fitter parameters
@@ -130,42 +171,62 @@ def trace_line_tilt(
     fitter,
     g_model,
 ):
+    """
+    Traces the tilt of a single line in the arc spectrum.
+
+    Loops over the rows of the sub_image and fits the line in each row.
+
+    Parameters
+    ----------
+    sub_image : array
+        Sub image of the arc spectrum holding the line.
+
+    spectral_coords : array
+        Spectral coordinates.
+
+    N_ROWS : int
+        Number of rows in the sub image.
+
+    center_row : int
+        Center row of the sub image.
+
+    fitter : `~astropy.modeling.fitting.LevMarLSQFitter`
+        Fitter object.
+
+    g_model : `~astropy.modeling.models.GeneralizedNormal1D`
+        Generalized normal distribution model.
+
+    Returns
+    -------
+    all_centers_sorted : array
+        Sorted centers of the line.
+
+    keep_mask : array
+        Mask for keeping the good fits for each row.
+    """
+    # container for fit parameters.
+    # Sometimes used for initial guesses for the next row.
+    # For holds more information than needed, but this is nice to have in
+    # further developtment or debugging.
     all_params = {}
+    # mask for keeping the good fits, will be updated in the loop
     keep_mask = np.ones(N_ROWS, dtype=bool)
 
+    # read the parameter that decides when to abort the trace - i.e.
+    # when the fit is bad for more than a certain number of rows
+    TILT_REJECTION_LINE_FRACTION = wavecalib_params["TILT_REJECT_LINE_FRACTION"]
     bad_fit_counter = 0
+    bad_fit_threshold = N_ROWS * TILT_REJECTION_LINE_FRACTION
 
-    # if a fit is bad for more than 1/4 of the rows, we stop the fit
-    # TODO this is a bit arbitrary - see if this should be a config value
-    bad_fit_threshold = N_ROWS // 4
+    # R2 tolerance for the fit of every row
+    TILT_TRACE_R2_TOL = wavecalib_params["TILT_TRACE_R2_TOL"]
 
-    # Combine the two ranges using itertools.chain
-    for i in range(center_row, N_ROWS):
+    # Loop from center and up and then down
+    for i in chain(range(center_row, N_ROWS), range(center_row - 1, -1, -1)):
 
-        center_row_spec = sub_image[i, :]
-
-        keep_bool = fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model)
-
-        all_params[i] = {
-            "amplitude": g_model.amplitude_0.value,
-            "center": g_model.mean_0.value,
-            "FWHM": g_model.stddev_0.value * gaussian_sigma_to_fwhm,
-            "beta": g_model.beta_0.value,
-            "amplitude_1": g_model.amplitude_1.value,
-        }
-
-        if not keep_bool:
-
-            bad_fit_counter += 1
-            if bad_fit_counter > bad_fit_threshold:
-                return None, None
-
-            keep_mask[i] = False
-
-    for i in range(center_row - 1, -1, -1):
-
+        # if we are starting to loop downwards, we need to update the initial guesses
+        # back to the center row values manually.
         if i == center_row - 1:
-
             g_model.amplitude_0 = all_params[i + 1]["amplitude"]
             g_model.mean_0 = all_params[i + 1]["center"]
             g_model.stddev_0 = all_params[i + 1]["FWHM"] / gaussian_sigma_to_fwhm
@@ -174,7 +235,13 @@ def trace_line_tilt(
 
         center_row_spec = sub_image[i, :]
 
-        keep_bool = fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model)
+        keep_bool = fit_arc_1d(
+            spectral_coords,
+            center_row_spec,
+            fitter,
+            g_model,
+            R2_threshold=TILT_TRACE_R2_TOL,
+        )
 
         all_params[i] = {
             "amplitude": g_model.amplitude_0.value,
@@ -188,17 +255,30 @@ def trace_line_tilt(
 
             bad_fit_counter += 1
             if bad_fit_counter > bad_fit_threshold:
+
+                arc_trace_warning(
+                    f"Too many bad fits with R2 below {TILT_TRACE_R2_TOL} in the tilt trace. "
+                    "The selection parameters for this are: "
+                    f"TILT_REJECT_LINE_FRACTION = {TILT_REJECTION_LINE_FRACTION}  "
+                    f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
+                )
+
                 return None, None
 
             keep_mask[i] = False
 
+    # extract the centers of the lines
     all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
 
+    # rows and used for sorting the centers only, as they make it easy to
+    # track the original order
     rows = np.array([row for row in all_params.keys()])
-
     sorted_indices = np.argsort(rows)
-
     all_centers_sorted = all_centers[sorted_indices]
+
+    logger.info(
+        f"Line traced successfully at pixel {all_params[center_row]['center']}."
+    )
 
     return all_centers_sorted, keep_mask
 
@@ -209,24 +289,37 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
     """
     logger.info("Tracing the tilts of the lines in the arc spectrum...")
 
+    # get detector shape parameters
     N_ROWS = master_arc[0].data.shape[0]
     center_row = N_ROWS // 2
     spacial_coords = np.arange(N_ROWS)
 
+    # get the rough guess of the FWHM of the lines
     FWHM_guess = wavecalib_params["FWHM"]
 
+    # get the tolerance for the RMS of the tilt line fit
     RMS_TOL = wavecalib_params["SPACIAL_RMS_TOL"]
 
+    # containers for the good lines and RMS values
     good_lines = {}
-
     RMS_all = {}
 
-    start_time = time.time()
+    spacial_fit_order = wavecalib_params["ORDER_SPATIAL_REID"]
 
     for pixel, wavelength in zip(pixel_array, wavelength_array):
 
-        print("Wavelength: ", wavelength)
+        # algorithm: crop the spectrum around the line, fit a Gaussian to the line
+        # in the center row to refine crop position, then trace the line center every row.
+        # Fit a polynomial to the line centers to get the tilt of the line.
+        # Use RMS of the polynomial fit as a quality metric.
+        # If the RMS is too high, discard the line. Else, redo the fit
+        # but now for the offset from the center row.
 
+        print("\n-------------------------------------")
+
+        logger.info(f"Tracing line-tilt at pixel {pixel}...")
+
+        # first guess - this will be refined
         start_pixel = int(pixel - FWHM_guess)
         end_pixel = int(pixel + FWHM_guess)
 
@@ -236,7 +329,7 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
 
         center_row_spec = sub_image[center_row, :]
 
-        # initialize the fitter
+        # initialize the fitter - this fitter will be used for all the fits
         A_init = np.max(center_row_spec)
         mean_init = pixel
         stddev_init = FWHM_guess * gaussian_fwhm_to_sigma
@@ -247,17 +340,22 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
             amplitude=A_init,
             mean=mean_init,
             stddev=stddev_init,
-            beta=beta_init,  # Initial guess for beta
+            beta=beta_init,
             # for bounds, accept a deviation of double from the initial guesses
             bounds={
                 "amplitude": (1, 2 * A_init),
                 "mean": (pixel - 2 * FWHM_guess, pixel + 2 * FWHM_guess),
-                "stddev": (0, 2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma),
+                "stddev": (
+                    TOL_REID_FWHM * gaussian_fwhm_to_sigma / 2,
+                    2 * TOL_REID_FWHM * gaussian_fwhm_to_sigma,
+                ),
                 # beta > 2 flattens peak, beta > 20 is almost a step function
-                "beta": (0, 20),
+                "beta": (0.1, 20),
             },
         )
 
+        # a constant model to add to the Gaussian - sometimes needed
+        # if a continuum is present in the line spectrum
         const = Const1D(amplitude=0)
         g_model = g_init + const
         fitter = LevMarLSQFitter()
@@ -270,9 +368,12 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
 
         R2 = r2_score(center_row_spec, g_fit(spectral_coords))
 
-        if R2 < 0.50:
-            logger.critical(
-                f"First pass R2 score for line at {wavelength} is {R2}. Skipping."
+        # if R2 of the initial fit is below 0.5, there is practically no
+        # chance to recover the line. Abort the trace and move on.
+        if R2 < 0.5:
+            arc_trace_warning(
+                "Line could not be identified with a Gaussian fit. "
+                f"Current FWHM guess is {FWHM_guess}."
             )
             continue
 
@@ -295,11 +396,24 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
         g_model.beta_0 = g_fit.beta_0.value
         g_model.amplitude_1 = g_fit.amplitude_1.value
 
+        # Do a second pass fit to get a better estimate of the line center
         # Suppress warnings during fitting
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             # perform the fit to recenter and get good start values
             g_fit = fitter(g_model, spectral_coords, center_row_spec)
+
+        # extract the fitted peak position and FWHM:
+        fit_center = g_fit.mean_0.value
+        FWHM_local = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
+
+        # get a better estimate of the center
+        start_pixel = int(fit_center - FWHM_local)
+        end_pixel = int(fit_center + FWHM_local)
+
+        sub_image = master_arc[0].data[:, start_pixel:end_pixel]
+        center_row_spec = sub_image[center_row, :]
+        spectral_coords = np.arange(start_pixel, end_pixel)
 
         # update the fitter parameters
         g_model.amplitude_0 = g_fit.amplitude_0.value
@@ -308,9 +422,7 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
         g_model.beta_0 = g_fit.beta_0.value
         g_model.amplitude_1 = g_fit.amplitude_1.value
 
-        # plt.plot(spectral_coords, center_row_spec)
-        # plt.plot(spectral_coords, g_fit(spectral_coords))
-        # plt.show()
+        # now fit all rows:
 
         centers, mask = trace_line_tilt(
             sub_image,
@@ -321,34 +433,51 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
             g_model,
         )
 
-        # bad trace
+        # tracing was unsuccessful - abort and move on
         if centers is None:
             continue
 
+        # keep the good and the bad fits for QA
         good_centers = centers[mask]
         good_spacial_coords = spacial_coords[mask]
 
         bad_centers = centers[~mask]
         bad_spacial_coords = spacial_coords[~mask]
 
-
-
+        # do a poly fit to the good centers
         coeff = chebfit(good_spacial_coords, good_centers, deg=3)
 
         RMS = np.sqrt(
             np.mean((good_centers - chebval(good_spacial_coords, coeff)) ** 2)
         )
-
+        # if the RMS is too high, discard the line
         if RMS > RMS_TOL:
+            arc_trace_warning(
+                f"Good line trace, but the RMS={RMS} of the spacial polynomial is higher than the tolerance {RMS_TOL}. "
+                f"Current user defined spacial fitting order: {spacial_fit_order}."
+            )
             continue
 
         else:
-
+            # if the initial poly fit is good, fit the offsets.
+            # Check RMS again.
             center_pixel = chebval(center_row, coeff)
 
             offsets = good_centers - center_pixel
 
             coeff_offset = chebfit(good_spacial_coords, offsets, deg=3)
+
+            RMS = np.sqrt(
+                np.mean((offsets - chebval(good_spacial_coords, coeff_offset)) ** 2)
+            )
+
+            # if the RMS is too high, discard the line
+            if RMS > RMS_TOL:
+                arc_trace_warning(
+                    f"Good line trace, but the RMS={RMS} of the spacial polynomial is higher than the tolerance {RMS_TOL}. "
+                    f"Current user defined fitting order: {spacial_fit_order}."
+                )
+                continue
 
             good_lines[wavelength] = (
                 offsets,
@@ -359,23 +488,6 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
             )
 
             RMS_all[wavelength] = RMS
-
-    # Detect outliers in RMS_all
-    RMS_values = np.array(list(RMS_all.values()))
-    mean_RMS = np.mean(RMS_values)
-    std_RMS = np.std(RMS_values)
-
-    # Define a threshold for outliers, e.g., 3 standard deviations from the mean
-    threshold = 3
-    outliers = {wavelength: RMS for wavelength, RMS in RMS_all.items() if abs(RMS - mean_RMS) > threshold * std_RMS}
-
-    # Log the outliers
-    if outliers:
-        logger.warning(f"Detected outliers in RMS values: {outliers}")
-    else:
-        logger.info("No outliers detected in RMS values.")
-
-    print(f"total time: {time.time() - start_time}")
 
     return good_lines
 
