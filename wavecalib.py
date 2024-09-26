@@ -325,6 +325,10 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
     FWHM_guess = wavecalib_params["FWHM"]
     tolerance_FWHM = wavecalib_params["TOL_FWHM"]
 
+    # counters for QA and debugging
+    good_traces = 0 
+    good_fits = 0
+
     for pixel, wavelength in zip(pixel_array, wavelength_array):
 
         # algorithm: crop the spectrum around the line, fit a Gaussian to the line
@@ -369,7 +373,7 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
                     (FWHM_guess + tolerance_FWHM) * gaussian_fwhm_to_sigma,
                 ),
                 # beta > 2 flattens peak, beta > 20 is almost a step function
-                "beta": (0.1, 20),
+                "beta": (2, 20),
             },
         )
 
@@ -446,6 +450,8 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
         if centers is None:
             continue
 
+        good_traces += 1
+
         # keep the good traces. We keep the mask as it might be useful
         # in further development or debugging
         good_centers = centers[mask]
@@ -481,6 +487,8 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
                 np.mean((offsets - chebval(good_spacial_coords, coeff_offset)) ** 2)
             )
 
+            good_fits += 1
+
             # if the RMS is too high, discard the line
             if RMS > RMS_TOL:
                 arc_trace_warning(
@@ -499,6 +507,11 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
 
             RMS_all[wavelength] = RMS
 
+    print("\n-------------------------------------")
+    logger.info("Line tilt tracing done.")
+    logger.info(f"Number of good traces: {good_traces} out of {len(pixel_array)}.")
+    logger.info(f"Number of good fits: {good_fits} out of {good_traces}.")
+    print("\n-------------------------------------")
     return good_lines
 
 
@@ -594,6 +607,8 @@ def reidentify(pixnumber, wavelength, master_arc):
 
     final_r2_tol = wavecalib_params["TILT_TRACE_R2_TOL"]
 
+    fit_order = wavecalib_params["ORDER_WAVELEN"]
+
     # create a container for hand-identified lines
     ID_init = Table(dict(peak=pixnumber, wavelength=wavelength))
 
@@ -665,7 +680,7 @@ def reidentify(pixnumber, wavelength, master_arc):
                     (FWHM + tol_FWHM) * gaussian_fwhm_to_sigma,
                 ),
                 # beta > 2 flattens peak, beta > 20 is almost a step function
-                "beta": (0.1, 20),
+                "beta": (2, 20),
             },
         )
 
@@ -759,75 +774,51 @@ def reidentify(pixnumber, wavelength, master_arc):
             # prepare a new plot
             fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
 
+        if not bad_line and R2 > final_r2_tol:
+            line_REID[str(j)] = {
+                "peak_pix": fit_center,
+                "wavelength": wavelength[j],
+            }
 
-def fit_1d_QA(line_REID: dict):
-    """
-    Fit the reidentified lines through detector middle for QA.
+    # plot the last plot if not filled up
+    show_reidentify_QA_plot(fig, ax, final_r2_tol)
 
-    Parameters
-    ----------
-    line_REID : dict
-        Reidentified lines.
-    """
+    all_pixels = [line_REID[key]["peak_pix"] for key in line_REID.keys()]
+    all_wavelengths = [line_REID[key]["wavelength"] for key in line_REID.keys()]
 
-    # extract the polynomial order parameter for the fit
-    ORDER_WAVELEN_REID = wavecalib_params["ORDER_WAVELEN_REID"]
-    logger.info(
-        f"Fitting a 1d wavelength solution of order {ORDER_WAVELEN_REID} to reidentified lines..."
-    )
+    fit = chebfit(all_pixels, all_wavelengths, deg=fit_order)
+    residuals = all_wavelengths - chebval(all_pixels, fit)
+    pixel_linspace = np.linspace(0, len(spec_1d), 1000)
+    wavelength_linspace = chebval(pixel_linspace, fit)
 
-    # find the middle key of line_REID dictionary
-    middle_key = len(line_REID) // 2
-
-    # ready the data
-    pixels = line_REID[str(middle_key)]["peak_pix"]
-    wavelengths = line_REID[str(middle_key)]["wavelength"]
-
-    # fit the data
-    coeff = chebfit(pixels, wavelengths, deg=ORDER_WAVELEN_REID)
-
-    last_pixel = (
-        detector_params["xsize"]
-        if detector_params["dispersion"]["spectral_dir"] == "x"
-        else detector_params["ysize"]
-    )
-
-    # evaluate fit for the QA
-    x_fit_values = np.linspace(0, last_pixel, 1000)
-    y_fit_values = chebval(x_fit_values, coeff)
-
-    # prepare residuals for the QA plot
-    residuals = wavelengths - chebval(pixels, coeff)
-
-    # plot data
     show_1d_fit_QA(
-        pixels,
-        wavelengths,
-        x_fit_values=x_fit_values,
-        y_fit_values=y_fit_values,
+        all_pixels,
+        all_wavelengths,
+        x_fit_values=pixel_linspace,
+        y_fit_values=wavelength_linspace,
         residuals=residuals,
         x_label="Pixels in spectral direction",
         y_label="Wavelength (Å)",
         legend_label="Reidentified lines",
-        title=f"1D fit of reidentified lines through the middle of the detector.\n"
-        f"Polynomial order : {ORDER_WAVELEN_REID}.\n"
-        "Check the fit and residuals for any irregularities.\n"
-        "If needed, change relative parameters in the config file.",
+        title=f"1D fit of reidentified lines. User-set polynomial order: {fit_order}.",
     )
 
+    return fit, line_REID
 
-def fit_2d(good_lines: dict):
+    
 
-    logger.info("Preparing to fit a 2d polynomial through whole delector...")
+def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
+
+    logger.info("Preparing to fit a 2d polynomial tilt through whole delector...")
 
     # extract the polynomial order parameter for the fit in spectral direction
-    ORDER_WAVELEN_REID = wavecalib_params["ORDER_SPECTRAL_TILT"]
+    ORDER_SPECTRAL = wavecalib_params["ORDER_SPECTRAL_TILT"]
     # extract the polynomial order parameter for the fit in spatial direction
-    ORDER_SPATIAL_REID = wavecalib_params["ORDER_SPATIAL_TILT"]
+    ORDER_SPATIAL = wavecalib_params["ORDER_SPATIAL_TILT"]
 
     logger.info(
-        f"Fitting a 2d wavelength solution of order {ORDER_WAVELEN_REID} in spectral direction and "
-        f"order {ORDER_SPATIAL_REID} in spatial direction to reidentified lines..."
+        f"Fitting a 2d tilt solution of order {ORDER_SPECTRAL} in spectral direction and "
+        f"order {ORDER_SPATIAL} in spatial direction to reidentified lines..."
     )
 
     N_SPACIAL = (
@@ -836,8 +827,15 @@ def fit_2d(good_lines: dict):
         else detector_params["ysize"]
     )
 
-    spacial_pixel_column = np.arange(0, N_SPACIAL)
+    N_SPECTRAL = (
+        detector_params["ysize"]
+        if detector_params["dispersion"]["spectral_dir"] == "y"
+        else detector_params["xsize"]
+    )
 
+
+    # the following lines extract the good lines from the dictionary
+    # and put them in the format that the fitter expects
     offset_values = np.array([])
     spectral_pixels = np.array([])
     spacial_pixels = np.array([])
@@ -851,65 +849,53 @@ def fit_2d(good_lines: dict):
     wavelength_values = offset_values.flatten()
     spacial_pixels = spacial_pixels.flatten()
 
-    print("spec", spectral_pixels.shape)
-    print("spacial", spacial_pixels.shape)
-    print("wave", wavelength_values.shape)
-
-    """
-    # flatten the lists
-    spectral_pixels = np.concatenate(spectral_pixels)
-    spacial_pixels = np.concatenate(spacial_pixels)
-    wavelength_values = np.concatenate(wavelength_values)
-    
-
-    wavelength_dict = {}
-
-    for wavelength in np.unique(wavelength_values):
-        mask = wavelength_values == wavelength
-        spectral_coords = spectral_pixels[mask]
-        spacial_coords = spacial_pixels[mask]
-        wavelength_dict[wavelength] = {"spectral_coords": spectral_coords, "spacial_coords": spacial_coords}
-    """
-
     # set up the fitting model
 
     coeff_init = Chebyshev2D(
-        x_degree=ORDER_WAVELEN_REID,
-        y_degree=ORDER_SPATIAL_REID,
+        x_degree=ORDER_SPECTRAL,
+        y_degree=ORDER_SPATIAL,
     )
 
     fitter = LevMarLSQFitter()
 
-    fit2D_REID = fitter(coeff_init, spectral_pixels, spacial_pixels, wavelength_values)
+    fit2D = fitter(coeff_init, spectral_pixels, spacial_pixels, wavelength_values)
 
-    residuals = wavelength_values - fit2D_REID(spectral_pixels, spacial_pixels)
+    residuals = wavelength_values - fit2D(spectral_pixels, spacial_pixels)
     RMS = np.sqrt(np.mean(residuals**2))
 
-    plt.figure(figsize=(10, 8))
-    plt.plot(spacial_pixels, residuals, "x")
-    plt.xlabel("Spacial Pixels")
-    plt.ylabel("Residuals (Å)")
-    plt.axhline(0, color="red", linestyle="--")
-    plt.title(f"Residuals of the 2D Fit. RMS: {RMS}")
+    # plot QA
+
+    _, axs = plt.subplots(2, 1, figsize=figsize)
+
+    axs[0].plot(spacial_pixels, residuals, "x")
+    axs[0].set_xlabel("Spacial Pixels")
+    axs[0].set_ylabel("Residuals (Å)")
+    axs[0].axhline(0, color="red", linestyle="--")
+    axs[0].set_title(f"Residuals of the 2D Fit (Spacial Pixels). RMS: {RMS}")
+
+    axs[1].plot(spectral_pixels, residuals, "x")
+    axs[1].set_xlabel("Spectral Pixels")
+    axs[1].set_ylabel("Residuals (Å)")
+    axs[1].axhline(0, color="red", linestyle="--")
+    axs[1].set_title("Residuals of the 2D Fit (Spectral Pixels)")
+
     plt.show()
 
-    plt.figure(figsize=(10, 8))
-    plt.plot(spectral_pixels, residuals, "x")
-    plt.xlabel("Specral Pixels")
-    plt.ylabel("Residuals (Å)")
-    plt.axhline(0, color="red", linestyle="--")
-    plt.title("Residuals of the 2D Fit")
-    plt.show()
+    spectral_line = np.linspace(0, N_SPECTRAL, N_SPECTRAL)
+    spacial_line = np.linspace(0, N_SPACIAL, N_SPACIAL)
 
-    plt.figure(figsize=(10, 8))
-    plt.scatter(spectral_pixels, spacial_pixels, c=residuals, cmap="viridis", s=5)
-    plt.colorbar(label="Residuals (Å)")
+    X, Y = np.meshgrid(spectral_line, spacial_line)
+    Z = fit2D(X, Y)
+
+    plt.figure(figsize=figsize)
+    plt.imshow(Z, origin="lower", extent=(0, N_SPECTRAL, 0, N_SPACIAL))
+    plt.colorbar(label="Offsets (Å)")
+    plt.title("2D Fit of the Detector Tilt")
     plt.xlabel("Spectral Pixels")
     plt.ylabel("Spatial Pixels")
-    plt.title("Residuals of the 2D Fit")
     plt.show()
 
-    return fit2D_REID
+    return fit2D
 
 
 def construct_wavelength_map(fit2D_REID, master_arc):
@@ -930,49 +916,18 @@ def construct_wavelength_map(fit2D_REID, master_arc):
         Wavelength map.
     """
 
-    # get the shape of the master arc - use it for wavelength map
-    x, y = master_arc[0].data.shape
-
-    # create a grid of coordinates
-    spac_coords, spec_coords = np.mgrid[:x, :y]
-
-    # evaluate the fit at every pixel
-    logger.info("Constructing a wavelength map through whole detector...")
-    logger.info("Evaluating the 2D fit at every pixel...")
-    wavelength_map = fit2D_REID(spec_coords, spac_coords)
-
-    # check for negative values or nans or infs in the wavelength map
-    if (
-        np.any(wavelength_map < 0)
-        or np.any(np.isnan(wavelength_map))
-        or np.any(np.isinf(wavelength_map))
-    ):
-        logger.error(
-            "Negative values, NaNs or Infs found in the wavelength map. "
-            "Check the fit and the data."
-        )
-
-    return wavelength_map
+    raise NotImplementedError("This method is not implemented yet.")
 
 
-def plot_verticals(fit2D_REID, good_lines: dict, figsize=(18, 12)):
-    """
-    Plot vertical slices of the wavelength map for QA of the lines tilts.
+def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
 
-    Parameters
-    ----------
-    wavelength_map : 2D array
-        Wavelength map.
-    """
 
-    # unpack goodlines:
-    offsets_1d = [good_lines[key][0] for key in good_lines.keys()]
     centers_1d = [good_lines[key][1] for key in good_lines.keys()]
     spatials_1d = [good_lines[key][2] for key in good_lines.keys()]
     coeffs_1d = [good_lines[key][3] for key in good_lines.keys()]
     fitted_centers = [good_lines[key][4] for key in good_lines.keys()]
 
-    fig, axs = plt.subplots(1, 2, figsize=figsize)
+    _, axs = plt.subplots(1, 2, figsize=figsize)
 
     for i, coeffs in enumerate(coeffs_1d):
         central_spec = fitted_centers[i]
@@ -993,8 +948,8 @@ def plot_verticals(fit2D_REID, good_lines: dict, figsize=(18, 12)):
 
     axs[1].set_title("2D Fit detector tilt fit")
     axs[1].set_xlabel("Spatial Pixels")
-    axs[1].set_ylabel("Fitted Offsets from Spatial Center")
     axs[1].legend()
+
 
     plt.tight_layout()
     plt.show()
@@ -1015,19 +970,9 @@ def plot_wavemap(wavelength_map, figsize=(18, 12)):
     plt.show()
 
 
-def plot_wavelengthcalib_QA(wavelength_map, good_lines: dict, fit2d_REID):
-    """
-    Plot the wavelength calibration QA plots.
+def plot_wavelengthcalib_QA(good_lines: dict, fit2d_REID):
 
-    Parameters
-    ----------
-    wavelength_map : 2D array
-        Wavelength map.
-    """
-
-    logger.info("Preparing wavelength calibration QA plots...")
-    plot_wavemap(wavelength_map)
-    plot_verticals(fit2d_REID, good_lines)
+    plot_tilt_2D_QA(fit2d_REID, good_lines)
 
 
 def write_waveimage_to_disc(wavelength_map, master_arc):
@@ -1061,22 +1006,26 @@ def write_fit2d_REID_to_disc(fit2D_REID):
         2D fit model.
     """
 
-    logger.info("Writing 2D fit results to disc...")
+    if False:
 
-    # change to output directory dir
-    os.chdir(output_dir)
+        logger.info("Writing 2D fit results to disc...")
 
-    # Write fit2D_REID to disk
-    with open("fit2D_REID.pkl", "wb") as file:
-        pickle.dump(fit2D_REID, file)
+        # change to output directory dir
+        os.chdir(output_dir)
 
-    # change back to original directory
+        # Write fit2D_REID to disk
+        with open("fit2D_REID.pkl", "wb") as file:
+            pickle.dump(fit2D_REID, file)
 
-    os.chdir("..")
+        # change back to original directory
 
-    logger.info(
-        f"2D fit results written to disc in {output_dir}, filename fit2D_REID.pkl."
-    )
+        os.chdir("..")
+
+        logger.info(
+            f"2D fit results written to disc in {output_dir}, filename fit2D_REID.pkl."
+        )
+
+    raise NotImplementedError
 
 
 def load_fit2d_REID_from_disc():
@@ -1089,21 +1038,25 @@ def load_fit2d_REID_from_disc():
         2D fit model.
     """
 
-    logger.info("Loading 2D wavelength solution from disc...")
+    if False:
 
-    # change to output directory dir
-    os.chdir(output_dir)
+        logger.info("Loading 2D wavelength solution from disc...")
 
-    # Load fit2D_REID from disk
-    with open("fit2D_REID.pkl", "rb") as file:
-        fit2D_REID = pickle.load(file)
+        # change to output directory dir
+        os.chdir(output_dir)
 
-    logger.info("Wavelength solution loaded.")
+        # Load fit2D_REID from disk
+        with open("fit2D_REID.pkl", "rb") as file:
+            fit2D_REID = pickle.load(file)
 
-    # change back to original directory
-    os.chdir("..")
+        logger.info("Wavelength solution loaded.")
 
-    return fit2D_REID
+        # change back to original directory
+        os.chdir("..")
+
+        return fit2D_REID
+    
+    raise NotImplementedError
 
 
 def run_wavecalib():
@@ -1118,24 +1071,20 @@ def run_wavecalib():
 
     logger.info("Reidentifying the lines...")
 
-    reidentify(pixnumber, wavelength, master_arc)
+    wave_sol, lines = reidentify(pixnumber, wavelength, master_arc)
 
-    # reidentified_lines = reidentify(pixnumber, wavelength, master_arc)
+    logger.info("Reidentification done.")
+    logger.info("Starting tilt tracing...")
 
-    # logger.info("Reidentification done.")
-    # logger.info("Starting the fitting routine...")
+    good_lines = trace_tilts(pixnumber, wavelength, master_arc)
 
-    # fit_1d_QA(reidentified_lines)
-
-    # good_lines = trace_tilts(pixnumber, wavelength, master_arc)
-
-    # fit_2d_results = fit_2d(good_lines)
+    fit_2d_tilt_results = fit_2d_tilts(good_lines)
 
     # write_fit2d_REID_to_disc(fit_2d_results)
 
     # wavelength_map = construct_wavelength_map(fit_2d_results, master_arc)
 
-    # plot_wavelengthcalib_QA(wavelength_map, good_lines, fit_2d_results)
+    plot_wavelengthcalib_QA(good_lines, fit_2d_tilt_results)
 
     # write_waveimage_to_disc(wavelength_map, master_arc)
 

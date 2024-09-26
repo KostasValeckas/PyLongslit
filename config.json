@@ -76,9 +76,9 @@
         "ORDER_WAVELEN": 5,
         "ORDER_SPECTRAL_TILT": 1,
         "ORDER_SPATIAL_TILT": 3,
-        "SPACIAL_RMS_TOL": 0.03,
+        "SPACIAL_RMS_TOL": 0.1,
         "TILT_REJECT_LINE_FRACTION": 0.25,
-        "TILT_TRACE_R2_TOL": 0.98      
+        "TILT_TRACE_R2_TOL": 0.90    
     },
 
     "extract" : {
