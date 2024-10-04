@@ -7,7 +7,8 @@ from photutils.aperture import RectangularAperture
 import matplotlib.pyplot as plt
 from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
 from scipy.interpolate import interp1d
-from wavecalib import load_fit2d_REID_from_disc
+from wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
+from wavecalib import wavelength_sol 
 
 
 def load_object_traces():
@@ -194,7 +195,7 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
     return pixel, spec, spec_var
 
 
-def wavelength_calibrate(pixels, centers, spec, var, fit2d_REID):
+def wavelength_calibrate(pixels, centers, spec, var):
     """
     Wavelegth calibration of the extracted 1D spectrum,
     to convert from ADU/pixel to ADU/Å.
@@ -230,8 +231,11 @@ def wavelength_calibrate(pixels, centers, spec, var, fit2d_REID):
         The variance of the calibrated 1D spectrum. (in ADU/Å)
     """
 
+    wavelen_fit = get_wavelen_fit_from_disc()
+    tilt_fit = get_tilt_fit_from_disc()
+
     # evaluate the wavelength solution at the object trace centers
-    ap_wavelen = fit2d_REID(pixels, centers)
+    ap_wavelen = wavelength_sol(pixels, centers, wavelen_fit, tilt_fit)
 
     # interpolate the spectrum and variance to a homogenous wavelength grid
     wavelen_homogenous = np.linspace(ap_wavelen[0], ap_wavelen[-1], len(spec))
@@ -316,8 +320,6 @@ def extract_objects(skysubbed_files, trace_dir):
     # This is the container for the resulting one-dimensional spectra
     results = {}
 
-    wavelength_solution = load_fit2d_REID_from_disc()
-
     for filename in skysubbed_files:
 
         logger.info(f"Extracting 1D spectrum from {filename}...")
@@ -334,7 +336,7 @@ def extract_objects(skysubbed_files, trace_dir):
         logger.info("Wavelength calibrating the extracted 1D spectrum...")
 
         wavelength, spectrum_calib, var_calib = wavelength_calibrate(
-            pixel, trace_data[1], spec, spec_var, wavelength_solution
+            pixel, trace_data[1], spec, spec_var
         )
 
         # make a new filename

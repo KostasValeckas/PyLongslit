@@ -70,13 +70,15 @@
 
     "wavecalib" : {
         "pixtable": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output/idarc.dat",
-        "STEP_REID": 1,
-        "FWHM": 3,
-        "TOL_REID_MEAN": 1,
-        "TOL_REID_FWHM": 3,
-        "ORDER_WAVELEN_REID": 4,
-        "ORDER_SPATIAL_REID": 3,
-        "SPACIAL_RMS_TOL": 0.05       
+        "FWHM": 6,
+        "TOL_MEAN": 3,
+        "TOL_FWHM": 2,
+        "ORDER_WAVELEN": 5,
+        "ORDER_SPECTRAL_TILT": 1,
+        "ORDER_SPATIAL_TILT": 3,
+        "SPACIAL_R2_TOL": 0.99,
+        "TILT_REJECT_LINE_FRACTION": 0.25,
+        "TILT_TRACE_R2_TOL": 0.95    
     },
 
     "extract" : {

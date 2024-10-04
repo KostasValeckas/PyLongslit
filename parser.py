@@ -41,11 +41,6 @@ standard_params = data["standard"]
 arc_params = data["arc"]
 wavecalib_params = data["wavecalib"]
 
-wavecalib_params["N_REID"] = (
-    detector_params["xsize"] // wavecalib_params["STEP_REID"]
-    if detector_params["dispersion"]["spectral_dir"] == "y"
-    else detector_params["ysize"] // wavecalib_params["STEP_REID"]
-)
 
 extract_params = data["extract"]
 
