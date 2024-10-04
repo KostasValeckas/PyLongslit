@@ -1,5 +1,3 @@
-* plot 1d - wavecalib QA from zero
-* 2d poly less variation in wavecalib
 * extract through whole detector
 * implement clutch spectrum from earlier version
 * Overscan check will need flats at bias levels - make overscan check active only in check_config.py
@@ -10,6 +8,8 @@
 * go through all imports
 * for writing results to dat files - make a util
 
+* clean up it wavecalib
+
 * Develop combine and transform at the very end
 
 NICE-TO-HAVE for the future:
@@ -18,3 +18,4 @@ NICE-TO-HAVE for the future:
 * When utils get too inflated, chop up into several models (fitting, plotting, utils) or alike.
 * the filelist object in utils could use a refactor - specially in combinning with open_fits method
 * most data loading code assume that the raw data will be in hdul[1].data - make this more robust
+* it should be possible to implement automatic rotation curve detection with current tilt tracing
