@@ -283,6 +283,8 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
     ax.set_title(f"Extracted 1D spectrum from {filename}")
     ax.set_xlabel("Wavelength [Å]")
     ax.set_ylabel("Counts [ADU]")
+    # any negative values may be due to numerical instability - don't show them
+    ax.set_ylim(-0.5, 1.1 * np.max(spec_calib))
     ax.legend()
     ax.grid()
 

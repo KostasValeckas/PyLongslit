@@ -514,13 +514,12 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     )
 
     # make a dummy x_array for fitting
-    x_spec = np.arange(data.shape[1])
+    good_x = np.arange(obj_start_index, obj_end_index)
 
     # for centers and FWHMs, mask everythong below obj_start_index and above obj_end_index
 
     good_centers = np.array(centers)[obj_start_index:obj_end_index]
     good_FWHMs = np.array(FWHMs)[obj_start_index:obj_end_index]
-    good_x = x_spec[obj_start_index:obj_end_index]
 
     logger.info("Fitting object centers and FWHMs...")
 
@@ -541,6 +540,11 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     resid_centers = good_centers - centers_fit_pix
     resid_FWHMs = good_FWHMs - fwhm_fit_pix
 
+    # now evaluate the trace through whole detector and return
+    spectral_pixels = np.arange(data.shape[1])
+    centers_fit_pix = chebval(spectral_pixels, centers_fit)
+    fwhm_fit_pix = chebval(spectral_pixels, fwhm_fit)
+
     # show QA
     show_obj_trace_QA(
         good_x,
@@ -554,7 +558,7 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
         filename,
     )
 
-    return good_x, centers_fit_pix, fwhm_fit_pix
+    return spectral_pixels, centers_fit_pix, fwhm_fit_pix
 
 
 def find_obj(center_dict):

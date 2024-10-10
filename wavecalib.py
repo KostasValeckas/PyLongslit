@@ -1278,6 +1278,8 @@ def run_wavecalib():
     """
     logger.info("Starting wavelength calibration routine...")
 
+    """
+
     pixnumber, wavelength = read_pixtable()
 
     master_arc = get_master_arc()
@@ -1301,11 +1303,13 @@ def run_wavecalib():
 
     """
 
+    # TODO: while developing just read the products from disc
+
     good_lines = get_good_tilt_lines_from_disc()
     fit_2d_tilt_results = get_tilt_fit_from_disc()
     wave_sol = get_wavelen_fit_from_disc()
 
-    """
+
 
     # write_fit2d_REID_to_disc(fit_2d_results)
 

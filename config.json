@@ -92,7 +92,7 @@
     },
 
     "sensfunc": {
-        "fit_order": 11
+        "fit_order": 9
     },
 
     "flux_calib": {

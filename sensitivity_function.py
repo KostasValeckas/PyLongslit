@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from numpy.polynomial.chebyshev import chebfit, chebval
 import pickle
 from utils import get_filenames, show_1d_fit_QA, load_spec_data
+from matplotlib.widgets import Slider
 
 
 def read_sensfunc_params():
@@ -92,7 +93,62 @@ def load_ref_spec(file_path):
     return wavelength, flux
 
 
-def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA=False):
+def load_extinction_data():
+    # load extinction file - should be AB magnitudes / air mass
+    extinction_file_name = flux_params["path_extinction_curve"]
+
+    # open the file
+
+    # make sure we are in the output_dir
+    os.chdir(output_dir)
+
+    try:
+        data = np.loadtxt(extinction_file_name)
+    except FileNotFoundError:
+        logger.error("Extinction file not found.")
+        logger.error("Check the path in the config file.")
+        exit()
+
+    wavelength_ext = data[:, 0]
+    extinction_data = data[:, 1]
+
+    return wavelength_ext, extinction_data
+
+
+def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
+
+    min_array = [np.min(obs_wave), np.min(ref_wave), np.min(ext_wave)]
+    max_array = [np.max(obs_wave), np.max(ref_wave), np.max(ext_wave)]
+
+    min_global = np.max(min_array)
+    max_global = np.min(max_array)
+
+    obs_count_cropped = obs_count[(obs_wave >= min_global) & (obs_wave <= max_global)]
+    obs_wave_cropped = obs_wave[(obs_wave >= min_global) & (obs_wave <= max_global)]
+
+    assert len(obs_wave_cropped == len(obs_count_cropped)), "Cropping failed."
+
+    ref_spec_cropped = ref_spec[(ref_wave >= min_global) & (ref_wave <= max_global)]
+    ref_wave_cropped = ref_wave[(ref_wave >= min_global) & (ref_wave <= max_global)]
+
+    assert len(ref_wave_cropped == len(ref_spec_cropped)), "Cropping failed."
+
+    ext_data_cropped = ext_data[(ext_wave >= min_global) & (ext_wave <= max_global)]
+    ext_wave_cropped = ext_wave[(ext_wave >= min_global) & (ext_wave <= max_global)]
+
+    assert len(ext_wave_cropped == len(ext_data_cropped)), "Cropping failed."
+
+    return (
+        obs_wave_cropped,
+        obs_count_cropped,
+        ref_wave_cropped,
+        ref_spec_cropped,
+        ext_wave_cropped,
+        ext_data_cropped,
+    )
+
+
+def estimate_transmission_factor(wavelength, airmass, ext_wave, ext_data, figsize=(18, 12), show_QA=False):
     """
     Estimates the transmission factor of the atmosphere at the given wavelength.
 
@@ -122,26 +178,8 @@ def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA=
 
     logger.info("Estimating the transmission factor of the atmosphere...")
 
-    # load extinction file - should be AB magnitudes / air mass
-    extinction_file_name = flux_params["path_extinction_curve"]
-
-    # open the file
-
-    # make sure we are in the output_dir
-    os.chdir(output_dir)
-
-    try:
-        data = np.loadtxt(extinction_file_name)
-    except FileNotFoundError:
-        logger.error("Extinction file not found.")
-        logger.error("Check the path in the config file.")
-        exit()
-
-    wavelength_ext = data[:, 0]
-    extinction_data = data[:, 1]
-
     # interpolate the extinction file onto the wavelength grid of the object spectrum
-    f = interp1d(wavelength_ext, extinction_data, kind="cubic")
+    f = interp1d(ext_wave, ext_data, kind="cubic")
     ext_interp1d = f(wavelength)
 
     # multiply the extinction by the airmass
@@ -155,7 +193,7 @@ def estimate_transmission_factor(wavelength, airmass, figsize=(18, 12), show_QA=
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
         ax1.plot(
-            wavelength_ext, extinction_data, color="black", label="Extinction Curve"
+            ext_wave, ext_data, color="black", label="Extinction Curve"
         )
         ax1.set_xlabel("Wavelength (Å)")
         ax1.set_ylabel("Extinction (AB mag / airmass)")
@@ -201,12 +239,12 @@ def convert_from_AB_mag_to_flux(mag, ref_wavelength):
         Flux of the standard star in erg/s/cm^2/Å.
     """
 
-    flux = 2.998e18 * 10 ** ((mag + 48.6) / (-2.5)) / (ref_wavelength ** 2)
+    flux = 2.998e18 * 10 ** ((mag + 48.6) / (-2.5)) / (ref_wavelength**2)
 
     return flux
 
 
-def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptime):
+def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, ext_wave, ext_data, exptime):
     """
     Estimates the conversion factors between counts and flux across the spectrum.
     Applies extinction correction for the conversion factors.
@@ -247,7 +285,7 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, exptim
     # and apply it to the observed spectrum
 
     transmission_factor = estimate_transmission_factor(
-        wavelength, standard_params["airmass"], show_QA=True
+        wavelength, standard_params["airmass"], ext_wave, ext_data, show_QA=True
     )
 
     counts_pr_sec = counts_pr_sec_with_atmosphere * transmission_factor
@@ -293,17 +331,62 @@ def fit_sensfunc(wavelength, sens_points):
 
     # Try to fit in log space
 
+    # Remove any sens_points <= 0 and corresponding wavelengths
+    valid_indices = sens_points > 0
+    wavelength = wavelength[valid_indices]
+    sens_points = sens_points[valid_indices]
+
     sens_points_log = np.log10(sens_points)
+
+    import matplotlib.pyplot as plt
+
+    # Initial plot
+    fig, ax = plt.subplots()
+    plt.subplots_adjust(bottom=0.25)
+    l, = plt.plot(wavelength, sens_points_log, label='Sensitivity Points (Log)')
+    plt.xlabel('Wavelength (Å)')
+    plt.ylabel('Log Sensitivity Points')
+    plt.legend()
+
+    # Add sliders for selecting the range
+    axcolor = 'lightgoldenrodyellow'
+    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+
+    smin = Slider(axmin, 'Min Wavelength', np.min(wavelength), np.max(wavelength), valinit=np.min(wavelength))
+    smax = Slider(axmax, 'Max Wavelength', np.min(wavelength), np.max(wavelength), valinit=np.max(wavelength))
+
+    def update(val):
+        min_wavelength = smin.val
+        max_wavelength = smax.val
+        valid_indices = (wavelength >= min_wavelength) & (wavelength <= max_wavelength)
+        l.set_xdata(wavelength[valid_indices])
+        l.set_ydata(sens_points_log[valid_indices])
+        fig.canvas.draw_idle()
+
+    smin.on_changed(update)
+    smax.on_changed(update)
+
+    plt.show()
+
+    # Get the final selected range
+    min_wavelength = smin.val
+    max_wavelength = smax.val
+    valid_indices = (wavelength >= min_wavelength) & (wavelength <= max_wavelength)
+    wavelength = wavelength[valid_indices]
+    sens_points_log = sens_points_log[valid_indices]
 
     coeff = chebfit(wavelength, sens_points_log, deg=fit_degree)
 
     fit_eval = 10 ** (chebval(wavelength, coeff))
 
-    residuals = sens_points - fit_eval
+    residuals = sens_points[valid_indices] - fit_eval
+
+    print(fit_eval)
 
     show_1d_fit_QA(
         wavelength,
-        sens_points,
+        sens_points[valid_indices],
         x_fit_values=wavelength,
         y_fit_values=fit_eval,
         residuals=residuals,
@@ -321,9 +404,8 @@ def fit_sensfunc(wavelength, sens_points):
 
 
 def flux_standard_QA(
-    coeff, wavelength, counts, ref_wavelength, ref_flux, figsize=(18, 12)
+    coeff, wavelength, counts, ref_wavelength, ref_flux, ext_wave, ext_data, figsize=(18, 12)
 ):
-
     """
     Flux calibrates the standard star spectrum and compares it to the reference spectrum.
     This is done for QA purposes in order to check the validity of the sensitivity function.
@@ -335,13 +417,15 @@ def flux_standard_QA(
     # Estimate the transmission factor of the atmosphere at the given wavelength
     # and apply it to the observed spectrum
     transmission_factor = estimate_transmission_factor(
-        wavelength, standard_params["airmass"]
+        wavelength, standard_params["airmass"], ext_wave, ext_data, show_QA=False  
     )
 
     # Flux the standard star spectrum
     fluxed_counts = (
         counts * transmission_factor / standard_params["exptime"]
     ) * conv_factors
+
+    print(ref_flux.shape, ref_wavelength.shape)
 
     # Convert the reference spectrum to flux units
     converted_ref_spec = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
@@ -403,17 +487,30 @@ def run_sensitivity_function():
 
     ref_wavelength, ref_flux = load_ref_spec(flux_file)
 
+    wavelength_ext, data_ext = load_extinction_data()
+
+    (
+        obs_wave_cropped,
+        obs_count_cropped,
+        ref_wave_cropped,
+        ref_spec_cropped,
+        ext_wave_cropped,
+        ext_data_cropped,
+    ) = crop_all_spec(
+        obs_wavelength, obs_counts, ref_wavelength, ref_flux, wavelength_ext, data_ext
+    )
+
     logger.info("Estimating the conversion factors between counts and flux...")
 
     ref_wavelength_cropped, sens_points = refrence_counts_to_flux(
-        obs_wavelength, obs_counts, ref_wavelength, ref_flux, exptime
+        obs_wave_cropped, obs_count_cropped, ref_wave_cropped, ref_spec_cropped, ext_wave_cropped, ext_data_cropped, exptime
     )
 
     logger.info("Fitting the sensitivity function...")
 
     coeff = fit_sensfunc(ref_wavelength_cropped, sens_points)
 
-    flux_standard_QA(coeff, obs_wavelength, obs_counts, ref_wavelength, ref_flux)
+    flux_standard_QA(coeff, obs_wave_cropped, obs_count_cropped, ref_wave_cropped, ref_spec_cropped, ext_wave_cropped, ext_data_cropped)
 
     write_sensfunc_to_disc(coeff)
 
