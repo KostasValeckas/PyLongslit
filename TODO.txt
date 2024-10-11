@@ -1,4 +1,3 @@
-* extract through whole detector
 * implement clutch spectrum from earlier version
 * Overscan check will need flats at bias levels - make overscan check active only in check_config.py
 * Give flats an extra look about normalization area - maybe consult an expert
