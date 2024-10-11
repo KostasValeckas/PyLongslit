@@ -268,7 +268,7 @@ def show_flat():
 
 
 def show_frame(
-    inp_data, title, figsize=(18, 12), normalize=True, new_figure=True, show=True
+    inp_data, title=None, figsize=(18, 12), normalize=True, new_figure=True, show=True
 ):
     """
     This method is used to plot any frames passed the `reduce`

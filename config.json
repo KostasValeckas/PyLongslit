@@ -92,7 +92,8 @@
     },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "./output_alt/obj_science_ALHh050197.dat"
+        "archived_spec_root": "./output_alt/obj_science_ALHh050197.dat",
+        "skysubbed_frame_root": "./output_alt/skysub_science_ALHh050196.fits"
     },
 
     "sensfunc": {
