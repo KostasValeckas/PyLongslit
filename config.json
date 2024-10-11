@@ -90,6 +90,10 @@
         "SNR": 5,
         "OBJ_FIT_DEG": 3
     },
+    
+    "obj_trace_clone" : {
+        "archived_spec_root": "./output_alt/obj_science_ALHh050197.dat"
+    },
 
     "sensfunc": {
         "fit_order": 9
