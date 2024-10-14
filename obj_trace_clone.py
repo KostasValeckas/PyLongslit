@@ -25,7 +25,7 @@ def load_skysubbed_frame():
 
     return data
 
-def overlay_trace(pixel, center, fwhm, skysubbed_frame):
+def overlay_trace(pixel, center, skysubbed_frame):
 
     normalized_skysub = hist_normalize(skysubbed_frame)
     
@@ -50,17 +50,40 @@ def overlay_trace(pixel, center, fwhm, skysubbed_frame):
     fig.canvas.mpl_connect('key_press_event', on_key)
 
     plt.show()
+
+    return center
+
+def initiate_fwhm_array(center):
+
+    FWHM = obj_trace_clone_params["FWHM"]
+
+    fwhm_array = np.full_like(center, FWHM)
+
+    return fwhm_array
+
+
+def write_cloned_trace_to_file(pixel, center, fwhm):
     
+    filename = obj_trace_clone_params["skysubbed_frame_root"]
+
+    output_file = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+
+    # write to the file
+    with open(output_file, "w") as f:
+        for x, center, fwhm in zip(pixel, center, fwhm):
+            f.write(f"{x}\t{center}\t{fwhm}\n")
+
+
 def run_obj_trace_clone():
-   pixel, center, fwhm = read_obj_trace_results()
+   pixel, center, _ = read_obj_trace_results()
 
    skysubbed_frame = load_skysubbed_frame()
 
-   overlay_trace(pixel, center, fwhm, skysubbed_frame)
+   corrected_centers = overlay_trace(pixel, center, skysubbed_frame)
 
-   
+   fwhm_array = initiate_fwhm_array(corrected_centers)
 
-
+   write_cloned_trace_to_file(pixel, corrected_centers, fwhm_array)
 
 if __name__ == "__main__":
     run_obj_trace_clone()

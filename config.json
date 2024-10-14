@@ -92,8 +92,9 @@
     },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "./output_alt/obj_science_ALHh050197.dat",
-        "skysubbed_frame_root": "./output_alt/skysub_science_ALHh050196.fits"
+        "archived_spec_root": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt/obj_science_ALHh050197.dat",
+        "skysubbed_frame_root": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt/manual_obj_find/skysub_science_ALHh050196.fits",
+        "FWHM": 4
     },
 
     "sensfunc": {

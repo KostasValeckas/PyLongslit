@@ -1278,7 +1278,6 @@ def run_wavecalib():
     """
     logger.info("Starting wavelength calibration routine...")
 
-    """
 
     pixnumber, wavelength = read_pixtable()
 
@@ -1308,6 +1307,9 @@ def run_wavecalib():
     good_lines = get_good_tilt_lines_from_disc()
     fit_2d_tilt_results = get_tilt_fit_from_disc()
     wave_sol = get_wavelen_fit_from_disc()
+
+
+    """ 
 
 
 
