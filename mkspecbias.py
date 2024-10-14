@@ -1,6 +1,6 @@
 import numpy
 from logger import logger
-from parser import detector_params, bias_params, output_dir
+from parser import detector_params, bias_params, output_dir, data_params
 from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import list_files
 from overscan import subtract_overscan_from_frame
@@ -55,7 +55,7 @@ def run_bias():
 
         logger.info(f"Processing file: {file}")
 
-        data = numpy.array(rawbias[1].data)
+        data = numpy.array(rawbias[data_params["raw_data_hdu_index"]].data)
 
         if use_overscan: data = subtract_overscan_from_frame(data)
 

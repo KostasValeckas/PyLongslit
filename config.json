@@ -1,20 +1,20 @@
 {
     "instrument": {
-        "name": "ALFOSC",
-        "disperser": "Grating #4"
+        "name": "OSIRIS",
+        "disperser": "R1000B"
     },
 
     "detector": {
-        "xsize": 500,
-        "ysize": 2102,
+        "xsize": 2073,
+        "ysize": 2056,
         "dispersion": { 
-            "spectral_dir": "y",
-            "wavelength_grows_with_pixel": false
+            "spectral_dir": "x",
+            "wavelength_grows_with_pixel": true
         },
-        "gain": 0.16,
+        "gain": 1.9,
         "read_out_noise": 4.3,
         "overscan" : {
-            "use_overscan": true,
+            "use_overscan": false,
             "overscan_x_start": 0,
             "overscan_x_end": 499,
             "overscan_y_start": 2066,
@@ -22,12 +22,16 @@
         }
     },
 
+    "data": {
+        "raw_data_hdu_index": 0
+    },
+
     "bias": {
-        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/bias"
+        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias"
     },
 
     "flat": {
-        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/flats",
+        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat",
         "user_custom_norm_area": false,
         "norm_area_start_x": 100,
         "norm_area_end_x": 400,
@@ -36,7 +40,7 @@
     },
 
     "output": {
-        "out_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt"
+        "out_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS"
 
     },
 
@@ -49,23 +53,23 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/science",
-        "exptime": 300,
-        "airmass": 1.000118678
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object",
+        "exptime": 1000,
+        "airmass": 1.8975
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/standard",
-        "exptime": 30,
-        "airmass": 1.030792009,
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds",
+        "exptime": 25,
+        "airmass": 1.206,
         "starname": "BD332642",
         "flux_file_path": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/bd33a.oke"
 
     },
 
     "arc" : {
-        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/arcs"
+        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc"
     },
 
     "wavecalib" : {

@@ -24,6 +24,7 @@ data = json.load(file)
 # Define parameter groups for easier access
 
 detector_params = data["detector"]
+data_params = data["data"]
 bias_params = data["bias"]
 flat_params = data["flat"]
 output_dir = data["output"]["out_dir"]

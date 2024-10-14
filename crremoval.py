@@ -2,7 +2,7 @@ import astroscrappy
 from logger import logger
 from parser import detector_params, crr_params, skip_science_or_standard_bool
 from parser import output_dir
-from parser import science_params, standard_params, arc_params
+from parser import science_params, standard_params, arc_params, data_params
 from utils import FileList, open_fits, write_to_fits, check_dimensions
 from utils import list_files
 
@@ -69,12 +69,12 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
         hdu = open_fits(file_list.path, file)
 
         if group == "arc":
-            clean_arr = hdu[1].data
+            clean_arr = hdu[data_params["raw_data_hdu_index"]].data
 
         else:
 
             _, clean_arr = astroscrappy.detect_cosmics(
-                hdu[1].data,
+                hdu[data_params["raw_data_hdu_index"]].data,
                 sigclip=sigclip,
                 sigfrac=sigfrac,
                 objlim=objlim,
@@ -85,7 +85,7 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
             )
 
         # Replace data array with cleaned image
-        hdu[1].data = clean_arr
+        hdu[data_params["raw_data_hdu_index"]].data = clean_arr
 
         logger.info(f"Cosmic rays removed on {file}.")
 
@@ -94,7 +94,7 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
         filename = "crr_" + group + "_" + file
 
         write_to_fits(
-            hdu[1].data, hdu[0].header, filename, output_dir
+            hdu[data_params["raw_data_hdu_index"]].data, hdu[data_params["raw_data_hdu_index"]].header, filename, output_dir
         )
 
         logger.info(

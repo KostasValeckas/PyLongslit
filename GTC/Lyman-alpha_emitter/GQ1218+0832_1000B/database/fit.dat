@@ -1,0 +1,11 @@
+# Wavelength solution for grism: 
+# Raw arc-frame filename: arcsub.fits
+# Wavelength residual = 0.66 Å
+# Polynomial coefficients:
+  7.874e+03
+ -2.452e+00
+  2.239e-04
+ -2.531e-07
+  2.688e-10
+ -1.136e-13
+  1.870e-17

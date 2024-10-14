@@ -1,0 +1,3 @@
+cp 0003650373-20220929-OSIRIS-OsirisLongSlitSpectroscopy.fits crr0003650373-20220929-OSIRIS-OsirisLongSlitSpectroscopy.fits
+cp 0003650374-20220929-OSIRIS-OsirisLongSlitSpectroscopy.fits crr0003650374-20220929-OSIRIS-OsirisLongSlitSpectroscopy.fits
+cp 0003650375-20220929-OSIRIS-OsirisLongSlitSpectroscopy.fits crr0003650375-20220929-OSIRIS-OsirisLongSlitSpectroscopy.fits

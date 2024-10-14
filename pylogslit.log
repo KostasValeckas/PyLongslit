@@ -15381,3 +15381,344 @@ PyLongslit - INFO - flux_calibrate.py:74 - Running flux calibration...
 PyLongslit - INFO - sensitivity_function.py:468 - Loading sensitivity function coefficients from disk...
 PyLongslit - INFO - sensitivity_function.py:475 - Sensitivity function coefficients loaded.
 PyLongslit - INFO - flux_calibrate.py:69 - Calibrated spectra written to disk.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:32 - Output directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS not found. Creating...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:30 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:31 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:32 - xsize = 2073
+PyLongslit - INFO - mkspecbias.py:33 - ysize = 2056
+PyLongslit - INFO - mkspecbias.py:38 - Found 22 bias frames.
+PyLongslit - INFO - mkspecbias.py:39 - Files used for bias processing:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:35 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:30 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:31 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:32 - xsize = 2073
+PyLongslit - INFO - mkspecbias.py:33 - ysize = 2056
+PyLongslit - INFO - mkspecbias.py:38 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:39 - Files used for bias processing:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:30 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:31 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:32 - xsize = 2073
+PyLongslit - INFO - mkspecbias.py:33 - ysize = 2056
+PyLongslit - INFO - mkspecbias.py:38 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:39 - Files used for bias processing:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881201-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881201-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881202-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881202-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881203-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881203-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881204-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881204-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881205-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881205-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881206-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881206-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881207-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881207-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881208-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881208-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881209-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881209-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881210-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881210-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:56 - Processing file: 0003881211-20230707-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:68 - File 0003881211-20230707-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:73 - Bias frames processed.
+PyLongslit - INFO - mkspecbias.py:74 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecbias.py:81 - Master bias frame written to disc at in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_bias.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 10 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3964.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3960.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3952.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:163 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:174 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:177 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:189 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:196 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:121 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:122 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:123 - gain = 1.9
+PyLongslit - INFO - crremoval.py:124 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:151 - Removing cosmic rays from 7 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3964.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3960.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3952.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:163 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:174 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:177 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:189 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:196 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:121 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:122 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:123 - gain = 1.9
+PyLongslit - INFO - crremoval.py:124 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:151 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:121 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:122 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:123 - gain = 1.9
+PyLongslit - INFO - crremoval.py:124 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:151 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:121 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:122 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:123 - gain = 1.9
+PyLongslit - INFO - crremoval.py:124 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:151 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:121 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:122 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:123 - gain = 1.9
+PyLongslit - INFO - crremoval.py:124 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:151 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - crremoval.py:90 - Cosmic rays removed on 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:92 - Writing output to disc...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - crremoval.py:121 - Cosmic-ray removal procedure running...
+PyLongslit - INFO - crremoval.py:122 - Using the following detector parameters:
+PyLongslit - INFO - crremoval.py:123 - gain = 1.9
+PyLongslit - INFO - crremoval.py:124 - read_out_noise = 4.3
+PyLongslit - INFO - crremoval.py:151 - Removing cosmic rays from 1 standard star frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - crremoval.py:90 - Cosmic rays removed on 0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:92 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:100 - Cosmic-ray removed file written to disc at in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename crr_std_0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:161 - Removing cosmic rays from 2 science frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - crremoval.py:90 - Cosmic rays removed on 0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:92 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:100 - Cosmic-ray removed file written to disc at in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename crr_science_0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits...
+PyLongslit - INFO - crremoval.py:90 - Cosmic rays removed on 0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:92 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:100 - Cosmic-ray removed file written to disc at in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename crr_science_0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits.
+PyLongslit - INFO - crremoval.py:170 - Removing cosmic rays from 2 arc frames:
+PyLongslit - INFO - crremoval.py:61 - Checking detector dimensions of the files...
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881851-20230707-OSIRIS-OsirisCalibrationLamp.fits...
+PyLongslit - INFO - crremoval.py:90 - Cosmic rays removed on 0003881851-20230707-OSIRIS-OsirisCalibrationLamp.fits.
+PyLongslit - INFO - crremoval.py:92 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:100 - Cosmic-ray removed file written to disc at in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename crr_arc_0003881851-20230707-OSIRIS-OsirisCalibrationLamp.fits.
+PyLongslit - INFO - crremoval.py:67 - Removing cosmic rays from 0003881852-20230707-OSIRIS-OsirisCalibrationLamp.fits...
+PyLongslit - INFO - crremoval.py:90 - Cosmic rays removed on 0003881852-20230707-OSIRIS-OsirisCalibrationLamp.fits.
+PyLongslit - INFO - crremoval.py:92 - Writing output to disc...
+PyLongslit - INFO - crremoval.py:100 - Cosmic-ray removed file written to disc at in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename crr_arc_0003881852-20230707-OSIRIS-OsirisCalibrationLamp.fits.
+PyLongslit - INFO - crremoval.py:176 - Cosmic-ray removal procedure finished.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - reduce.py:135 - Fetching the master bias frame...
+PyLongslit - INFO - reduce.py:146 - Master bias frame found and loaded.
+PyLongslit - INFO - reduce.py:148 - Fetching the master flat frame...
+PyLongslit - INFO - reduce.py:159 - Master flat frame found and loaded.
+PyLongslit - INFO - reduce.py:161 - Fetching cosmic-ray removed files from /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS ...
+PyLongslit - INFO - reduce.py:41 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduce.py:42 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduce.py:43 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduce.py:170 - Reducing following standard star frames:
+PyLongslit - INFO - reduce.py:100 - Reducing frame crr_std_0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits ...
+PyLongslit - INFO - reduce.py:62 - Subtracting the master bias frame...
+PyLongslit - INFO - reduce.py:66 - Dividing by the master flat frame...
+PyLongslit - WARNING - reduce.py:72 - NaNs or Infs detected in the frame. Replacing with zero.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - reduce.py:135 - Fetching the master bias frame...
+PyLongslit - INFO - reduce.py:146 - Master bias frame found and loaded.
+PyLongslit - INFO - reduce.py:148 - Fetching the master flat frame...
+PyLongslit - INFO - reduce.py:159 - Master flat frame found and loaded.
+PyLongslit - INFO - reduce.py:161 - Fetching cosmic-ray removed files from /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS ...
+PyLongslit - INFO - reduce.py:41 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduce.py:42 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduce.py:43 - Found 2 cosmic-ray removed arc files.
+PyLongslit - INFO - reduce.py:170 - Reducing following standard star frames:
+PyLongslit - INFO - reduce.py:100 - Reducing frame crr_std_0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits ...
+PyLongslit - INFO - reduce.py:62 - Subtracting the master bias frame...
+PyLongslit - INFO - reduce.py:66 - Dividing by the master flat frame...
+PyLongslit - WARNING - reduce.py:72 - NaNs or Infs detected in the frame. Replacing with zero.
+PyLongslit - INFO - reduce.py:118 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:124 - Frame written to directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename reduced_std_0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits
+PyLongslit - INFO - reduce.py:182 - Reducing following science frames:
+PyLongslit - INFO - reduce.py:100 - Reducing frame crr_science_0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits ...
+PyLongslit - INFO - reduce.py:62 - Subtracting the master bias frame...
+PyLongslit - INFO - reduce.py:66 - Dividing by the master flat frame...
+PyLongslit - WARNING - reduce.py:72 - NaNs or Infs detected in the frame. Replacing with zero.
+PyLongslit - INFO - reduce.py:118 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:124 - Frame written to directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename reduced_science_0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits
+PyLongslit - INFO - reduce.py:100 - Reducing frame crr_science_0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits ...
+PyLongslit - INFO - reduce.py:62 - Subtracting the master bias frame...
+PyLongslit - INFO - reduce.py:66 - Dividing by the master flat frame...
+PyLongslit - WARNING - reduce.py:72 - NaNs or Infs detected in the frame. Replacing with zero.
+PyLongslit - INFO - reduce.py:118 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:124 - Frame written to directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename reduced_science_0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits
+PyLongslit - INFO - reduce.py:190 - Reducing following arc frames:
+PyLongslit - INFO - reduce.py:100 - Reducing frame crr_arc_0003881851-20230707-OSIRIS-OsirisCalibrationLamp.fits ...
+PyLongslit - INFO - reduce.py:62 - Subtracting the master bias frame...
+PyLongslit - INFO - reduce.py:66 - Dividing by the master flat frame...
+PyLongslit - WARNING - reduce.py:72 - NaNs or Infs detected in the frame. Replacing with zero.
+PyLongslit - INFO - reduce.py:118 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:124 - Frame written to directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename reduced_arc_0003881851-20230707-OSIRIS-OsirisCalibrationLamp.fits
+PyLongslit - INFO - reduce.py:100 - Reducing frame crr_arc_0003881852-20230707-OSIRIS-OsirisCalibrationLamp.fits ...
+PyLongslit - INFO - reduce.py:62 - Subtracting the master bias frame...
+PyLongslit - INFO - reduce.py:66 - Dividing by the master flat frame...
+PyLongslit - WARNING - reduce.py:72 - NaNs or Infs detected in the frame. Replacing with zero.
+PyLongslit - INFO - reduce.py:118 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:124 - Frame written to directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename reduced_arc_0003881852-20230707-OSIRIS-OsirisCalibrationLamp.fits
+PyLongslit - INFO - reduce.py:196 - All frames reduced and written to disc.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - combine_arcs.py:13 - Fetching reduced arc frimes...
+PyLongslit - INFO - combine_arcs.py:24 - Found 2 reduced arc files:
+PyLongslit - INFO - combine_arcs.py:27 - Combining arc frames...
+PyLongslit - INFO - combine_arcs.py:38 - Master arc created successfully, writing to disc...
+PyLongslit - INFO - combine_arcs.py:43 - Master arc written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename 'master_arc.fits'.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - identify.py:897 - See the docs at https://kostasvaleckas.github.io/PyLongslit/identify.html. on how to manually identify the lines.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - combine_arcs.py:13 - Fetching reduced arc frimes...
+PyLongslit - INFO - combine_arcs.py:24 - Found 2 reduced arc files:
+PyLongslit - INFO - combine_arcs.py:27 - Combining arc frames...
+PyLongslit - INFO - combine_arcs.py:38 - Master arc created successfully, writing to disc...
+PyLongslit - INFO - combine_arcs.py:43 - Master arc written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename 'master_arc.fits'.

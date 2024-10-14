@@ -8,7 +8,7 @@ from logger import logger
 import os
 from astropy.io import fits
 import numpy as np
-from parser import detector_params, flat_params, science_params, output_dir
+from parser import detector_params, flat_params, science_params, output_dir, data_params
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import exposure
@@ -188,7 +188,7 @@ def check_dimensions(FileList: FileList, x, y):
 
         hdul = open_fits(FileList.path, file)
 
-        data = hdul[1].data
+        data = hdul[data_params["raw_data_hdu_index"]].data
 
         if data.shape != (y, x):
             logger.error(
@@ -348,7 +348,7 @@ def check_rotation():
     disp_dir = detector_params["dispersion"]["wavelength_grows_with_pixel"]
 
     if disp_ax == "x":
-        pass
+        transpose = False
 
     elif disp_ax == "y":
         transpose = True

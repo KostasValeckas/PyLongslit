@@ -1,7 +1,7 @@
 import numpy
 from astropy.io import fits
 from logger import logger
-from parser import detector_params, flat_params, output_dir
+from parser import detector_params, flat_params, output_dir, data_params
 from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import show_flat, list_files
 from overscan import subtract_overscan_from_frame
@@ -129,7 +129,7 @@ def run_flats():
 
         logger.info(f"Processing file: {file}")
 
-        data = numpy.array(rawflat[1].data)
+        data = numpy.array(rawflat[data_params["raw_data_hdu_index"]].data)
 
         # TODO: if this is needed more - move it to utils
         if use_overscan:
