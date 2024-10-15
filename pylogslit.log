@@ -15722,3 +15722,703 @@ PyLongslit - INFO - combine_arcs.py:24 - Found 2 reduced arc files:
 PyLongslit - INFO - combine_arcs.py:27 - Combining arc frames...
 PyLongslit - INFO - combine_arcs.py:38 - Master arc created successfully, writing to disc...
 PyLongslit - INFO - combine_arcs.py:43 - Master arc written to disc in directory /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename 'master_arc.fits'.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3964.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3960.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3952.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:163 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:174 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:177 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:189 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:196 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3964.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :3967.0
+
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - WARNING - check_config.py:250 - Could not show detector regions.
+PyLongslit - WARNING - check_config.py:251 - Check for any previous warnings.
+PyLongslit - WARNING - check_config.py:252 - This is most likely caused by missing flat files, or by bad overscan or flat normalization area definitions in the configuration file.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - WARNING - check_config.py:344 - Errors found in the configuration file.
+PyLongslit - WARNING - check_config.py:345 - Check the warnings.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - WARNING - check_config.py:250 - Could not show detector regions.
+PyLongslit - WARNING - check_config.py:251 - Check for any previous warnings.
+PyLongslit - WARNING - check_config.py:252 - This is most likely caused by missing flat files, or by bad overscan or flat normalization area definitions in the configuration file.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - WARNING - check_config.py:344 - Errors found in the configuration file.
+PyLongslit - WARNING - check_config.py:345 - Check the warnings.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - WARNING - check_config.py:250 - Could not show detector regions.
+PyLongslit - WARNING - check_config.py:251 - Check for any previous warnings.
+PyLongslit - WARNING - check_config.py:252 - This is most likely caused by missing flat files, or by bad overscan or flat normalization area definitions in the configuration file.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - WARNING - check_config.py:344 - Errors found in the configuration file.
+PyLongslit - WARNING - check_config.py:345 - Check the warnings.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - WARNING - check_config.py:250 - Could not show detector regions.
+PyLongslit - WARNING - check_config.py:251 - Check for any previous warnings.
+PyLongslit - WARNING - check_config.py:252 - This is most likely caused by missing flat files, or by bad overscan or flat normalization area definitions in the configuration file.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - WARNING - check_config.py:344 - Errors found in the configuration file.
+PyLongslit - WARNING - check_config.py:345 - Check the warnings.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - WARNING - check_config.py:250 - Could not show detector regions.
+PyLongslit - WARNING - check_config.py:251 - Check for any previous warnings.
+PyLongslit - WARNING - check_config.py:252 - This is most likely caused by missing flat files, or by bad overscan or flat normalization area definitions in the configuration file.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - WARNING - check_config.py:344 - Errors found in the configuration file.
+PyLongslit - WARNING - check_config.py:345 - Check the warnings.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - WARNING - check_config.py:250 - Could not show detector regions.
+PyLongslit - WARNING - check_config.py:251 - Check for any previous warnings.
+PyLongslit - WARNING - check_config.py:252 - This is most likely caused by missing flat files, or by bad overscan or flat normalization area definitions in the configuration file.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - WARNING - check_config.py:344 - Errors found in the configuration file.
+PyLongslit - WARNING - check_config.py:345 - Check the warnings.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - INFO - check_config.py:348 - NO ERRORS FOUND.
+PyLongslit - INFO - check_config.py:349 - CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - INFO - check_config.py:348 - NO ERRORS FOUND.
+PyLongslit - INFO - check_config.py:349 - CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5501.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5498.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5502.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5493.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5484.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:178 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:181 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:193 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:200 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - check_config.py:308 - Checking directories...
+PyLongslit - INFO - check_config.py:51 - Raw bias directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias was found.
+PyLongslit - INFO - check_config.py:53 - Bias directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw flat directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat was found.
+PyLongslit - INFO - check_config.py:53 - Flat directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw science directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object was found.
+PyLongslit - INFO - check_config.py:53 - Science directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw standard star directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds was found.
+PyLongslit - INFO - check_config.py:53 - Standard star directory is not empty.
+PyLongslit - INFO - check_config.py:51 - Raw arc directory: /home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc was found.
+PyLongslit - INFO - check_config.py:53 - Arc directory is not empty.
+PyLongslit - INFO - check_config.py:128 - All input and output directories are found and not empty.
+PyLongslit - INFO - check_config.py:314 - Checking user-defined detector regions...
+PyLongslit - INFO - check_config.py:196 - All user-defined regions are valid.
+PyLongslit - INFO - check_config.py:319 - Showing user-defined detector regions...
+PyLongslit - INFO - check_config.py:227 - Overscan is set to be skipped in configuration file.
+PyLongslit - INFO - check_config.py:232 - Showing the flat normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - mkspecflat.py:23 - Showing the normalization region on a raw flat frame for user inspection...
+PyLongslit - INFO - utils.py:254 - Opening the first file in the flat directory...
+PyLongslit - INFO - utils.py:260 - File opened successfully.
+PyLongslit - INFO - check_config.py:327 - Checking if at least one of the science or standard star frames are present...
+PyLongslit - INFO - check_config.py:337 - Checking for negative physical parameters...
+PyLongslit - INFO - check_config.py:348 - NO ERRORS FOUND.
+PyLongslit - INFO - check_config.py:349 - CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:178 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:181 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:193 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:200 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:178 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:181 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:193 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:200 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:165 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:167 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:192 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:195 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:207 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:214 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostasvaleckas/Documents/DAWN/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:84 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:85 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:86 - xsize = 2073
+PyLongslit - INFO - mkspecflat.py:87 - ysize = 2056
+PyLongslit - INFO - mkspecflat.py:92 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:93 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:206 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:103 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:122 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5125.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5128.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5120.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:130 - Processing file: 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits
+PyLongslit - INFO - mkspecflat.py:140 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:155 - Normalising frame with the median of the frame :5111.0
+
+PyLongslit - INFO - mkspecflat.py:161 - File 0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:163 - Normalizing the final master flat-field....
+PyLongslit - INFO - mkspecflat.py:188 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:191 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+PyLongslit - INFO - mkspecflat.py:203 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:210 - Master flat frame written to disc in /home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS, filename master_flat.fits

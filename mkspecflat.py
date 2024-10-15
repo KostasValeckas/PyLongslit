@@ -165,11 +165,25 @@ def run_flats():
     # Calculate flat is median at each pixel
     medianflat = numpy.median(bigflat, axis=0)
 
-    # Find a mean in spectral direction for each row
-    lampspec = numpy.mean(medianflat, axis=1)
+    #TODO: right now we flip and rotate to universal frame configuration
+    # when master frames are reduced, so for illumination flats we need to
+    # account for that here. Consider flipping the raw frames instead
+    # for more readable code.
+    if detector_params["dispersion"]["spectral_dir"] == "x":
 
-    for i in range(0, xsize - 1):
-        medianflat[:, i] = medianflat[:, i] / lampspec[:]
+        # Find a mean in spectral direction for each row
+        lampspec = numpy.mean(medianflat, axis=0)
+
+        for i in range(0, ysize - 1):
+            medianflat[i, :] = medianflat[i, :] / lampspec[:]
+
+    else:
+            
+        # Find a mean in spectral direction for each column
+        lampspec = numpy.mean(medianflat, axis=1)
+    
+        for i in range(0, xsize - 1):
+            medianflat[:, i] = medianflat[:, i] / lampspec[:]
 
     logger.info("Flat frames processed.")
 

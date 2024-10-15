@@ -32,11 +32,11 @@
 
     "flat": {
         "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat",
-        "user_custom_norm_area": false,
+        "user_custom_norm_area": true,
         "norm_area_start_x": 100,
-        "norm_area_end_x": 400,
+        "norm_area_end_x": 2000,
         "norm_area_start_y": 100,
-        "norm_area_end_y": 1300
+        "norm_area_end_y": 2000
     },
 
     "output": {

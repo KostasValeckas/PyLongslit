@@ -259,7 +259,7 @@ def show_flat():
     raw_flat = open_fits(flat_params["flat_dir"], file_list.files[0])
     logger.info("File opened successfully.")
 
-    data = np.array(raw_flat[1].data)
+    data = np.array(raw_flat[data_params["raw_data_hdu_index"]].data)
 
     norm_data = hist_normalize(data)
 
