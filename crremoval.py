@@ -2,7 +2,7 @@ import astroscrappy
 from logger import logger
 from parser import detector_params, crr_params, skip_science_or_standard_bool
 from parser import output_dir
-from parser import science_params, standard_params, arc_params, data_params
+from parser import science_params, standard_params, data_params
 from utils import FileList, open_fits, write_to_fits, check_dimensions
 from utils import list_files
 
@@ -42,17 +42,17 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
         The group of files to remove cosmic rays from. Used for naming
         the output files for easier sorting in next step.
 
-        Avaialble options: "science", "std", "arc"
+        Avaialble options: "science", "std"
 
     niter : int
         Number of iterations to perform.
     """
 
     # check the group parameter:
-    if group not in ["science", "std", "arc"]:
+    if group not in ["science", "std"]:
         logger.error(
             "The group parameter must be one of the following: "
-            "'science', 'std', 'arc'."
+            "'science', 'std'."
         )
         exit()
 
@@ -68,21 +68,16 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
 
         hdu = open_fits(file_list.path, file)
 
-        if group == "arc":
-            clean_arr = hdu[data_params["raw_data_hdu_index"]].data
-
-        else:
-
-            _, clean_arr = astroscrappy.detect_cosmics(
-                hdu[data_params["raw_data_hdu_index"]].data,
-                sigclip=sigclip,
-                sigfrac=sigfrac,
-                objlim=objlim,
-                cleantype="medmask",
-                niter=niter,
-                sepmed=True,
-                verbose=True,
-            )
+        _, clean_arr = astroscrappy.detect_cosmics(
+            hdu[data_params["raw_data_hdu_index"]].data,
+            sigclip=sigclip,
+            sigfrac=sigfrac,
+            objlim=objlim,
+            cleantype="medmask",
+            niter=niter,
+            sepmed=True,
+            verbose=True,
+        )
 
         # Replace data array with cleaned image
         hdu[data_params["raw_data_hdu_index"]].data = clean_arr
@@ -144,8 +139,6 @@ def run_crremoval():
         star_file_list = FileList(standard_params["standard_dir"])
         science_file_list = FileList(science_params["science_dir"])
 
-    # TODO: check if it makes sense to crr arc frames
-    arc_file_list = FileList(arc_params["arc_dir"])
 
     if star_file_list is not None:
         logger.info(
@@ -167,11 +160,7 @@ def run_crremoval():
 
         remove_cosmics(science_file_list, sigclip, frac, objlim, niter, "science")
 
-    logger.info(f"Removing cosmic rays from {arc_file_list.num_files} arc frames:")
 
-    list_files(arc_file_list)
-
-    remove_cosmics(arc_file_list, sigclip, frac, objlim, niter, "arc")
 
     logger.info("Cosmic-ray removal procedure finished.")
 

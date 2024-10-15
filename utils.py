@@ -736,3 +736,34 @@ def load_spec_data(group = "science"):
 
     return spectra
 
+def get_bias_and_flats():
+
+    logger.info("Fetching the master bias frame...")
+
+    try:
+        BIAS_HDU = open_fits(output_dir, "master_bias.fits")
+    except FileNotFoundError:
+        logger.critical(f"Master bias frame not found in {output_dir}.")
+        logger.error("Make sure you have excecuted the bias procdure first.")
+        exit()
+
+    BIAS = BIAS_HDU[0].data
+
+    logger.info("Master bias frame found and loaded.")
+
+    logger.info("Fetching the master flat frame...")
+
+    try:
+        FLAT_HDU = open_fits(output_dir, "master_flat.fits")
+    except FileNotFoundError:
+        logger.critical(f"Master flat frame not found in {output_dir}.")
+        logger.error("Make sure you have excecuted the flat procdure first.")
+        exit()
+
+    FLAT = FLAT_HDU[0].data
+
+    logger.info("Master flat frame found and loaded.")
+
+    return BIAS, FLAT
+
+

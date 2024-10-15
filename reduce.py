@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from overscan import subtract_overscan_from_frame
 import os
 from matplotlib.patches import Rectangle
-from utils import check_rotation, flip_and_rotate, get_filenames
+from utils import check_rotation, flip_and_rotate, get_filenames, get_bias_and_flats
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
@@ -29,25 +29,20 @@ def read_crr_files():
 
     standard_files : list
         A list of cosmic-ray removed standard star files.
-
-    arc_files : list
-        A list of cosmic-ray removed arc files.
     """
 
     science_files = get_filenames(starts_with="crr_science")
     standard_files = get_filenames(starts_with="crr_std")
-    arc_files = get_filenames(starts_with="crr_arc")
 
     logger.info(f"Found {len(science_files)} cosmic-ray removed science files.")
     logger.info(f"Found {len(standard_files)} cosmic-ray removed standard star files.")
-    logger.info(f"Found {len(arc_files)} cosmic-ray removed arc files.")
 
     # sort alphabetically to correctly match the centers
 
     science_files.sort()
     standard_files.sort()
 
-    return science_files, standard_files, arc_files
+    return science_files, standard_files
 
 
 def reduce_frame(frame, master_bias, master_flat, use_overscan):
@@ -132,35 +127,11 @@ def reduce_all():
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
-    logger.info("Fetching the master bias frame...")
-
-    try:
-        BIAS_HDU = open_fits(output_dir, "master_bias.fits")
-    except FileNotFoundError:
-        logger.critical(f"Master bias frame not found in {output_dir}.")
-        logger.error("Make sure you have excecuted the bias procdure first.")
-        exit()
-
-    BIAS = BIAS_HDU[0].data
-
-    logger.info("Master bias frame found and loaded.")
-
-    logger.info("Fetching the master flat frame...")
-
-    try:
-        FLAT_HDU = open_fits(output_dir, "master_flat.fits")
-    except FileNotFoundError:
-        logger.critical(f"Master flat frame not found in {output_dir}.")
-        logger.error("Make sure you have excecuted the flat procdure first.")
-        exit()
-
-    FLAT = FLAT_HDU[0].data
-
-    logger.info("Master flat frame found and loaded.")
+    BIAS, FLAT = get_bias_and_flats()
 
     logger.info(f"Fetching cosmic-ray removed files from {output_dir} ...")
 
-    science_files, standard_files, arc_files = read_crr_files()
+    science_files, standard_files = read_crr_files()
 
     # Standard star reduction
 
@@ -184,16 +155,6 @@ def reduce_all():
         list_files(science_files)
 
         reduce_group(science_files, BIAS, FLAT, use_overscan)
-
-    # Arc reduction
-
-    logger.info("Reducing following arc frames:")
-
-    list_files(arc_files)
-
-    reduce_group(arc_files, BIAS, FLAT, use_overscan)
-
-    logger.info("All frames reduced and written to disc.")
 
 
 if __name__ == "__main__":
