@@ -181,46 +181,13 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0
 
 
 def trace_line_tilt(
-    sub_image,
-    spectral_coords,
+    master_arc,
     N_ROWS,
     center_row,
     fitter,
     g_model,
 ):
-    """
-    Traces the tilt of a single line in the arc spectrum.
 
-    Loops over the rows of the sub_image and fits the line in each row.
-
-    Parameters
-    ----------
-    sub_image : array
-        Sub image of the arc spectrum holding the line.
-
-    spectral_coords : array
-        Spectral coordinates.
-
-    N_ROWS : int
-        Number of rows in the sub image.
-
-    center_row : int
-        Center row of the sub image.
-
-    fitter : `~astropy.modeling.fitting.LevMarLSQFitter`
-        Fitter object.
-
-    g_model : `~astropy.modeling.models.GeneralizedNormal1D`
-        Generalized normal distribution model.
-
-    Returns
-    -------
-    all_centers_sorted : array
-        Sorted centers of the line.
-
-    keep_mask : array
-        Mask for keeping the good fits for each row.
-    """
     # container for fit parameters.
     # Sometimes used for initial guesses for the next row.
     # For holds more information than needed, but this is nice to have in
@@ -241,6 +208,14 @@ def trace_line_tilt(
     # Loop from center and up and then down
     for i in chain(range(center_row, N_ROWS), range(center_row - 1, -1, -1)):
 
+        #clip out the subimage around the line
+        start_pixel = int(g_model.mean_0.value - g_model.stddev_0.value * gaussian_sigma_to_fwhm * 2)
+        end_pixel = int(g_model.mean_0.value + g_model.stddev_0.value * gaussian_sigma_to_fwhm * 2)
+
+        center_row_spec = master_arc[i, start_pixel:end_pixel]
+        spectral_coords = np.arange(start_pixel, end_pixel)
+
+
         # if we are starting to loop downwards, we need to update the initial guesses
         # back to the center row values manually.
         if i == center_row - 1:
@@ -250,7 +225,6 @@ def trace_line_tilt(
             g_model.beta_0 = all_params[i + 1]["beta"]
             g_model.amplitude_1 = all_params[i + 1]["amplitude_1"]
 
-        center_row_spec = sub_image[i, :]
 
         keep_bool = fit_arc_1d(
             spectral_coords,
@@ -268,6 +242,8 @@ def trace_line_tilt(
             "amplitude_1": g_model.amplitude_1.value,
         }
 
+        plt.plot(i, g_model.mean_0.value, "x", color="green" if keep_bool else "red")
+
         if not keep_bool:
 
             bad_fit_counter += 1
@@ -279,6 +255,8 @@ def trace_line_tilt(
                     f"TILT_REJECT_LINE_FRACTION = {TILT_REJECTION_LINE_FRACTION}  "
                     f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
                 )
+
+                plt.show()
 
                 return None, None
 
@@ -499,8 +477,7 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
         # now fit all rows:
 
         centers, mask = trace_line_tilt(
-            sub_image,
-            spectral_coords,
+            master_arc[0].data,
             N_ROWS,
             center_row,
             fitter,
