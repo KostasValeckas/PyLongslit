@@ -117,6 +117,15 @@ def load_extinction_data():
 
 def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
 
+    plt.plot(obs_wave, obs_count, label="Observed spectrum")
+    plt.plot(ref_wave, ref_spec, label="Reference spectrum")
+    plt.plot(ext_wave, ext_data, label="Extinction curve")
+    plt.legend()
+    plt.title("Observed spectrum, reference spectrum and extinction curve.")
+    plt.xlabel("Wavelength (Å)")    
+    plt.ylabel("Counts")
+    plt.show()
+
     min_array = [np.min(obs_wave), np.min(ref_wave), np.min(ext_wave)]
     max_array = [np.max(obs_wave), np.max(ref_wave), np.max(ext_wave)]
 
@@ -137,6 +146,15 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
     ext_wave_cropped = ext_wave[(ext_wave >= min_global) & (ext_wave <= max_global)]
 
     assert len(ext_wave_cropped == len(ext_data_cropped)), "Cropping failed."
+
+    plt.plot(obs_wave_cropped, obs_count_cropped, label="Observed spectrum")
+    plt.plot(ref_wave_cropped, ref_spec_cropped, label="Reference spectrum")
+    plt.plot(ext_wave_cropped, ext_data_cropped, label="Extinction curve")
+    plt.legend()
+    plt.title("Cropped observed spectrum, reference spectrum and extinction curve.")
+    plt.xlabel("Wavelength (Å)")
+    plt.ylabel("Counts")
+    plt.show()
 
     return (
         obs_wave_cropped,
@@ -275,6 +293,11 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, ext_wa
         Conversion factors between counts and flux across the spectrum.
     """
 
+    # Ensure the wavelength is within the range of ext_wave
+    if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
+        counts = counts[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
+        wavelength = wavelength[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
+
     # firstly, convert the reference spectrum to flux units
     ref_flux_converted = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
 
@@ -410,6 +433,11 @@ def flux_standard_QA(
     Flux calibrates the standard star spectrum and compares it to the reference spectrum.
     This is done for QA purposes in order to check the validity of the sensitivity function.
     """
+
+    # Ensure the wavelength is within the range of ext_wave
+    if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
+        counts = counts[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
+        wavelength = wavelength[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
 
     # Calculate the conversion factors, convert back from log space.
     conv_factors = 10 ** chebval(wavelength, coeff)

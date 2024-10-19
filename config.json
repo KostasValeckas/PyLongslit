@@ -46,9 +46,9 @@
 
     "crr_removal" : {
         "frac": 0.01,
-        "objlim": 15,
-        "sigclip": 5.0,
-        "niter": 5
+        "objlim": 20,
+        "sigclip": 15.0,
+        "niter": 1
     },
 
     "science" : {
@@ -64,7 +64,7 @@
         "exptime": 25,
         "airmass": 1.206,
         "starname": "BD332642",
-        "flux_file_path": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/bd33a.oke"
+        "flux_file_path": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/mfeige110.dat"
 
     },
 

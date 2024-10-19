@@ -342,6 +342,8 @@ def interactive_adjust_obj_limits(
     def on_key(event):
         # this allows accesing the SNR_threshold variable outside the scope
         nonlocal SNR_threshold
+        nonlocal start_index
+        nonlocal end_index
         if event.key == "up":
             SNR_threshold += 0.1
         elif event.key == "down":
@@ -359,6 +361,8 @@ def interactive_adjust_obj_limits(
 
     plt.legend()
     plt.show()
+
+    print(f"Object start index: {start_index}, object end index: {end_index}")
 
     return start_index, end_index
 
@@ -481,6 +485,13 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     hdul = open_fits(output_dir, filename)
     data = hdul[0].data
 
+    header = hdul[0].header
+    # get the cropped y offset for global detector coordinates
+    y_lower = header["CROPY1"]
+    y_upper = header["CROPY2"]
+
+    print("Got cropped values: ", y_lower, y_upper)
+
     # final containers for the results
     centers = []
     FWHMs = []
@@ -520,6 +531,9 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
 
     good_centers = np.array(centers)[obj_start_index:obj_end_index]
     good_FWHMs = np.array(FWHMs)[obj_start_index:obj_end_index]
+
+    # add the offset from the crop procedure
+    # good_centers += y_lower
 
     logger.info("Fitting object centers and FWHMs...")
 
