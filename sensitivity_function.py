@@ -117,15 +117,6 @@ def load_extinction_data():
 
 def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
 
-    plt.plot(obs_wave, obs_count, label="Observed spectrum")
-    plt.plot(ref_wave, ref_spec, label="Reference spectrum")
-    plt.plot(ext_wave, ext_data, label="Extinction curve")
-    plt.legend()
-    plt.title("Observed spectrum, reference spectrum and extinction curve.")
-    plt.xlabel("Wavelength (Å)")    
-    plt.ylabel("Counts")
-    plt.show()
-
     min_array = [np.min(obs_wave), np.min(ref_wave), np.min(ext_wave)]
     max_array = [np.max(obs_wave), np.max(ref_wave), np.max(ext_wave)]
 
@@ -147,14 +138,6 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
 
     assert len(ext_wave_cropped == len(ext_data_cropped)), "Cropping failed."
 
-    plt.plot(obs_wave_cropped, obs_count_cropped, label="Observed spectrum")
-    plt.plot(ref_wave_cropped, ref_spec_cropped, label="Reference spectrum")
-    plt.plot(ext_wave_cropped, ext_data_cropped, label="Extinction curve")
-    plt.legend()
-    plt.title("Cropped observed spectrum, reference spectrum and extinction curve.")
-    plt.xlabel("Wavelength (Å)")
-    plt.ylabel("Counts")
-    plt.show()
 
     return (
         obs_wave_cropped,
