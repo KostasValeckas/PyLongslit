@@ -138,6 +138,7 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
 
     assert len(ext_wave_cropped == len(ext_data_cropped)), "Cropping failed."
 
+
     return (
         obs_wave_cropped,
         obs_count_cropped,
@@ -275,6 +276,11 @@ def refrence_counts_to_flux(wavelength, counts, ref_wavelength, ref_flux, ext_wa
         Conversion factors between counts and flux across the spectrum.
     """
 
+    # Ensure the wavelength is within the range of ext_wave
+    if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
+        counts = counts[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
+        wavelength = wavelength[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
+
     # firstly, convert the reference spectrum to flux units
     ref_flux_converted = convert_from_AB_mag_to_flux(ref_flux, ref_wavelength)
 
@@ -410,6 +416,11 @@ def flux_standard_QA(
     Flux calibrates the standard star spectrum and compares it to the reference spectrum.
     This is done for QA purposes in order to check the validity of the sensitivity function.
     """
+
+    # Ensure the wavelength is within the range of ext_wave
+    if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
+        counts = counts[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
+        wavelength = wavelength[(wavelength >= np.min(ext_wave)) & (wavelength <= np.max(ext_wave))]
 
     # Calculate the conversion factors, convert back from log space.
     conv_factors = 10 ** chebval(wavelength, coeff)

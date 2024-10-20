@@ -114,6 +114,13 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan):
 
         write_name = file.replace("crr_", "reduced_")
 
+        header = hdu[0].header
+
+        # if no cropping is to be done in the next step, these parameters
+        # allow the full frame to be used
+        header["CROPY1"] = 0
+        header["CROPY2"] = data.shape[0]
+
         write_to_fits(data, hdu[0].header, write_name, output_dir)
 
         logger.info(f"Frame written to directory {output_dir}, filename {write_name}")

@@ -164,6 +164,10 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
     hdul = open_fits(output_dir, skysubbed_frame)
 
     skysubbed_data = hdul[0].data
+
+    header = hdul[0].header
+    y_offset = header["CROPY1"] # the y-offset from the cropping procedure
+
     x_row_array = np.arange(skysubbed_data.shape[0])
 
     variance = estimate_variance(skysubbed_data, gain, read_out_noise)
@@ -192,10 +196,10 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
     spec = np.array(spec)
     spec_var = np.array(spec_var)
 
-    return pixel, spec, spec_var
+    return pixel, spec, spec_var, y_offset
 
 
-def wavelength_calibrate(pixels, centers, spec, var):
+def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     """
     Wavelegth calibration of the extracted 1D spectrum,
     to convert from ADU/pixel to ADU/Å.
@@ -231,11 +235,13 @@ def wavelength_calibrate(pixels, centers, spec, var):
         The variance of the calibrated 1D spectrum. (in ADU/Å)
     """
 
+    centers_global = centers + y_offset
+
     wavelen_fit = get_wavelen_fit_from_disc()
     tilt_fit = get_tilt_fit_from_disc()
 
     # evaluate the wavelength solution at the object trace centers
-    ap_wavelen = wavelength_sol(pixels, centers, wavelen_fit, tilt_fit)
+    ap_wavelen = wavelength_sol(pixels, centers_global, wavelen_fit, tilt_fit)
 
     # interpolate the spectrum and variance to a homogenous wavelength grid
     wavelen_homogenous = np.linspace(ap_wavelen[0], ap_wavelen[-1], len(spec))
@@ -330,7 +336,7 @@ def extract_objects(skysubbed_files, trace_dir):
 
         trace_data = trace_dir[filename_obj]
 
-        pixel, spec, spec_var = extract_object_optimal(
+        pixel, spec, spec_var, y_offset = extract_object_optimal(
             trace_data, filename, gain, read_out_noise
         )
 
@@ -338,7 +344,7 @@ def extract_objects(skysubbed_files, trace_dir):
         logger.info("Wavelength calibrating the extracted 1D spectrum...")
 
         wavelength, spectrum_calib, var_calib = wavelength_calibrate(
-            pixel, trace_data[1], spec, spec_var
+            pixel, trace_data[1], spec, spec_var, y_offset
         )
 
         # make a new filename

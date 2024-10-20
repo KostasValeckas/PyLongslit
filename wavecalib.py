@@ -209,8 +209,8 @@ def trace_line_tilt(
     for i in chain(range(center_row, N_ROWS), range(center_row - 1, -1, -1)):
 
         #clip out the subimage around the line
-        start_pixel = int(g_model.mean_0.value - g_model.stddev_0.value * gaussian_sigma_to_fwhm * 2)
-        end_pixel = int(g_model.mean_0.value + g_model.stddev_0.value * gaussian_sigma_to_fwhm * 2)
+        start_pixel = int(g_model.mean_0.value - g_model.stddev_0.value * gaussian_sigma_to_fwhm)
+        end_pixel = int(g_model.mean_0.value + g_model.stddev_0.value * gaussian_sigma_to_fwhm)
 
         center_row_spec = master_arc[i, start_pixel:end_pixel]
         spectral_coords = np.arange(start_pixel, end_pixel)
@@ -242,7 +242,6 @@ def trace_line_tilt(
             "amplitude_1": g_model.amplitude_1.value,
         }
 
-        plt.plot(i, g_model.mean_0.value, "x", color="green" if keep_bool else "red")
 
         if not keep_bool:
 
@@ -256,7 +255,6 @@ def trace_line_tilt(
                     f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
                 )
 
-                plt.show()
 
                 return None, None
 

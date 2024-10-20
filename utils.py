@@ -12,6 +12,7 @@ from parser import detector_params, flat_params, science_params, output_dir, dat
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import exposure
+from parser import skip_science_or_standard_bool
 
 
 class FileList:
@@ -765,5 +766,45 @@ def get_bias_and_flats():
     logger.info("Master flat frame found and loaded.")
 
     return BIAS, FLAT
+
+def get_reduced_frames():
+    """
+    Driver for `get_reduced_frames` that acounts for skip_science and/or
+    skip_standard parameters.
+
+    Returns
+    -------
+    reduced_files : list
+        A list of the reduced files.
+    """
+    if skip_science_or_standard_bool == 0:
+        logger.error(
+            "Both skip_science and skip_standard parameters are set to true "
+            "in the configuration file."
+        )
+        logger.error("No extraction can be performed. Exitting...")
+        exit()
+
+    elif skip_science_or_standard_bool == 1:
+
+        logger.warning(
+            "Standard star extraction is set to be skipped in the config file."
+        )
+        logger.warning("Will only extract science spectra.")
+
+        reduced_files = get_file_group("reduced_science")
+
+    elif skip_science_or_standard_bool == 2:
+
+        logger.warning("Science extraction is set to be skipped in the config file.")
+        logger.warning("Will only extract standard star spectra.")
+
+        reduced_files = get_file_group("reduced_std")
+
+    else:
+
+        reduced_files = get_file_group("reduced_science", "reduced_std")
+
+    return reduced_files
 
 

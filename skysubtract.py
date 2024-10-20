@@ -8,48 +8,10 @@ import numpy as np
 from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
 from utils import show_frame, get_file_group, choose_obj_centrum, estimate_sky_regions
-from utils import refine_obj_center
+from utils import refine_obj_center, get_reduced_frames
 from tqdm import tqdm
 
-def get_reduced_frames():
-    """
-    Driver for `get_reduced_frames` that acounts for skip_science and/or
-    skip_standard parameters.
 
-    Returns
-    -------
-    reduced_files : list
-        A list of the reduced files.
-    """
-    if skip_science_or_standard_bool == 0:
-        logger.error(
-            "Both skip_science and skip_standard parameters are set to true "
-            "in the configuration file."
-        )
-        logger.error("No extraction can be performed. Exitting...")
-        exit()
-
-    elif skip_science_or_standard_bool == 1:
-
-        logger.warning(
-            "Standard star extraction is set to be skipped in the config file."
-        )
-        logger.warning("Will only extract science spectra.")
-
-        reduced_files = get_file_group("reduced_science")
-
-    elif skip_science_or_standard_bool == 2:
-
-        logger.warning("Science extraction is set to be skipped in the config file.")
-        logger.warning("Will only extract standard star spectra.")
-
-        reduced_files = get_file_group("reduced_std")
-
-    else:
-
-        reduced_files = get_file_group("reduced_science", "reduced_std")
-
-    return reduced_files
 
 def choose_obj_centrum_sky(file_list):
     """
