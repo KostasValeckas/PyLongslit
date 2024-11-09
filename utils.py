@@ -613,8 +613,8 @@ def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
     center = refine_obj_center(x_spec, slice_spec, spatial_center_guess, FWHM_AP)
 
     # QA for sky region selection
-    sky_left = center - 3 * FWHM_AP
-    sky_right = center + 3 * FWHM_AP
+    sky_left = center - 4 * FWHM_AP
+    sky_right = center + 4 * FWHM_AP
 
     return center, sky_left, sky_right
 

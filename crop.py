@@ -56,6 +56,7 @@ def crop_image(image):
     return image, cropped_y
 
 def crop_files(files):
+
     
     for i, file in enumerate(files):
         hdul = open_fits(output_dir, file)
