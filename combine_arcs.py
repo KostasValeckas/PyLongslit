@@ -6,9 +6,10 @@ from logger import logger
 from parser import output_dir, arc_params, data_params, detector_params 
 from utils import FileList, open_fits, write_to_fits, list_files, get_bias_and_flats
 from utils import check_rotation, flip_and_rotate
-from overscan import subtract_overscan_from_frame
+from overscan import subtract_overscan_from_frame, detect_overscan_direction
 import os
 import numpy as np
+import matplotlib.pyplot as plt
 
     
     
@@ -27,27 +28,47 @@ def combine_arcs():
     logger.info(f"Found {arc_files.num_files} raw arc files:")
     list_files(arc_files)
 
-    logger.info("Combining arc frames...")
-
-    arc_data = []
-
-    for arc_file in arc_files:
-        hdu = open_fits(arc_files.path, arc_file)
-        arc_data.append(hdu[data_params["raw_data_hdu_index"]].data)
-
-    master_arc = np.sum(arc_data, axis=0)
+    logger.info("Subtracting bias and dividing by the master flat...")
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
-
     if use_overscan:
-        master_arc = subtract_overscan_from_frame(master_arc)
 
-    BIAS, FLAT = get_bias_and_flats()
+        logger.warning("Using overscan subtraction instead of master bias.")
+        logger.warning("If this is not intended, check the config file.")
 
-    logger.info("Subtracting the bias and diving by the master flat...")
+        # get the overscan direction
+        overscan_dir = detect_overscan_direction()
 
-    master_arc = (master_arc - BIAS) / FLAT
+        BIAS, FLAT = get_bias_and_flats(skip_bias=True)
+
+    else:
+        overscan_dir = None
+        BIAS, FLAT = get_bias_and_flats()
+
+    # container to hold the reduced arc frames
+    arc_data = []
+
+    for arc_file in arc_files:
+        
+        hdu = open_fits(arc_files.path, arc_file)
+
+        data = hdu[data_params["raw_data_hdu_index"]].data.astype(np.float32)
+
+        if use_overscan:
+            data = subtract_overscan_from_frame(data, overscan_dir)
+        else:
+            data = data - BIAS
+
+        data = data / FLAT
+
+        arc_data.append(data)
+
+
+    logger.info("Combining arc frames...")
+
+
+    master_arc = np.sum(arc_data, axis=0)
 
     # Handle NaNs and Infs
     if np.isnan(master_arc).any() or np.isinf(master_arc).any():

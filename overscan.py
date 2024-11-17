@@ -61,8 +61,49 @@ def show_overscan():
     )
     plt.show()
 
+def detect_overscan_direction():
+    """
+    Detect the direction of the overscan region.
 
-def subtract_overscan_from_frame(image_data):
+    Returns
+    -------
+    direction : str
+        The direction of the overscan region.
+        Possible values are "horizontal" or "vertical".
+    """
+
+    logger.info("Detecting the direction of the overscan region...")
+
+    # Extract the overscan region
+    overscan_x_start = detector_params["overscan"]["overscan_x_start"]
+    overscan_x_end = detector_params["overscan"]["overscan_x_end"]
+    overscan_y_start = detector_params["overscan"]["overscan_y_start"]
+    overscan_y_end = detector_params["overscan"]["overscan_y_end"]
+
+    # Extract detector size in order to calculate whether this is
+    # a horizontal or vertical overscan
+
+    xsize = detector_params["xsize"]
+    ysize = detector_params["ysize"]
+
+    # Check if the overscan is horizontal or vertical
+    # Current implementation only supports horizontal or vertical overscan,
+    # not both at the same time. 
+    if (overscan_x_end - overscan_x_start) + 1 == xsize:
+        logger.info("Horizontal overscan detected.")
+        direction = "horizontal"
+    elif (overscan_y_end - overscan_y_start) + 1 == ysize:
+        logger.info("Vertical overscan detected.")
+        direction = "vertical"
+    else:
+        logger.critical("Overscan region does not match detector size.")
+        logger.critical("Check the config file.")
+        exit(1)
+
+    return direction
+
+
+def subtract_overscan_from_frame(image_data, overscan_direction):
     """
     Subtract the overscan region from a single frame.
 
@@ -88,14 +129,17 @@ def subtract_overscan_from_frame(image_data):
     overscan_y_start = detector_params["overscan"]["overscan_y_start"]
     overscan_y_end = detector_params["overscan"]["overscan_y_end"]
 
-    mean_overcan = numpy.mean(
-        image_data[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end]
-    )
+    if overscan_direction == "horizontal":
+        # loop through the columns and subtract the mean value of the overscan region
+        for i in range(overscan_x_start, overscan_x_end + 1):
+            mean = numpy.mean(image_data[overscan_y_start:overscan_y_end, i])
+            image_data[:, i] = image_data[:, i] - mean
 
-    logger.info(f"Mean overscan value: {mean_overcan}")
-
-    # Subtract the overscan region
-    image_data = image_data - mean_overcan
+    elif overscan_direction == "vertical":
+        # loop through the rows and subtract the mean value of the overscan region
+        for i in range(overscan_y_start, overscan_y_end + 1):
+            mean = numpy.mean(image_data[i, overscan_x_start:overscan_x_end])
+            image_data[i, :] = image_data[i, :] - mean
 
     logger.info("Overscan subtracted successfully.")
 
