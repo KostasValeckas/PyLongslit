@@ -4,9 +4,9 @@ from logger import logger
 from parser import detector_params, flat_params, output_dir, data_params
 from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import show_flat, list_files
-from overscan import subtract_overscan_from_frame
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from overscan import subtract_overscan_from_frame, detect_overscan_direction
 
 """
 Module for creating a master flat from from raw flat frames.
@@ -24,7 +24,6 @@ def show_flat_norm_region():
 
     show_flat()
 
-    # Add rectangular box to show the overscan region
     width = flat_params["norm_area_end_x"] \
                 - flat_params["norm_area_start_x"]
     height = flat_params["norm_area_end_y"] \
@@ -61,8 +60,7 @@ def run_flats():
     Driver for the flat-fielding procedure.
 
     The function reads the raw flat frames from the directory specified in the
-    'flat_dir' parameter in the 'config.json' file. It then subtracts the
-    overscan region, subtracts the master bias frame and normalizes the frames
+    'flat_dir' parameter in the 'config.json' file. It then subtracts the bias and normalizes the frames
     by the median value of the frame. The final master flat-field is written to
     disc in the output directory.
     """
@@ -100,44 +98,53 @@ def run_flats():
     # initialize a big array to hold all the flat frames for stacking
     bigflat = numpy.zeros((file_list.num_files, ysize, xsize), float)
 
-    logger.info("Fetching the master bias frame...")
+    if use_overscan:
+        logger.warning("Using overscan subtraction instead of master bias.")
+        logger.warning("If this is not intended, check the config file.")
 
-    try:
-        BIASframe = fits.open(output_dir + "/master_bias.fits")
-    except FileNotFoundError:
+        # get the overscan direction
+        overscan_dir = detect_overscan_direction()
+
+    else:
+
+        logger.info("Fetching the master bias frame...")
 
         try:
-            BIASframe = fits.open(output_dir + "master_bias.fits")
-
+            BIASframe = fits.open(output_dir + "/master_bias.fits")
         except FileNotFoundError:
 
-            logger.critical("Master bias frame not found.")
-            logger.error(
-                "Make sure a master bias frame exists before proceeding with flats."
-            )
-            logger.error("Run the mkspecbias.py script first.")
-            exit()
+            try:
+                BIASframe = fits.open(output_dir + "master_bias.fits")
 
-    BIAS = numpy.array(BIASframe[0].data)
-    logger.info("Master bias frame found and loaded.")
+            except FileNotFoundError:
 
-    # loop over all the falt files, subtract the median value of the overscan,
-    # subtract bias and stack them in the bigflat array
+                logger.critical("Master bias frame not found.")
+                logger.error(
+                    "Make sure a master bias frame exists before proceeding with flats."
+                )
+                logger.error("Run the mkspecbias.py script first.")
+                exit()
+
+        BIAS = numpy.array(BIASframe[0].data)
+        logger.info("Master bias frame found and loaded.")
+
+    print("\n------------------------------------------------------------\n")
+
+    # loop over all the falt files, subtract bias and stack them in the bigflat array
     for i, file in enumerate(file_list):
 
         rawflat = open_fits(flat_params["flat_dir"], file)
 
         logger.info(f"Processing file: {file}")
 
-        data = numpy.array(rawflat[data_params["raw_data_hdu_index"]].data)
+        data = numpy.array(rawflat[data_params["raw_data_hdu_index"]].data, dtype=numpy.float64)
 
-        # TODO: if this is needed more - move it to utils
+        # Subtract the bias
         if use_overscan:
-            
-            data = subtract_overscan_from_frame(data)
-
-        data = data - BIAS
-        logger.info("Subtracted the bias.")
+            data = subtract_overscan_from_frame(data, overscan_dir)
+        else:
+            data = data - BIAS
+            logger.info("Subtracted the bias.")
 
         bigflat[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
 
@@ -184,6 +191,20 @@ def run_flats():
     
         for i in range(0, xsize - 1):
             medianflat[:, i] = medianflat[:, i] / lampspec[:]
+
+    if use_overscan:
+        # if overscan was used, set the overscan region to one to avoid
+        # explosive values in the final flat
+
+        # Extract the overscan region
+        overscan_x_start = detector_params["overscan"]["overscan_x_start"]
+        overscan_x_end = detector_params["overscan"]["overscan_x_end"]
+        overscan_y_start = detector_params["overscan"]["overscan_y_start"]
+        overscan_y_end = detector_params["overscan"]["overscan_y_end"]
+
+        medianflat[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = 1.0
+
+
 
     logger.info("Flat frames processed.")
 
