@@ -10,7 +10,7 @@ from astropy.modeling.models import Chebyshev2D, Const1D, Chebyshev1D
 from astropy.modeling.fitting import LevMarLSQFitter
 from numpy.polynomial.chebyshev import chebfit, chebval
 from utils import write_to_fits
-from utils import show_1d_fit_QA
+from utils import show_1d_fit_QA, wavelength_sol
 import pickle
 import os
 from tqdm import tqdm
@@ -967,12 +967,6 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
     plt.tight_layout()
     plt.show()
 
-def wavelength_sol(spectral_pix, spatial_pix, wavelen_fit, tilt_fit):
-   
-    tilt_value = tilt_fit(spectral_pix, spatial_pix)
-    wavelength = chebval(spectral_pix + tilt_value, wavelen_fit)
-
-    return wavelength
 
 def construct_wavelet_map(wavelen_fit, tilt_fit):
 

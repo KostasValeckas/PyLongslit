@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import exposure
 from parser import skip_science_or_standard_bool
+from numpy.polynomial.chebyshev import chebval
 
 
 class FileList:
@@ -737,6 +738,23 @@ def load_spec_data(group = "science"):
 
     return spectra
 
+def load_bias():
+
+    try:
+
+        BIASframe = open_fits(output_dir, "master_bias.fits")
+
+    except FileNotFoundError:
+
+        logger.critical("Master bias frame not found.")
+        logger.error(
+            "Make sure a master bias frame exists before proceeding with flats."
+        )
+        logger.error("Run the mkspecbias.py script first.")
+        exit()
+
+    return BIASframe
+
 def get_bias_and_flats(skip_bias=False):
 
     if not skip_bias:
@@ -810,5 +828,12 @@ def get_reduced_frames():
         reduced_files = get_file_group("reduced_science", "reduced_std")
 
     return reduced_files
+
+def wavelength_sol(spectral_pix, spatial_pix, wavelen_fit, tilt_fit):
+   
+    tilt_value = tilt_fit(spectral_pix, spatial_pix)
+    wavelength = chebval(spectral_pix + tilt_value, wavelen_fit)
+
+    return wavelength
 
 

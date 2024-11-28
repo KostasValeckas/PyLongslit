@@ -5,7 +5,7 @@ Module to combine arc frames into a single master arc frame.
 from logger import logger
 from parser import output_dir, arc_params, data_params, detector_params 
 from utils import FileList, open_fits, write_to_fits, list_files, get_bias_and_flats
-from utils import check_rotation, flip_and_rotate
+from utils import check_rotation, flip_and_rotate, load_bias
 from overscan import subtract_overscan_from_frame, detect_overscan_direction
 import os
 import numpy as np
@@ -15,12 +15,12 @@ import matplotlib.pyplot as plt
     
 def combine_arcs():
 
-    logger.info("Fetching reduced arc frimes...")
+    logger.info("Fetching arc frames...")
 
     arc_files = FileList(arc_params["arc_dir"])
 
     if  arc_files.num_files == 0:
-        logger.critical("No reduced arc files found.")
+        logger.critical("No arc files found.")
         logger.critical("Check the arc directory path in the config file.")
 
         exit()
@@ -28,7 +28,7 @@ def combine_arcs():
     logger.info(f"Found {arc_files.num_files} raw arc files:")
     list_files(arc_files)
 
-    logger.info("Subtracting bias and dividing by the master flat...")
+    logger.info("Subtracting bias...")
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
@@ -40,11 +40,10 @@ def combine_arcs():
         # get the overscan direction
         overscan_dir = detect_overscan_direction()
 
-        BIAS, FLAT = get_bias_and_flats(skip_bias=True)
-
     else:
         overscan_dir = None
-        BIAS, FLAT = get_bias_and_flats()
+        BIASframe = load_bias()
+        BIAS = np.array(BIASframe[0].data)
 
     # container to hold the reduced arc frames
     arc_data = []
@@ -59,8 +58,6 @@ def combine_arcs():
             data = subtract_overscan_from_frame(data, overscan_dir)
         else:
             data = data - BIAS
-
-        data = data / FLAT
 
         arc_data.append(data)
 
