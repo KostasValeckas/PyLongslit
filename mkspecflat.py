@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from astropy.io import fits
 from logger import logger
 from parser import detector_params, flat_params, output_dir, data_params
@@ -9,6 +9,8 @@ from matplotlib.patches import Rectangle
 from overscan import subtract_overscan_from_frame, detect_overscan_direction
 from wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
 from scipy.interpolate import make_lsq_spline, BSpline
+from wavecalib import construct_wavelen_map
+from utils import check_rotation, flip_and_rotate
 
 
 """
@@ -31,27 +33,93 @@ def fit_spectral_response(medianflat):
 
         # extract the spectrum of the central 5 rows of the frame
         middle_row = y_size // 2
-        spectrum = numpy.mean(medianflat[middle_row-2: middle_row+2, :], axis=0)
-        spectral_array = numpy.arange(x_size)
+        spectrum = np.mean(medianflat[middle_row-2: middle_row+2, :], axis=0)
+        spectral_array = np.arange(x_size)
+        spatial_array = np.arange(y_size)
 
     else:
             
         # extract the spectrum of the central 5 rows of the frame
         middle_row = x_size // 2
-        spectrum = numpy.mean(medianflat[:, middle_row-2: middle_row+2], axis=1)
-        spectral_array = numpy.arange(y_size)
+        spectrum = np.mean(medianflat[:, middle_row-2: middle_row+2], axis=1)
+        spectral_array = np.arange(y_size)
+        spatial_array = np.arange(x_size)
 
 
     wavelen_fit = get_wavelen_fit_from_disc()
     tilt_fit = get_tilt_fit_from_disc()
 
-    middlew_row_array = numpy.full(len(spectral_array), middle_row)     
+    middlew_row_array = np.full(len(spectral_array), middle_row)     
 
     wavelength = wavelength_sol(spectral_array, middlew_row_array, wavelen_fit, tilt_fit)
+
+
+    print(wavelength)
+    print(spectrum) 
+
+    wavelength = wavelength
+    spectrum = spectrum
 
     # Plot the original spectrum and the bspline fit
     plt.plot(wavelength, spectrum, label='Original Spectrum')
     plt.show()
+
+
+    # Check for NaN or infinite values
+    if np.any(np.isnan(wavelength)) or np.any(np.isnan(spectrum)):
+        raise ValueError("NaN values found in wavelength or spectrum.")
+    if np.any(np.isinf(wavelength)) or np.any(np.isinf(spectrum)):
+        raise ValueError("Infinite values found in wavelength or spectrum.")
+
+    # Ensure wavelength is sorted
+    if not np.all(np.diff(wavelength) > 0):
+        raise ValueError("Wavelength values are not sorted in ascending order.")
+
+    num_interior_knots = (len(wavelength) - 2)//2
+    
+    # Create the knots array
+    t = np.concatenate((
+        np.repeat(wavelength[0], 4),  # k+1 knots at the beginning
+        np.linspace(wavelength[1], wavelength[-2], num_interior_knots),  # interior knots
+        np.repeat(wavelength[-1], 4)  # k+1 knots at the end
+    )) 
+
+    spl = make_lsq_spline(wavelength, spectrum, t=t, k=3)
+    bspline = BSpline(spl.t, spl.c, spl.k)
+
+    # Plot the bspline fit
+    plt.plot(wavelength, spectrum, "+", label='BSpline Fit')
+    plt.plot(wavelength, bspline(wavelength), label='BSpline Fit')
+    plt.show()
+
+    wave_map = construct_wavelen_map(wavelen_fit, tilt_fit)
+
+    transpose, flip = check_rotation()
+
+    print(wave_map)
+
+    spectral_response_model = bspline(wave_map)
+
+    plt.imshow(spectral_response_model)
+
+    plt.show()
+
+    spectral_response_model = flip_and_rotate(spectral_response_model, transpose, flip, inverse = True)
+
+    plt.imshow(spectral_response_model)
+
+    plt.show()
+
+    normalized_flat = medianflat / spectral_response_model
+
+    plt.imshow(normalized_flat)
+
+    plt.show()
+
+    return normalized_flat
+
+
+
 
 
 
@@ -140,7 +208,7 @@ def run_flats():
     check_dimensions(file_list, xsize, ysize)
 
     # initialize a big array to hold all the flat frames for stacking
-    bigflat = numpy.zeros((file_list.num_files, ysize, xsize), float)
+    bigflat = np.zeros((file_list.num_files, ysize, xsize), float)
 
     if use_overscan:
         logger.warning("Using overscan subtraction instead of master bias.")
@@ -155,7 +223,7 @@ def run_flats():
 
         BIASframe = load_bias()
 
-        BIAS = numpy.array(BIASframe[0].data)
+        BIAS = np.array(BIASframe[0].data)
         logger.info("Master bias frame found and loaded.")
 
     print("\n------------------------------------------------------------\n")
@@ -167,7 +235,7 @@ def run_flats():
 
         logger.info(f"Processing file: {file}")
 
-        data = numpy.array(rawflat[data_params["raw_data_hdu_index"]].data, dtype=numpy.float64)
+        data = np.array(rawflat[data_params["raw_data_hdu_index"]].data, dtype=np.float64)
 
         # Subtract the bias
         if use_overscan:
@@ -182,12 +250,12 @@ def run_flats():
 
         #if normalization region is provided:
         if flat_params["user_custom_norm_area"]:
-            norm = numpy.median(
+            norm = np.median(
                 bigflat[i, norm_start_y:norm_end_y, norm_start_x:norm_end_x]
             )
         # if not , use the whole frame:
         else:
-            norm = numpy.median(bigflat[i, :, :])
+            norm = np.median(bigflat[i, :, :])
 
         logger.info(f"Normalising frame with the median of the frame :{norm}\n")
         bigflat[i, :, :] = bigflat[i, :, :] / norm
@@ -200,9 +268,9 @@ def run_flats():
     logger.info("Normalizing the final master flat-field....")
 
     # Calculate flat is median at each pixel
-    medianflat = numpy.median(bigflat, axis=0)
+    medianflat = np.median(bigflat, axis=0)
 
-    fit_spectral_response(medianflat)
+    medianflat = fit_spectral_response(medianflat)
 
 
     logger.info("Flat frames processed.")
@@ -210,11 +278,11 @@ def run_flats():
 
     logger.info(
         "Mean pixel value of the final master flat-field: "
-        f"{round(numpy.nanmean(medianflat),5)} (should be 1.0)."
+        f"{round(np.nanmean(medianflat),5)} (should be 1.0)."
     )
 
     # check if the median is 1 to within 5 decimal places
-    if round(numpy.nanmean(medianflat),5) != 1.0:
+    if round(np.nanmean(medianflat),5) != 1.0:
         logger.warning("The mean pixel value of the final master flat-field is not 1.0.")
         logger.warning("This may indicate a problem with the normalisation.")
         logger.warning("Check the normalisation region in the flat-field frames.")

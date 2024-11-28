@@ -968,7 +968,8 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
     plt.show()
 
 
-def construct_wavelet_map(wavelen_fit, tilt_fit):
+def construct_wavelen_map(wavelen_fit, tilt_fit, original_orientation = False):
+
 
     N_SPACIAL = (
         detector_params["xsize"]
@@ -1035,7 +1036,7 @@ def plot_wavelengthcalib_QA(good_lines: dict, wave_fit, tilt_fit):
 
     plot_tiltmap(tilt_map)
 
-    wave_map  = construct_wavelet_map(wave_fit, tilt_fit)
+    wave_map  = construct_wavelen_map(wave_fit, tilt_fit)
 
     plot_wavemap(wave_map)
 

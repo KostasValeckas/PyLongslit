@@ -378,7 +378,7 @@ def check_rotation():
     return transpose, flip
 
 
-def flip_and_rotate(frame_data, transpose, flip):
+def flip_and_rotate(frame_data, transpose, flip, inverse = False):
     """
     The PyLongslit default orientation is dispersion in the x-direction,
     with wavelength increasing from left to right.
@@ -397,6 +397,9 @@ def flip_and_rotate(frame_data, transpose, flip):
     flip : bool
         If True, flip the data.
 
+    inverse: bool
+        If True, the inverse operation is performed.
+
     Returns
     -------
     frame_data : numpy.ndarray
@@ -405,11 +408,11 @@ def flip_and_rotate(frame_data, transpose, flip):
 
     if transpose:
         logger.info("Rotating image to make x the spectral direction...")
-        frame_data = np.rot90(frame_data)
+        frame_data = np.rot90(frame_data) if not inverse else np.rot90(frame_data, k=-1)
 
     if flip:
         logger.info("Flipping the image to make wavelengths increase with x-pixels...")
-        frame_data = np.flip(frame_data, axis=1)
+        frame_data = np.flip(frame_data, axis=1)  
 
     return frame_data
 
