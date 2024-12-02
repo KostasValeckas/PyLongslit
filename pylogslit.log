@@ -29557,3 +29557,508 @@ PyLongslit - WARNING - mkspecflat.py:317 - This may indicate a problem with the 
 PyLongslit - WARNING - mkspecflat.py:318 - Check the normalisation region in the flat-field frames.
 PyLongslit - INFO - mkspecflat.py:333 - Attaching header and writing to disc...
 PyLongslit - INFO - mkspecflat.py:340 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:26 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:27 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:28 - xsize = 500
+PyLongslit - INFO - mkspecbias.py:29 - ysize = 2102
+PyLongslit - INFO - mkspecbias.py:34 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:35 - Files used for bias processing:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050356.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050356.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050357.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050357.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050358.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050358.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050359.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050359.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050360.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050360.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050361.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050361.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050362.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050362.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050363.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050363.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050364.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050364.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050365.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050365.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:51 - Processing file: ALHh050366.fits
+PyLongslit - INFO - mkspecbias.py:61 - File ALHh050366.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:66 - Bias frames processed.
+PyLongslit - INFO - mkspecbias.py:67 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecbias.py:74 - Master bias frame written to disc at in /home/kostas/Documents/PyLongslit/output_alt, filename master_bias.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:228 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:229 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:230 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:231 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:236 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:237 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:256 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:261 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:270 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:279 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:294 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:300 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:270 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:279 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:294 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:300 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:270 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:279 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:294 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:300 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:270 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:279 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:294 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:300 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:270 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:279 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:294 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:300 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:302 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - mkspecflat.py:310 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:313 - Mean pixel value of the final master flat-field: 1.01013 (should be 1.0).
+PyLongslit - WARNING - mkspecflat.py:320 - The mean pixel value of the final master flat-field is not 1.0.
+PyLongslit - WARNING - mkspecflat.py:321 - This may indicate a problem with the normalisation.
+PyLongslit - WARNING - mkspecflat.py:322 - Check the normalisation region in the flat-field frames.
+PyLongslit - INFO - mkspecflat.py:337 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:344 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:244 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:245 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:246 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:247 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:252 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:253 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:272 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:277 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - mkspecflat.py:326 - Flat frames processed.
+PyLongslit - INFO - mkspecflat.py:329 - Mean pixel value of the final master flat-field: 1.01013 (should be 1.0).
+PyLongslit - WARNING - mkspecflat.py:336 - The mean pixel value of the final master flat-field is not 1.0.
+PyLongslit - WARNING - mkspecflat.py:337 - This may indicate a problem with the normalisation.
+PyLongslit - WARNING - mkspecflat.py:338 - Check the normalisation region in the flat-field frames.
+PyLongslit - INFO - mkspecflat.py:353 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecflat.py:360 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:244 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:245 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:246 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:247 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:252 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:253 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:272 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:277 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - mkspecflat.py:328 - Flat frames processed.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:244 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:245 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:246 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:247 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:252 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:253 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:272 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:277 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - mkspecflat.py:328 - Flat frames processed.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:244 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:245 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:246 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:247 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:252 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:253 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:272 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:277 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:286 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:295 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:310 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:316 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - mkspecflat.py:328 - Flat frames processed.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:248 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:249 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:250 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:251 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:256 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:257 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:276 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:281 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:322 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:248 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:249 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:250 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:251 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:256 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:257 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:276 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:281 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:290 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:299 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:314 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:320 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:322 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:266 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:267 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:268 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:269 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:274 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:275 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:294 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:299 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:308 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:317 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:332 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:338 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:308 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:317 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:332 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:338 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:308 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:317 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:332 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:338 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:308 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:317 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:332 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:338 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:308 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:317 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:332 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:338 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:340 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecflat.py:276 - Flat-field procedure running...
+PyLongslit - INFO - mkspecflat.py:277 - Using the following parameters:
+PyLongslit - INFO - mkspecflat.py:278 - xsize = 500
+PyLongslit - INFO - mkspecflat.py:279 - ysize = 2102
+PyLongslit - INFO - mkspecflat.py:284 - Found 5 flat frames.
+PyLongslit - INFO - mkspecflat.py:285 - Files used for flat-fielding:
+PyLongslit - INFO - utils.py:208 - All files have the correct dimensions.
+PyLongslit - INFO - mkspecflat.py:304 - Fetching the master bias frame...
+PyLongslit - INFO - mkspecflat.py:309 - Master bias frame found and loaded.
+PyLongslit - INFO - mkspecflat.py:318 - Processing file: ALHh050282.fits
+PyLongslit - INFO - mkspecflat.py:327 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:342 - Normalising frame with the median of the frame :86957.0
+
+PyLongslit - INFO - mkspecflat.py:348 - File ALHh050282.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Processing file: ALHh050283.fits
+PyLongslit - INFO - mkspecflat.py:327 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:342 - Normalising frame with the median of the frame :87386.0
+
+PyLongslit - INFO - mkspecflat.py:348 - File ALHh050283.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Processing file: ALHh050284.fits
+PyLongslit - INFO - mkspecflat.py:327 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:342 - Normalising frame with the median of the frame :87623.0
+
+PyLongslit - INFO - mkspecflat.py:348 - File ALHh050284.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Processing file: ALHh050285.fits
+PyLongslit - INFO - mkspecflat.py:327 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:342 - Normalising frame with the median of the frame :90375.5
+
+PyLongslit - INFO - mkspecflat.py:348 - File ALHh050285.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:318 - Processing file: ALHh050286.fits
+PyLongslit - INFO - mkspecflat.py:327 - Subtracted the bias.
+PyLongslit - INFO - mkspecflat.py:342 - Normalising frame with the median of the frame :90942.5
+
+PyLongslit - INFO - mkspecflat.py:348 - File ALHh050286.fits processed.
+
+PyLongslit - INFO - mkspecflat.py:350 - Normalizing the final master flat-field....
+PyLongslit - INFO - wavecalib.py:1142 - Loading 1D wavelength solution from disc...
+PyLongslit - INFO - wavecalib.py:1151 - Wavelength solution loaded.
+PyLongslit - INFO - wavecalib.py:1168 - Loading 2D tilt solution from disc...
+PyLongslit - INFO - wavecalib.py:1177 - Tilt solution loaded.
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - mkspecflat.py:360 - Flat frames processed.

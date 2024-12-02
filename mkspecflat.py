@@ -150,8 +150,58 @@ def normalize_spectral_response(medianflat):
 
 def normalize_spacial_response(medianflat):
 
-    
+    y_size = detector_params["ysize"]
+    x_size = detector_params["xsize"]
 
+    #TODO: right now we flip and rotate to universal frame configuration
+    # when master frames are reduced, so for flats we need to
+    # account for that here. Consider flipping the raw frames instead
+    # for more readable code.
+
+    # extract the spectrum of the central 5 rows of the frame
+
+    spectral_axis = 1 if detector_params["dispersion"]["spectral_dir"] == "x" else 0
+    spacial_axis = 0 if detector_params["dispersion"]["spectral_dir"] == "x" else 1
+
+    for spacial_row_index in range(medianflat.shape[spacial_axis]):
+
+        spacial_slice = medianflat[spacial_row_index, :] if \
+            spacial_axis == 1 else medianflat[:, spacial_row_index]
+
+        x_axis = np.arange(len(spacial_slice))
+
+        num_interior_knots = len(x_axis) // 100
+
+        # Create the knots array
+        t = np.concatenate((
+            np.repeat(x_axis[0], 4),  # k+1 knots at the beginning
+            np.linspace(x_axis[1], x_axis[-2], num_interior_knots),  # interior knots
+            np.repeat(x_axis[-1], 4)  # k+1 knots at the end
+        )) 
+
+        spl = make_lsq_spline(x_axis, spacial_slice, t=t, k=3)
+        bspline = BSpline(spl.t, spl.c, spl.k)
+
+        # Plot the bspline fit
+        if False:
+            plt.plot(spacial_slice, "+", label='BSpline Fit')
+            plt.plot(bspline(x_axis), label='BSpline Fit')
+            plt.show()
+
+        if spacial_axis == 1:
+            medianflat[spacial_row_index, :] = spacial_slice / bspline(x_axis)
+
+        else:
+            medianflat[:, spacial_row_index] = spacial_slice / bspline(x_axis)
+
+    plt.imshow(medianflat)
+    plt.show()
+
+    return medianflat
+
+
+
+    
 
 
 
@@ -305,6 +355,8 @@ def run_flats():
     medianflat = np.median(bigflat, axis=0)
 
     medianflat = normalize_spectral_response(medianflat)
+
+    medianflat = normalize_spacial_response(medianflat)
 
 
     logger.info("Flat frames processed.")
