@@ -11,13 +11,15 @@ from wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
 from scipy.interpolate import make_lsq_spline, BSpline
 from wavecalib import construct_wavelen_map
 from utils import check_rotation, flip_and_rotate
+from matplotlib.widgets import Slider
+
 
 
 """
 Module for creating a master flat from from raw flat frames.
 """
 
-def fit_spectral_response(medianflat):
+def normalize_spectral_response(medianflat):
 
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
@@ -35,7 +37,6 @@ def fit_spectral_response(medianflat):
         middle_row = y_size // 2
         spectrum = np.mean(medianflat[middle_row-2: middle_row+2, :], axis=0)
         spectral_array = np.arange(x_size)
-        spatial_array = np.arange(y_size)
 
     else:
             
@@ -43,28 +44,19 @@ def fit_spectral_response(medianflat):
         middle_row = x_size // 2
         spectrum = np.mean(medianflat[:, middle_row-2: middle_row+2], axis=1)
         spectral_array = np.arange(y_size)
-        spatial_array = np.arange(x_size)
 
-
+    # read the wavecalib data
     wavelen_fit = get_wavelen_fit_from_disc()
     tilt_fit = get_tilt_fit_from_disc()
 
+    # create a row of middle spacial pixel coordinates in order to map 
+    # wavelengths.
     middlew_row_array = np.full(len(spectral_array), middle_row)     
 
+    # create the wavelength array
     wavelength = wavelength_sol(spectral_array, middlew_row_array, wavelen_fit, tilt_fit)
 
-
-    print(wavelength)
-    print(spectrum) 
-
-    wavelength = wavelength
-    spectrum = spectrum
-
-    # Plot the original spectrum and the bspline fit
-    plt.plot(wavelength, spectrum, label='Original Spectrum')
-    plt.show()
-
-
+    #TODO: make these errors more user - friendly
     # Check for NaN or infinite values
     if np.any(np.isnan(wavelength)) or np.any(np.isnan(spectrum)):
         raise ValueError("NaN values found in wavelength or spectrum.")
@@ -75,34 +67,69 @@ def fit_spectral_response(medianflat):
     if not np.all(np.diff(wavelength) > 0):
         raise ValueError("Wavelength values are not sorted in ascending order.")
 
-    num_interior_knots = (len(wavelength) - 2)//2
+    #TODO: make this a utils method, as it is used several places
+
+    # Initial plot
+    fig, ax = plt.subplots()
+    plt.subplots_adjust(bottom=0.25)
+    l, = plt.plot(wavelength, spectrum, label='Flat-field lamp spectrum')
+    plt.xlabel('Wavelength (Å)')
+    plt.ylabel('Counts (ADU)')
+    plt.legend()
+
+    # Add sliders for selecting the range
+    axcolor = 'lightgoldenrodyellow'
+    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+
+    smin = Slider(axmin, 'Min Wavelength', np.min(wavelength), np.max(wavelength), valinit=np.min(wavelength))
+    smax = Slider(axmax, 'Max Wavelength', np.min(wavelength), np.max(wavelength), valinit=np.max(wavelength))
+
+    def update(val):
+        min_wavelength = smin.val
+        max_wavelength = smax.val
+        valid_indices = (wavelength >= min_wavelength) & (wavelength <= max_wavelength)
+        l.set_xdata(wavelength[valid_indices])
+        l.set_ydata(spectrum[valid_indices])
+        fig.canvas.draw_idle()
+
+    smin.on_changed(update)
+    smax.on_changed(update)
+
+    plt.show()
+
+    # Get the final selected range
+    min_wavelength = smin.val
+    max_wavelength = smax.val
+    valid_indices = (wavelength >= min_wavelength) & (wavelength <= max_wavelength)
+    wavelength_cut = wavelength[valid_indices]
+    spectrum_cut = spectrum[valid_indices]
+
+    num_interior_knots = len(wavelength_cut) // 100 # (len(wavelength) - 2)//2
     
     # Create the knots array
     t = np.concatenate((
-        np.repeat(wavelength[0], 4),  # k+1 knots at the beginning
-        np.linspace(wavelength[1], wavelength[-2], num_interior_knots),  # interior knots
-        np.repeat(wavelength[-1], 4)  # k+1 knots at the end
+        np.repeat(wavelength_cut[0], 4),  # k+1 knots at the beginning
+        np.linspace(wavelength_cut[1], wavelength_cut[-2], num_interior_knots),  # interior knots
+        np.repeat(wavelength_cut[-1], 4)  # k+1 knots at the end
     )) 
 
-    spl = make_lsq_spline(wavelength, spectrum, t=t, k=3)
+    spl = make_lsq_spline(wavelength_cut, spectrum_cut, t=t, k=3)
     bspline = BSpline(spl.t, spl.c, spl.k)
 
     # Plot the bspline fit
-    plt.plot(wavelength, spectrum, "+", label='BSpline Fit')
-    plt.plot(wavelength, bspline(wavelength), label='BSpline Fit')
+    plt.plot(wavelength_cut, spectrum_cut, "+", label='BSpline Fit')
+    plt.plot(wavelength_cut, bspline(wavelength_cut), label='BSpline Fit')
     plt.show()
 
     wave_map = construct_wavelen_map(wavelen_fit, tilt_fit)
 
     transpose, flip = check_rotation()
 
-    print(wave_map)
-
     spectral_response_model = bspline(wave_map)
 
-    plt.imshow(spectral_response_model)
-
-    plt.show()
+    spectral_response_model[wave_map < min_wavelength] = 1.0
+    spectral_response_model[wave_map > max_wavelength] = 1.0
 
     spectral_response_model = flip_and_rotate(spectral_response_model, transpose, flip, inverse = True)
 
@@ -112,11 +139,18 @@ def fit_spectral_response(medianflat):
 
     normalized_flat = medianflat / spectral_response_model
 
+    normalized_flat[normalized_flat < 0.5] = 1
+    normalized_flat[normalized_flat > 1.5] = 1
+
     plt.imshow(normalized_flat)
 
     plt.show()
 
     return normalized_flat
+
+def normalize_spacial_response(medianflat):
+
+    
 
 
 
@@ -270,7 +304,7 @@ def run_flats():
     # Calculate flat is median at each pixel
     medianflat = np.median(bigflat, axis=0)
 
-    medianflat = fit_spectral_response(medianflat)
+    medianflat = normalize_spectral_response(medianflat)
 
 
     logger.info("Flat frames processed.")

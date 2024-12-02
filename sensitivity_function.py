@@ -344,7 +344,8 @@ def fit_sensfunc(wavelength, sens_points):
 
     sens_points_log = np.log10(sens_points)
 
-    import matplotlib.pyplot as plt
+
+    #TODO: make this a utils method, as it is used several places
 
     # Initial plot
     fig, ax = plt.subplots()
