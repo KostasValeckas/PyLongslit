@@ -3,7 +3,7 @@ from astropy.io import fits
 from logger import logger
 from parser import detector_params, flat_params, output_dir, data_params
 from utils import FileList, check_dimensions, open_fits, write_to_fits
-from utils import show_flat, list_files, load_bias, wavelength_sol
+from utils import show_flat, list_files, load_bias, wavelength_sol, hist_normalize
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from overscan import subtract_overscan_from_frame, detect_overscan_direction
@@ -12,6 +12,7 @@ from scipy.interpolate import make_lsq_spline, BSpline
 from wavecalib import construct_wavelen_map
 from utils import check_rotation, flip_and_rotate
 from matplotlib.widgets import Slider
+from utils import show_1d_fit_QA
 
 
 
@@ -105,7 +106,7 @@ def normalize_spectral_response(medianflat):
     wavelength_cut = wavelength[valid_indices]
     spectrum_cut = spectrum[valid_indices]
 
-    num_interior_knots = len(wavelength_cut) // 100 # (len(wavelength) - 2)//2
+    num_interior_knots = len(wavelength_cut) // 50 # (len(wavelength) - 2)//2
     
     # Create the knots array
     t = np.concatenate((
@@ -117,10 +118,19 @@ def normalize_spectral_response(medianflat):
     spl = make_lsq_spline(wavelength_cut, spectrum_cut, t=t, k=3)
     bspline = BSpline(spl.t, spl.c, spl.k)
 
-    # Plot the bspline fit
-    plt.plot(wavelength_cut, spectrum_cut, "+", label='BSpline Fit')
-    plt.plot(wavelength_cut, bspline(wavelength_cut), label='BSpline Fit')
-    plt.show()
+    residuals = spectrum_cut - bspline(wavelength_cut)
+
+    show_1d_fit_QA(
+        wavelength_cut, 
+        spectrum_cut, 
+        x_fit_values = wavelength_cut,
+        y_fit_values = bspline(wavelength_cut), 
+        residuals = residuals,
+        x_label = "Wavelength (Å)",
+        y_label = "Counts (ADU)",
+        legend_label = "Extracted flat-field lamp spectrum",
+        title = "Spectral response B-spline fit",
+    )
 
     wave_map = construct_wavelen_map(wavelen_fit, tilt_fit)
 
@@ -128,25 +138,19 @@ def normalize_spectral_response(medianflat):
 
     spectral_response_model = bspline(wave_map)
 
-    spectral_response_model[wave_map < min_wavelength] = 1.0
-    spectral_response_model[wave_map > max_wavelength] = 1.0
+    bpm = np.zeros_like(spectral_response_model, dtype=bool)
+
+    bpm[wave_map < min_wavelength] = True
+    bpm[wave_map > max_wavelength] = True
+
+    spectral_response_model[bpm] = 1.0
 
     spectral_response_model = flip_and_rotate(spectral_response_model, transpose, flip, inverse = True)
+    bpm = flip_and_rotate(bpm,  transpose, flip, inverse = True)
 
-    plt.imshow(spectral_response_model)
 
-    plt.show()
+    return spectral_response_model, bpm
 
-    normalized_flat = medianflat / spectral_response_model
-
-    normalized_flat[normalized_flat < 0.5] = 1
-    normalized_flat[normalized_flat > 1.5] = 1
-
-    plt.imshow(normalized_flat)
-
-    plt.show()
-
-    return normalized_flat
 
 def normalize_spacial_response(medianflat):
 
@@ -160,17 +164,28 @@ def normalize_spacial_response(medianflat):
 
     # extract the spectrum of the central 5 rows of the frame
 
-    spectral_axis = 1 if detector_params["dispersion"]["spectral_dir"] == "x" else 0
-    spacial_axis = 0 if detector_params["dispersion"]["spectral_dir"] == "x" else 1
+    spectral_axis = 0 if detector_params["dispersion"]["spectral_dir"] == "x" else 1
+    spacial_axis = 1 if detector_params["dispersion"]["spectral_dir"] == "x" else 0
 
-    for spacial_row_index in range(medianflat.shape[spacial_axis]):
+    fig, ax = plt.subplots(5, 2, figsize=(10, 35))
 
-        spacial_slice = medianflat[spacial_row_index, :] if \
-            spacial_axis == 1 else medianflat[:, spacial_row_index]
+    indices_to_plot = np.linspace(10, x_size if spectral_axis == 0 else y_size, 10, endpoint=False, dtype=int)
+
+    plot_num = 0
+
+    spacial_model = np.zeros((y_size, x_size))
+    
+
+    for spacial_row_index in range(x_size) if spectral_axis == 0 else range(y_size):
+ 
+
+        spacial_slice = medianflat[:, spacial_row_index].copy() if \
+            spacial_axis == 1 else medianflat[spacial_row_index, :].copy()
 
         x_axis = np.arange(len(spacial_slice))
 
-        num_interior_knots = len(x_axis) // 100
+
+        num_interior_knots = len(x_axis) // 100 # (len(wavelength) - 2)//2
 
         # Create the knots array
         t = np.concatenate((
@@ -182,29 +197,26 @@ def normalize_spacial_response(medianflat):
         spl = make_lsq_spline(x_axis, spacial_slice, t=t, k=3)
         bspline = BSpline(spl.t, spl.c, spl.k)
 
-        # Plot the bspline fit
-        if False:
-            plt.plot(spacial_slice, "+", label='BSpline Fit')
-            plt.plot(bspline(x_axis), label='BSpline Fit')
-            plt.show()
-
         if spacial_axis == 1:
-            medianflat[spacial_row_index, :] = spacial_slice / bspline(x_axis)
+            spacial_model[:, spacial_row_index] = bspline(x_axis)
 
         else:
-            medianflat[:, spacial_row_index] = spacial_slice / bspline(x_axis)
+            spacial_model[spacial_row_index, :] = bspline(x_axis)
 
-    plt.imshow(medianflat)
+        if spacial_row_index in indices_to_plot:
+            if plot_num <= 9:
+                ax[plot_num // 2, plot_num % 2].plot(x_axis[1:-1], spacial_slice[1:-1], label="Data")
+                ax[plot_num // 2, plot_num % 2].plot(x_axis[1:-1], bspline(x_axis)[1:-1], label="Fit")
+                ax[plot_num // 2, plot_num % 2].set_title(f"Spectral pixel: {spacial_row_index}")
+                ax[plot_num // 2, plot_num % 2].legend()
+                plot_num += 1
+
+    plt.suptitle("Slit illumination B-spline fits at different spectral pixels", fontsize=16)
+    fig.text(0.5, 0.04, 'Spacial pixel', ha='center', fontsize=16)
+    fig.text(0.04, 0.5, 'Normalized Counts (ADU)', va='center', rotation='vertical', fontsize=16)
     plt.show()
 
-    return medianflat
-
-
-
-    
-
-
-
+    return spacial_model
 
 
 
@@ -341,8 +353,8 @@ def run_flats():
         else:
             norm = np.median(bigflat[i, :, :])
 
-        logger.info(f"Normalising frame with the median of the frame :{norm}\n")
-        bigflat[i, :, :] = bigflat[i, :, :] / norm
+        #logger.info(f"Normalising frame with the median of the frame :{norm}\n")
+        #bigflat[i, :, :] = bigflat[i, :, :] / norm
 
         # close the file handler
         rawflat.close()
@@ -354,9 +366,67 @@ def run_flats():
     # Calculate flat is median at each pixel
     medianflat = np.median(bigflat, axis=0)
 
-    medianflat = normalize_spectral_response(medianflat)
+    spectral_response_model, _ = normalize_spectral_response(medianflat)
 
-    medianflat = normalize_spacial_response(medianflat)
+    spectral_normalized = medianflat / spectral_response_model
+
+    spectral_normalized[spectral_normalized < 0.5] = 1
+    spectral_normalized[spectral_normalized > 1.5] = 1
+
+
+    spacial_response_model = normalize_spacial_response(spectral_normalized)
+
+    spacial_normalized = spectral_normalized / spacial_response_model
+
+    #remove overscan region for more accurate display
+    #TODO: now hardcoded for alfosc for the prototype, FIX THIS TO BE DYNAMIC
+
+    medianflat_removed = medianflat[5:2060, 5:495]
+    spectral_response_model_removed = spectral_response_model[5:2060, 5:495]
+    spectral_normalized_removed = spectral_normalized[5:2060, 5:495]
+    spacial_response_model_removed = spacial_response_model[5:2060, 5:495]
+    spacial_normalized_removed = spacial_normalized[5:2060, 5:495]
+
+
+    fig, ax = plt.subplots(5, 2, figsize=(15, 12))
+
+    ax[0][0].imshow(hist_normalize(medianflat.T), cmap='gray', origin='lower')
+    ax[0][0].set_title("Master flat prior to normalization")
+    ax[0][0].axis('off')
+
+    ax[1][0].imshow(spectral_response_model.T, cmap='gray', origin='lower')
+    ax[1][0].set_title("2D spectral response model")
+    ax[1][0].axis('off')
+
+    ax[2][0].imshow(spectral_normalized.T, cmap='gray', origin='lower')
+    ax[2][0].set_title("Master flat normalized by spectral response model")
+    ax[2][0].axis('off')
+
+    ax[3][0].imshow(spacial_response_model.T, cmap='gray', origin='lower')
+    ax[3][0].set_title("2D slit illumination model")
+    ax[3][0].axis('off')
+
+    ax[4][0].imshow(spacial_normalized.T, cmap='gray', origin='lower')
+    ax[4][0].set_title("Final master flat - normalized by slit illumination and spectral response models")
+    ax[4][0].axis('off')
+
+    N_bins = int(np.sqrt(len(medianflat_removed.flatten())))
+
+    ax[0][1].hist(medianflat_removed.flatten(), bins=N_bins, range=(0, np.max(medianflat)), color = "black") 
+    ax[1][1].hist(spectral_response_model_removed.flatten(), bins=N_bins, color = "black")
+    ax[2][1].hist(spectral_normalized_removed.flatten(), bins=N_bins, color = "black")
+    ax[3][1].hist(spacial_response_model_removed.flatten(), bins=N_bins, color = "black")
+    ax[4][1].hist(spacial_normalized_removed.flatten(), bins=N_bins, color = "black")
+
+    for a in ax[:, 1]:
+        a.set_ylabel("N pixels")
+    for a in ax[-1, :]:
+        a.set_xlabel("Counts (ADU)")
+    fig.tight_layout()
+    fig.subplots_adjust(left=0.1, right=0.9, top=0.95, bottom=0.05)
+    fig.align_ylabels(ax[:, 1])
+    
+    plt.show()
 
 
     logger.info("Flat frames processed.")
@@ -364,11 +434,11 @@ def run_flats():
 
     logger.info(
         "Mean pixel value of the final master flat-field: "
-        f"{round(np.nanmean(medianflat),5)} (should be 1.0)."
+        f"{round(np.nanmean(spacial_normalized),5)} (should be 1.0)."
     )
 
     # check if the median is 1 to within 5 decimal places
-    if round(np.nanmean(medianflat),5) != 1.0:
+    if round(np.nanmean(spacial_normalized),5) != 1:
         logger.warning("The mean pixel value of the final master flat-field is not 1.0.")
         logger.warning("This may indicate a problem with the normalisation.")
         logger.warning("Check the normalisation region in the flat-field frames.")

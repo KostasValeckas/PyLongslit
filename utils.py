@@ -676,26 +676,31 @@ def show_1d_fit_QA(
     ax1.plot(
         x_data,
         y_data,
-        "x",
-        color="green",
+        "s",
+        color="black",
         label=legend_label,
+        markersize=14 
     )
 
-    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="black")
-    ax1.set_ylabel(y_label)
-    ax1.legend()
+    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=16)
+    ax1.set_ylabel(y_label, fontsize=14)
+    ax1.legend(fontsize=14)
 
     ax2.plot(x_data, residuals, "x", color="red", label="Residuals")
-    ax2.set_xlabel(x_label)
-    ax2.set_ylabel(y_label)
+    ax2.set_xlabel(x_label, fontsize=14)
+    ax2.set_ylabel(y_label, fontsize=14)
     ax2.axhline(0, color="black", linestyle="--")
-    ax2.legend()
+    ax2.legend(fontsize=14)
 
     # setting the x-axis to be shared between the two plots
     ax2.set_xlim(ax1.get_xlim())
     ax1.set_xticks([])
 
-    fig.suptitle(title)
+    fig.suptitle(title, fontsize=18)
+
+    # Enhance tick font size
+    ax1.tick_params(axis='both', which='major', labelsize=14)
+    ax2.tick_params(axis='both', which='major', labelsize=14)
 
     plt.show()
 
