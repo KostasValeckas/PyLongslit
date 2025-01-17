@@ -4,6 +4,7 @@ from parser import detector_params, bias_params, output_dir, data_params
 from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import list_files
 from overscan import check_overscan, subtract_overscan_from_frame
+import matplotlib.pyplot as plt
 """
 Module for creating a master bias frame from raw bias frames.
 """

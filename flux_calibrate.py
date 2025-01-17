@@ -66,7 +66,6 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
         with open(new_filename, "w") as f:
             f.write("# wavelength calibrated_flux\n")
             for i in range(len(wavelength)):
-                print("writing", wavelength[i], calibrated_flux[i], calibrated_var[i])
                 f.write(f"{wavelength[i]} {calibrated_flux[i]} {calibrated_var[i]}\n")
 
         f.close()

@@ -17,8 +17,8 @@
             "use_overscan": false,
             "overscan_x_start": 0,
             "overscan_x_end": 499,
-            "overscan_y_start": 2066,
-            "overscan_y_end": 2099
+            "overscan_y_start": 0,
+            "overscan_y_end": 50
         }
     },
     
