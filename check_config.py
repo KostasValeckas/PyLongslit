@@ -170,25 +170,6 @@ def check_regions(any_errors):
             any_errors = True
 
 
-    # check flat normalization region
-    if flat_params["user_custom_norm_area"]:
-
-        if (
-            flat_params["norm_area_start_x"] < 0
-            or flat_params["norm_area_end_x"] > xsize
-            or flat_params["norm_area_start_y"] < 0
-            or flat_params["norm_area_end_y"] > ysize
-        ):
-            logger.warning("Flat normalization region is not within the detector area.")
-            any_errors = True
-
-        if (
-            flat_params["norm_area_end_x"] < flat_params["norm_area_start_x"]
-            or flat_params["norm_area_end_y"] < flat_params["norm_area_start_y"]
-        ):
-            logger.warning("Flat normalization region is not defined correctly.")
-            logger.warning("End coordinates must be larger than start coordinates.")
-            any_errors = True
 
     
 

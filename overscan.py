@@ -102,8 +102,22 @@ def detect_overscan_direction():
 
     return direction
 
+def check_overscan():
+    """
+    A simple bool return to checck whether the user wants to use the overscan subtraction or not.
+    """
 
-def subtract_overscan_from_frame(image_data, overscan_direction):
+    use_overscan = detector_params["overscan"]["use_overscan"]
+
+    if not use_overscan:
+        logger.info("Overscan subtraction is disabled.")
+        logger.info("Skipping overscan subtraction...")
+        return False
+    
+    return True
+
+
+def subtract_overscan_from_frame(image_data):
     """
     Subtract the overscan region from a single frame.
 
@@ -128,6 +142,8 @@ def subtract_overscan_from_frame(image_data, overscan_direction):
     overscan_x_end = detector_params["overscan"]["overscan_x_end"]
     overscan_y_start = detector_params["overscan"]["overscan_y_start"]
     overscan_y_end = detector_params["overscan"]["overscan_y_end"]
+
+    overscan_direction = detect_overscan_direction()
 
     if overscan_direction == "horizontal":
         # loop through the columns and subtract the mean value of the overscan region

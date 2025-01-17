@@ -279,12 +279,6 @@ def run_flats():
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
-    if flat_params["user_custom_norm_area"]:
-        # used defined area used for normalization
-        norm_start_x = flat_params["norm_area_start_x"]
-        norm_end_x = flat_params["norm_area_end_x"]
-        norm_start_y = flat_params["norm_area_start_y"]
-        norm_end_y = flat_params["norm_area_end_y"]
 
     # TODO: specify what direction is the spectral direction
     logger.info("Flat-field procedure running...")
@@ -342,16 +336,6 @@ def run_flats():
 
         bigflat[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
 
-        # Normalise the frame
-
-        #if normalization region is provided:
-        if flat_params["user_custom_norm_area"]:
-            norm = np.median(
-                bigflat[i, norm_start_y:norm_end_y, norm_start_x:norm_end_x]
-            )
-        # if not , use the whole frame:
-        else:
-            norm = np.median(bigflat[i, :, :])
 
         #logger.info(f"Normalising frame with the median of the frame :{norm}\n")
         #bigflat[i, :, :] = bigflat[i, :, :] / norm
@@ -461,7 +445,7 @@ def run_flats():
     # Write out result to fitsfile
     hdr = rawflat[0].header
 
-    write_to_fits(medianflat, hdr, "master_flat.fits", output_dir)
+    write_to_fits(spacial_normalized, hdr, "master_flat.fits", output_dir)
 
     logger.info(
         f"Master flat frame written to disc in {output_dir}, filename master_flat.fits"

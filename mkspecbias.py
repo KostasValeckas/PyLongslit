@@ -3,7 +3,7 @@ from logger import logger
 from parser import detector_params, bias_params, output_dir, data_params
 from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import list_files
-
+from overscan import check_overscan, subtract_overscan_from_frame
 """
 Module for creating a master bias frame from raw bias frames.
 """
@@ -43,6 +43,7 @@ def run_bias():
     # initialize a big array to hold all the bias frames for stacking
     bigbias = numpy.zeros((file_list.num_files, ysize, xsize), float)
 
+    use_overscan = check_overscan()
     # loop over all the bias files and stack them in the bigbias array
     for i, file in enumerate(file_list):
 
@@ -51,6 +52,9 @@ def run_bias():
         logger.info(f"Processing file: {file}")
 
         data = numpy.array(rawbias[data_params["raw_data_hdu_index"]].data)
+
+        if use_overscan:
+            data = subtract_overscan_from_frame(data)
 
         bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = \
             data[0 : ysize - 1, 0 : xsize - 1]

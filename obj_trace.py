@@ -505,9 +505,18 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     for i in tqdm(range(data.shape[1]), desc=f"Fitting object trace for {filename}"):
         val = data[:, i]
 
-        center, FWHM, signal_to_noise, good_fit = find_obj_one_column(
-            x_spat, val, spacial_center, FWHM_AP, i
-        )
+        try:
+
+            center, FWHM, signal_to_noise, good_fit = find_obj_one_column(
+                x_spat, val, spacial_center, FWHM_AP, i
+            )
+        
+        except ValueError:
+            # if the fit fails, add NaNs to the results
+            center = np.nan
+            FWHM = np.nan
+            signal_to_noise = np.nan
+            good_fit = False
 
         centers.append(center)
         FWHMs.append(FWHM)

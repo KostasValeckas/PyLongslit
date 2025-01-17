@@ -741,8 +741,9 @@ def load_spec_data(group = "science"):
         data = np.loadtxt(filename, skiprows=2)
         wavelength = data[:,0]
         counts = data[:,1]
+        var = data[:,2]
 
-        spectra[filename] = (wavelength, counts)
+        spectra[filename] = (wavelength, counts, var)
 
     return spectra
 
