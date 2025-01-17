@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from skimage import exposure
 from parser import skip_science_or_standard_bool
+from numpy.polynomial.chebyshev import chebval
 
 
 class FileList:
@@ -377,7 +378,7 @@ def check_rotation():
     return transpose, flip
 
 
-def flip_and_rotate(frame_data, transpose, flip):
+def flip_and_rotate(frame_data, transpose, flip, inverse = False):
     """
     The PyLongslit default orientation is dispersion in the x-direction,
     with wavelength increasing from left to right.
@@ -396,6 +397,9 @@ def flip_and_rotate(frame_data, transpose, flip):
     flip : bool
         If True, flip the data.
 
+    inverse: bool
+        If True, the inverse operation is performed.
+
     Returns
     -------
     frame_data : numpy.ndarray
@@ -404,11 +408,11 @@ def flip_and_rotate(frame_data, transpose, flip):
 
     if transpose:
         logger.info("Rotating image to make x the spectral direction...")
-        frame_data = np.rot90(frame_data)
+        frame_data = np.rot90(frame_data) if not inverse else np.rot90(frame_data, k=-1)
 
     if flip:
         logger.info("Flipping the image to make wavelengths increase with x-pixels...")
-        frame_data = np.flip(frame_data, axis=1)
+        frame_data = np.flip(frame_data, axis=1)  
 
     return frame_data
 
@@ -672,26 +676,31 @@ def show_1d_fit_QA(
     ax1.plot(
         x_data,
         y_data,
-        "x",
-        color="green",
+        "s",
+        color="black",
         label=legend_label,
+        markersize=14 
     )
 
-    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="black")
-    ax1.set_ylabel(y_label)
-    ax1.legend()
+    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=16)
+    ax1.set_ylabel(y_label, fontsize=14)
+    ax1.legend(fontsize=14)
 
     ax2.plot(x_data, residuals, "x", color="red", label="Residuals")
-    ax2.set_xlabel(x_label)
-    ax2.set_ylabel(y_label)
+    ax2.set_xlabel(x_label, fontsize=14)
+    ax2.set_ylabel(y_label, fontsize=14)
     ax2.axhline(0, color="black", linestyle="--")
-    ax2.legend()
+    ax2.legend(fontsize=14)
 
     # setting the x-axis to be shared between the two plots
     ax2.set_xlim(ax1.get_xlim())
     ax1.set_xticks([])
 
-    fig.suptitle(title)
+    fig.suptitle(title, fontsize=18)
+
+    # Enhance tick font size
+    ax1.tick_params(axis='both', which='major', labelsize=14)
+    ax2.tick_params(axis='both', which='major', labelsize=14)
 
     plt.show()
 
@@ -736,6 +745,23 @@ def load_spec_data(group = "science"):
         spectra[filename] = (wavelength, counts)
 
     return spectra
+
+def load_bias():
+
+    try:
+
+        BIASframe = open_fits(output_dir, "master_bias.fits")
+
+    except FileNotFoundError:
+
+        logger.critical("Master bias frame not found.")
+        logger.error(
+            "Make sure a master bias frame exists before proceeding with flats."
+        )
+        logger.error("Run the mkspecbias.py script first.")
+        exit()
+
+    return BIASframe
 
 def get_bias_and_flats(skip_bias=False):
 
@@ -810,5 +836,12 @@ def get_reduced_frames():
         reduced_files = get_file_group("reduced_science", "reduced_std")
 
     return reduced_files
+
+def wavelength_sol(spectral_pix, spatial_pix, wavelen_fit, tilt_fit):
+   
+    tilt_value = tilt_fit(spectral_pix, spatial_pix)
+    wavelength = chebval(spectral_pix + tilt_value, wavelen_fit)
+
+    return wavelength
 
 
