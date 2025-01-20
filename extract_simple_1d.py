@@ -9,6 +9,7 @@ from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
 from scipy.interpolate import interp1d
 from wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
 from wavecalib import wavelength_sol 
+from utils import hist_normalize
 
 
 def load_object_traces():
@@ -67,11 +68,6 @@ def extract_object_simple(trace_data, skysubbed_frame):
 
     pixel, center, FWHM = trace_data
 
-    print(pixel)
-
-    # overwrite FWHM to hardcoded value
-
-    FWHM = np.ones(len(center)) * 1
 
     # Open the skysubbed frame
     hdul = open_fits(output_dir, skysubbed_frame)
@@ -92,13 +88,15 @@ def extract_object_simple(trace_data, skysubbed_frame):
 
         obj_center = center[i]
         pixel_coord = pixel[i]
+        fwhm = FWHM[i]
         
         # sum around FWHM
 
         # define the aperture
         aperture = RectangularAperture(
-            (pixel_coord, obj_center), 2 * FWHM[i], 2 * FWHM[i]
+            (pixel_coord, obj_center), fwhm, fwhm
         )
+
 
         # extract the spectrum
         spec_sum = aperture.do_photometry(skysubbed_data)
@@ -107,6 +105,12 @@ def extract_object_simple(trace_data, skysubbed_frame):
         spec.append(spec_sum)
         #dummy for now
         spec_var.append(spec_sum)
+
+    plt.plot(pixel, center - FWHM, color="red")
+    plt.plot(pixel, center + FWHM, color="red")
+
+    plt.imshow(hist_normalize(skysubbed_data), origin="lower", cmap="gray")
+    plt.show()
 
     spec = np.array(spec)
     spec_var = np.array(spec_var)
