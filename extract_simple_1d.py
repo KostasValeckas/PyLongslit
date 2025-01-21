@@ -106,11 +106,7 @@ def extract_object_simple(trace_data, skysubbed_frame):
         #dummy for now
         spec_var.append(spec_sum)
 
-    plt.plot(pixel, center - FWHM, color="red")
-    plt.plot(pixel, center + FWHM, color="red")
-
-    plt.imshow(hist_normalize(skysubbed_data), origin="lower", cmap="gray")
-    plt.show()
+    plot_trace_QA(skysubbed_data, pixel, center, FWHM, skysubbed_frame)
 
     spec = np.array(spec)
     spec_var = np.array(spec_var)
@@ -215,6 +211,32 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
 
     plt.show()
 
+def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots = 6, figsize=(10, 18)):
+
+    fig, axes = plt.subplots(num_plots, 1, figsize=figsize)
+
+    segment_length = image.shape[1] // num_plots
+
+    for i, ax in enumerate(axes):
+        start = i * segment_length
+        end = (i + 1) * segment_length if i < (num_plots - 1) else image.shape[1]
+
+        segment = image[:, start:end]
+        segment_pixel = pixel[start:end]
+        segment_trace = trace[start:end]
+        segment_fwhm = fwhm[start:end]
+
+        ax.imshow(hist_normalize(segment), origin="lower", cmap="gray", aspect='auto')
+        ax.plot(segment_pixel - start, segment_trace - segment_fwhm, color="red")
+        ax.plot(segment_pixel - start, segment_trace + segment_fwhm, color="red")
+
+        ax.set_yticks([])
+        ax.set_xticklabels(segment_pixel.astype(int))
+
+    os.chdir(output_dir)
+    plt.savefig("trace_QA " + filename + ".png")
+
+    plt.show()
 
 def extract_objects(skysubbed_files, trace_dir):
     """
@@ -240,9 +262,6 @@ def extract_objects(skysubbed_files, trace_dir):
         Format is {filename: (wavelength, spectrum_calib, var_calib)}
     """
 
-    # get gain and read out noise parameters
-    gain = detector_params["gain"]
-    read_out_noise = detector_params["read_out_noise"]
 
     # This is the container for the resulting one-dimensional spectra
     results = {}
