@@ -6,5 +6,5 @@ A wrapper to extract_1d.extract_1d for a standard star reduction.
 # in the top scope. TODO: find a better solution for this.
 from extract_1d import *
 
-if __name__ == '__main__':
-    extract_1d_spec(standard_star = True)
+if __name__ == "__main__":
+    extract_1d_spec(standard_star=True)

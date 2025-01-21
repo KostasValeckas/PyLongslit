@@ -40,8 +40,8 @@ from parser import output_dir, detector_params, instrument_params
 
 def NN_mod_gaussian(x, bg, mu, sigma, logamp):
     """One-dimensional modified non-negative Gaussian profile."""
-    amp = 10 ** logamp
-    return bg + amp * np.exp(-0.5 * (x - mu) ** 4 / sigma ** 2)
+    amp = 10**logamp
+    return bg + amp * np.exp(-0.5 * (x - mu) ** 4 / sigma**2)
 
 
 def create_pixel_array():
@@ -359,9 +359,11 @@ class GraphicInterface(QMainWindow):
         self.ax2.plot([], [], "k+")
         self.ax2.set_xlim(
             0,
-            detector_params["xsize"]
-            if detector_params["dispersion"]["spectral_dir"] == "x"
-            else detector_params["ysize"],
+            (
+                detector_params["xsize"]
+                if detector_params["dispersion"]["spectral_dir"] == "x"
+                else detector_params["ysize"]
+            ),
         )
         self.ax2.set_ylim(0, 1)
         self.ax2.set_xlabel("Pixel Coordinate")
@@ -462,7 +464,7 @@ class GraphicInterface(QMainWindow):
     def done(self):
         msg = "Save the line identifications and continue?"
         messageBox = QMessageBox()
-        messageBox.setText(msg) 
+        messageBox.setText(msg)
         messageBox.setStandardButtons(QMessageBox.Cancel | QMessageBox.Save)
         retval = messageBox.exec_()
         if retval == QMessageBox.Save:
@@ -481,7 +483,7 @@ class GraphicInterface(QMainWindow):
             fname = str(path[0])
 
         if fname:
-            
+
             with open(fname, "w") as tab_file:
                 pixvals, wavelengths = self.get_table_values()
                 mask = ~np.isnan(wavelengths)
@@ -526,7 +528,7 @@ class GraphicInterface(QMainWindow):
                 output.write(
                     "#Wavelength solution for instrument %s, disperser: %s\n"
                     % (instrument_params["name"], instrument_params["disperser"])
-                ) 
+                )
                 output.write("# Raw arc-frame filename: %s\n" % self.arc_fname)
                 output.write("# Wavelength residual = %.2f Å\n" % self._scatter)
                 output.write("# Polynomial coefficients:  C_0 + C_1*x + C_2*x^2 ... \n")
@@ -819,7 +821,7 @@ class GraphicInterface(QMainWindow):
         pixvals, wavelengths = self.get_table_values()
         mask = ~np.isnan(wavelengths)
         order = int(self.poly_order.text())
-        if np.sum(~np.isnan(wavelengths)) < order: 
+        if np.sum(~np.isnan(wavelengths)) < order:
             msg = "Not enough data points to perform fit!\n"
             msg += "Choose a lower polynomial order or identify more lines."
             QMessageBox.critical(None, "Not enough data to fit", msg)

@@ -143,7 +143,7 @@ def check_regions(any_errors):
     Returns
     -------
     any_errors : bool
-        A boolean used by `run_config_checks` to track if any errors were found. 
+        A boolean used by `run_config_checks` to track if any errors were found.
     """
 
     # check overscan region
@@ -168,10 +168,6 @@ def check_regions(any_errors):
             logger.warning("Overscan region is not defined correctly.")
             logger.warning("End coordinates must be larger than start coordinates.")
             any_errors = True
-
-
-
-    
 
     if not any_errors:
         logger.info("All user-defined regions are valid.")

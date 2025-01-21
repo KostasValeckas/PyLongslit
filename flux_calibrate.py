@@ -12,18 +12,20 @@ def calibrate_spectrum(wavelength, counts, var, sens_coeffs, exptime):
 
     # evaluate the sensitivity at the wavelength points
     # and convert back from logspaces
-    conv_factors = 10**chebval(wavelength, sens_coeffs)
+    conv_factors = 10 ** chebval(wavelength, sens_coeffs)
 
     # divide by exposure time and multiply by evaluated sensitivity
-    calibrated_flux = (counts/exptime) * conv_factors
-    calibrated_var = (var/(exptime**2)) * (conv_factors**2)
-
+    calibrated_flux = (counts / exptime) * conv_factors
+    calibrated_var = (var / (exptime**2)) * (conv_factors**2)
 
     return calibrated_flux, calibrated_var
 
-def plot_calibrated_spectrum(filename, wavelength, calibrated_flux, calibrated_var, figsize=(18,12)):
 
-    plt.figure(figsize=figsize) 
+def plot_calibrated_spectrum(
+    filename, wavelength, calibrated_flux, calibrated_var, figsize=(18, 12)
+):
+
+    plt.figure(figsize=figsize)
     plt.plot(wavelength, calibrated_flux, label="Calibrated flux")
     plt.plot(wavelength, np.sqrt(calibrated_var), label="Sigma")
 
@@ -43,19 +45,24 @@ def calibrate_flux(spectra, sens_coeffs):
 
     for filename, (wavelength, counts, var) in spectra.items():
         # calibrate the spectrum
-        calibrated_flux, calibrated_var = calibrate_spectrum(wavelength, counts, var, sens_coeffs, exptime)
+        calibrated_flux, calibrated_var = calibrate_spectrum(
+            wavelength, counts, var, sens_coeffs, exptime
+        )
         # save the calibrated spectrum
         calibrated_spectra[filename] = (wavelength, calibrated_flux, calibrated_var)
         # plot for QA
         plot_calibrated_spectrum(filename, wavelength, calibrated_flux, calibrated_var)
-
 
     return calibrated_spectra
 
 
 def write_calibrated_spectra_to_disc(calibrated_spectra):
 
-    for filename, (wavelength, calibrated_flux, calibrated_var) in calibrated_spectra.items():
+    for filename, (
+        wavelength,
+        calibrated_flux,
+        calibrated_var,
+    ) in calibrated_spectra.items():
 
         new_filename = filename.replace("1d_science", "1d_fluxed_science")
 
@@ -73,18 +80,16 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
     logger.info("Calibrated spectra written to disk.")
 
 
-
 def run_flux_calib():
     logger.info("Running flux calibration...")
 
-    spectra = load_spec_data(group = "science")
+    spectra = load_spec_data(group="science")
 
     sens_coeffs = load_sensfunc_from_disc()
 
     calibrated_spectra = calibrate_flux(spectra, sens_coeffs)
 
     write_calibrated_spectra_to_disc(calibrated_spectra)
-
 
 
 if __name__ == "__main__":

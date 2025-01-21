@@ -3,7 +3,7 @@ Module to combine arc frames into a single master arc frame.
 """
 
 from logger import logger
-from parser import output_dir, arc_params, data_params, detector_params 
+from parser import output_dir, arc_params, data_params, detector_params
 from utils import FileList, open_fits, write_to_fits, list_files, get_bias_and_flats
 from utils import check_rotation, flip_and_rotate, load_bias
 from overscan import subtract_overscan_from_frame, check_overscan
@@ -11,15 +11,14 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 
-    
-    
+
 def combine_arcs():
 
     logger.info("Fetching arc frames...")
 
     arc_files = FileList(arc_params["arc_dir"])
 
-    if  arc_files.num_files == 0:
+    if arc_files.num_files == 0:
         logger.critical("No arc files found.")
         logger.critical("Check the arc directory path in the config file.")
 
@@ -39,21 +38,19 @@ def combine_arcs():
     arc_data = []
 
     for arc_file in arc_files:
-        
+
         hdu = open_fits(arc_files.path, arc_file)
 
         data = hdu[data_params["raw_data_hdu_index"]].data.astype(np.float32)
 
         if use_overscan:
             data = subtract_overscan_from_frame(data)
-            
+
         data = data - BIAS
 
         arc_data.append(data)
 
-
     logger.info("Combining arc frames...")
-
 
     master_arc = np.sum(arc_data, axis=0)
 
@@ -76,7 +73,10 @@ def combine_arcs():
     # Write the master arc to a FITS file
     write_to_fits(master_arc, hdu[0].header, "master_arc.fits", output_dir)
 
-    logger.info(f"Master arc written to disc in directory {output_dir}, filename 'master_arc.fits'.")
+    logger.info(
+        f"Master arc written to disc in directory {output_dir}, filename 'master_arc.fits'."
+    )
+
 
 if __name__ == "__main__":
     combine_arcs()

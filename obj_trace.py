@@ -76,7 +76,7 @@ def estimate_signal_to_noise(data, fitted_amplitude, sky_left, sky_right):
 
 def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
     """
-    Perform a Gaussian fit to a single column of the detector image to 
+    Perform a Gaussian fit to a single column of the detector image to
     estimate the object center and FWHM.
 
     Parameters
@@ -110,7 +110,7 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
     good_fit : bool
         Whether the fit was successful or not.
     """
-    
+
     # get the area only around the object
     refined_center, sky_left, sky_right = estimate_sky_regions(
         val, spacial_center, FWHM_AP
@@ -129,7 +129,10 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
     # allow the mean to vary by FWHM
     mean_interval = (refined_center - FWHM_AP, refined_center + FWHM_AP)
     # allow the stddev to start at 0.1 pixel and vary by 2 FWHM
-    stddev_interval = (0.1 * gaussian_fwhm_to_sigma, 2 * FWHM_AP * gaussian_fwhm_to_sigma)
+    stddev_interval = (
+        0.1 * gaussian_fwhm_to_sigma,
+        2 * FWHM_AP * gaussian_fwhm_to_sigma,
+    )
 
     # build a Gaussian fitter
     g_init = Gaussian1D(
@@ -139,7 +142,7 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
         bounds={
             "amplitude": amplitude_interval,
             "mean": mean_interval,
-            "stddev": stddev_interval
+            "stddev": stddev_interval,
         },
     )
 
@@ -158,9 +161,14 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
 
     good_fit = True
 
-    if amplitude <= amplitude_interval[0] or amplitude >= amplitude_interval[1] \
-       or fit_center <= mean_interval[0] or fit_center >= mean_interval[1] \
-       or fitted_stddev <= stddev_interval[0] or fitted_stddev >= stddev_interval[1]:
+    if (
+        amplitude <= amplitude_interval[0]
+        or amplitude >= amplitude_interval[1]
+        or fit_center <= mean_interval[0]
+        or fit_center >= mean_interval[1]
+        or fitted_stddev <= stddev_interval[0]
+        or fitted_stddev >= stddev_interval[1]
+    ):
         good_fit = False
 
     # estimate the signal to noise ratio for later QA
@@ -237,7 +245,12 @@ def find_obj_position(
 
 
 def interactive_adjust_obj_limits(
-    image, center_data, signal_to_noise_array, SNR_initial_guess, good_fit_array, figsize=(18, 12)
+    image,
+    center_data,
+    signal_to_noise_array,
+    SNR_initial_guess,
+    good_fit_array,
+    figsize=(18, 12),
 ):
     """
     A interactive method that allows the user to adjust the object limits
@@ -258,7 +271,7 @@ def interactive_adjust_obj_limits(
         The initial guess for the signal to noise threshold.
 
     good_fit_array : array
-        An array containing boolean values for each pixel, 
+        An array containing boolean values for each pixel,
         indicating whether the fit was good or not.
 
     figsize : tuple
@@ -294,13 +307,24 @@ def interactive_adjust_obj_limits(
     # plot the results
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
-
     # this method updates the plot - it is called in the key press event
-    # in matplotlib (see below). 
+    # in matplotlib (see below).
     def update_plot(start_index, end_index):
         ax1.clear()
-        ax1.plot(x_good, good_center_data, "x", label="Estimated object center - good fits", color="green")
-        ax1.plot(x_bad, bad_center_data, "x", label="Estimated object center - bad fits", color="red")
+        ax1.plot(
+            x_good,
+            good_center_data,
+            "x",
+            label="Estimated object center - good fits",
+            color="green",
+        )
+        ax1.plot(
+            x_bad,
+            bad_center_data,
+            "x",
+            label="Estimated object center - bad fits",
+            color="red",
+        )
         ax1.axvline(x=start_index, color="red", linestyle="--", label="Object start")
         ax1.axvline(x=end_index, color="red", linestyle="--", label="Object end")
 
@@ -444,13 +468,13 @@ def show_obj_trace_QA(
 def find_obj_frame(filename, spacial_center, FWHM_AP):
     """
     Driver method for finding an object in a single frame.
-    
-    First, uses `find_obj_one_column` to find the object in every 
+
+    First, uses `find_obj_one_column` to find the object in every
     column of the detector image.
 
     Then, uses `interactive_adjust_obj_limits` to interactively adjust the object limits.
 
-    Finally, fits a Chebyshev polynomial to the object centers and FWHMs, 
+    Finally, fits a Chebyshev polynomial to the object centers and FWHMs,
     and shows QA for the results.
 
     Parameters
@@ -510,7 +534,7 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
             center, FWHM, signal_to_noise, good_fit = find_obj_one_column(
                 x_spat, val, spacial_center, FWHM_AP, i
             )
-        
+
         except ValueError:
             # if the fit fails, add NaNs to the results
             center = np.nan

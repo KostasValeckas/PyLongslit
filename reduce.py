@@ -74,7 +74,6 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir):
 
 
 def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir):
-
     """
     Driver for 'reduce_frame' function. Reduces a list of frames.
 
@@ -140,7 +139,7 @@ def reduce_all():
     if use_overscan:
         logger.warning("Using overscan subtraction instead of master bias.")
         logger.warning("If this is not intended, check the config file.")
-        
+
         # get the overscan direction
         overscan_dir = detect_overscan_direction()
 
@@ -152,7 +151,7 @@ def reduce_all():
     else:
         overscan_dir = None
         BIAS, FLAT = get_bias_and_flats()
-    
+
     logger.info(f"Fetching cosmic-ray removed files from {output_dir} ...")
 
     science_files, standard_files = read_crr_files()

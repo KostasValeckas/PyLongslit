@@ -12,7 +12,6 @@ from utils import refine_obj_center, get_reduced_frames
 from tqdm import tqdm
 
 
-
 def choose_obj_centrum_sky(file_list):
     """
     A wrapper for `choose_obj_centrum` that is used in the sky-subtraction routine.
@@ -26,13 +25,15 @@ def choose_obj_centrum_sky(file_list):
     -------
     center_dict : dict
         A dictionary containing the user clicked object centers.
-        Format: {filename: (x, y)} 
+        Format: {filename: (x, y)}
     """
 
     # used for more readable plotting code
-    plot_title = lambda file: f"Object position estimation for {file}.\n" \
-    "Press on the object on a spectral point with no bright sky-lines (but away from detector edges.)" \
-    "\nYou can try several times. Press 'q' or close plot when done."
+    plot_title = (
+        lambda file: f"Object position estimation for {file}.\n"
+        "Press on the object on a spectral point with no bright sky-lines (but away from detector edges.)"
+        "\nYou can try several times. Press 'q' or close plot when done."
+    )
 
     titles = [plot_title(file) for file in file_list]
 
@@ -58,7 +59,7 @@ def fit_sky_one_column(
 
     spatial_center_guess : int
         The user clicked center of the object.
-    
+
     FWHM_AP : int
         The FWHM of the object.
 
@@ -114,7 +115,7 @@ def fit_sky_QA(
     figsize=(18, 12),
 ):
     """
-    A QA method for the sky fitting. Performs the sky-fitting routine 
+    A QA method for the sky fitting. Performs the sky-fitting routine
     for one column of the detector, and plots the results.
 
     This is used for used insection, before looping through the whole detector
@@ -152,7 +153,7 @@ def fit_sky_QA(
         slice_spec, spatial_center_guess, FWHM_AP
     )
 
-    #dummy x array for plotting
+    # dummy x array for plotting
     x_spec = np.arange(len(slice_spec))
 
     sky_fit = fit_sky_one_column(
@@ -233,11 +234,10 @@ def make_sky_map(
         )
         sky_map[:, column] = sky_fit
 
-    #plot QA
+    # plot QA
     title = f"Evaluated sky-background for {filename}"
 
     show_frame(sky_map, title)
-
 
     return sky_map
 
@@ -250,7 +250,7 @@ def remove_sky_background(center_dict):
     frame.
 
     Parameters
-    ----------  
+    ----------
     center_dict : dict
         A dictionary containing the user clicked object centers.
         Format: {filename: (x, y)}
@@ -315,7 +315,7 @@ def remove_sky_background(center_dict):
 
         skysub_data = data - sky_map
 
-        #plot QA
+        # plot QA
 
         title = f"Sky-subtracted frame {file}"
 
@@ -327,6 +327,7 @@ def remove_sky_background(center_dict):
         subtracted_frames[key] = skysub_data
 
     return subtracted_frames
+
 
 def write_sky_subtracted_frames_to_disc(subtracted_frames):
     """
@@ -340,16 +341,16 @@ def write_sky_subtracted_frames_to_disc(subtracted_frames):
     """
 
     for filename, data in subtracted_frames.items():
-        
+
         # steal header from the original file
-        # switch back to reduced filename to steal header 
+        # switch back to reduced filename to steal header
         # TODO: this is a bit hacky, maybe refactor
         read_key = filename.replace("skysub_", "reduced_")
         hdul = open_fits(output_dir, read_key)
         header = hdul[0].header
         # write the frame to the output directory
         write_to_fits(data, header, filename, output_dir)
-        logger.info(f"Frame written to directory {output_dir}, filename {filename}") 
+        logger.info(f"Frame written to directory {output_dir}, filename {filename}")
 
 
 def run_sky_subtraction():

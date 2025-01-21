@@ -51,8 +51,7 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
     # check the group parameter:
     if group not in ["science", "std"]:
         logger.error(
-            "The group parameter must be one of the following: "
-            "'science', 'std'."
+            "The group parameter must be one of the following: " "'science', 'std'."
         )
         exit()
 
@@ -60,8 +59,6 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
     # since this is the last step with raw data
     logger.info("Checking detector dimensions of the files...")
     check_dimensions(file_list, detector_params["xsize"], detector_params["ysize"])
-
-
 
     for file in file_list:
         logger.info(f"Removing cosmic rays from {file}...")
@@ -89,7 +86,10 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
         filename = "crr_" + group + "_" + file
 
         write_to_fits(
-            hdu[data_params["raw_data_hdu_index"]].data, hdu[data_params["raw_data_hdu_index"]].header, filename, output_dir
+            hdu[data_params["raw_data_hdu_index"]].data,
+            hdu[data_params["raw_data_hdu_index"]].header,
+            filename,
+            output_dir,
         )
 
         logger.info(
@@ -139,7 +139,6 @@ def run_crremoval():
         star_file_list = FileList(standard_params["standard_dir"])
         science_file_list = FileList(science_params["science_dir"])
 
-
     if star_file_list is not None:
         logger.info(
             f"Removing cosmic rays from {star_file_list.num_files} "
@@ -159,8 +158,6 @@ def run_crremoval():
         list_files(science_file_list)
 
         remove_cosmics(science_file_list, sigclip, frac, objlim, niter, "science")
-
-
 
     logger.info("Cosmic-ray removal procedure finished.")
 

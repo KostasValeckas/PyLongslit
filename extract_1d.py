@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
 from scipy.interpolate import interp1d
 from wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
-from wavecalib import wavelength_sol 
+from wavecalib import wavelength_sol
 
 
 def load_object_traces():
@@ -83,7 +83,7 @@ def gaussweight(x, mu, sig):
         The weight for each pixel in the extraction aperture (normalized).
     """
 
-    P = np.exp(-0.5 * (x - mu) ** 2 / sig ** 2) / (np.sqrt(2.0 * np.pi) * sig)
+    P = np.exp(-0.5 * (x - mu) ** 2 / sig**2) / (np.sqrt(2.0 * np.pi) * sig)
 
     if np.round(P.sum(), decimals=0) != 1:
         logger.error(
@@ -97,7 +97,6 @@ def gaussweight(x, mu, sig):
 
 
 def estimate_variance(data, gain, read_out_noise):
-
     """
     Taken from Horne, K. (1986).
     An optimal extraction algorithm for CCD spectroscopy.
@@ -166,7 +165,7 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
     skysubbed_data = hdul[0].data
 
     header = hdul[0].header
-    y_offset = header["CROPY1"] # the y-offset from the cropping procedure
+    y_offset = header["CROPY1"]  # the y-offset from the cropping procedure
 
     x_row_array = np.arange(skysubbed_data.shape[0])
 
@@ -188,10 +187,10 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
         # Horne (1986) eq. 8
         spec.append(
             np.sum(weight * skysubbed_data_slice / variance[:, i])
-            / np.sum(weight ** 2 / variance[:, i])
+            / np.sum(weight**2 / variance[:, i])
         )
         # Horne (1986) eq. 9
-        spec_var.append(1 / np.sum((weight ** 2) / variance[:, i]))
+        spec_var.append(1 / np.sum((weight**2) / variance[:, i]))
 
     spec = np.array(spec)
     spec_var = np.array(spec_var)

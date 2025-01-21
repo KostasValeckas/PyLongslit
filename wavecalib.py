@@ -208,13 +208,16 @@ def trace_line_tilt(
     # Loop from center and up and then down
     for i in chain(range(center_row, N_ROWS), range(center_row - 1, -1, -1)):
 
-        #clip out the subimage around the line
-        start_pixel = int(g_model.mean_0.value - g_model.stddev_0.value * gaussian_sigma_to_fwhm)
-        end_pixel = int(g_model.mean_0.value + g_model.stddev_0.value * gaussian_sigma_to_fwhm)
+        # clip out the subimage around the line
+        start_pixel = int(
+            g_model.mean_0.value - g_model.stddev_0.value * gaussian_sigma_to_fwhm
+        )
+        end_pixel = int(
+            g_model.mean_0.value + g_model.stddev_0.value * gaussian_sigma_to_fwhm
+        )
 
         center_row_spec = master_arc[i, start_pixel:end_pixel]
         spectral_coords = np.arange(start_pixel, end_pixel)
-
 
         # if we are starting to loop downwards, we need to update the initial guesses
         # back to the center row values manually.
@@ -224,7 +227,6 @@ def trace_line_tilt(
             g_model.stddev_0 = all_params[i + 1]["FWHM"] / gaussian_sigma_to_fwhm
             g_model.beta_0 = all_params[i + 1]["beta"]
             g_model.amplitude_1 = all_params[i + 1]["amplitude_1"]
-
 
         keep_bool = fit_arc_1d(
             spectral_coords,
@@ -242,7 +244,6 @@ def trace_line_tilt(
             "amplitude_1": g_model.amplitude_1.value,
         }
 
-
         if not keep_bool:
 
             bad_fit_counter += 1
@@ -254,7 +255,6 @@ def trace_line_tilt(
                     f"TILT_REJECT_LINE_FRACTION = {TILT_REJECTION_LINE_FRACTION}  "
                     f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
                 )
-
 
                 return None, None
 
@@ -275,9 +275,9 @@ def trace_line_tilt(
 
     return all_centers_sorted, keep_mask
 
-def show_cyclic_QA_plot(fig, ax, title_text = None, x_label = None, y_label = None):
-    """
-    """
+
+def show_cyclic_QA_plot(fig, ax, title_text=None, x_label=None, y_label=None):
+    """ """
 
     # this removes scientific notation for the y-axis
     # to make more space for the subplots
@@ -299,11 +299,9 @@ def show_cyclic_QA_plot(fig, ax, title_text = None, x_label = None, y_label = No
 
     # Add a single x-label and y-label for the entire figure
     if x_label is not None:
-        fig.text(
-            0.5, 0.04, x_label, ha="center", va="center", fontsize=12
-        )
+        fig.text(0.5, 0.04, x_label, ha="center", va="center", fontsize=12)
 
-    if y_label is not None:    
+    if y_label is not None:
         fig.text(
             0.04,
             0.5,
@@ -314,7 +312,6 @@ def show_cyclic_QA_plot(fig, ax, title_text = None, x_label = None, y_label = No
             fontsize=12,
         )
     plt.show()
-
 
 
 def trace_tilts(pixel_array, wavelength_array, master_arc):
@@ -343,7 +340,7 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
     tolerance_FWHM = wavecalib_params["TOL_FWHM"]
 
     # counters for QA and debugging
-    good_traces = 0 
+    good_traces = 0
     good_fits = 0
 
     # this offset value allows to make cyclic subplots, as we use the index
@@ -363,8 +360,6 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
         f"Acceptance Criteria: \n"
         f"R2 of the spacial polynomial fit > {R2_TOL}. This can be set in the config file."
     )
-
-
 
     for pixel, wavelength in zip(pixel_array, wavelength_array):
 
@@ -534,8 +529,7 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
 
                 plot_color = "red"
 
-            else:   
-
+            else:
 
                 good_lines[wavelength] = (
                     offsets,
@@ -546,17 +540,18 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
                 )
 
             RMS_all[wavelength] = R2_offsets
-        
+
         subplot_index = (j - j_offset) // plot_width, (j - j_offset) % plot_width
 
-        ax[subplot_index].plot(
-            good_spacial_coords, good_centers, "x", color="black"
-        )
+        ax[subplot_index].plot(good_spacial_coords, good_centers, "x", color="black")
         # plot the fit
-        spat_fine = np.linspace(
-            good_spacial_coords[0], good_spacial_coords[-1], 1000
+        spat_fine = np.linspace(good_spacial_coords[0], good_spacial_coords[-1], 1000)
+        ax[subplot_index].plot(
+            spat_fine,
+            chebval(spat_fine, coeff),
+            color=plot_color,
+            label="fit R2: {:.2f}".format(R2_spat),
         )
-        ax[subplot_index].plot(spat_fine, chebval(spat_fine, coeff), color=plot_color, label="fit R2: {:.2f}".format(R2_spat))
 
         if (
             # this condition checks if the plot has been filled up
@@ -565,7 +560,9 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
             (j - j_offset) // plot_width == plot_height - 1
             and (j - j_offset) % plot_width == plot_width - 1
         ):
-            show_cyclic_QA_plot(fig, ax, title_text, "Spacial Pixels", "Spectral Pixels")
+            show_cyclic_QA_plot(
+                fig, ax, title_text, "Spacial Pixels", "Spectral Pixels"
+            )
             j_offset += plot_width * plot_height
             # prepare a new plot
             fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
@@ -580,7 +577,6 @@ def trace_tilts(pixel_array, wavelength_array, master_arc):
     logger.info(f"Number of good fits: {good_fits} out of {good_traces}.")
     print("\n-------------------------------------")
     return good_lines
-
 
 
 # TODO: see if this can be optimized runtime-wise
@@ -771,7 +767,12 @@ def reidentify(pixnumber, wavelength, master_arc):
         spec_fine = np.linspace(
             cropped_spectral_coords[0], cropped_spectral_coords[-1], 1000
         )
-        ax[subplot_index].plot(spec_fine, g_fit(spec_fine), color=plot_color, label="fit R2: {:.2f}".format(R2))
+        ax[subplot_index].plot(
+            spec_fine,
+            g_fit(spec_fine),
+            color=plot_color,
+            label="fit R2: {:.2f}".format(R2),
+        )
 
         if (
             # this condition checks if the plot has been filled up
@@ -816,7 +817,6 @@ def reidentify(pixnumber, wavelength, master_arc):
 
     return fit, line_REID
 
-    
 
 def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
 
@@ -843,7 +843,6 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
         if detector_params["dispersion"]["spectral_dir"] == "y"
         else detector_params["xsize"]
     )
-
 
     # the following lines extract the good lines from the dictionary
     # and put them in the format that the fitter expects
@@ -932,8 +931,8 @@ def construct_detector_map(fit2D_REID):
 
     return map
 
-def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
 
+def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
 
     centers_1d = [good_lines[key][1] for key in good_lines.keys()]
     spatials_1d = [good_lines[key][2] for key in good_lines.keys()]
@@ -963,13 +962,11 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
     axs[1].set_xlabel("Spatial Pixels")
     axs[1].legend()
 
-
     plt.tight_layout()
     plt.show()
 
 
-def construct_wavelen_map(wavelen_fit, tilt_fit, original_orientation = False):
-
+def construct_wavelen_map(wavelen_fit, tilt_fit, original_orientation=False):
 
     N_SPACIAL = (
         detector_params["xsize"]
@@ -992,11 +989,11 @@ def construct_wavelen_map(wavelen_fit, tilt_fit, original_orientation = False):
 
     map = wavelength_sol(X, Y, wavelen_fit, tilt_fit)
 
-    print(f"\n\n\nTIME IT TOOK FOR EVALUATING THE WAVELENgtH MAP {time.time() - time_start}\n\n\n")
+    print(
+        f"\n\n\nTIME IT TOOK FOR EVALUATING THE WAVELENgtH MAP {time.time() - time_start}\n\n\n"
+    )
 
     return map
-
-    
 
 
 def plot_tiltmap(tilt_map, figsize=(18, 12)):
@@ -1036,11 +1033,9 @@ def plot_wavelengthcalib_QA(good_lines: dict, wave_fit, tilt_fit):
 
     plot_tiltmap(tilt_map)
 
-    wave_map  = construct_wavelen_map(wave_fit, tilt_fit)
+    wave_map = construct_wavelen_map(wave_fit, tilt_fit)
 
     plot_wavemap(wave_map)
-
-
 
 
 def write_waveimage_to_disc(wavelength_map, master_arc):
@@ -1063,6 +1058,7 @@ def write_waveimage_to_disc(wavelength_map, master_arc):
 
     logger.info("Wavelength calibration results written to disc.")
 
+
 def write_wavelen_fit_to_disc(fit1d):
 
     logger.info("Writing wavelen fit results to disc...")
@@ -1079,13 +1075,12 @@ def write_wavelen_fit_to_disc(fit1d):
     os.chdir("..")
 
     logger.info(
-          f"2D tilt fit results written to disc in {output_dir}, filename wavelen_fit.pkl."
+        f"2D tilt fit results written to disc in {output_dir}, filename wavelen_fit.pkl."
     )
 
 
 def write_tilt_fit_to_disc(fit2D_REID):
-    """
-    """
+    """ """
 
     logger.info("Writing tilt fit results to disc...")
 
@@ -1101,8 +1096,9 @@ def write_tilt_fit_to_disc(fit2D_REID):
     os.chdir("..")
 
     logger.info(
-          f"2D tilt fit results written to disc in {output_dir}, filename tilt_fit.pkl."
+        f"2D tilt fit results written to disc in {output_dir}, filename tilt_fit.pkl."
     )
+
 
 def write_good_tilt_lines_to_disc(good_lines):
     """
@@ -1129,6 +1125,7 @@ def write_good_tilt_lines_to_disc(good_lines):
 
     logger.info("Good tilt lines written to disc.")
 
+
 def get_wavelen_fit_from_disc():
     """
     Load the 1D fit results from disc.
@@ -1154,6 +1151,7 @@ def get_wavelen_fit_from_disc():
     os.chdir("..")
 
     return fit1d
+
 
 def get_tilt_fit_from_disc():
     """
@@ -1209,8 +1207,6 @@ def get_good_tilt_lines_from_disc():
     return good_lines
 
 
-
-
 def load_fit2d_REID_from_disc():
     """
     Load the 2D fit results from disc.
@@ -1238,7 +1234,7 @@ def load_fit2d_REID_from_disc():
         os.chdir("..")
 
         return fit2D_REID
-    
+
     raise NotImplementedError
 
 
@@ -1247,7 +1243,6 @@ def run_wavecalib():
     Run the wavelength calibration routine.
     """
     logger.info("Starting wavelength calibration routine...")
-
 
     pixnumber, wavelength = read_pixtable()
 
@@ -1279,9 +1274,7 @@ def run_wavecalib():
     wave_sol = get_wavelen_fit_from_disc()
 
 
-    """ 
-
-
+    """
 
     # write_fit2d_REID_to_disc(fit_2d_results)
 

@@ -41,9 +41,11 @@ def extract_1d_spec(standard_star=False, show_reidentify_QA=False):
     for i in range(0, N_REID - 1):
         lower_cut, upper_cut = i * STEP_REID, (i + 1) * STEP_REID
         reidentify_i = np.sum(
-            lampimage[lower_cut:upper_cut, :]
-            if not standard_star
-            else stdlampimage[lower_cut:upper_cut, :],
+            (
+                lampimage[lower_cut:upper_cut, :]
+                if not standard_star
+                else stdlampimage[lower_cut:upper_cut, :]
+            ),
             axis=0,
         )
         peak_gauss_REID = []
@@ -583,13 +585,13 @@ def extract_1d_spec(standard_star=False, show_reidentify_QA=False):
     if not standard_star:
         ap_summed = phot["aperture_sum"] / OBJEXPTIME
         var = aperture_photometry(data_variance, aps, method="subpixel", subpixels=30)
-        ap_variance = var["aperture_sum"] / OBJEXPTIME ** 2
+        ap_variance = var["aperture_sum"] / OBJEXPTIME**2
         sky = aperture_photometry(data_sky, aps, method="subpixel", subpixels=30)
         ap_sky = sky["aperture_sum"] / OBJEXPTIME
     else:
         ap_summed = phot["aperture_sum"] / STDEXPTIME
         var = aperture_photometry(data_variance, aps, method="subpixel", subpixels=30)
-        ap_variance = var["aperture_sum"] / STDEXPTIME ** 2
+        ap_variance = var["aperture_sum"] / STDEXPTIME**2
         sky = aperture_photometry(data_sky, aps, method="subpixel", subpixels=30)
         ap_sky = sky["aperture_sum"] / STDEXPTIME
 
@@ -604,15 +606,15 @@ def extract_1d_spec(standard_star=False, show_reidentify_QA=False):
         weight = gaussweight(y, c[n], s[n])
         ap_optimal[n] = np.sum(
             data_skysub[:, n] * weight / data_variance[:, n]
-        ) / np.sum(weight ** 2 / data_variance[:, n])
-        var_optimal[n] = np.sum(weight) / np.sum(weight ** 2 / data_variance[:, n])
+        ) / np.sum(weight**2 / data_variance[:, n])
+        var_optimal[n] = np.sum(weight) / np.sum(weight**2 / data_variance[:, n])
 
     if not standard_star:
         ap_optimal = ap_optimal / OBJEXPTIME
-        var_optimal = var_optimal / OBJEXPTIME ** 2
+        var_optimal = var_optimal / OBJEXPTIME**2
     else:
         ap_optimal = ap_optimal / STDEXPTIME
-        var_optimal = var_optimal / STDEXPTIME ** 2
+        var_optimal = var_optimal / STDEXPTIME**2
 
     # Plot trace in 2d before and after sky-subtraction
     fig, axs = plt.subplots(

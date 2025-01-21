@@ -18,7 +18,6 @@ from numpy.polynomial.chebyshev import chebval
 
 class FileList:
     def __init__(self, path):
-
         """
         A class that reads all filenames from a directory
         and counts them. Made iterable so files can be looped over.
@@ -378,7 +377,7 @@ def check_rotation():
     return transpose, flip
 
 
-def flip_and_rotate(frame_data, transpose, flip, inverse = False):
+def flip_and_rotate(frame_data, transpose, flip, inverse=False):
     """
     The PyLongslit default orientation is dispersion in the x-direction,
     with wavelength increasing from left to right.
@@ -412,7 +411,7 @@ def flip_and_rotate(frame_data, transpose, flip, inverse = False):
 
     if flip:
         logger.info("Flipping the image to make wavelengths increase with x-pixels...")
-        frame_data = np.flip(frame_data, axis=1)  
+        frame_data = np.flip(frame_data, axis=1)
 
     return frame_data
 
@@ -673,14 +672,7 @@ def show_1d_fit_QA(
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
-    ax1.plot(
-        x_data,
-        y_data,
-        "s",
-        color="black",
-        label=legend_label,
-        markersize=14 
-    )
+    ax1.plot(x_data, y_data, "s", color="black", label=legend_label, markersize=14)
 
     ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=16)
     ax1.set_ylabel(y_label, fontsize=14)
@@ -699,12 +691,13 @@ def show_1d_fit_QA(
     fig.suptitle(title, fontsize=18)
 
     # Enhance tick font size
-    ax1.tick_params(axis='both', which='major', labelsize=14)
-    ax2.tick_params(axis='both', which='major', labelsize=14)
+    ax1.tick_params(axis="both", which="major", labelsize=14)
+    ax2.tick_params(axis="both", which="major", labelsize=14)
 
     plt.show()
 
-def load_spec_data(group = "science"):
+
+def load_spec_data(group="science"):
     """
     Loads the science or standard star spectra from the output directory.
 
@@ -729,7 +722,7 @@ def load_spec_data(group = "science"):
         logger.error(
             f'If you have already run the procedure, check the "skip_{group}" parameter in the config file.'
         )
-        exit()   
+        exit()
 
     # container for the spectra
     spectra = {}
@@ -739,13 +732,14 @@ def load_spec_data(group = "science"):
 
     for filename in filenames:
         data = np.loadtxt(filename, skiprows=2)
-        wavelength = data[:,0]
-        counts = data[:,1]
-        var = data[:,2]
+        wavelength = data[:, 0]
+        counts = data[:, 1]
+        var = data[:, 2]
 
         spectra[filename] = (wavelength, counts, var)
 
     return spectra
+
 
 def load_fluxed_spec():
 
@@ -755,7 +749,7 @@ def load_fluxed_spec():
         logger.error(f"No pectra found.")
         logger.error("Run the flux calibration 1d procedure first.")
 
-        exit()   
+        exit()
 
     # container for the spectra
     spectra = {}
@@ -765,9 +759,9 @@ def load_fluxed_spec():
 
     for filename in filenames:
         data = np.loadtxt(filename, skiprows=2)
-        wavelength = data[:,0]
-        counts = data[:,1]
-        var = data[:,2]
+        wavelength = data[:, 0]
+        counts = data[:, 1]
+        var = data[:, 2]
 
         spectra[filename] = (wavelength, counts, var)
 
@@ -791,6 +785,7 @@ def load_bias():
 
     return BIASframe
 
+
 def get_bias_and_flats(skip_bias=False):
 
     if not skip_bias:
@@ -808,7 +803,8 @@ def get_bias_and_flats(skip_bias=False):
 
         logger.info("Master bias frame found and loaded.")
 
-    else: BIAS = None
+    else:
+        BIAS = None
 
     logger.info("Fetching the master flat frame...")
 
@@ -824,6 +820,7 @@ def get_bias_and_flats(skip_bias=False):
     logger.info("Master flat frame found and loaded.")
 
     return BIAS, FLAT
+
 
 def get_reduced_frames():
     """
@@ -865,11 +862,10 @@ def get_reduced_frames():
 
     return reduced_files
 
+
 def wavelength_sol(spectral_pix, spatial_pix, wavelen_fit, tilt_fit):
-   
+
     tilt_value = tilt_fit(spectral_pix, spatial_pix)
     wavelength = chebval(spectral_pix + tilt_value, wavelen_fit)
 
     return wavelength
-
-

@@ -61,6 +61,7 @@ def show_overscan():
     )
     plt.show()
 
+
 def detect_overscan_direction():
     """
     Detect the direction of the overscan region.
@@ -88,7 +89,7 @@ def detect_overscan_direction():
 
     # Check if the overscan is horizontal or vertical
     # Current implementation only supports horizontal or vertical overscan,
-    # not both at the same time. 
+    # not both at the same time.
     if (overscan_x_end - overscan_x_start) + 1 == xsize:
         logger.info("Horizontal overscan detected.")
         direction = "horizontal"
@@ -102,6 +103,7 @@ def detect_overscan_direction():
 
     return direction
 
+
 def check_overscan():
     """
     A simple bool return to checck whether the user wants to use the overscan subtraction or not.
@@ -113,7 +115,7 @@ def check_overscan():
         logger.info("Overscan subtraction is disabled.")
         logger.info("Skipping overscan subtraction...")
         return False
-    
+
     return True
 
 

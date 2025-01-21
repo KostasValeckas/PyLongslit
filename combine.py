@@ -41,17 +41,16 @@ def check_combine_params(fluxed_spectra):
                 )
         logger.info(f"All files found for {obj_name}.")
 
-
     return fluxed_data_dict
 
 
 def combine_spectra(fluxed_data_dict):
-    
+
     for obj_name, data_list in fluxed_data_dict.items():
-        
+
         num_spectra = len(data_list)
 
-        logger.info(f"Combining {num_spectra} spectra for {obj_name}...") 
+        logger.info(f"Combining {num_spectra} spectra for {obj_name}...")
 
         all_lambda = np.zeros((len(data_list[0][0]), len(data_list)))
         all_flux = np.zeros((len(data_list[0][0]), len(data_list)))
@@ -71,14 +70,16 @@ def combine_spectra(fluxed_data_dict):
             plt.plot(lambda_, flux, label=f"Spectrum {i+1}")
             plt.plot(lambda_, np.sqrt(var), label=f"Sigma {i+1}")
 
-
-    
-
-        plt.plot(combined_spectrum[:, 0], combined_spectrum[:, 1], label="Combined spectrum")
-        plt.plot(combined_spectrum[:, 0], np.sqrt(combined_spectrum[:, 2]), label="Sigma Combined")
+        plt.plot(
+            combined_spectrum[:, 0], combined_spectrum[:, 1], label="Combined spectrum"
+        )
+        plt.plot(
+            combined_spectrum[:, 0],
+            np.sqrt(combined_spectrum[:, 2]),
+            label="Sigma Combined",
+        )
         plt.legend()
         plt.show()
-
 
 
 def run_combine_spec():
@@ -91,7 +92,7 @@ def run_combine_spec():
     if fluxed_data_dict is None:
         logger.warning("No objects to combine. Exiting...")
         return
-    
+
     combine_spectra(fluxed_data_dict)
 
 

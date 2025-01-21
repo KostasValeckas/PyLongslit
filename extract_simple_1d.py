@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
 from scipy.interpolate import interp1d
 from wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
-from wavecalib import wavelength_sol 
+from wavecalib import wavelength_sol
 from utils import hist_normalize
 
 
@@ -62,12 +62,9 @@ def load_object_traces():
 
 
 def extract_object_simple(trace_data, skysubbed_frame):
-    """
-
-    """
+    """ """
 
     pixel, center, FWHM = trace_data
-
 
     # Open the skysubbed frame
     hdul = open_fits(output_dir, skysubbed_frame)
@@ -75,7 +72,7 @@ def extract_object_simple(trace_data, skysubbed_frame):
     skysubbed_data = hdul[0].data
 
     header = hdul[0].header
-    y_offset = header["CROPY1"] # the y-offset from the cropping procedure
+    y_offset = header["CROPY1"]  # the y-offset from the cropping procedure
 
     x_row_array = np.arange(skysubbed_data.shape[0])
 
@@ -89,21 +86,18 @@ def extract_object_simple(trace_data, skysubbed_frame):
         obj_center = center[i]
         pixel_coord = pixel[i]
         fwhm = FWHM[i]
-        
+
         # sum around FWHM
 
         # define the aperture
-        aperture = RectangularAperture(
-            (pixel_coord, obj_center), fwhm, fwhm
-        )
-
+        aperture = RectangularAperture((pixel_coord, obj_center), fwhm, fwhm)
 
         # extract the spectrum
         spec_sum = aperture.do_photometry(skysubbed_data)
         spec_sum = spec_sum[0][0]
 
         spec.append(spec_sum)
-        #dummy for now
+        # dummy for now
         spec_var.append(spec_sum)
 
     plot_trace_QA(skysubbed_data, pixel, center, FWHM, skysubbed_frame)
@@ -211,7 +205,8 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
 
     plt.show()
 
-def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots = 6, figsize=(10, 18)):
+
+def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(10, 18)):
 
     fig, axes = plt.subplots(num_plots, 1, figsize=figsize)
 
@@ -226,7 +221,7 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots = 6, figsize=(1
         segment_trace = trace[start:end]
         segment_fwhm = fwhm[start:end]
 
-        ax.imshow(hist_normalize(segment), origin="lower", cmap="gray", aspect='auto')
+        ax.imshow(hist_normalize(segment), origin="lower", cmap="gray", aspect="auto")
         ax.plot(segment_pixel - start, segment_trace - segment_fwhm, color="red")
         ax.plot(segment_pixel - start, segment_trace + segment_fwhm, color="red")
 
@@ -237,6 +232,7 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots = 6, figsize=(1
     plt.savefig("trace_QA " + filename + ".png")
 
     plt.show()
+
 
 def extract_objects(skysubbed_files, trace_dir):
     """
@@ -262,7 +258,6 @@ def extract_objects(skysubbed_files, trace_dir):
         Format is {filename: (wavelength, spectrum_calib, var_calib)}
     """
 
-
     # This is the container for the resulting one-dimensional spectra
     results = {}
 
@@ -274,9 +269,7 @@ def extract_objects(skysubbed_files, trace_dir):
 
         trace_data = trace_dir[filename_obj]
 
-        pixel, spec, spec_var, y_offset = extract_object_simple(
-            trace_data, filename
-        )
+        pixel, spec, spec_var, y_offset = extract_object_simple(trace_data, filename)
 
         logger.info("Spectrum extracted.")
         logger.info("Wavelength calibrating the extracted 1D spectrum...")

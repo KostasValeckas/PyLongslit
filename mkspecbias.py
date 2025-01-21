@@ -5,14 +5,15 @@ from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import list_files
 from overscan import check_overscan, subtract_overscan_from_frame
 import matplotlib.pyplot as plt
+
 """
 Module for creating a master bias frame from raw bias frames.
 """
 
-def run_bias():
 
+def run_bias():
     """
-    Driver for the bias procedure. 
+    Driver for the bias procedure.
 
     The function reads the raw bias frames from the directory specified in the
     'bias_dir' parameter in the 'config.json' file. It then stacks the frames and calculates the median value at each
@@ -57,8 +58,7 @@ def run_bias():
         if use_overscan:
             data = subtract_overscan_from_frame(data)
 
-        bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = \
-            data[0 : ysize - 1, 0 : xsize - 1]
+        bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
 
         # close the file handler
         rawbias.close()
