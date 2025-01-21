@@ -122,5 +122,10 @@
 
     "flux_calib": {
         "path_extinction_curve": "/home/kostas/Documents/PyLongslit/database/lapalma.dat"
+    },
+
+    "combine": {
+        "SDSS_J215856+2854": ["ALHh050196.fits", "ALHh050197.fits"]
     }
+
 }

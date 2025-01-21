@@ -747,6 +747,33 @@ def load_spec_data(group = "science"):
 
     return spectra
 
+def load_fluxed_spec():
+
+    filenames = get_filenames(starts_with="1d_fluxed_science")
+
+    if len(filenames) == 0:
+        logger.error(f"No pectra found.")
+        logger.error("Run the flux calibration 1d procedure first.")
+
+        exit()   
+
+    # container for the spectra
+    spectra = {}
+
+    # make sure we are in the output directory
+    os.chdir(output_dir)
+
+    for filename in filenames:
+        data = np.loadtxt(filename, skiprows=2)
+        wavelength = data[:,0]
+        counts = data[:,1]
+        var = data[:,2]
+
+        spectra[filename] = (wavelength, counts, var)
+
+    return spectra
+
+
 def load_bias():
 
     try:
