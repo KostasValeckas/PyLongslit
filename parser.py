@@ -37,6 +37,7 @@ logger.info("User parameters loaded successfully.")
 
 instrument_params = data["instrument"]
 crr_params = data["crr_removal"]
+background_params = data["background_sub"]
 science_params = data["science"]
 standard_params = data["standard"]
 arc_params = data["arc"]

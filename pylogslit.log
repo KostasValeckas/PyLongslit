@@ -40795,3 +40795,176 @@ PyLongslit - INFO - extract_simple_1d.py:312 - 1d_science_0004799977-20241004-OS
 PyLongslit - INFO - extract_simple_1d.py:312 - 1d_science_0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy.dat written to disc in directory /home/kostas/Documents/PyLongslit/lensed_out
 PyLongslit - INFO - extract_simple_1d.py:318 - All extracted 1D spectra written to disc
 PyLongslit - INFO - extract_simple_1d.py:337 - extract_1d done
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - ERROR - subtract_background.py:29 - ALHh050196.fits not found in reduced files.
+PyLongslit - ERROR - subtract_background.py:30 - Please reduce the file first.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - ERROR - subtract_background.py:26 - ALHh050196.fits not found in reduced files.
+PyLongslit - ERROR - subtract_background.py:27 - Please reduce the file first.
+PyLongslit - ERROR - subtract_background.py:26 - ALHh050197.fits not found in reduced files.
+PyLongslit - ERROR - subtract_background.py:27 - Please reduce the file first.
+PyLongslit - ERROR - subtract_background.py:26 - ALHh050197.fits not found in reduced files.
+PyLongslit - ERROR - subtract_background.py:27 - Please reduce the file first.
+PyLongslit - ERROR - subtract_background.py:26 - ALHh050196.fits not found in reduced files.
+PyLongslit - ERROR - subtract_background.py:27 - Please reduce the file first.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:771 - Fetching the master bias frame...
+PyLongslit - INFO - utils.py:782 - Master bias frame found and loaded.
+PyLongslit - INFO - utils.py:786 - Fetching the master flat frame...
+PyLongslit - INFO - utils.py:797 - Master flat frame found and loaded.
+PyLongslit - INFO - reduce.py:156 - Fetching cosmic-ray removed files from /home/kostas/Documents/PyLongslit/output_alt ...
+PyLongslit - INFO - reduce.py:37 - Found 2 cosmic-ray removed science files.
+PyLongslit - INFO - reduce.py:38 - Found 1 cosmic-ray removed standard star files.
+PyLongslit - INFO - reduce.py:165 - Reducing following standard star frames:
+PyLongslit - INFO - reduce.py:98 - Reducing frame crr_std_ALHh050097.fits ...
+PyLongslit - INFO - reduce.py:61 - Subtracting the bias...
+PyLongslit - INFO - reduce.py:64 - Dividing by the master flat frame...
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - reduce.py:116 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:129 - Frame written to directory /home/kostas/Documents/PyLongslit/output_alt, filename reduced_std_ALHh050097.fits
+PyLongslit - INFO - reduce.py:177 - Reducing following science frames:
+PyLongslit - INFO - reduce.py:98 - Reducing frame crr_science_ALHh050196.fits ...
+PyLongslit - INFO - reduce.py:61 - Subtracting the bias...
+PyLongslit - INFO - reduce.py:64 - Dividing by the master flat frame...
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - reduce.py:116 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:129 - Frame written to directory /home/kostas/Documents/PyLongslit/output_alt, filename reduced_science_ALHh050196.fits
+PyLongslit - INFO - reduce.py:98 - Reducing frame crr_science_ALHh050197.fits ...
+PyLongslit - INFO - reduce.py:61 - Subtracting the bias...
+PyLongslit - INFO - reduce.py:64 - Dividing by the master flat frame...
+PyLongslit - INFO - utils.py:410 - Rotating image to make x the spectral direction...
+PyLongslit - INFO - utils.py:414 - Flipping the image to make wavelengths increase with x-pixels...
+PyLongslit - INFO - reduce.py:116 - Frame reduced, writing to disc...
+PyLongslit - INFO - reduce.py:129 - Frame written to directory /home/kostas/Documents/PyLongslit/output_alt, filename reduced_science_ALHh050197.fits
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
+PyLongslit - INFO - subtract_background.py:19 - Found 2 object - background pairs.
+PyLongslit - INFO - subtract_background.py:31 - All files found in reduced files.
+PyLongslit - INFO - logger.py:53 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:20 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:36 - User parameters loaded successfully.
+PyLongslit - INFO - utils.py:444 - Found 3 frames:
