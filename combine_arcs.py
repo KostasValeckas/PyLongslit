@@ -3,7 +3,7 @@ Module to combine arc frames into a single master arc frame.
 """
 
 from logger import logger
-from parser import output_dir, arc_params, data_params, detector_params
+from parser import output_dir, arc_params, data_params, detector_params, combine_arc_params
 from utils import FileList, open_fits, write_to_fits, list_files, get_bias_and_flats
 from utils import check_rotation, flip_and_rotate, load_bias
 from overscan import subtract_overscan_from_frame, check_overscan
@@ -29,10 +29,18 @@ def combine_arcs():
 
     use_overscan = check_overscan()
 
-    logger.info("Subtracting bias...")
+    skip_bias = combine_arc_params["skip_bias"]
 
-    BIASframe = load_bias()
-    BIAS = np.array(BIASframe[0].data)
+    if not skip_bias:
+
+        logger.info("Subtracting bias...")
+
+        BIASframe = load_bias()
+        BIAS = np.array(BIASframe[0].data)
+
+    else:
+        logger.warning("Skipping bias subtraction in arc combination.")
+        logger.warning("This is requested in the config file.")
 
     # container to hold the reduced arc frames
     arc_data = []
@@ -46,7 +54,7 @@ def combine_arcs():
         if use_overscan:
             data = subtract_overscan_from_frame(data)
 
-        data = data - BIAS
+        if not skip_bias: data = data - BIAS
 
         arc_data.append(data)
 

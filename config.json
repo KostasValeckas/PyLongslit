@@ -1,103 +1,110 @@
 {
     "instrument": {
-        "name": "ALFOSC",
-        "disperser": "Grating #4"
+        "name": "OSIRIS",
+        "disperser": "R1000B"
     },
 
     "detector": {
-        "xsize": 500,
-        "ysize": 2102,
+        "xsize": 2073,
+        "ysize": 2056,
         "dispersion": { 
-            "spectral_dir": "y",
+            "spectral_dir": "x",
             "wavelength_grows_with_pixel": false
         },
-        "gain": 0.16,
+        "gain": 1.9,
         "read_out_noise": 4.3,
         "overscan" : {
             "use_overscan": false,
             "overscan_x_start": 0,
             "overscan_x_end": 499,
-            "overscan_y_start": 0,
-            "overscan_y_end": 50
+            "overscan_y_start": 2066,
+            "overscan_y_end": 2099
         }
     },
-    
+
     "data": {
-        "raw_data_hdu_index": 1
+        "raw_data_hdu_index": 0
     },
 
-
     "bias": {
-        "bias_dir": "/home/kostas/Documents/PyLongslit/raw_alt/bias"
+        "bias_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/bias"
     },
 
     "flat": {
-        "flat_dir": "/home/kostas/Documents/PyLongslit/raw_alt/flats",
+        "flat_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/flat",
         "user_custom_norm_area": true,
         "norm_area_start_x": 100,
-        "norm_area_end_x": 400,
+        "norm_area_end_x": 2000,
         "norm_area_start_y": 100,
-        "norm_area_end_y": 1300
+        "norm_area_end_y": 2000
     },
 
     "output": {
-        "out_dir": "/home/kostas/Documents/PyLongslit/output_alt"
+        "out_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/out"
 
     },
 
     "crr_removal" : {
         "frac": 0.01,
-        "objlim": 15,
-        "sigclip": 5.0,
-        "niter": 5
+        "objlim": 20,
+        "sigclip": 15.0,
+        "niter": 1
     },
 
     "background_sub" : {
         "subtract_background": true,
         "pairs": {
             "1": {
-                "A": "ALHh050196.fits",
-                "B": "ALHh050197.fits"
+                "A": "0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0004799977-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits"
             },
             "2": {
-                "A": "ALHh050197.fits",
-                "B": "ALHh050196.fits"
+                "A": "0004799977-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits"
+            },
+            "3" : {
+                "A": "0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits"
             }
         }
     },
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostas/Documents/PyLongslit/raw_alt/science",
-        "exptime": 300,
-        "airmass": 1.000118678
+        "science_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/object",
+        "exptime": 1200,
+        "airmass": 1.41894823298203
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostas/Documents/PyLongslit/raw_alt/standard",
-        "exptime": 30,
-        "airmass": 1.030792009,
-        "starname": "BD332642",
-        "flux_file_path": "/home/kostas/Documents/PyLongslit/database/bd33a.oke"
+        "standard_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/stds",
+        "exptime": 20,
+        "airmass": 1.13121727253145,
+        "starname": "SPSTD_G191-B2B",
+        "flux_file_path": "/home/kostas/Documents/PyLongslit/database/mg191b2b.dat"
 
     },
 
     "arc" : {
-        "arc_dir": "/home/kostas/Documents/PyLongslit/raw_alt/arcs"
+        "arc_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/arc"
+    },
+
+    "combine_arcs" : {
+        "skip_bias": true
     },
 
     "wavecalib" : {
-        "pixtable": "/home/kostas/Documents/PyLongslit/output/idarc.dat",
-        "FWHM": 6,
-        "TOL_MEAN": 3,
+        "pixtable": "/home/kostas/Documents/PyLongslit/output_OSIRIS/OSIRIS_R1000B_pixtable.dat",
+        "FWHM": 5,
+        "TOL_MEAN": 5,
         "TOL_FWHM": 2,
         "ORDER_WAVELEN": 5,
         "ORDER_SPECTRAL_TILT": 1,
         "ORDER_SPATIAL_TILT": 3,
-        "SPACIAL_R2_TOL": 0.98,
-        "TILT_REJECT_LINE_FRACTION": 0.25,
-        "TILT_TRACE_R2_TOL": 0.95    
+        "SPACIAL_R2_TOL": 0.99,
+        "TILT_REJECT_LINE_FRACTION": 0.5,
+        "TILT_TRACE_R2_TOL": 0.95
     },
 
     "extract" : {
@@ -109,10 +116,14 @@
         "SNR": 5,
         "OBJ_FIT_DEG": 3
     },
+
+    "extract_simple" : {
+        "FWHM": 2
+    },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "/home/kostas/Documents/PyLongslit/output_alt/obj_science_ALHh050197.dat",
-        "skysubbed_frame_root": "/home/kostas/Documents/PyLongslit/output_alt/manual_obj_find/skysub_science_ALHh050196.fits",
+        "archived_spec_root": "/home/kostas/Documents/PyLongslit/lensed_out/good_trace/obj_science_0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy.dat",
+        "skysubbed_frame_root": "/home/kostas/Documents/PyLongslit/lensed_out/skysub_science_0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits",
         "FWHM": 4
     },
 
@@ -121,11 +132,10 @@
     },
 
     "flux_calib": {
-        "path_extinction_curve": "/home/kostas/Documents/PyLongslit/database/lapalma.dat"
+        "path_extinction_curve": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/lapalma.dat"
     },
 
     "combine": {
         "SDSS_J215856+2854": ["ALHh050196.fits", "ALHh050197.fits"]
     }
-
 }

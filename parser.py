@@ -58,6 +58,8 @@ sens_params = data["sensfunc"]
 
 flux_params = data["flux_calib"]
 
+combine_arc_params = data["combine_arcs"]
+
 combine_params = data["combine"]
 
 
