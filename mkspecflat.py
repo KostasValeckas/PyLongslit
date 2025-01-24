@@ -39,6 +39,11 @@ def normalize_spectral_response(medianflat):
         spectrum = np.mean(medianflat[middle_row - 2 : middle_row + 2, :], axis=0)
         spectral_array = np.arange(x_size)
 
+        spectrum = spectrum[::-1]
+        plt.plot(spectral_array, spectrum)  
+        plt.show()
+
+
     else:
 
         # extract the spectrum of the central 5 rows of the frame
@@ -371,6 +376,8 @@ def run_flats():
             data = data - BIAS
             logger.info("Subtracted the bias.")
 
+        
+
         bigflat[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
 
         # logger.info(f"Normalising frame with the median of the frame :{norm}\n")
@@ -393,22 +400,20 @@ def run_flats():
     spectral_normalized[spectral_normalized < 0.5] = 1
     spectral_normalized[spectral_normalized > 1.5] = 1
 
-    spacial_response_model = normalize_spacial_response(spectral_normalized)
+    if not flat_params["skip_spacial"]:
 
-    spacial_normalized = spectral_normalized / spacial_response_model
+        spacial_response_model = normalize_spacial_response(spectral_normalized)
+        master_flat = spectral_normalized / spacial_response_model
 
-    # remove overscan region for more accurate display
-    # TODO: now hardcoded for alfosc for the prototype, FIX THIS TO BE DYNAMIC
+    else:
 
-    medianflat_removed = medianflat[5:2060, 5:495]
-    spectral_response_model_removed = spectral_response_model[5:2060, 5:495]
-    spectral_normalized_removed = spectral_normalized[5:2060, 5:495]
-    spacial_response_model_removed = spacial_response_model[5:2060, 5:495]
-    spacial_normalized_removed = spacial_normalized[5:2060, 5:495]
+        master_flat = spectral_normalized
 
-    fig, ax = plt.subplots(5, 2, figsize=(15, 12))
 
-    ax[0][0].imshow(hist_normalize(medianflat.T), cmap="gray", origin="lower")
+
+    fig, ax = plt.subplots(5 if not flat_params["skip_spacial"] else 3, 2, figsize=(15, 12))
+
+    ax[0][0].imshow(medianflat.T, cmap="gray", origin="lower")
     ax[0][0].set_title("Master flat prior to normalization")
     ax[0][0].axis("off")
 
@@ -420,28 +425,30 @@ def run_flats():
     ax[2][0].set_title("Master flat normalized by spectral response model")
     ax[2][0].axis("off")
 
-    ax[3][0].imshow(spacial_response_model.T, cmap="gray", origin="lower")
-    ax[3][0].set_title("2D slit illumination model")
-    ax[3][0].axis("off")
+    if not flat_params["skip_spacial"]:
+        ax[3][0].imshow(spacial_response_model.T, cmap="gray", origin="lower")
+        ax[3][0].set_title("2D slit illumination model")
+        ax[3][0].axis("off")
 
-    ax[4][0].imshow(spacial_normalized.T, cmap="gray", origin="lower")
-    ax[4][0].set_title(
-        "Final master flat - normalized by slit illumination and spectral response models"
-    )
-    ax[4][0].axis("off")
+        ax[4][0].imshow(master_flat.T, cmap="gray", origin="lower")
+        ax[4][0].set_title(
+            "Final master flat - normalized by slit illumination and spectral response models"
+        )
+        ax[4][0].axis("off")
 
-    N_bins = int(np.sqrt(len(medianflat_removed.flatten())))
+    N_bins = int(np.sqrt(len(medianflat.flatten())))
 
     ax[0][1].hist(
-        medianflat_removed.flatten(),
+        medianflat.flatten(),
         bins=N_bins,
         range=(0, np.max(medianflat)),
         color="black",
     )
-    ax[1][1].hist(spectral_response_model_removed.flatten(), bins=N_bins, color="black")
-    ax[2][1].hist(spectral_normalized_removed.flatten(), bins=N_bins, color="black")
-    ax[3][1].hist(spacial_response_model_removed.flatten(), bins=N_bins, color="black")
-    ax[4][1].hist(spacial_normalized_removed.flatten(), bins=N_bins, color="black")
+    ax[1][1].hist(spectral_response_model.flatten(), bins=N_bins, color="black")
+    ax[2][1].hist(spectral_normalized.flatten(), bins=N_bins, color="black")
+    if not flat_params["skip_spacial"]:
+        ax[3][1].hist(spacial_response_model.flatten(), bins=N_bins, color="black")
+        ax[4][1].hist(master_flat.flatten(), bins=N_bins, color="black")
 
     for a in ax[:, 1]:
         a.set_ylabel("N pixels")
@@ -457,11 +464,11 @@ def run_flats():
 
     logger.info(
         "Mean pixel value of the final master flat-field: "
-        f"{round(np.nanmean(spacial_normalized),5)} (should be 1.0)."
+        f"{round(np.nanmean(master_flat),5)} (should be 1.0)."
     )
 
     # check if the median is 1 to within 5 decimal places
-    if round(np.nanmean(spacial_normalized), 5) != 1:
+    if round(np.nanmean(master_flat), 5) != 1:
         logger.warning(
             "The mean pixel value of the final master flat-field is not 1.0."
         )
@@ -487,7 +494,7 @@ def run_flats():
     # Write out result to fitsfile
     hdr = rawflat[0].header
 
-    write_to_fits(spacial_normalized, hdr, "master_flat.fits", output_dir)
+    write_to_fits(master_flat, hdr, "master_flat.fits", output_dir)
 
     logger.info(
         f"Master flat frame written to disc in {output_dir}, filename master_flat.fits"

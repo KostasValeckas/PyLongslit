@@ -33,6 +33,7 @@
     "flat": {
         "flat_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/flat",
         "user_custom_norm_area": true,
+        "skip_spacial": false,
         "norm_area_start_x": 100,
         "norm_area_end_x": 2000,
         "norm_area_start_y": 100,
