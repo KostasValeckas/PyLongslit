@@ -101,7 +101,7 @@ def fit_sky_one_column(
     # evaluate the fit
     sky_fit = chebval(x_spec, coeff_apsky)
 
-    return sky_fit
+    return sky_fit, clip_mask, x_sky, sky_val
 
 
 def fit_sky_QA(
@@ -156,7 +156,7 @@ def fit_sky_QA(
     # dummy x array for plotting
     x_spec = np.arange(len(slice_spec))
 
-    sky_fit = fit_sky_one_column(
+    sky_fit, clip_mask, x_sky, sky_val = fit_sky_one_column(
         slice_spec, refined_center, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
     )
 
@@ -168,6 +168,7 @@ def fit_sky_QA(
         slice_spec,
         label=f"Detector slice around spectral pixel {spectral_column}",
     )
+    plt.plot(x_sky[clip_mask], sky_val[clip_mask], "rx", label="Rejected Outliers")
     plt.plot(x_spec, sky_fit, label="Sky fit")
     plt.xlabel("Pixels (spatial direction)")
     plt.ylabel("Detector counts (ADU)")
@@ -224,7 +225,7 @@ def make_sky_map(
     logger.info(f"Creating sky map for {filename}...")
     for column in tqdm(range(n_spectal), desc=f"Fitting sky background for {filename}"):
         slice_spec = data[:, column]
-        sky_fit = fit_sky_one_column(
+        sky_fit, _, _, _ = fit_sky_one_column(
             slice_spec,
             spatial_center_guess,
             FWHM_AP,
