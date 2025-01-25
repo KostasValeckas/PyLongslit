@@ -12,7 +12,7 @@ from wavecalib import wavelength_sol
 from utils import hist_normalize
 
 
-def load_object_traces():
+def load_object_traces(only_science=True):
     """
     Loads the object traces from the output directory.
     """
@@ -20,7 +20,7 @@ def load_object_traces():
     logger.info("Loading object traces")
 
     # Get all filenames from output_dir starting with "obj_"
-    filenames = get_filenames(starts_with="obj_")
+    filenames = get_filenames(starts_with="obj_science") if only_science else get_filenames(starts_with="obj_")
 
     if len(filenames) == 0:
         logger.error("No object traces found.")
@@ -229,6 +229,7 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(10,
         ax.set_xticklabels(segment_pixel.astype(int))
 
     os.chdir(output_dir)
+    plt.suptitle(f"Object trace QA for {filename}")
     plt.savefig("trace_QA " + filename + ".png")
 
     plt.show()
@@ -316,7 +317,7 @@ def run_extract_1d():
 
     trace_dir = load_object_traces()
 
-    skysubbed_files = get_skysub_files()
+    skysubbed_files = get_skysub_files(only_science=True)
 
     if len(skysubbed_files) != len(trace_dir):
         logger.error("Number of skysubbed files and object traces do not match.")

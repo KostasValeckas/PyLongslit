@@ -446,7 +446,7 @@ def get_file_group(*prefixes):
     return files
 
 
-def get_skysub_files():
+def get_skysub_files(only_science=False):
     """
     Wrapper for ´get_file_group´ that returns the filenames of the skysubtracted,
     and performs some sanity checks.
@@ -459,7 +459,7 @@ def get_skysub_files():
 
     logger.info("Getting skysubtracted files...")
 
-    filenames = get_file_group("skysub")
+    filenames = get_file_group("skysub") if not only_science else get_file_group("skysub_science")
 
     if len(filenames) == 0:
         logger.error("No skysubtracted files found.")

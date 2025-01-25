@@ -123,8 +123,8 @@
     },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "/home/kostas/Documents/PyLongslit/lensed_out/good_trace/obj_science_0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy.dat",
-        "skysubbed_frame_root": "/home/kostas/Documents/PyLongslit/lensed_out/skysub_science_0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+        "archived_spec_root": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/out/obj_manual_science_0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy.dat",
+        "skysubbed_frame_root": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/out/skysub_science_0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy_C.fits",
         "FWHM": 4
     },
 
@@ -133,10 +133,22 @@
     },
 
     "flux_calib": {
-        "path_extinction_curve": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/lapalma.dat"
+        "path_extinction_curve": "/home/kostas/Documents/PyLongslit/database/lapalma.dat"
     },
 
     "combine": {
-        "SDSS_J215856+2854": ["ALHh050196.fits", "ALHh050197.fits"]
+        "DR3Gaia210752-161131_A": 
+            ["0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy_A.fits",
+             "0004799977-20241004-OSIRIS-OsirisLongSlitSpectroscopy_A.fits",
+              "0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy_A.fits"],
+        "DR3Gaia210752-161131_B": 
+            ["0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy_B.fits",
+               "0004799977-20241004-OSIRIS-OsirisLongSlitSpectroscopy_B.fits",
+                "0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy_B.fits"],
+        "DR3Gaia210752-161131_C": 
+            ["0004799976-20241004-OSIRIS-OsirisLongSlitSpectroscopy_C.fits",
+             "0004799977-20241004-OSIRIS-OsirisLongSlitSpectroscopy_C.fits",
+              "0004799978-20241004-OSIRIS-OsirisLongSlitSpectroscopy_C.fits"]
+        
     }
 }
