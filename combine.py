@@ -79,6 +79,7 @@ def combine_spectra(fluxed_data_dict):
             label="Sigma Combined",
         )
         plt.legend()
+        plt.savefig(f"{output_dir}/{obj_name}_combined.png")
         plt.show()
 
 

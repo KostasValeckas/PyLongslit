@@ -24,6 +24,7 @@ from scipy.signal import find_peaks
 from sklearn.metrics import r2_score
 from itertools import chain
 import warnings
+import astropy.modeling.fitting
 
 
 class GeneralizedNormal1D(Fittable1DModel):
@@ -182,7 +183,7 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0
         #TODO: the below exception is not a good fix - refactor
         try:
             g_fit = fitter(g_model, spectral_coords, center_row_spec)
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, astropy.modeling.fitting.NonFiniteValueError):
             return False
 
     R2 = r2_score(center_row_spec, g_fit(spectral_coords))
@@ -830,12 +831,22 @@ def reidentify(pixnumber, wavelength, master_arc):
         spec_fine = np.linspace(
             cropped_spectral_coords[0], cropped_spectral_coords[-1], 1000
         )
-        ax[subplot_index].plot(
-            spec_fine,
-            g_fit(spec_fine),
-            color=plot_color,
-            label="fit R2: {:.2f}, FWHM: {:.2f}".format(R2,FWHM_local),
-        )
+        try:
+            ax[subplot_index].plot(
+                spec_fine,
+                g_fit(spec_fine),
+                color=plot_color,
+                label="fit R2: {:.2f}, FWHM: {:.2f}".format(R2,FWHM_local),
+            )
+        # this is needed to catch the case when the fit is bad and the values
+        # don't get defined
+        except UnboundLocalError:
+            ax[subplot_index].plot(
+                spec_fine,
+                g_fit(spec_fine),
+                color=plot_color
+            )
+
 
         if (
             # this condition checks if the plot has been filled up
