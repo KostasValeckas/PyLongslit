@@ -430,8 +430,8 @@ class GraphicInterface(QMainWindow):
             self.arc_fname = arc_fname
             raw_data = fits.getdata(arc_fname)
 
-            ilow = raw_data.shape[0] // 2 - 1
-            ihigh = raw_data.shape[0] // 2 + 1
+            ilow = raw_data.shape[0] // 2 - 49 
+            ihigh = raw_data.shape[0] // 2 + 51
             self.arc1d = np.sum(raw_data[ilow:ihigh, :], axis=0)
             self.pix = create_pixel_array()
             self.ax.lines[0].set_data(self.pix, self.arc1d)

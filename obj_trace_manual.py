@@ -73,34 +73,49 @@ def find_obj_frame_manual(filename, FWHM_AP):
     # final containers for the results
     centers = []
 
-
-
     logger.info(f"Finding object in {filename}...")
 
-    # plot the image and let the user hover over the object centers and press 'a' to add and 'd' to delete
+    # plot the image and let the user hover over the object centers and press 'a' to add, 'd' to delete, 'h' to toggle histogram normalization, 'c' to change colormap
     fig, ax = plt.subplots(figsize=(10, 8))
-    ax.imshow(hist_normalize(data), cmap='gray')
-    ax.set_title("Hover over the object centers and press 'a' to add, 'd' to delete last point. Close the plot when done.")
+    hist_norm = True
+    colormap = 'gray'
+    ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)
+    ax.set_title("Hover over the object centers and press '+' to add, '-' to delete last point, 'h' to toggle histogram normalization, 'c' to change colormap. Close the plot when done.")
     points = []
 
     def on_key(event):
-        nonlocal points
+        nonlocal points, hist_norm, colormap
         if event.key == '+':
             x, y = event.xdata, event.ydata
             points.append((x, y))
-            ax.plot(x, y, '+', c = 'r')
+            ax.plot(x, y, '+', c='r')
             fig.canvas.draw()
         elif event.key == '-':
-            #ax.plot(points[-1][0], points[-1][1], 'x', markersize=10, markeredgewidth=2)
             try:
                 points.pop()
             except IndexError:
                 pass
             ax.clear()
-            ax.imshow(hist_normalize(data), cmap='gray')
-            ax.set_title("Hover over the object centers and press 'a' to add, 'd' to delete last point. Close the plot when done.")
+            ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)
+            ax.set_title("Hover over the object centers and press 'a' to add, 'd' to delete last point, 'h' to toggle histogram normalization, 'c' to change colormap. Close the plot when done.")
             for x, y in points:
-                ax.plot(x, y, '+', c = 'r')
+                ax.plot(x, y, '+', c='r')
+            fig.canvas.draw()
+        elif event.key == 'h':
+            hist_norm = not hist_norm
+            ax.clear()
+            ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)
+            ax.set_title("Hover over the object centers and press 'a' to add, 'd' to delete last point, 'h' to toggle histogram normalization, 'c' to change colormap. Close the plot when done.")
+            for x, y in points:
+                ax.plot(x, y, '+', c='r')
+            fig.canvas.draw()
+        elif event.key == 'c':
+            colormap = 'viridis' if colormap == 'gray' else 'gray'
+            ax.clear()
+            ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)
+            ax.set_title("Hover over the object centers and press 'a' to add, 'd' to delete last point, 'h' to toggle histogram normalization, 'c' to change colormap. Close the plot when done.")
+            for x, y in points:
+                ax.plot(x, y, '+', c='r')
             fig.canvas.draw()
 
     fig.canvas.mpl_connect('key_press_event', on_key)
