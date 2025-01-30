@@ -100,7 +100,8 @@
     },
 
     "wavecalib" : {
-        "pixtable": "/home/kostas/Documents/PyLongslit/output_OSIRIS/OSIRIS_R1000B_pixtable.dat",
+        "offset_middle_cut": 0,
+        "pixtable": "/home/kostas/Documents/PyLongslit/output_OSIRIS/OSIRIS_R1000R_pixtable.dat",
         "FWHM": 5,
         "TOL_MEAN": 5,
         "TOL_FWHM": 2,
