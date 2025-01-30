@@ -1,7 +1,8 @@
 import numpy as np
 from astropy.io import fits
 from logger import logger
-from parser import detector_params, flat_params, output_dir, data_params
+from parser import detector_params, flat_params, output_dir, data_params, wavecalib_params
+
 from utils import FileList, check_dimensions, open_fits, write_to_fits
 from utils import show_flat, list_files, load_bias, wavelength_sol, hist_normalize
 import matplotlib.pyplot as plt
@@ -25,6 +26,11 @@ def normalize_spectral_response(medianflat):
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
 
+    # offset is needed for cases where the detector middle is a bad place to
+    # take a cut. 
+    middle_offset = wavecalib_params["offset_middle_cut"]
+
+
     # TODO: right now we flip and rotate to universal frame configuration
     # when master frames are reduced, so for flats we need to
     # account for that here. Consider flipping the raw frames instead
@@ -35,7 +41,7 @@ def normalize_spectral_response(medianflat):
     if detector_params["dispersion"]["spectral_dir"] == "x":
 
         # extract the spectrum of the central 5 rows of the frame
-        middle_row = y_size // 2
+        middle_row = (y_size // 2) + middle_offset
         spectrum = np.mean(medianflat[middle_row - 2 : middle_row + 2, :], axis=0)
         spectral_array = np.arange(x_size)
 
@@ -47,7 +53,7 @@ def normalize_spectral_response(medianflat):
     else:
 
         # extract the spectrum of the central 5 rows of the frame
-        middle_row = x_size // 2
+        middle_row = (x_size // 2) + middle_offset
         spectrum = np.mean(medianflat[:, middle_row - 2 : middle_row + 2], axis=1)
         spectral_array = np.arange(y_size)
 

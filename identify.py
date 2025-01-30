@@ -35,7 +35,7 @@ from numpy.polynomial import Chebyshev
 from astropy.io import fits
 
 from logger import logger
-from parser import output_dir, detector_params, instrument_params
+from parser import output_dir, detector_params, instrument_params, wavecalib_params
 
 
 def NN_mod_gaussian(x, bg, mu, sigma, logamp):
@@ -429,9 +429,11 @@ class GraphicInterface(QMainWindow):
         if arc_fname:
             self.arc_fname = arc_fname
             raw_data = fits.getdata(arc_fname)
-
-            ilow = raw_data.shape[0] // 2 - 49 
-            ihigh = raw_data.shape[0] // 2 + 51
+            #the offset is used if the middle of detector is not a good
+            # place to take a sample of the arc lines
+            middle_cut_offset = wavecalib_params["offset_middle_cut"]
+            ilow = raw_data.shape[0] // 2 - 1 + middle_cut_offset 
+            ihigh = raw_data.shape[0] // 2 + 1 + middle_cut_offset
             self.arc1d = np.sum(raw_data[ilow:ihigh, :], axis=0)
             self.pix = create_pixel_array()
             self.ax.lines[0].set_data(self.pix, self.arc1d)

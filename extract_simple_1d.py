@@ -90,15 +90,17 @@ def extract_object_simple(trace_data, skysubbed_frame):
         # sum around FWHM
 
         # define the aperture
-        aperture = RectangularAperture((pixel_coord, obj_center), fwhm, fwhm)
+        aperture = RectangularAperture((pixel_coord, obj_center), 1, fwhm)
 
         # extract the spectrum
         spec_sum = aperture.do_photometry(skysubbed_data)
-        spec_sum = spec_sum[0][0]
+        spec_sum_counts = spec_sum[0][0]
+        #spec_var = spec_sum[0][1]
 
-        spec.append(spec_sum)
-        # dummy for now
-        spec_var.append(spec_sum)
+        spec.append(spec_sum_counts)
+        spec_var.append(spec_sum_counts)
+        
+
 
     plot_trace_QA(skysubbed_data, pixel, center, FWHM, skysubbed_frame)
 

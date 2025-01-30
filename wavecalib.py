@@ -375,7 +375,12 @@ def trace_tilts(pixel_array, wavelength_array, master_arc, fwhm_mean):
 
     # get detector shape parameters
     N_ROWS = master_arc[0].data.shape[0]
-    center_row = N_ROWS // 2
+    
+    #the offset is needed if the middle of the detector is not a good place
+    # to take a sample
+    center_row_offset = wavecalib_params["offset_middle_cut"]
+    
+    center_row = (N_ROWS // 2) + center_row_offset
     spacial_coords = np.arange(N_ROWS)
 
     # get the tolerance for the RMS of the tilt line fit
@@ -683,7 +688,11 @@ def reidentify(pixnumber, wavelength, master_arc):
     # we extract the arc spectrum from the middle of master arc
     # +/- 2 pixels, as we assume the variation in tilts there is negligible
 
-    middle_row = master_arc[0].data.shape[0] // 2
+    # offset is needed if the mddle of the detector is not a good place
+    # to take a sample
+    middle_row_offset = wavecalib_params["offset_middle_cut"]
+
+    middle_row = (master_arc[0].data.shape[0] // 2) + middle_row_offset
 
     # limits of the slice
     lower_cut, upper_cut = middle_row - 2, middle_row + 2
@@ -1063,13 +1072,7 @@ def construct_wavelen_map(wavelen_fit, tilt_fit, original_orientation=False):
 
     X, Y = np.meshgrid(spectral_line, spacial_line)
 
-    time_start = time.time()
-
     map = wavelength_sol(X, Y, wavelen_fit, tilt_fit)
-
-    print(
-        f"\n\n\nTIME IT TOOK FOR EVALUATING THE WAVELENgtH MAP {time.time() - time_start}\n\n\n"
-    )
 
     return map
 
