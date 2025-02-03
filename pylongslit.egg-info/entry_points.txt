@@ -1,0 +1,2 @@
+[console_scripts]
+pylongslit_bias = pylongslit.mkspecbias:run_bias
