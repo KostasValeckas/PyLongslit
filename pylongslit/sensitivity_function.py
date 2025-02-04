@@ -1,15 +1,11 @@
-from .logger import logger
+import argparse
 import numpy as np
-from .parser import output_dir, standard_params, sens_params, flux_params
-from .utils import list_files
 import os
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
 from numpy.polynomial.chebyshev import chebfit, chebval
 import pickle
-from .utils import get_filenames, show_1d_fit_QA, load_spec_data
 from matplotlib.widgets import Slider
-
 
 def read_sensfunc_params():
     """
@@ -30,6 +26,8 @@ def read_sensfunc_params():
         Path to the reference spectrum of the standard star.
     """
 
+    from pylongslit.parser import standard_params
+
     exptime = standard_params["exptime"]
     airmass = standard_params["airmass"]
     star_name = standard_params["starname"]
@@ -39,6 +37,10 @@ def read_sensfunc_params():
 
 
 def load_standard_star_spec():
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import load_spec_data
 
     spectra = load_spec_data("standard")
 
@@ -77,6 +79,10 @@ def load_ref_spec(file_path):
         Flux of the reference spectrum in AB Magnitude units.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir, standard_params, sens_params, flux_params
+    from pylongslit.utils import show_1d_fit_QA
+
     logger.info("Loading standard star reference spectrum...")
     try:
         data = np.loadtxt(file_path)
@@ -94,6 +100,10 @@ def load_ref_spec(file_path):
 
 
 def load_extinction_data():
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir, flux_params
+
     # load extinction file - should be AB magnitudes / air mass
     extinction_file_name = flux_params["path_extinction_curve"]
 
@@ -177,6 +187,8 @@ def estimate_transmission_factor(
     transmission_factor : numpy.ndarray
         Transmission factor of the atmosphere at the given wavelength.
     """
+
+    from pylongslit.logger import logger
 
     logger.info("Estimating the transmission factor of the atmosphere...")
 
@@ -276,6 +288,7 @@ def refrence_counts_to_flux(
     conv_factors : numpy.ndarray
         Conversion factors between counts and flux across the spectrum.
     """
+    from pylongslit.parser import standard_params
 
     # Ensure the wavelength is within the range of ext_wave
     if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
@@ -337,6 +350,8 @@ def fit_sensfunc(wavelength, sens_points):
     coeff : numpy.ndarray
         Coefficients of the Chebyshev polynomial fit to the conversion factors.
     """
+    from pylongslit.parser import sens_params
+    from pylongslit.utils import show_1d_fit_QA
     # Load chebyshev degree
     fit_degree = sens_params["fit_order"]
 
@@ -441,6 +456,8 @@ def flux_standard_QA(
     This is done for QA purposes in order to check the validity of the sensitivity function.
     """
 
+    from pylongslit.parser import standard_params
+
     # Ensure the wavelength is within the range of ext_wave
     if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
         counts = counts[
@@ -491,6 +508,9 @@ def flux_standard_QA(
 
 def write_sensfunc_to_disc(coeff):
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
     logger.info("Writing sensitivity function coefficients to disk...")
 
     os.chdir(output_dir)
@@ -504,6 +524,10 @@ def write_sensfunc_to_disc(coeff):
 
 
 def load_sensfunc_from_disc():
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
     logger.info("Loading sensitivity function coefficients from disk...")
 
     os.chdir(output_dir)
@@ -517,6 +541,8 @@ def load_sensfunc_from_disc():
 
 
 def run_sensitivity_function():
+
+    from pylongslit.logger import logger
 
     logger.info("Staring the process of producing the sensitivity function...")
 
@@ -570,6 +596,18 @@ def run_sensitivity_function():
     logger.info("Sensitivity function procedure done.")
     print("----------------------------\n")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit sensitivity function procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_sensitivity_function()
+
 
 if __name__ == "__main__":
-    run_sensitivity_function()
+    main()

@@ -1,9 +1,4 @@
 import numpy
-from astropy.io import fits
-from .logger import logger
-from .parser import detector_params, bias_params, output_dir
-from .utils import FileList, check_dimensions, open_fits, write_to_fits
-from .utils import show_flat
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
 
@@ -19,6 +14,9 @@ def show_overscan():
     Fetches a raw flat frame from the user defined directory
     and displays the overscan region overlayed on it.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params
+    from pylongslit.utils import show_flat
 
     logger.info(
         "Showing the overscan region on a raw flat frame for user inspection..."
@@ -73,6 +71,9 @@ def detect_overscan_direction():
         Possible values are "horizontal" or "vertical".
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params
+
     logger.info("Detecting the direction of the overscan region...")
 
     # Extract the overscan region
@@ -109,6 +110,9 @@ def check_overscan():
     A simple bool return to checck whether the user wants to use the overscan subtraction or not.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params
+
     use_overscan = detector_params["overscan"]["use_overscan"]
 
     if not use_overscan:
@@ -136,6 +140,9 @@ def subtract_overscan_from_frame(image_data):
     image_data : numpy.ndarray
         The frame with the overscan region subtracted.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params
 
     logger.info(f"Subtracting overscan...")
 

@@ -1,22 +1,13 @@
-from .logger import logger
-from astropy.io import fits
 from astropy.modeling.models import Gaussian1D
-from .parser import extract_params, output_dir
 import numpy as np
 from astropy.stats import gaussian_fwhm_to_sigma, gaussian_sigma_to_fwhm
-from .utils import open_fits, choose_obj_centrum, get_skysub_files
 import matplotlib.pyplot as plt
 from astropy.modeling.fitting import LevMarLSQFitter
-from astropy.modeling import Fittable1DModel, Parameter
-from astropy.modeling.models import Const1D
 import matplotlib.pyplot as plt
-from .utils import hist_normalize
 from numpy.polynomial.chebyshev import chebfit, chebval
-from .utils import estimate_sky_regions
-from .utils import show_1d_fit_QA
 import os
 from tqdm import tqdm
-
+import argparse
 
 def choose_obj_centrum_obj_trace(file_list):
     """
@@ -33,6 +24,8 @@ def choose_obj_centrum_obj_trace(file_list):
         A dictionary containing the user clicked object centers.
         Format: {filename: (x, y)}
     """
+
+    from pylongslit.utils import choose_obj_centrum
 
     # used for more readable plotting code
     plot_title = (
@@ -110,6 +103,7 @@ def find_obj_one_column(x, val, spacial_center, FWHM_AP, column_index):
     good_fit : bool
         Whether the fit was successful or not.
     """
+    from pylongslit.utils import estimate_sky_regions
 
     # get the area only around the object
     refined_center, sky_left, sky_right = estimate_sky_regions(
@@ -286,6 +280,8 @@ def interactive_adjust_obj_limits(
         The index where the object ends.
     """
 
+    from pylongslit.utils import hist_normalize
+
     SNR_threshold = SNR_initial_guess
 
     # estimate the start and end index of the object
@@ -435,6 +431,7 @@ def show_obj_trace_QA(
     filename : str
         The filename of the observation.
     """
+    from pylongslit.utils import show_1d_fit_QA
 
     # plot the result of center finding for QA
     show_1d_fit_QA(
@@ -499,6 +496,10 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
     fwhm_fit_pix : array
         The fitted FWHMs.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import extract_params, output_dir
+    from pylongslit.utils import open_fits
 
     # get initial guess for SNR threshold
     SNR_initial_guess = extract_params["SNR"]
@@ -627,6 +628,9 @@ def find_obj(center_dict):
         Format: {filename: (good_x, centers_fit_val, fwhm_fit_val)}
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import extract_params
+
     # extract the user-guess for the FWHM of the object
     FWHM_AP = extract_params["FWHM_AP"]
 
@@ -656,6 +660,9 @@ def write_obj_trace_results(obj_dict):
         A dictionary containing the results of the object finding routine.
         Format: {filename: (good_x, centers_fit_val, fwhm_fit_val)}
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     for filename, (good_x, centers_fit_val, fwhm_fit_val) in obj_dict.items():
 
@@ -687,6 +694,10 @@ def run_obj_trace():
     """
     Driver method for the object tracing routine.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.utils import get_skysub_files
+
     logger.info("Starting object tracing routine...")
 
     filenames = get_skysub_files()
@@ -701,6 +712,18 @@ def run_obj_trace():
     logger.info("Object tracing routine finished.")
     print("----------------------------\n")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit object-tracing procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_obj_trace()
+
 
 if __name__ == "__main__":
-    run_obj_trace()
+    main()

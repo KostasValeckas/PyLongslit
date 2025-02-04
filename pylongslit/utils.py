@@ -4,16 +4,13 @@ Utility functions for PyLongslit.
 For code that is useful in multiple modules.
 """
 
-from .logger import logger
 import os
 from astropy.io import fits
 import numpy as np
-from .parser import detector_params, flat_params, science_params, output_dir, data_params
 import matplotlib.pyplot as plt
-from matplotlib.patches import Rectangle
 from skimage import exposure
-from .parser import skip_science_or_standard_bool
 from numpy.polynomial.chebyshev import chebval
+
 
 
 class FileList:
@@ -38,6 +35,8 @@ class FileList:
         num_files : int
             The number of files in the directory.
         """
+
+        from pylongslit.logger import logger
 
         self.path = path
 
@@ -138,6 +137,7 @@ def get_filenames(starts_with=None, ends_with=None, contains=None):
     filenames : list
         A list of filenames that match the criteria.
     """
+    from pylongslit.parser import output_dir
 
     filenames = os.listdir(output_dir)
 
@@ -184,6 +184,8 @@ def check_dimensions(FileList: FileList, x, y):
     Prints a message to the logger if the dimensions do not match,
     and exits the program.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import data_params
 
     for file in FileList:
 
@@ -251,6 +253,9 @@ def show_flat():
     ´mkspecflat.show_flat_norm_region()´
     for sanity checks of the user defined regions.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import data_params, flat_params
 
     logger.info("Opening the first file in the flat directory...")
     # read the names of the flat files from the directory
@@ -345,6 +350,9 @@ def check_rotation():
         If True, the raw frames need to be flipped.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params
+
     disp_ax = detector_params["dispersion"]["spectral_dir"]
     disp_dir = detector_params["dispersion"]["wavelength_grows_with_pixel"]
 
@@ -405,6 +413,8 @@ def flip_and_rotate(frame_data, transpose, flip, inverse=False):
         The flipped and rotated data.
     """
 
+    from pylongslit.logger import logger
+
     if transpose:
         logger.info("Rotating image to make x the spectral direction...")
         frame_data = np.rot90(frame_data) if not inverse else np.rot90(frame_data, k=-1)
@@ -433,6 +443,9 @@ def get_file_group(*prefixes):
         A list of reduced files.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
     file_list = os.listdir(output_dir)
 
     files = [file for file in file_list if file.startswith(prefixes)]
@@ -456,6 +469,7 @@ def get_skysub_files(only_science=False):
     filenames : list
         A list of filenames of the skysubtracted files.
     """
+    from pylongslit.logger import logger
 
     logger.info("Getting skysubtracted files...")
 
@@ -495,6 +509,8 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
         A dictionary containing the chosen centers of the objects.
         Format: {filename: (x, y)}
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     logger.info("Starting object-choosing GUI. Follow the instructions on the plots.")
 
@@ -708,6 +724,9 @@ def load_spec_data(group="science"):
         Options: "science", "standard".
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
     if group != "science" and group != "standard":
         logger.error('The "group" parameter must be either "science" or "standard".')
         exit()
@@ -743,6 +762,9 @@ def load_spec_data(group="science"):
 
 def load_fluxed_spec():
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
     filenames = get_filenames(starts_with="1d_fluxed_science")
 
     if len(filenames) == 0:
@@ -770,6 +792,10 @@ def load_fluxed_spec():
 
 def load_bias():
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
+
     try:
 
         BIASframe = open_fits(output_dir, "master_bias.fits")
@@ -787,6 +813,9 @@ def load_bias():
 
 
 def get_bias_and_flats(skip_bias=False):
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     if not skip_bias:
 
@@ -832,6 +861,9 @@ def get_reduced_frames():
     reduced_files : list
         A list of the reduced files.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import skip_science_or_standard_bool
+
     if skip_science_or_standard_bool == 0:
         logger.error(
             "Both skip_science and skip_standard parameters are set to true "

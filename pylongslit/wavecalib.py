@@ -1,31 +1,20 @@
-from .logger import logger
-from .parser import wavecalib_params, output_dir, detector_params
 import numpy as np
 from astropy.table import Table
-from .utils import open_fits
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 from astropy.stats import gaussian_fwhm_to_sigma, gaussian_sigma_to_fwhm
-from astropy.modeling.models import Chebyshev2D, Const1D, Chebyshev1D
+from astropy.modeling.models import Chebyshev2D, Const1D
 from astropy.modeling.fitting import LevMarLSQFitter
 from numpy.polynomial.chebyshev import chebfit, chebval
-from .utils import write_to_fits
-from .utils import show_1d_fit_QA, wavelength_sol
 import pickle
 import os
-from tqdm import tqdm
-from concurrent.futures import ProcessPoolExecutor, as_completed
-import time
-from scipy.optimize import root
-from scipy.optimize import minimize
 from astropy.modeling import Fittable1DModel, Parameter
 import numpy as np
-from scipy.signal import find_peaks
 from sklearn.metrics import r2_score
 from itertools import chain
 import warnings
 import astropy.modeling.fitting
-
+import argparse
 
 class GeneralizedNormal1D(Fittable1DModel):
     """
@@ -58,6 +47,9 @@ def read_pixtable():
         Wavelengths corresponding to the pixel numbers.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import wavecalib_params
+
     path_to_pixtable = wavecalib_params["pixtable"]
 
     logger.info(f"Trying to read pixtable table from {path_to_pixtable}...")
@@ -87,6 +79,10 @@ def get_master_arc():
         Master arc image.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import open_fits
+
     logger.info("Trying to fetch the master arc frame...")
 
     try:
@@ -106,6 +102,8 @@ def arc_trace_warning(message):
     A helper method for logging warnings during the arc tracing.
     Mostly to avoid code repetition.
     """
+
+    from pylongslit.logger import logger
 
     logger.warning(message)
     logger.warning(
@@ -128,6 +126,7 @@ def update_model_parameters(g_model, g_fit):
     g_fit : `~astropy.modeling.models.GeneralizedNormal1D`
         Generalized normal distribution model fitted to the data.
     """
+    from pylongslit.parser import wavecalib_params
 
     g_model.amplitude_0 = g_fit.amplitude_0.value
     g_model.mean_0 = g_fit.mean_0.value
@@ -220,6 +219,9 @@ def trace_line_tilt(
     g_model,
     FWHM_guess
 ):
+    
+    from pylongslit.logger import logger
+    from pylongslit.parser import wavecalib_params
 
     # container for fit parameters.
     # Sometimes used for initial guesses for the next row.
@@ -371,6 +373,9 @@ def trace_tilts(pixel_array, wavelength_array, master_arc, fwhm_mean):
     """
     Trace the tilts of the lines in the arc spectrum.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import wavecalib_params
+
     logger.info("Tracing the tilts of the lines in the arc spectrum...")
 
     # get detector shape parameters
@@ -668,6 +673,9 @@ def reidentify(pixnumber, wavelength, master_arc):
     line_REID : dict
         Reidentified lines.
     """
+    from pylongslit.parser import wavecalib_params
+    from pylongslit.utils import show_1d_fit_QA
+
     # tolerance for pixel shift from hand-identified lines to Gaussian fit
     tol_mean = wavecalib_params["TOL_MEAN"]
     # rough guess of FWHM of lines in pixels
@@ -907,6 +915,9 @@ def reidentify(pixnumber, wavelength, master_arc):
 
 def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import wavecalib_params, detector_params
+
     logger.info("Preparing to fit a 2d polynomial tilt through whole delector...")
 
     # extract the polynomial order parameter for the fit in spectral direction
@@ -996,6 +1007,9 @@ def construct_detector_map(fit2D_REID):
         A detector array with the fit evaluated at every pixel.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params
+
     logger.info("Constructing the detector map...")
 
     N_SPACIAL = (
@@ -1054,6 +1068,9 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
 
 
 def construct_wavelen_map(wavelen_fit, tilt_fit, original_orientation=False):
+
+    from pylongslit.parser import detector_params
+    from pylongslit.utils import wavelength_sol
 
     N_SPACIAL = (
         detector_params["xsize"]
@@ -1131,6 +1148,10 @@ def write_waveimage_to_disc(wavelength_map, master_arc):
         Wavelength map.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import write_to_fits
+
     logger.info("Writing wavelength calibration results to disc...")
 
     # steal header from master_arc
@@ -1141,6 +1162,9 @@ def write_waveimage_to_disc(wavelength_map, master_arc):
 
 
 def write_wavelen_fit_to_disc(fit1d):
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     logger.info("Writing wavelen fit results to disc...")
 
@@ -1162,6 +1186,9 @@ def write_wavelen_fit_to_disc(fit1d):
 
 def write_tilt_fit_to_disc(fit2D_REID):
     """ """
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
 
     logger.info("Writing tilt fit results to disc...")
 
@@ -1191,6 +1218,9 @@ def write_good_tilt_lines_to_disc(good_lines):
         Good tilt lines.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+
     logger.info("Writing good tilt lines to disc...")
 
     # change to output directory dir
@@ -1216,6 +1246,8 @@ def get_wavelen_fit_from_disc():
     fit1d : `~astropy.modeling.models.Chebyshev1D`
         1D fit model.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     logger.info("Loading 1D wavelength solution from disc...")
 
@@ -1243,6 +1275,8 @@ def get_tilt_fit_from_disc():
     fit2D_REID : `~astropy.modeling.models.Chebyshev2D`
         2D fit model.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     logger.info("Loading 2D tilt solution from disc...")
 
@@ -1270,6 +1304,8 @@ def get_good_tilt_lines_from_disc():
     good_lines : dict
         Good tilt lines.
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     logger.info("Loading good tilt lines from disc...")
 
@@ -1323,6 +1359,8 @@ def run_wavecalib():
     """
     Run the wavelength calibration routine.
     """
+    from pylongslit.logger import logger
+
     logger.info("Starting wavelength calibration routine...")
 
     pixnumber, wavelength = read_pixtable()
@@ -1368,8 +1406,19 @@ def run_wavecalib():
     logger.info("Wavelength calibration routine done.")
     print("\n-----------------------------\n")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit wavecalibration procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
 
-#
-if __name__ == "__main__":
+    args = parser.parse_args()
+    
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+    
     run_wavecalib()
-    # trace_tilts()
+
+
+if __name__ == "__main__":
+    main()
+

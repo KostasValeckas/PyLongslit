@@ -14,7 +14,7 @@
         "gain": 0.16,
         "read_out_noise": 4.3,
         "overscan" : {
-            "use_overscan": false,
+            "use_overscan": true,
             "overscan_x_start": 0,
             "overscan_x_end": 499,
             "overscan_y_start": 0,
@@ -87,7 +87,12 @@
         "arc_dir": "/home/kostas/Documents/PyLongslit/raw_alt/arcs"
     },
 
+    "combine_arcs" : {
+        "skip_bias": false
+    },
+
     "wavecalib" : {
+        "offset_middle_cut": 0,
         "pixtable": "/home/kostas/Documents/PyLongslit/output/idarc.dat",
         "FWHM": 6,
         "TOL_MEAN": 3,

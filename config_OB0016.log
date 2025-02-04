@@ -1,0 +1,5 @@
+2025-02-04 20:19:34 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_OB0016.log.
+2025-02-04 20:19:34 - PyLongslit - ERROR - parser.py:12 - Config file not found.
+2025-02-04 20:19:34 - PyLongslit - ERROR - parser.py:13 - Make sure a config file exists. 
+See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/

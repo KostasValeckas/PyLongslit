@@ -331,3 +331,6 @@ PyLongslit - INFO - mkspecbias.py:78 - Master bias frame written to disc at in /
 2025-02-04 20:09:11 - PyLongslit - INFO - mkspecbias.py:70 - Bias frames processed.
 2025-02-04 20:09:11 - PyLongslit - INFO - mkspecbias.py:71 - Attaching header and writing to disc...
 2025-02-04 20:09:12 - PyLongslit - INFO - mkspecbias.py:78 - Master bias frame written to disc at in /home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/out, filename master_bias.fits
+2025-02-04 20:19:20 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_OB0001.log.
+2025-02-04 20:19:20 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-04 20:19:20 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.

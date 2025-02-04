@@ -11,15 +11,22 @@ setup(
     entry_points={             # Define your CLI tools here
         'console_scripts': [
             'pylongslit_check_config = pylongslit.check_config:main',
-            'pylongslit_bias = pylongslit.mkspecbias:main',  
+            'pylongslit_bias = pylongslit.mkspecbias:main', 
+            'pylongslit_wavecalib = pylongslit.wavecalib:main',  
             'pylongslit_identify_arcs = pylongslit.identify:main',
             'pylongslit_combine_arcs = pylongslit.combine_arcs:main',
             'pylongslit_flat = pylongslit.mkspecflat:main',
             'pylongslit_crr = pylongslit.crremoval:main',
             'pylongslit_reduce = pylongslit.reduce:main',
+            'pylongslit_subtract_background = pylongslit.subtract_background:main',
             'pylongslit_crop = pylongslit.crop:main',
+            'pylongslit_sky_subtract = pylongslit.skysubtract:main',
+            'pylongslit_objtrace = pylongslit.obj_trace:main',
+            'pylongslit_objtrace_cloned = pylongslit.obj_trace_clone:main',
+            'pylongslit_objtrace_manual = pylongslit.obj_trace_manual:main',
             'pylongslit_extract_1d = pylongslit.extract_1d:main',
             'pylongslit_extract_simple_1d = pylongslit.extract_simple_1d:main',
+            'pylongslit_sensitivity_function = pylongslit.sensitivity_function:main',
             'pylongslit_flux = pylongslit.flux_calibrate:main',
             'pylongslit_combine_spec = pylongslit.combine:main'
         ],

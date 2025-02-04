@@ -52,7 +52,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir):
 
     if use_overscan:
 
-        frame = subtract_overscan_from_frame(frame, overscan_dir)
+        frame = subtract_overscan_from_frame(frame)
         normalized_frame = hist_normalize(frame)
         plt.imshow(normalized_frame, cmap="gray")
         plt.show()
@@ -148,13 +148,11 @@ def reduce_all():
     use_overscan = detector_params["overscan"]["use_overscan"]
 
     if use_overscan:
-        logger.warning("Using overscan subtraction instead of master bias.")
-        logger.warning("If this is not intended, check the config file.")
 
         # get the overscan direction
         overscan_dir = detect_overscan_direction()
 
-        BIAS, FLAT = get_bias_and_flats(skip_bias=True)
+        BIAS, FLAT = get_bias_and_flats(skip_bias=False)
 
         print("BIAS", BIAS)
         print("FLAT", FLAT)

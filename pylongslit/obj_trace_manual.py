@@ -1,24 +1,8 @@
-from .logger import logger
-from astropy.io import fits
-from astropy.modeling.models import Gaussian1D
-from .parser import extract_params, output_dir
 import numpy as np
-from astropy.stats import gaussian_fwhm_to_sigma, gaussian_sigma_to_fwhm
-from .utils import open_fits, choose_obj_centrum, get_skysub_files
 import matplotlib.pyplot as plt
-from astropy.modeling.fitting import LevMarLSQFitter
-from astropy.modeling import Fittable1DModel, Parameter
-from astropy.modeling.models import Const1D
-import matplotlib.pyplot as plt
-from .utils import hist_normalize
 from numpy.polynomial.chebyshev import chebfit, chebval
-from .utils import estimate_sky_regions
-from .utils import show_1d_fit_QA
 import os
-from tqdm import tqdm
-
-
-
+import argparse
 
 def find_obj_frame_manual(filename, FWHM_AP):
     """
@@ -54,6 +38,10 @@ def find_obj_frame_manual(filename, FWHM_AP):
     fwhm_fit_pix : array
         The fitted FWHMs.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import extract_params, output_dir
+    from pylongslit.utils import open_fits, hist_normalize, show_1d_fit_QA
 
  
     # get polynomial degree for fitting
@@ -197,6 +185,9 @@ def find_obj(filenames):
         Format: {filename: (good_x, centers_fit_val, fwhm_fit_val)}
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import extract_params
+
     # extract the user-guess for the FWHM of the object
     FWHM_AP = extract_params["FWHM_AP"]
 
@@ -218,6 +209,10 @@ def run_obj_trace():
     """
     Driver method for the object tracing routine.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.utils import get_skysub_files
+
     logger.info("Starting object tracing routine...")
 
     filenames = get_skysub_files()
@@ -227,6 +222,18 @@ def run_obj_trace():
     logger.info("Manual object tracing routine finished.")
     print("----------------------------\n")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit manual object tracing procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_obj_trace()
+
 
 if __name__ == "__main__":
-    run_obj_trace()
+    main()

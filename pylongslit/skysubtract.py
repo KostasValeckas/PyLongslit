@@ -1,15 +1,9 @@
-from .logger import logger
-from .parser import skip_science_or_standard_bool
-from .parser import output_dir, extract_params
-from .utils import list_files, hist_normalize, open_fits, write_to_fits
-import os
 import matplotlib.pyplot as plt
 import numpy as np
 from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
-from .utils import show_frame, get_file_group, choose_obj_centrum, estimate_sky_regions
-from .utils import refine_obj_center, get_reduced_frames
 from tqdm import tqdm
+import argparse
 
 
 def choose_obj_centrum_sky(file_list):
@@ -27,6 +21,8 @@ def choose_obj_centrum_sky(file_list):
         A dictionary containing the user clicked object centers.
         Format: {filename: (x, y)}
     """
+
+    from pylongslit.utils import choose_obj_centrum
 
     # used for more readable plotting code
     plot_title = (
@@ -77,6 +73,8 @@ def fit_sky_one_column(
     sky_fit : array
         The fitted sky background (evaluated fit).
     """
+
+    from pylongslit.utils import estimate_sky_regions
 
     # sky region for this column
     _, sky_left, sky_right = estimate_sky_regions(
@@ -149,6 +147,8 @@ def fit_sky_QA(
         Default is (18, 12).
     """
 
+    from pylongslit.utils import estimate_sky_regions
+
     refined_center, sky_left, sky_right = estimate_sky_regions(
         slice_spec, spatial_center_guess, FWHM_AP
     )
@@ -215,6 +215,9 @@ def make_sky_map(
         Sky-background fit evaluated at every pixel
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.utils import show_frame
+
     # get detector shape
     n_spacial = data.shape[0]
     n_spectal = data.shape[1]
@@ -262,6 +265,9 @@ def remove_sky_background(center_dict):
         A dictionary containing the sky-subtracted frames.
         Format: {filename: data}
     """
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir, extract_params
+    from pylongslit.utils import open_fits, show_frame
 
     # user-defined paramteres relevant for sky-subtraction
 
@@ -341,6 +347,10 @@ def write_sky_subtracted_frames_to_disc(subtracted_frames):
         Format: {filename: data}
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import open_fits, write_to_fits
+
     for filename, data in subtracted_frames.items():
 
         # steal header from the original file
@@ -359,6 +369,9 @@ def run_sky_subtraction():
     Driver for the sky-subtraction process.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.utils import get_reduced_frames
+
     logger.info("Starting the 1d extraction process...")
 
     reduced_files = get_reduced_frames()
@@ -373,5 +386,18 @@ def run_sky_subtraction():
     print("\n------------------------------------")
 
 
-if __name__ == "__main__":
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit sky-subtraction procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
     run_sky_subtraction()
+
+
+if __name__ == "__main__":
+    main()

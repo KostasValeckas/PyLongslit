@@ -1,11 +1,12 @@
-from .parser import obj_trace_clone_params
 import numpy as np
 import matplotlib.pyplot as plt
-from .utils import open_fits, show_frame, hist_normalize
-from .logger import logger
+import argparse
+
 
 
 def read_obj_trace_results():
+    from pylongslit.parser import obj_trace_clone_params
+    
     file_path = obj_trace_clone_params["archived_spec_root"]
 
     pixel, center, fwhm = np.loadtxt(file_path, unpack=True)
@@ -20,6 +21,9 @@ def read_obj_trace_results():
 
 def load_skysubbed_frame():
 
+    from pylongslit.utils import open_fits
+    from pylongslit.parser import obj_trace_clone_params
+
     file_path = obj_trace_clone_params["skysubbed_frame_root"]
 
     hdul = open_fits("", file_path)
@@ -30,6 +34,8 @@ def load_skysubbed_frame():
 
 
 def overlay_trace(pixel, center, fwhm_guess, skysubbed_frame):
+
+    from pylongslit.utils import hist_normalize
 
     normalized_skysub = hist_normalize(skysubbed_frame)
 
@@ -68,6 +74,9 @@ def overlay_trace(pixel, center, fwhm_guess, skysubbed_frame):
 
 def write_cloned_trace_to_file(pixel, center, fwhm):
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import obj_trace_clone_params
+
     filename = obj_trace_clone_params["skysubbed_frame_root"]
 
     output_file = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
@@ -95,6 +104,19 @@ def run_obj_trace_clone():
 
     write_cloned_trace_to_file(pixel, corrected_centers, fwhm)
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit cloned object trace procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_obj_trace_clone()
+
 
 if __name__ == "__main__":
-    run_obj_trace_clone()
+    main()
+    
