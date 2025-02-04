@@ -1,16 +1,9 @@
 import numpy
-import matplotlib.pyplot as plt
-from .logger import logger
-from .parser import detector_params, bias_params, output_dir, data_params
-from .utils import FileList, check_dimensions, open_fits, write_to_fits
-from .utils import list_files
-from .overscan import check_overscan, subtract_overscan_from_frame
-
+import argparse
 
 """
 Module for creating a master bias frame from raw bias frames.
 """
-
 
 def run_bias():
     """
@@ -20,7 +13,12 @@ def run_bias():
     'bias_dir' parameter in the 'config.json' file. It then stacks the frames and calculates the median value at each
     pixel. The final master bias frame is written to disc in the output directory.
     """
-
+    
+    from pylongslit.parser import detector_params, bias_params, output_dir, data_params
+    from pylongslit.logger import logger
+    from pylongslit.utils import FileList, check_dimensions, open_fits, write_to_fits
+    from pylongslit.utils import list_files
+    from pylongslit.overscan import check_overscan, subtract_overscan_from_frame
     # Extract the detector parameters
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
@@ -82,5 +80,18 @@ def run_bias():
     )
 
 
-if __name__ == "__main__":
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit bias procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+    
     run_bias()
+
+
+if __name__ == "__main__":
+    main()

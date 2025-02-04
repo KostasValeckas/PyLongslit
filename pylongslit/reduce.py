@@ -1,15 +1,7 @@
 import numpy as np
 import glob as glob
-from astropy.io import fits
-from .parser import detector_params, output_dir, skip_science_or_standard_bool
-from .parser import science_params, standard_params, arc_params
-from .utils import FileList, open_fits, write_to_fits, list_files, hist_normalize
-from .logger import logger
 import matplotlib.pyplot as plt
-from .overscan import subtract_overscan_from_frame, detect_overscan_direction
-import os
-from matplotlib.patches import Rectangle
-from .utils import check_rotation, flip_and_rotate, get_filenames, get_bias_and_flats
+import argparse
 
 """
 Module for reducing (bias subtraction, flat division) and combining 
@@ -31,6 +23,9 @@ def read_crr_files():
         A list of cosmic-ray removed standard star files.
     """
 
+    from pylongslit.utils import get_filenames
+    from pylongslit.logger import logger
+
     science_files = get_filenames(starts_with="crr_science")
     standard_files = get_filenames(starts_with="crr_std")
 
@@ -50,6 +45,10 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir):
     Performs overscan subtraction, bias subtraction
     and flat fielding of a single frame.
     """
+
+    from pylongslit.utils import  hist_normalize
+    from pylongslit.logger import logger
+    from pylongslit.overscan import subtract_overscan_from_frame
 
     if use_overscan:
 
@@ -92,6 +91,11 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir):
         Whether to use the overscan subtraction or not.
     """
 
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import  open_fits, write_to_fits
+    from pylongslit.utils import check_rotation, flip_and_rotate
+    from pylongslit.logger import logger
+
     for file in file_list:
 
         logger.info(f"Reducing frame {file} ...")
@@ -133,6 +137,13 @@ def reduce_all():
     Driver for the reduction of all observations (standard star, science, arc lamp)
     in the output directory.
     """
+
+
+    from pylongslit.parser import detector_params, output_dir, skip_science_or_standard_bool
+    from pylongslit.utils import  list_files
+    from pylongslit.utils import get_bias_and_flats
+    from pylongslit.logger import logger
+    from pylongslit.overscan import detect_overscan_direction
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
@@ -179,6 +190,18 @@ def reduce_all():
 
         reduce_group(science_files, BIAS, FLAT, use_overscan, overscan_dir)
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit cosmic-ray removal procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+    
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+    
+    reduce_all()
+
 
 if __name__ == "__main__":
-    reduce_all()
+    main()

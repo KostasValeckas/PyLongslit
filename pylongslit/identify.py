@@ -17,6 +17,7 @@ import os
 import sys
 import numpy as np
 import matplotlib
+import argparse
 
 matplotlib.use("Qt5Agg")
 from matplotlib.backends.backend_qt5agg import (
@@ -34,9 +35,6 @@ from scipy.optimize import curve_fit
 from numpy.polynomial import Chebyshev
 from astropy.io import fits
 
-from .logger import logger
-from .parser import output_dir, detector_params, instrument_params, wavecalib_params
-
 
 def NN_mod_gaussian(x, bg, mu, sigma, logamp):
     """One-dimensional modified non-negative Gaussian profile."""
@@ -53,6 +51,9 @@ def create_pixel_array():
     pix_array : numpy.ndarray
         An array of pixel coordinates.
     """
+
+    from pylongslit.parser import detector_params 
+
 
     if detector_params["dispersion"]["spectral_dir"] == "x":
         pix_array = np.arange(0, detector_params["xsize"])
@@ -94,7 +95,7 @@ class ResidualView(object):
         for line in self.get_lines():
             line.set_visible(visible)
 
-    def set_scatter(self, sig):
+    def set_scatter(self, sig, scatter):
         self.u68_line.set_ydata(self.mean + sig)
         self.l68_line.set_ydata(self.mean - sig)
         self.scatter = scatter
@@ -133,11 +134,13 @@ class GraphicInterface(QMainWindow):
     def __init__(
         self,
         arc_fname="master_arc.fits",
-        output=output_dir + "/idarc.dat",
+        output="/idarc.dat",
         order_wl=3,
         parent=None,
         locked=False,
     ):
+        from pylongslit.parser import detector_params, output_dir
+        from pylongslit.logger import logger
         QMainWindow.__init__(self, parent)
         self.setWindowTitle("PyLongslit: Identify Arc Lines")
         self._main = QWidget()
@@ -145,7 +148,7 @@ class GraphicInterface(QMainWindow):
         self.pix = np.array([])
         self.arc1d = np.array([])
         self.arc_fname = arc_fname
-        self.output_fname = output
+        self.output_fname = output_dir + output
         self._fit_ref = None
         self.cheb_fit = None
         self._scatter = None
@@ -416,6 +419,7 @@ class GraphicInterface(QMainWindow):
             self.reftable.setItem(rowPosition, 1, item2)
 
     def load_spectrum(self, arc_fname=None):
+        from pylongslit.parser import wavecalib_params
         if arc_fname is False:
             current_dir = "./"
             filters = "FITS files (*.fits | *.fit)"
@@ -476,6 +480,8 @@ class GraphicInterface(QMainWindow):
                 self.close()
 
     def save_pixtable(self, fname=None):
+        from pylongslit.parser import instrument_params
+        from pylongslit.logger import logger
         if fname is False:
             current_dir = "./"
             filters = "All files (*)"
@@ -515,6 +521,7 @@ class GraphicInterface(QMainWindow):
             return False
 
     def save_wave(self, fname=None):
+        from pylongslit.parser import instrument_params
         if self.cheb_fit is None:
             return
         if fname is None:
@@ -892,11 +899,21 @@ class GraphicInterface(QMainWindow):
             self.clear_fit()
         self.set_dataview()
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit identify procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
 
-if __name__ == "__main__":
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    from pylongslit.logger import logger
+
 
     # Launch App:
-    qapp = QApplication(sys.argv)
+    qapp = QApplication([])
     app = GraphicInterface()
     logger.info(
         "See the docs at "
@@ -905,3 +922,7 @@ if __name__ == "__main__":
     )
     app.show()
     qapp.exec_()
+
+if __name__ == "__main__":
+    main()
+

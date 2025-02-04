@@ -1,2 +1,13 @@
 [console_scripts]
-pylongslit_bias = pylongslit.mkspecbias:run_bias
+pylongslit_bias = pylongslit.mkspecbias:main
+pylongslit_check_config = pylongslit.check_config:main
+pylongslit_combine_arcs = pylongslit.combine_arcs:main
+pylongslit_combine_spec = pylongslit.combine:main
+pylongslit_crop = pylongslit.crop:main
+pylongslit_crr = pylongslit.crremoval:main
+pylongslit_extract_1d = pylongslit.extract_1d:main
+pylongslit_extract_simple_1d = pylongslit.extract_simple_1d:main
+pylongslit_flat = pylongslit.mkspecflat:main
+pylongslit_flux = pylongslit.flux_calibrate:main
+pylongslit_identify_arcs = pylongslit.identify:main
+pylongslit_reduce = pylongslit.reduce:main

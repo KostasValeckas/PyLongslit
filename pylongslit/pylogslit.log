@@ -1,0 +1,53 @@
+PyLongslit - INFO - logger.py:61 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylongslit/pylogslit.log.
+PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+PyLongslit - INFO - mkspecbias.py:34 - Bias procedure running...
+PyLongslit - INFO - mkspecbias.py:35 - Using the following parameters:
+PyLongslit - INFO - mkspecbias.py:36 - xsize = 2073
+PyLongslit - INFO - mkspecbias.py:37 - ysize = 2056
+PyLongslit - INFO - mkspecbias.py:42 - Found 11 bias frames.
+PyLongslit - INFO - mkspecbias.py:43 - Files used for bias processing:
+PyLongslit - INFO - utils.py:207 - All files have the correct dimensions.
+PyLongslit - INFO - overscan.py:115 - Overscan subtraction is disabled.
+PyLongslit - INFO - overscan.py:116 - Skipping overscan subtraction...
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799808-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799808-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799809-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799809-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799810-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799810-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799811-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799811-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799812-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799812-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799813-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799813-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799814-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799814-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799815-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799815-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799816-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799816-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799817-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799817-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:60 - Processing file: 0004799818-20241004-OSIRIS-OsirisBias.fits
+PyLongslit - INFO - mkspecbias.py:72 - File 0004799818-20241004-OSIRIS-OsirisBias.fits processed.
+
+PyLongslit - INFO - mkspecbias.py:77 - Bias frames processed.
+PyLongslit - INFO - mkspecbias.py:78 - Attaching header and writing to disc...
+PyLongslit - INFO - mkspecbias.py:85 - Master bias frame written to disc at in /home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/linsed_quasars_data/bluewhale1737102147140/Kostas/GTCMULTIPLE2H-24B/OB0001/out, filename master_bias.fits
+PyLongslit - INFO - logger.py:61 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylongslit/pylogslit.log.
+PyLongslit - ERROR - parser.py:12 - Config file not found.
+PyLongslit - ERROR - parser.py:13 - Make sure a config file exists. 
+See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/

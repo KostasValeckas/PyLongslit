@@ -1,19 +1,11 @@
-from .logger import logger
-from .parser import skip_science_or_standard_bool
-from .parser import output_dir, extract_params
-from .utils import list_files, hist_normalize, open_fits, write_to_fits
-from .utils import show_frame, get_file_group, choose_obj_centrum, estimate_sky_regions
-from .utils import refine_obj_center, get_reduced_frames
-import os
 import matplotlib.pyplot as plt
-import numpy as np
-from astropy.stats import sigma_clip
-from numpy.polynomial.chebyshev import chebfit, chebval
-from tqdm import tqdm
 from matplotlib.widgets import Slider, Button
+import argparse
 
 
 def crop_image(image):
+
+    from pylongslit.utils import hist_normalize
 
     norm_image = hist_normalize(image)
 
@@ -59,6 +51,9 @@ def crop_image(image):
 
 def crop_files(files):
 
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import open_fits, write_to_fits
+
     for i, file in enumerate(files):
         hdul = open_fits(output_dir, file)
         header = hdul[0].header
@@ -71,10 +66,24 @@ def crop_files(files):
 
 def run_crop():
 
+    from pylongslit.utils import get_reduced_frames
+
     reduced_files = get_reduced_frames()
 
     crop_files(reduced_files)
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit crop procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_crop()
+
 
 if __name__ == "__main__":
-    run_crop()
+    main()

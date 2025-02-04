@@ -4,16 +4,8 @@ Won't crash - but will warn the user if some parameters
 are set in a way that might not be intended.
 """
 
-from .overscan import show_overscan
-from .parser import detector_params, bias_params, flat_params
-from .parser import science_params, standard_params, arc_params
-from .parser import check_science_and_standard
-
-from .logger import logger
-
-from .mkspecflat import show_flat_norm_region
-
 import os
+import argparse
 
 
 def check_directory(directory, dir_type, error_message, empty_message, any_errors):
@@ -41,6 +33,8 @@ def check_directory(directory, dir_type, error_message, empty_message, any_error
     any_errors : bool
         A boolean value indicating if any errors were found
     """
+
+    from pylongslit.logger import logger
 
     if not os.path.exists(directory):
         logger.warning(f"Raw {dir_type} directory {directory} does not exist.")
@@ -73,6 +67,11 @@ def check_dirs(any_errors):
     any_errors : bool
         A boolean used by `run_config_checks` to track if any errors were found.
     """
+
+    from pylongslit.parser import bias_params, flat_params
+    from pylongslit.parser import science_params, standard_params, arc_params
+    from pylongslit.logger import logger
+
 
     any_errors = check_directory(
         bias_params["bias_dir"],
@@ -145,6 +144,9 @@ def check_regions(any_errors):
         A boolean used by `run_config_checks` to track if any errors were found.
     """
 
+    from pylongslit.parser import detector_params
+    from pylongslit.logger import logger
+
     # check overscan region
     overscan = detector_params["overscan"]
     xsize = detector_params["xsize"]
@@ -188,6 +190,11 @@ def check_detector(any_errors):
     any_errors : bool
         A boolean used by `run_config_checks` to track if any errors were found.
     """
+    from pylongslit.overscan import show_overscan
+    from pylongslit.parser import detector_params, flat_params
+    from pylongslit.logger import logger
+    from pylongslit.mkspecflat import show_flat_norm_region
+
 
     try:
 
@@ -252,6 +259,11 @@ def check_for_negative_params(any_errors):
     any_errors : bool
         A boolean used by `run_config_checks` to track if any errors were found.
     """
+
+    from pylongslit.parser import detector_params, bias_params, flat_params
+    from pylongslit.parser import science_params, standard_params, arc_params
+    from pylongslit.logger import logger
+
     # TODO re-use this list globally
     params = [
         detector_params,
@@ -276,6 +288,11 @@ def run_config_checks():
     """
     A driver function for running all the configuration checks.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import check_science_and_standard
+
+
 
     any_errors = False
 
@@ -324,7 +341,18 @@ def run_config_checks():
         logger.info("NO ERRORS FOUND.")
         logger.info("CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit config-file checker.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_config_checks()
 
 if __name__ == "__main__":
 
-    run_config_checks()
+    main()

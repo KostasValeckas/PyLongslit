@@ -2,17 +2,18 @@
 Module to combine arc frames into a single master arc frame.
 """
 
-from .logger import logger
-from .parser import output_dir, arc_params, data_params, detector_params, combine_arc_params
-from .utils import FileList, open_fits, write_to_fits, list_files, get_bias_and_flats
-from .utils import check_rotation, flip_and_rotate, load_bias
-from .overscan import subtract_overscan_from_frame, check_overscan
-import os
 import numpy as np
-import matplotlib.pyplot as plt
+import argparse
+
 
 
 def combine_arcs():
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir, arc_params, data_params, combine_arc_params
+    from pylongslit.utils import FileList, open_fits, write_to_fits, list_files
+    from pylongslit.utils import check_rotation, flip_and_rotate, load_bias
+    from pylongslit.overscan import subtract_overscan_from_frame, check_overscan
 
     logger.info("Fetching arc frames...")
 
@@ -85,6 +86,18 @@ def combine_arcs():
         f"Master arc written to disc in directory {output_dir}, filename 'master_arc.fits'."
     )
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit combine-arc procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    combine_arcs()
+
 
 if __name__ == "__main__":
-    combine_arcs()
+    main()

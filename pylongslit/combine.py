@@ -1,12 +1,10 @@
-from .logger import logger
-from .parser import output_dir, combine_params
-from .utils import load_fluxed_spec
 import numpy as np
-from astropy.io import fits
 import matplotlib.pyplot as plt
-
+import argparse
 
 def check_combine_params(fluxed_spectra):
+    from pylongslit.logger import logger
+    from pylongslit.parser import combine_params
     logger.info("Reading combination parameters...")
 
     if len(combine_params) == 0:
@@ -45,6 +43,9 @@ def check_combine_params(fluxed_spectra):
 
 
 def combine_spectra(fluxed_data_dict):
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import output_dir
 
     for obj_name, data_list in fluxed_data_dict.items():
 
@@ -119,6 +120,9 @@ def combine_spectra(fluxed_data_dict):
 
 
 def run_combine_spec():
+    from pylongslit.logger import logger
+    from pylongslit.utils import load_fluxed_spec
+    
     logger.info("Running combination rutine...")
 
     fluxed_spectra = load_fluxed_spec()
@@ -131,6 +135,18 @@ def run_combine_spec():
 
     combine_spectra(fluxed_data_dict)
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit combine-spectrum procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_combine_spec()
+
 
 if __name__ == "__main__":
-    run_combine_spec()
+    main()

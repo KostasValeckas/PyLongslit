@@ -1,16 +1,17 @@
 import json
 from .logger import logger
 import os
+from . import CONFIG_FILE_PATH
 
 
 # Open the config file
 try:
-    file = open("config.json")
+    file = open(CONFIG_FILE_PATH, "r")
 except FileNotFoundError:
 
     logger.error("Config file not found.")
     logger.error(
-        'Make sure a "config.json" file exists. \n'
+        'Make sure a config file exists. \n'
         "See the docs at:\n"
         "https://kostasvaleckas.github.io/PyLongslit/"
     )

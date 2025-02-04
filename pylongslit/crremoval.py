@@ -1,12 +1,5 @@
 import astroscrappy
-from .logger import logger
-from .parser import detector_params, crr_params, skip_science_or_standard_bool
-from .parser import output_dir
-from .parser import science_params, standard_params, data_params
-from .utils import FileList, open_fits, write_to_fits, check_dimensions
-from .utils import list_files
-
-
+import argparse
 import os as os
 
 
@@ -17,7 +10,7 @@ Module for removing cosmic rays from raw science and standard star frames.
 # TODO is there a sensful way to make QA plots for crremoval?
 
 
-def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
+def remove_cosmics(file_list, sigclip, sigfrac, objlim, niter, group):
     """
     A wrapper for astroscrappy.detect_cosmics.
 
@@ -26,7 +19,7 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
 
     Parameters
     ----------
-    file_list : FileList
+    file_list : pylongslit.utils.FileList
         A list of files to remove cosmic rays from.
 
     sigclip : float
@@ -47,6 +40,10 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
     niter : int
         Number of iterations to perform.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params, output_dir, data_params
+    from pylongslit.utils import open_fits, write_to_fits, check_dimensions
 
     # check the group parameter:
     if group not in ["science", "std"]:
@@ -101,6 +98,12 @@ def remove_cosmics(file_list: FileList, sigclip, sigfrac, objlim, niter, group):
 
 
 def run_crremoval():
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params, crr_params, skip_science_or_standard_bool
+    from pylongslit.parser import science_params, standard_params
+    from pylongslit.utils import FileList, list_files
+
     # initiate user parameters
 
     # detecctor
@@ -161,6 +164,18 @@ def run_crremoval():
 
     logger.info("Cosmic-ray removal procedure finished.")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit cosmic-ray removal procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_crremoval() 
+
 
 if __name__ == "__main__":
-    run_crremoval()
+    main()

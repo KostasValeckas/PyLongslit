@@ -1,20 +1,10 @@
 import numpy as np
+import argparse
 from astropy.io import fits
-from .logger import logger
-from .parser import detector_params, flat_params, output_dir, data_params, wavecalib_params
-
-from .utils import FileList, check_dimensions, open_fits, write_to_fits
-from .utils import show_flat, list_files, load_bias, wavelength_sol, hist_normalize
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
-from .overscan import subtract_overscan_from_frame, detect_overscan_direction
-from .wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
 from scipy.interpolate import make_lsq_spline, BSpline
-from .wavecalib import construct_wavelen_map
-from .utils import check_rotation, flip_and_rotate
 from matplotlib.widgets import Slider
-from .utils import show_1d_fit_QA
-
 
 """
 Module for creating a master flat from from raw flat frames.
@@ -22,6 +12,10 @@ Module for creating a master flat from from raw flat frames.
 
 
 def normalize_spectral_response(medianflat):
+
+    from pylongslit.parser import detector_params, wavecalib_params
+    from pylongslit.wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc, construct_wavelen_map
+    from pylongslit.utils import wavelength_sol, show_1d_fit_QA, check_rotation, flip_and_rotate
 
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
@@ -184,6 +178,8 @@ def normalize_spectral_response(medianflat):
 
 def normalize_spacial_response(medianflat):
 
+    from pylongslit.parser import detector_params
+
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
 
@@ -278,6 +274,10 @@ def show_flat_norm_region():
     and displays the normalization region overlayed on it.
     """
 
+    from pylongslit.logger import logger
+    from pylongslit.parser import flat_params
+    from pylongslit.utils import show_flat
+
     logger.info(
         "Showing the normalization region on a raw flat frame for user inspection..."
     )
@@ -319,6 +319,12 @@ def run_flats():
     by the median value of the frame. The final master flat-field is written to
     disc in the output directory.
     """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import detector_params, flat_params, output_dir, data_params
+    from pylongslit.utils import FileList, check_dimensions, open_fits, write_to_fits
+    from pylongslit.utils import list_files, load_bias
+    from pylongslit.overscan import subtract_overscan_from_frame, detect_overscan_direction
 
     # Extract the detector parameters
     xsize = detector_params["xsize"]
@@ -506,6 +512,18 @@ def run_flats():
         f"Master flat frame written to disc in {output_dir}, filename master_flat.fits"
     )
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit flatfield procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_flats()
+
 
 if __name__ == "__main__":
-    run_flats()
+    main()

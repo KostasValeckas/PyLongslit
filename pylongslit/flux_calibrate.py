@@ -1,11 +1,8 @@
-from .logger import logger
-from .parser import output_dir, science_params
-from .utils import load_spec_data
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from .sensitivity_function import load_sensfunc_from_disc
 from numpy.polynomial.chebyshev import chebval
+import argparse
 
 
 def calibrate_spectrum(wavelength, counts, var, sens_coeffs, exptime):
@@ -38,6 +35,8 @@ def plot_calibrated_spectrum(
 
 def calibrate_flux(spectra, sens_coeffs):
 
+    from pylongslit.parser import science_params
+
     exptime = science_params["exptime"]
 
     # final product
@@ -57,6 +56,9 @@ def calibrate_flux(spectra, sens_coeffs):
 
 
 def write_calibrated_spectra_to_disc(calibrated_spectra):
+
+    from pylongslit.parser import output_dir
+    from pylongslit.logger import logger
 
     for filename, (
         wavelength,
@@ -81,6 +83,12 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
 
 
 def run_flux_calib():
+
+    from pylongslit.logger import logger
+    from pylongslit.utils import load_spec_data
+    from pylongslit.sensitivity_function import load_sensfunc_from_disc
+
+
     logger.info("Running flux calibration...")
 
     spectra = load_spec_data(group="science")
@@ -91,6 +99,18 @@ def run_flux_calib():
 
     write_calibrated_spectra_to_disc(calibrated_spectra)
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit flux-calibration procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_flux_calib()
+
 
 if __name__ == "__main__":
-    run_flux_calib()
+    main()

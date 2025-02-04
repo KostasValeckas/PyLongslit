@@ -1,20 +1,19 @@
-from .parser import output_dir, detector_params
-from .utils import open_fits, list_files, get_skysub_files, get_filenames
-from .logger import logger
-from .wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
-from .wavecalib import wavelength_sol
 import os
 import numpy as np
-from photutils.aperture import RectangularAperture
 import matplotlib.pyplot as plt
-from astropy.stats import sigma_clip, gaussian_fwhm_to_sigma
+from astropy.stats import gaussian_fwhm_to_sigma
 from scipy.interpolate import interp1d
+import argparse
 
 
 def load_object_traces():
     """
     Loads the object traces from the output directory.
     """
+
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import list_files, get_filenames
+    from pylongslit.logger import logger
 
     logger.info("Loading object traces")
 
@@ -82,6 +81,8 @@ def gaussweight(x, mu, sig):
     array-like
         The weight for each pixel in the extraction aperture (normalized).
     """
+
+    from pylongslit.logger import logger
 
     P = np.exp(-0.5 * (x - mu) ** 2 / sig**2) / (np.sqrt(2.0 * np.pi) * sig)
 
@@ -156,6 +157,8 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
     spec_var : array-like
         The variance of the extracted 1D spectrum. (in ADU)
     """
+    from pylongslit.parser import output_dir
+    from pylongslit.utils import open_fits
 
     pixel, center, FWHM = trace_data
 
@@ -233,6 +236,7 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     var_calibrated : array-like
         The variance of the calibrated 1D spectrum. (in ADU/Å)
     """
+    from pylongslit.wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc, wavelength_sol
 
     centers_global = centers + y_offset
 
@@ -320,6 +324,10 @@ def extract_objects(skysubbed_files, trace_dir):
         Format is {filename: (wavelength, spectrum_calib, var_calib)}
     """
 
+    from pylongslit.parser import output_dir, detector_params
+    from pylongslit.logger import logger
+
+
     # get gain and read out noise parameters
     gain = detector_params["gain"]
     read_out_noise = detector_params["read_out_noise"]
@@ -359,6 +367,9 @@ def extract_objects(skysubbed_files, trace_dir):
 
 def write_extracted_1d_to_disc(results):
 
+    from pylongslit.parser import output_dir
+    from pylongslit.logger import logger
+
     logger.info("Writing extracted 1D spectra to disc")
 
     os.chdir(output_dir)
@@ -380,6 +391,10 @@ def write_extracted_1d_to_disc(results):
 
 
 def run_extract_1d():
+
+    from pylongslit.logger import logger
+    from pylongslit.utils import get_skysub_files
+
     logger.info("Running extract_1d")
 
     trace_dir = load_object_traces()
@@ -398,6 +413,19 @@ def run_extract_1d():
     logger.info("extract_1d done")
     print("-------------------------\n")
 
+def main():
+    parser = argparse.ArgumentParser(description="Run the pylongslit extract-1d procedure.")
+    parser.add_argument('config', type=str, help='Configuration file path')
+    # Add more arguments as needed
+
+    args = parser.parse_args()
+
+    from pylongslit import set_config_file_path
+    set_config_file_path(args.config)
+
+    run_extract_1d()
 
 if __name__ == "__main__":
-    run_extract_1d()
+
+    main()
+    
