@@ -1,7 +1,7 @@
 import json
-from .logger import logger
+from pylongslit.logger import logger
 import os
-from . import CONFIG_FILE_PATH
+from pylongslit import CONFIG_FILE_PATH
 
 
 # Open the config file

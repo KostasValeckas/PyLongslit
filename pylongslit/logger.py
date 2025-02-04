@@ -4,6 +4,9 @@ Module for logging messages to a file and the console.
 
 import logging
 from colorama import Fore, Style, init
+from pylongslit import CONFIG_FILE_PATH
+import pathlib
+
 
 # Initialize colorama
 init(autoreset=True)
@@ -19,9 +22,13 @@ for handler in logger.handlers:
 # Configure logging level
 logger.setLevel(logging.INFO)
 
-# Create a file handler
-# TODO: Change the file path to object name
-fh = logging.FileHandler("pylogslit.log")
+
+config_file_dir = pathlib.Path(CONFIG_FILE_PATH).parent
+config_file_name = pathlib.Path(CONFIG_FILE_PATH).stem + ".log"
+
+log_file_path = config_file_dir / config_file_name
+
+fh = logging.FileHandler(log_file_path)
 
 # Create a console handler
 ch = logging.StreamHandler()
@@ -45,7 +52,8 @@ class CustomFormatter(logging.Formatter):
 
 # Create a formatter and set it for both handlers
 formatter = logging.Formatter(
-    "%(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
+    "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S"
 )
 color_formatter = CustomFormatter(
     "%(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"
