@@ -1,0 +1,141 @@
+{
+    "instrument": {
+        "name": "OSIRIS",
+        "disperser": "R1000R"
+    },
+
+    "detector": {
+        "xsize": 2073,
+        "ysize": 2056,
+        "dispersion": { 
+            "spectral_dir": "x",
+            "wavelength_grows_with_pixel": false
+        },
+        "gain": 1.9,
+        "read_out_noise": 4.3,
+        "overscan" : {
+            "use_overscan": false,
+            "overscan_x_start": 0,
+            "overscan_x_end": 499,
+            "overscan_y_start": 2066,
+            "overscan_y_end": 2099
+        }
+    },
+
+    "data": {
+        "raw_data_hdu_index": 0
+    },
+
+    "bias": {
+        "bias_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/bias"
+    },
+
+    "flat": {
+        "flat_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/flat",
+        "user_custom_norm_area": true,
+        "skip_spacial": false,
+        "norm_area_start_x": 100,
+        "norm_area_end_x": 2000,
+        "norm_area_start_y": 100,
+        "norm_area_end_y": 2000
+    },
+
+    "output": {
+        "out_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/out"
+
+    },
+
+    "crr_removal" : {
+        "frac": 0.01,
+        "objlim": 20,
+        "sigclip": 15.0,
+        "niter": 1
+    },
+
+    "background_sub" : {
+        "subtract_background": true,
+        "pairs": {
+            "1": {
+                "A": "0004942838-20250105-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0004942839-20250105-OSIRIS-OsirisLongSlitSpectroscopy.fits"
+            },
+            "2": {
+                "A": "0004942839-20250105-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0004942838-20250105-OSIRIS-OsirisLongSlitSpectroscopy.fits"
+            }
+        }
+    },
+
+    "science" : {
+        "skip_science": false,
+        "science_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/object",
+        "exptime": 1000,
+        "airmass": 1.03
+    },
+
+    "standard" : {
+        "skip_standard": false,
+        "standard_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/stds",
+        "exptime": 80,
+        "airmass": 1.00764622113513,
+        "starname": "SPSTD_G153",
+        "flux_file_path": "/home/kostas/Documents/PyLongslit/database/mGD153.dat"
+
+    },
+
+    "arc" : {
+        "arc_dir": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/arc"
+    },
+
+    "combine_arcs" : {
+        "skip_bias": true
+    },
+
+    "wavecalib" : {
+        "offset_middle_cut": 0,
+        "pixtable": "/home/kostas/Documents/PyLongslit/output_OSIRIS/OSIRIS_R1000B_pixtable.dat",
+        "FWHM": 6.5,
+        "TOL_MEAN": 5,
+        "TOL_FWHM": 2,
+        "ORDER_WAVELEN": 5,
+        "ORDER_SPECTRAL_TILT": 1,
+        "ORDER_SPATIAL_TILT": 3,
+        "SPACIAL_R2_TOL": 0.99,
+        "TILT_REJECT_LINE_FRACTION": 0.5,
+        "TILT_TRACE_R2_TOL": 0.95
+    },
+
+    "extract" : {
+        "NSUM_AP": 10,
+        "FWHM_AP": 6,
+        "SIGMA_APSKY": 3.0,
+        "ITERS_APSKY": 5,
+        "ORDER_APSKY": 3,
+        "SNR": 5,
+        "OBJ_FIT_DEG": 3
+    },
+
+    "extract_simple" : {
+        "FWHM": 2
+    },
+    
+    "obj_trace_clone" : {
+        "archived_spec_root": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/out/manual_traces/obj_manual_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy.dat",
+        "skysubbed_frame_root": "/home/kostas/Documents/DAWN_FULL_BACKUP/DAWN/SDSSJ1326_2923/GTCMULTIPLE2H-24B.OB0018/GTCMULTIPLE2H-24B/OB0018/out/skysub_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy_B.fits",
+        "FWHM": 4
+    },
+
+    "sensfunc": {
+        "fit_order": 9
+    },
+
+    "flux_calib": {
+        "path_extinction_curve": "/home/kostas/Documents/PyLongslit/database/lapalma.dat"
+    },
+
+    "combine": {
+        "SDSSJ132647+292303_R1000B": 
+            ["0004942838-20250105-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+             "0004942838-20250105-OSIRIS-OsirisLongSlitSpectroscopy.fits"]
+    }
+}
