@@ -12,6 +12,97 @@ from skimage import exposure
 from numpy.polynomial.chebyshev import chebval
 
 
+class PyLongslit_frame:
+    def __init__(self, data, sigma, header, name):
+        """
+        """
+
+        self.data = data
+        self.sigma = sigma
+        self.header = header
+        self.name = name
+
+
+    def path(self):
+        from pylongslit.parser import output_dir
+        return os.path.join(output_dir, self.name)
+
+
+    def write_to_disc(self):
+        """
+        """
+        
+        from pylongslit.logger import logger
+
+        # Create a PrimaryHDU object to store the data
+        hdu_data = fits.PrimaryHDU(self.data, header=self.header)
+        
+        # Create an ImageHDU object to store the sigma
+        hdu_sigma = fits.ImageHDU(self.sigma, name='1-SIGMA ERROR')
+        
+        # Create an HDUList to combine both HDUs
+        hdulist = fits.HDUList([hdu_data, hdu_sigma])
+        
+        # Write the HDUList to a FITS file
+        
+        hdulist.writeto(self.path() + ".fits", overwrite=True)
+        
+        logger.info(f"File written to {self.path()}.fits")
+
+    def show_frame(self, normalize=True, show=True, save=False):
+        """
+        Show the frame data and sigma as two subfigures.
+
+        Parameters
+        ----------
+        normalize : bool
+            If True, normalize the data for better visualization.
+
+        new_figure : bool
+            If True, create a new figure.
+
+        show : bool
+            If True, display the plot.
+        """
+
+        data = self.data.copy()
+        sigma = self.sigma.copy()
+
+        # normalize to show detail
+        if normalize:
+            data = hist_normalize(data)
+            sigma = hist_normalize(sigma)
+
+        # create subplots
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 8))
+
+        # plot data
+        im = ax1.imshow(data, cmap="gray")
+        ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
+        ax1.set_xlabel("Pixels")
+        ax1.set_ylabel("Pixels")
+        fig.colorbar(im, ax=ax1, orientation='vertical')
+
+        # plot sigma
+        im = ax2.imshow(sigma, cmap="gray")
+        ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
+        ax2.set_xlabel("Pixels")
+        ax2.set_ylabel("Pixels")
+        fig.colorbar(im, ax=ax2, orientation='vertical')
+
+
+
+        if save: 
+            plt.savefig(self.path() + ".png")
+
+        if show:
+            plt.show()
+
+       
+
+
+
+
 
 class FileList:
     def __init__(self, path):

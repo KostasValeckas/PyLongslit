@@ -14,11 +14,12 @@ def run_bias():
     pixel. The final master bias frame is written to disc in the output directory.
     """
     
-    from pylongslit.parser import detector_params, bias_params, output_dir, data_params
+    from pylongslit.parser import detector_params, bias_params,data_params
     from pylongslit.logger import logger
-    from pylongslit.utils import FileList, check_dimensions, open_fits, write_to_fits
-    from pylongslit.utils import list_files
+    from pylongslit.utils import FileList, check_dimensions, open_fits
+    from pylongslit.utils import list_files, PyLongslit_frame
     from pylongslit.overscan import check_overscan, subtract_overscan_from_frame
+    from pylongslit.stats import bootstrap_median_errors_framestack
     # Extract the detector parameters
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
@@ -66,6 +67,19 @@ def run_bias():
 
     # Calculate bias as median at each pixel
     medianbias = numpy.median(bigbias, axis=0)
+    if file_list.num_files < 30 and (not bias_params["bootstrap_errors"]):
+        logger.warning(
+            f"Number of bias frames ({file_list.num_files}) is less than 30. Error estimation might not be accurate."
+        )
+        logger.warning("Please consider taking more bias frames or activating error bootstrapping in the config file.")
+   
+    if  not bias_params["bootstrap_errors"]:
+        medianbias_error =  1.2533*numpy.std(bigbias, axis=0)/numpy.sqrt(file_list.num_files)
+
+    else:
+        medianbias_error = bootstrap_median_errors_framestack(bigbias)
+    
+
 
     logger.info("Bias frames processed.")
     logger.info("Attaching header and writing to disc...")
@@ -73,11 +87,12 @@ def run_bias():
     # Write out result to fitsfile
     hdr = rawbias[0].header
 
-    write_to_fits(medianbias, hdr, "master_bias.fits", output_dir)
+    # create a PyLongslit_frame object to hold the data and header
+    master_bias = PyLongslit_frame(medianbias, medianbias_error, hdr, "master_bias")
 
-    logger.info(
-        f"Master bias frame written to disc at in {output_dir}, filename master_bias.fits"
-    )
+    master_bias.show_frame(normalize=False, save=True)
+    master_bias.write_to_disc()
+    logger.info("Bias procedure completed.")
 
 
 def main():

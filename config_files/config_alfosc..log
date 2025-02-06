@@ -1,0 +1,11 @@
+2025-02-04 22:03:34 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_alfosc..log.
+2025-02-04 22:03:34 - PyLongslit - ERROR - parser.py:12 - Config file not found.
+2025-02-04 22:03:34 - PyLongslit - ERROR - parser.py:13 - Make sure a config file exists. 
+See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
+2025-02-04 22:37:40 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_alfosc..log.
+2025-02-04 22:37:40 - PyLongslit - INFO - wavecalib.py:1364 - Starting wavelength calibration routine...
+2025-02-04 22:37:40 - PyLongslit - ERROR - parser.py:12 - Config file not found.
+2025-02-04 22:37:40 - PyLongslit - ERROR - parser.py:13 - Make sure a config file exists. 
+See the docs at:
+https://kostasvaleckas.github.io/PyLongslit/
