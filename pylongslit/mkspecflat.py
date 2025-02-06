@@ -353,20 +353,15 @@ def run_flats():
     bigflat = np.zeros((file_list.num_files, ysize, xsize), float)
 
     if use_overscan:
-        logger.warning("Using overscan subtraction instead of master bias.")
-        logger.warning("If this is not intended, check the config file.")
 
-        # get the overscan direction
         overscan_dir = detect_overscan_direction()
 
-    else:
+    logger.info("Fetching the master bias frame...")
 
-        logger.info("Fetching the master bias frame...")
+    BIASframe = load_bias()
 
-        BIASframe = load_bias()
-
-        BIAS = np.array(BIASframe[0].data)
-        logger.info("Master bias frame found and loaded.")
+    BIAS = np.array(BIASframe[0].data)
+    logger.info("Master bias frame found and loaded.")
 
     print("\n------------------------------------------------------------\n")
 

@@ -49,6 +49,7 @@ class PyLongslit_frame:
         
         logger.info(f"File written to {self.path()}.fits")
 
+
     def show_frame(self, normalize=True, show=True, save=False):
         """
         Show the frame data and sigma as two subfigures.
@@ -97,6 +98,40 @@ class PyLongslit_frame:
 
         if show:
             plt.show()
+
+    @classmethod
+    def read_from_disc(cls, filepath):
+        """
+        Read the frame data and sigma from a FITS file.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the FITS file.
+
+        Returns
+        -------
+        PyLongslit_frame
+            An instance of PyLongslit_frame with the read data, sigma, and header.
+        """
+        from pylongslit.logger import logger
+
+        # Open the FITS file
+        with fits.open(filepath) as hdulist:
+            # Read the primary HDU (data)
+            data = hdulist[0].data
+            header = hdulist[0].header
+
+            # Read the image HDU (sigma)
+            sigma = hdulist[1].data
+
+        # Extract the name from the filepath
+        name = os.path.splitext(os.path.basename(filepath))[0]
+
+        logger.info(f"File read from {filepath}")
+
+        return cls(data, sigma, header, name)
+
 
        
 
