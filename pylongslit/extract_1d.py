@@ -236,7 +236,8 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     var_calibrated : array-like
         The variance of the calibrated 1D spectrum. (in ADU/Å)
     """
-    from pylongslit.wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc, wavelength_sol
+    from pylongslit.wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
+    from pylongslit.utils import wavelength_sol
 
     centers_global = centers + y_offset
 
