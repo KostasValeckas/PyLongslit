@@ -14,7 +14,7 @@
         "gain": 0.16,
         "read_out_noise": 4.3,
         "overscan" : {
-            "use_overscan": true,
+            "use_overscan": false,
             "overscan_x_start": 0,
             "overscan_x_end": 499,
             "overscan_y_start": 0,
@@ -29,11 +29,12 @@
 
     "bias": {
         "bias_dir": "/home/kostas/Documents/PyLongslit/raw_alt/bias",
-        "bootstrap_errors": true
+        "bootstrap_errors": false
     },
 
     "flat": {
         "flat_dir": "/home/kostas/Documents/PyLongslit/raw_alt/flats",
+        "bootstrap_errors": false,
         "user_custom_norm_area": true,
         "norm_area_start_x": 100,
         "norm_area_end_x": 400,
@@ -96,13 +97,13 @@
         "offset_middle_cut": 0,
         "pixtable": "/home/kostas/Documents/PyLongslit/output/idarc.dat",
         "FWHM": 6,
-        "TOL_MEAN": 3,
-        "TOL_FWHM": 2,
+        "TOL_MEAN": 2,
+        "TOL_FWHM": 1,
         "ORDER_WAVELEN": 5,
         "ORDER_SPECTRAL_TILT": 1,
         "ORDER_SPATIAL_TILT": 3,
-        "SPACIAL_R2_TOL": 0.98,
-        "TILT_REJECT_LINE_FRACTION": 0.25,
+        "SPACIAL_R2_TOL": 0.95,
+        "TILT_REJECT_LINE_FRACTION": 0.50,
         "TILT_TRACE_R2_TOL": 0.95    
     },
 

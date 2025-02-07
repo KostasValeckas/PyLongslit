@@ -12,7 +12,7 @@ def combine_arcs():
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir, arc_params, data_params, combine_arc_params
     from pylongslit.utils import FileList, open_fits, write_to_fits, list_files
-    from pylongslit.utils import check_rotation, flip_and_rotate, load_bias
+    from pylongslit.utils import check_rotation, flip_and_rotate, load_bias, PyLongslit_frame
     from pylongslit.overscan import subtract_overscan_from_frame, check_overscan
 
     logger.info("Fetching arc frames...")
@@ -36,8 +36,8 @@ def combine_arcs():
 
         logger.info("Subtracting bias...")
 
-        BIASframe = load_bias()
-        BIAS = np.array(BIASframe[0].data)
+        BIAS_frame = PyLongslit_frame.read_from_disc("master_bias.fits")
+        BIAS = BIAS_frame.data
 
     else:
         logger.warning("Skipping bias subtraction in arc combination.")
@@ -77,14 +77,14 @@ def combine_arcs():
     if transpose or flip:
         master_arc = flip_and_rotate(master_arc, transpose, flip)
 
+    master_arc = PyLongslit_frame(master_arc, None, hdu[0].header, "master_arc")
+
+    master_arc.show_frame(skip_sigma=True, normalize=True)
+
     logger.info("Master arc created successfully, writing to disc...")
 
-    # Write the master arc to a FITS file
-    write_to_fits(master_arc, hdu[0].header, "master_arc.fits", output_dir)
+    master_arc.write_to_disc()
 
-    logger.info(
-        f"Master arc written to disc in directory {output_dir}, filename 'master_arc.fits'."
-    )
 
 def main():
     parser = argparse.ArgumentParser(description="Run the pylongslit combine-arc procedure.")

@@ -1,5 +1,6 @@
 import numpy
 import argparse
+import matplotlib.pyplot as plt
 
 """
 Module for creating a master bias frame from raw bias frames.
@@ -58,7 +59,7 @@ def run_bias():
         if use_overscan:
             data = subtract_overscan_from_frame(data)
 
-        bigbias[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
+        bigbias[i] = data
 
         # close the file handler
         rawbias.close()

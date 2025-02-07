@@ -142,6 +142,7 @@ def normalize_spectral_response(medianflat):
     bspline = BSpline(spl.t, spl.c, spl.k)
 
     residuals = spectrum_cut - bspline(wavelength_cut)
+    RMS = np.sqrt(np.mean(residuals ** 2))
 
     show_1d_fit_QA(
         wavelength_cut,
@@ -173,7 +174,7 @@ def normalize_spectral_response(medianflat):
     )
     bpm = flip_and_rotate(bpm, transpose, flip, inverse=True)
 
-    return spectral_response_model, bpm
+    return spectral_response_model, bpm, RMS
 
 
 def normalize_spacial_response(medianflat):
@@ -203,6 +204,8 @@ def normalize_spacial_response(medianflat):
 
     spacial_model = np.zeros((y_size, x_size))
 
+    residuals = np.zeros((y_size, x_size))
+
     for spacial_row_index in range(x_size) if spectral_axis == 0 else range(y_size):
 
         spacial_slice = (
@@ -231,9 +234,11 @@ def normalize_spacial_response(medianflat):
 
         if spacial_axis == 1:
             spacial_model[:, spacial_row_index] = bspline(x_axis)
+            residuals[:, spacial_row_index] = spacial_slice - bspline(x_axis)
 
         else:
             spacial_model[spacial_row_index, :] = bspline(x_axis)
+            residuals[spacial_row_index, :] = spacial_slice - bspline(x_axis)
 
         if spacial_row_index in indices_to_plot:
             if plot_num <= 9:
@@ -263,7 +268,9 @@ def normalize_spacial_response(medianflat):
     )
     plt.show()
 
-    return spacial_model
+    RMS = np.sqrt(np.mean(residuals ** 2))
+
+    return spacial_model, RMS
 
 
 def show_flat_norm_region():
@@ -325,6 +332,7 @@ def run_flats():
     from pylongslit.utils import FileList, check_dimensions, open_fits, write_to_fits
     from pylongslit.utils import list_files, load_bias
     from pylongslit.overscan import subtract_overscan_from_frame, detect_overscan_direction
+    from pylongslit.stats import bootstrap_median_errors_framestack
 
     # Extract the detector parameters
     xsize = detector_params["xsize"]
@@ -384,11 +392,7 @@ def run_flats():
             logger.info("Subtracted the bias.")
 
         
-
-        bigflat[i, 0 : ysize - 1, 0 : xsize - 1] = data[0 : ysize - 1, 0 : xsize - 1]
-
-        # logger.info(f"Normalising frame with the median of the frame :{norm}\n")
-        # bigflat[i, :, :] = bigflat[i, :, :] / norm
+        bigflat[i] = data
 
         # close the file handler
         rawflat.close()
@@ -400,7 +404,19 @@ def run_flats():
     # Calculate flat is median at each pixel
     medianflat = np.median(bigflat, axis=0)
 
-    spectral_response_model, _ = normalize_spectral_response(medianflat)
+    if file_list.num_files < 30 and (not flat_params["bootstrap_errors"]):
+        logger.warning(
+            f"Number of flat frames ({file_list.num_files}) is less than 30. Error estimation might not be accurate."
+        )
+        logger.warning("Please consider taking more flat frames or activating error bootstrapping in the config file.")
+   
+    if  not flat_params["bootstrap_errors"]:
+        medianflat_error =  1.2533*np.std(bigflat, axis=0)/np.sqrt(file_list.num_files)
+
+    else:
+        medianflat_error = bootstrap_median_errors_framestack(bigflat)
+
+    spectral_response_model, _, RMS_spectral = normalize_spectral_response(medianflat)
 
     spectral_normalized = medianflat / spectral_response_model
 
@@ -409,7 +425,7 @@ def run_flats():
 
     if not flat_params["skip_spacial"]:
 
-        spacial_response_model = normalize_spacial_response(spectral_normalized)
+        spacial_response_model, RMS_spacial = normalize_spacial_response(spectral_normalized)
         master_flat = spectral_normalized / spacial_response_model
 
     else:

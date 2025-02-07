@@ -50,7 +50,7 @@ class PyLongslit_frame:
         logger.info(f"File written to {self.path()}.fits")
 
 
-    def show_frame(self, normalize=True, show=True, save=False):
+    def show_frame(self, normalize=True, show=True, save=False, skip_sigma=False):
         """
         Show the frame data and sigma as two subfigures.
 
@@ -66,30 +66,45 @@ class PyLongslit_frame:
             If True, display the plot.
         """
 
-        data = self.data.copy()
-        sigma = self.sigma.copy()
-
         # normalize to show detail
-        if normalize:
-            data = hist_normalize(data)
-            sigma = hist_normalize(sigma)
 
-        # create subplots
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 8))
+        if not skip_sigma:
 
-        # plot data
-        im = ax1.imshow(data, cmap="gray")
-        ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
-        ax1.set_xlabel("Pixels")
-        ax1.set_ylabel("Pixels")
-        fig.colorbar(im, ax=ax1, orientation='vertical')
+            data = self.data.copy()
+            sigma = self.sigma.copy()
 
-        # plot sigma
-        im = ax2.imshow(sigma, cmap="gray")
-        ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
-        ax2.set_xlabel("Pixels")
-        ax2.set_ylabel("Pixels")
-        fig.colorbar(im, ax=ax2, orientation='vertical')
+            if normalize:
+                data = hist_normalize(data)
+                sigma = hist_normalize(sigma)
+
+            # create subplots
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 8))
+
+            # plot data
+            im = ax1.imshow(data, cmap="gray")
+            ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
+            ax1.set_xlabel("Pixels")
+            ax1.set_ylabel("Pixels")
+            fig.colorbar(im, ax=ax1, orientation='vertical')
+
+            # plot sigma
+            im = ax2.imshow(sigma, cmap="gray")
+            ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
+            ax2.set_xlabel("Pixels")
+            ax2.set_ylabel("Pixels")
+            fig.colorbar(im, ax=ax2, orientation='vertical')
+
+        else:
+
+            data = self.data.copy()
+
+            if normalize:
+                data = hist_normalize(data)
+            
+            plt.imshow(data, cmap="gray")
+            plt.title(f"{self.name}" + (" (normalized)" if normalize else ""))
+            plt.xlabel("Pixels")
+            plt.ylabel("Pixels")
 
 
 
@@ -100,7 +115,7 @@ class PyLongslit_frame:
             plt.show()
 
     @classmethod
-    def read_from_disc(cls, filepath):
+    def read_from_disc(cls, filename):
         """
         Read the frame data and sigma from a FITS file.
 
@@ -115,6 +130,10 @@ class PyLongslit_frame:
             An instance of PyLongslit_frame with the read data, sigma, and header.
         """
         from pylongslit.logger import logger
+        from pylongslit.parser import output_dir
+
+
+        filepath = os.path.join(output_dir, filename)
 
         # Open the FITS file
         with fits.open(filepath) as hdulist:
@@ -125,12 +144,8 @@ class PyLongslit_frame:
             # Read the image HDU (sigma)
             sigma = hdulist[1].data
 
-        # Extract the name from the filepath
-        name = os.path.splitext(os.path.basename(filepath))[0]
 
-        logger.info(f"File read from {filepath}")
-
-        return cls(data, sigma, header, name)
+        return cls(data, sigma, header, filename)
 
 
        
