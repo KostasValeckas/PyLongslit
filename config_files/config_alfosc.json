@@ -35,6 +35,7 @@
     "flat": {
         "flat_dir": "/home/kostas/Documents/PyLongslit/raw_alt/flats",
         "bootstrap_errors": false,
+        "skip_spacial": false,
         "user_custom_norm_area": true,
         "norm_area_start_x": 100,
         "norm_area_end_x": 400,

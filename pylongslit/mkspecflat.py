@@ -329,7 +329,7 @@ def run_flats():
 
     from pylongslit.logger import logger
     from pylongslit.parser import detector_params, flat_params, output_dir, data_params
-    from pylongslit.utils import FileList, check_dimensions, open_fits, write_to_fits
+    from pylongslit.utils import FileList, check_dimensions, open_fits, PyLongslit_frame
     from pylongslit.utils import list_files, load_bias
     from pylongslit.overscan import subtract_overscan_from_frame, detect_overscan_direction
     from pylongslit.stats import bootstrap_median_errors_framestack
@@ -420,6 +420,13 @@ def run_flats():
 
     spectral_normalized = medianflat / spectral_response_model
 
+
+    medianflat_error = spectral_normalized * np.sqrt(
+        ((medianflat_error / medianflat)) ** 2 + ((RMS_spectral/spectral_response_model) ** 2)
+    )
+
+
+
     spectral_normalized[spectral_normalized < 0.5] = 1
     spectral_normalized[spectral_normalized > 1.5] = 1
 
@@ -427,6 +434,9 @@ def run_flats():
 
         spacial_response_model, RMS_spacial = normalize_spacial_response(spectral_normalized)
         master_flat = spectral_normalized / spacial_response_model
+        medianflat_error = master_flat * np.sqrt(
+            ((medianflat_error / medianflat)) ** 2 + ((RMS_spacial/spacial_response_model) ** 2)
+        )   
 
     else:
 
@@ -517,11 +527,13 @@ def run_flats():
     # Write out result to fitsfile
     hdr = rawflat[0].header
 
-    write_to_fits(master_flat, hdr, "master_flat.fits", output_dir)
+    master_flat_frame = PyLongslit_frame(master_flat, medianflat_error, hdr, "master_flat")
 
-    logger.info(
-        f"Master flat frame written to disc in {output_dir}, filename master_flat.fits"
-    )
+    master_flat_frame.show_frame(normalize=False, save=True)    
+    master_flat_frame.show_frame(normalize=True)
+    master_flat_frame.write_to_disc()
+
+    
 
 def main():
     parser = argparse.ArgumentParser(description="Run the pylongslit flatfield procedure.")

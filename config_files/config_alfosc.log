@@ -7768,3 +7768,371 @@
 2025-02-07 16:10:05 - PyLongslit - INFO - wavecalib.py:1030 - Constructing the detector map...
 2025-02-07 16:10:09 - PyLongslit - INFO - utils.py:50 - File written to /home/kostas/Documents/PyLongslit/output_alt/wavelength_map.fits
 2025-02-07 16:10:09 - PyLongslit - INFO - wavecalib.py:1583 - Wavelength calibration routine done.
+2025-02-08 04:03:09 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:03:09 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:03:09 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:03:09 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:03:09 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:03:09 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:03:09 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:03:11 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:03:11 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:03:11 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:03:11 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:03:19 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:03:19 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:03:19 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:03:19 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:04:12 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:04:12 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:04:12 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:04:12 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:04:12 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:04:12 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:04:12 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:04:13 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:04:13 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:04:13 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:04:13 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:04:18 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:04:18 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:04:18 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:04:18 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:04:47 - PyLongslit - INFO - mkspecflat.py:493 - Flat frames processed.
+2025-02-08 04:04:47 - PyLongslit - INFO - mkspecflat.py:495 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+2025-02-08 04:04:47 - PyLongslit - INFO - mkspecflat.py:522 - Attaching header and writing to disc...
+2025-02-08 04:05:19 - PyLongslit - INFO - utils.py:50 - File written to /home/kostas/Documents/PyLongslit/output_alt/master flat.fits
+2025-02-08 04:05:19 - PyLongslit - INFO - mkspecflat.py:535 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+2025-02-08 04:05:22 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:05:22 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:05:22 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:05:22 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:05:22 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:05:22 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:05:22 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:05:23 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:05:23 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:05:23 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:05:23 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:05:29 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:05:29 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:05:29 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:05:29 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:05:42 - PyLongslit - INFO - mkspecflat.py:493 - Flat frames processed.
+2025-02-08 04:05:42 - PyLongslit - INFO - mkspecflat.py:495 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+2025-02-08 04:05:42 - PyLongslit - INFO - mkspecflat.py:522 - Attaching header and writing to disc...
+2025-02-08 04:05:46 - PyLongslit - INFO - utils.py:50 - File written to /home/kostas/Documents/PyLongslit/output_alt/master flat.fits
+2025-02-08 04:05:46 - PyLongslit - INFO - mkspecflat.py:535 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+2025-02-08 04:07:56 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:07:56 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:07:56 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:07:56 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:07:56 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:07:56 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:07:56 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:07:57 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:07:57 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:07:57 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:07:57 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:08:06 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:08:06 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:08:06 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:08:06 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:08:17 - PyLongslit - INFO - mkspecflat.py:493 - Flat frames processed.
+2025-02-08 04:08:17 - PyLongslit - INFO - mkspecflat.py:495 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+2025-02-08 04:08:17 - PyLongslit - INFO - mkspecflat.py:522 - Attaching header and writing to disc...
+2025-02-08 04:08:41 - PyLongslit - INFO - utils.py:50 - File written to /home/kostas/Documents/PyLongslit/output_alt/master flat.fits
+2025-02-08 04:08:41 - PyLongslit - INFO - mkspecflat.py:535 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+2025-02-08 04:10:18 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:10:18 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:10:18 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:10:18 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:10:18 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:10:18 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:10:18 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:10:19 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:10:19 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:10:19 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:10:19 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:10:22 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:10:22 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:10:22 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:10:22 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:11:43 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:11:43 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:11:43 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:11:43 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:11:43 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:11:43 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:11:43 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:11:44 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:11:44 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:11:44 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:11:44 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:11:50 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:11:50 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:11:50 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:11:50 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:12:41 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:12:41 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:12:41 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:12:41 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:12:41 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:12:41 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:12:41 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:12:42 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:12:42 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:12:42 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:12:42 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:12:47 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:12:47 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:12:47 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:12:47 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:12:57 - PyLongslit - INFO - mkspecflat.py:496 - Flat frames processed.
+2025-02-08 04:12:57 - PyLongslit - INFO - mkspecflat.py:498 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+2025-02-08 04:12:57 - PyLongslit - INFO - mkspecflat.py:525 - Attaching header and writing to disc...
+2025-02-08 04:13:30 - PyLongslit - INFO - utils.py:50 - File written to /home/kostas/Documents/PyLongslit/output_alt/master flat.fits
+2025-02-08 04:13:30 - PyLongslit - INFO - mkspecflat.py:538 - Master flat frame written to disc in /home/kostas/Documents/PyLongslit/output_alt, filename master_flat.fits
+2025-02-08 04:15:45 - PyLongslit - INFO - logger.py:69 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/config_files/config_alfosc.log.
+2025-02-08 04:15:45 - PyLongslit - INFO - parser.py:21 - Config file found. Loading user parameters...
+2025-02-08 04:15:45 - PyLongslit - INFO - parser.py:37 - User parameters loaded successfully.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:344 - Flat-field procedure running...
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:345 - Using the following parameters:
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:346 - xsize = 500
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:347 - ysize = 2102
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:352 - Found 5 flat frames.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:353 - Files used for flat-fielding:
+2025-02-08 04:15:45 - PyLongslit - INFO - utils.py:350 - All files have the correct dimensions.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:367 - Fetching the master bias frame...
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:372 - Master bias frame found and loaded.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050282.fits
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050282.fits processed.
+
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050283.fits
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050283.fits processed.
+
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050284.fits
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050284.fits processed.
+
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050285.fits
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050285.fits processed.
+
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:381 - Processing file: ALHh050286.fits
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:392 - Subtracted the bias.
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:400 - File ALHh050286.fits processed.
+
+2025-02-08 04:15:45 - PyLongslit - INFO - mkspecflat.py:402 - Normalizing the final master flat-field....
+2025-02-08 04:15:46 - PyLongslit - WARNING - mkspecflat.py:408 - Number of flat frames (5) is less than 30. Error estimation might not be accurate.
+2025-02-08 04:15:46 - PyLongslit - WARNING - mkspecflat.py:411 - Please consider taking more flat frames or activating error bootstrapping in the config file.
+2025-02-08 04:15:46 - PyLongslit - INFO - wavecalib.py:1406 - Loading 1D wavelength solution from disc...
+2025-02-08 04:15:46 - PyLongslit - INFO - wavecalib.py:1415 - Wavelength solution loaded.
+2025-02-08 04:15:46 - PyLongslit - INFO - wavecalib.py:1435 - Loading 2D tilt solution from disc...
+2025-02-08 04:15:46 - PyLongslit - INFO - wavecalib.py:1444 - Tilt solution loaded.
+2025-02-08 04:16:03 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:16:03 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:16:03 - PyLongslit - INFO - utils.py:560 - Rotating image to make x the spectral direction...
+2025-02-08 04:16:03 - PyLongslit - INFO - utils.py:564 - Flipping the image to make wavelengths increase with x-pixels...
+2025-02-08 04:16:15 - PyLongslit - INFO - mkspecflat.py:496 - Flat frames processed.
+2025-02-08 04:16:15 - PyLongslit - INFO - mkspecflat.py:498 - Mean pixel value of the final master flat-field: 1.0 (should be 1.0).
+2025-02-08 04:16:15 - PyLongslit - INFO - mkspecflat.py:525 - Attaching header and writing to disc...
+2025-02-08 04:16:26 - PyLongslit - INFO - utils.py:50 - File written to /home/kostas/Documents/PyLongslit/output_alt/master_flat.fits
