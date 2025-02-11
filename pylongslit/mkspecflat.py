@@ -446,7 +446,8 @@ def run_flats():
 
     fig, ax = plt.subplots(5 if not flat_params["skip_spacial"] else 3, 2, figsize=(15, 12))
 
-    ax[0][0].imshow(medianflat.T, cmap="gray", origin="lower")
+    # only show positive values to avoid outliers that disorts the color map
+    ax[0][0].imshow(np.clip(medianflat.T, 0, None), cmap="gray", origin="lower")
     ax[0][0].set_title("Master flat prior to normalization")
     ax[0][0].axis("off")
 

@@ -123,7 +123,7 @@ def check_overscan():
     return True
 
 
-def subtract_overscan_from_frame(image_data):
+def estimate_frame_overscan_bias(image_data):
     """
     Subtract the overscan region from a single frame.
 
@@ -143,8 +143,7 @@ def subtract_overscan_from_frame(image_data):
 
     from pylongslit.logger import logger
     from pylongslit.parser import detector_params
-
-    logger.info(f"Subtracting overscan...")
+    from pylongslit.utils import PyLongslit_frame
 
     # Extract the overscan region
     overscan_x_start = detector_params["overscan"]["overscan_x_start"]
@@ -154,18 +153,29 @@ def subtract_overscan_from_frame(image_data):
 
     overscan_direction = detect_overscan_direction()
 
+    overscan_image = numpy.zeros_like(image_data)
+    error_image = numpy.zeros_like(image_data)
+
     if overscan_direction == "horizontal":
         # loop through the columns and subtract the mean value of the overscan region
         for i in range(overscan_x_start, overscan_x_end + 1):
-            mean = numpy.mean(image_data[overscan_y_start:overscan_y_end, i])
-            image_data[:, i] = image_data[:, i] - mean
+            overscan = image_data[overscan_y_start:overscan_y_end, i]
+            mean = numpy.mean(overscan) 
+            overscan_image[:, i] = numpy.full(image_data.shape[0], mean)
+            error_image[:, i] = numpy.std(overscan)/numpy.sqrt(len(overscan))
+            
 
     elif overscan_direction == "vertical":
         # loop through the rows and subtract the mean value of the overscan region
         for i in range(overscan_y_start, overscan_y_end + 1):
-            mean = numpy.mean(image_data[i, overscan_x_start:overscan_x_end])
-            image_data[i, :] = image_data[i, :] - mean
+            overscan = image_data[i, overscan_x_start:overscan_x_end] 
+            mean = numpy.mean(overscan)
+            overscan_image[i, :] = numpy.full(image_data.shape[1], mean)
+            error_image[i, :] = numpy.std(overscan)/numpy.sqrt(len(overscan))
 
-    logger.info("Overscan subtracted successfully.")
 
-    return image_data
+    overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "overscan-bias")
+
+    overscan_frame.show_frame(normalize=False)
+
+    return overscan_frame
