@@ -9,7 +9,7 @@ exposures (science, standard star and arc lamps).
 """
 
 
-def estimate_initial_error(data, exptime):
+def estimate_initial_error(data, exptime, master_bias):
     """
     From:
     Richard Berry, James Burnell - The Handbook of Astronomical Image Processing
@@ -17,33 +17,37 @@ def estimate_initial_error(data, exptime):
     """
 
     from pylongslit.dark import estimate_dark
-
     from pylongslit.parser import detector_params
+    from pylongslit.overscan import estimate_frame_overscan_bias
 
     gain = detector_params["gain"]  # e/ADU
     read_noise = detector_params["read_out_noise"]  # e
 
     dark = detector_params["dark_current"]  # e/s/pixel
 
-    _, dark_noise_error = estimate_dark(dark, exptime)
+    dark_current, dark_noise_error = estimate_dark(dark, exptime)
+
+    use_overscan = detector_params["overscan"]["use_overscan"]
+    
+    if use_overscan:
+        overscan_frame = estimate_frame_overscan_bias(data)
+
 
     read_noise_error = np.sqrt(read_noise / gain)
 
     # Poisson noise
-    poisson_noise = np.sqrt(data)
-
-    plt.imshow(data, origin="lower", cmap="gray")
-    plt.colorbar()
-    plt.title("Data")
-    plt.show()
-
-    plt.imshow(poisson_noise, origin="lower", cmap="gray")
-    plt.colorbar()
-    plt.title("Poisson noise")
-    plt.show()
+    if use_overscan:
+        poisson_noise = np.sqrt(data - dark_current - overscan_frame.data - master_bias.data)  
+    
+    else:
+        poisson_noise = np.sqrt(data - dark_current - master_bias.data)
 
     # total error
-    error = np.sqrt(poisson_noise**2 + dark_noise_error**2 + read_noise_error**2)
+    if use_overscan:
+        error = np.sqrt(poisson_noise**2 + dark_noise_error**2 + overscan_frame.sigma**2 + master_bias.sigma**2 +  read_noise_error**2)
+
+    else:
+        error = np.sqrt(poisson_noise**2 + dark_noise_error**2 + master_bias.sigma**2 +  read_noise_error**2)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
 
@@ -106,7 +110,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
     from pylongslit.dark import estimate_dark
 
     initial_frame = frame.copy()
-    initial_error = estimate_initial_error(frame, exptime)
+    initial_error = estimate_initial_error(frame, exptime, master_bias)
 
     # subtract the dark current
 
@@ -158,6 +162,11 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
     if np.isnan(frame).any() or np.isinf(frame).any():
         logger.warning("NaNs or Infs detected in the frame. Replacing with zero.")
         frame = np.nan_to_num(frame, nan=0.0, posinf=0.0, neginf=0.0)
+
+    if np.isnan(error).any() or np.isinf(error).any():
+        logger.warning("NaNs or Infs detected in the error-frame. Replacing with zero.")
+        error = np.nan_to_num(error, nan=0.0, posinf=0.0, neginf=0.0)
+
 
     return frame, error
 
