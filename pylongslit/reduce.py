@@ -258,6 +258,10 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir, exptime, typ
         header["CROPY2"] = data.shape[0]
 
         frame = PyLongslit_frame(data, error, header, write_name)
+        # set some fits headers that will be used later in the pipeline
+        frame.header["CRRREMOVD"] = False
+        frame.header["BCGSUBBED"] = False
+        frame.header["SKYSUBBED"] = False
         frame.show_frame(normalize=False)
         frame.show_frame()
         frame.write_to_disc()

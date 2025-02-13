@@ -11,14 +11,12 @@ def crop_image(frame):
     from pylongslit.utils import hist_normalize
 
     image = frame.data.copy()
-    error = frame.error.copy()
+    error = frame.sigma.copy()
 
-
-    norm_image = hist_normalize(image)
 
     fig, ax = plt.subplots()
     plt.subplots_adjust(left=0.25, bottom=0.25)
-    img_display = ax.imshow(norm_image, cmap="gray")
+    img_display = ax.imshow(image, cmap="gray")
 
     axcolor = "lightgoldenrodyellow"
     axtop = plt.axes([0.25, 0.2, 0.65, 0.03], facecolor=axcolor)
@@ -32,7 +30,7 @@ def crop_image(frame):
     def update(val):
         top = int(stop.val)
         bottom = int(sbottom.val)
-        cropped_img = norm_image[top:bottom, :]
+        cropped_img = image[top:bottom, :]
         img_display.set_data(cropped_img)
         fig.canvas.draw_idle()
 
@@ -50,7 +48,7 @@ def crop_image(frame):
 
     cropped_y = top, bottom
 
-    plt.imshow(hist_normalize(image), cmap="gray")
+    plt.imshow(image, cmap="gray")
     plt.show()
 
     return image, sigma, cropped_y
@@ -71,6 +69,8 @@ def crop_files(files):
         frame.sigma = error
         frame.header["CROPY1"] = cropped_y[0]
         frame.header["CROPY2"] = cropped_y[1]
+
+        frame.show_frame(normalize=False)
 
         frame.write_to_disc()
         

@@ -40,6 +40,10 @@ def run_crremoval():
         logger.info(f"Removing cosmic rays from {file}...")
 
         frame = PyLongslit_frame.read_from_disc(file)
+
+        if frame.header["CRRREMOVD"]:
+            logger.warning(f"File {file} already had cosmic rays removed. Skipping...")
+            continue
                                  
         _, clean_arr = astroscrappy.detect_cosmics(
             frame.data,
@@ -56,7 +60,7 @@ def run_crremoval():
 
         logger.info(f"Cosmic rays removed on {file}.")
 
-        frame.header["CRREMOVD"] = True
+        frame.header["CRRREMOVD"] = True
 
         logger.info(f"Writing output to disc...")
 

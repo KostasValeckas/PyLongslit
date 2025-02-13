@@ -22,6 +22,12 @@ class PyLongslit_frame:
         self.header = header
         self.name = name
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
 
     def path(self):
         from pylongslit.parser import output_dir
@@ -653,6 +659,7 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     """
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir
+    from pylongslit.utils import PyLongslit_frame
 
     logger.info("Starting object-choosing GUI. Follow the instructions on the plots.")
 
@@ -680,8 +687,8 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     # loop over the files and display the interactive plot
     for i, file in enumerate(file_list):
 
-        frame = open_fits(output_dir, file)
-        data = frame[0].data
+        frame = PyLongslit_frame.read_from_disc(file)
+        data = frame.data
 
         plt.figure(figsize=figsize)
         plt.connect("button_press_event", onclick)
@@ -993,7 +1000,7 @@ def get_bias_and_flats(skip_bias=False):
     return BIAS, FLAT
 
 
-def get_reduced_frames():
+def get_reduced_frames(only_science=False):
     """
     Driver for `get_reduced_frames` that acounts for skip_science and/or
     skip_standard parameters.
@@ -1023,6 +1030,10 @@ def get_reduced_frames():
 
         reduced_files = get_file_group("reduced_science")
 
+    # used only when standard is to be skipped for some step, but not the whole reduction
+    elif only_science:
+        reduced_files = get_file_group("reduced_science")
+
     elif skip_science_or_standard_bool == 2:
 
         logger.warning("Science extraction is set to be skipped in the config file.")
@@ -1032,7 +1043,7 @@ def get_reduced_frames():
 
     else:
 
-        reduced_files = get_file_group("reduced_science", "reduced_std")
+        reduced_files = get_file_group("reduced_science", "reduced_standard")
 
     return reduced_files
 

@@ -19,16 +19,16 @@ def read_obj_trace_results():
     return pixel, center, fwhm
 
 
-def load_skysubbed_frame():
+def load_frame():
 
-    from pylongslit.utils import open_fits
+    from pylongslit.utils import PyLongslit_frame
     from pylongslit.parser import obj_trace_clone_params
 
-    file_path = obj_trace_clone_params["skysubbed_frame_root"]
+    file_path = obj_trace_clone_params["frame_root"]
 
-    hdul = open_fits("", file_path)
+    frame = PyLongslit_frame.read_from_disc(file_path)
 
-    data = hdul[0].data
+    data = frame.data
 
     return data
 
@@ -77,9 +77,9 @@ def write_cloned_trace_to_file(pixel, center, fwhm):
     from pylongslit.logger import logger
     from pylongslit.parser import obj_trace_clone_params
 
-    filename = obj_trace_clone_params["skysubbed_frame_root"]
+    filename = obj_trace_clone_params["frame_root"]
 
-    output_file = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+    output_file = filename.replace("reduced_", "obj_").replace(".fits", ".dat")
 
     fwhm_array = np.full_like(center, fwhm)
 
@@ -95,7 +95,7 @@ def write_cloned_trace_to_file(pixel, center, fwhm):
 def run_obj_trace_clone():
     pixel, center, fwhm = read_obj_trace_results()
 
-    skysubbed_frame = load_skysubbed_frame()
+    skysubbed_frame = load_frame()
 
     # for initial fwhm guess, just use the mean of the fwhm archived trace
     corrected_centers, fwhm = overlay_trace(

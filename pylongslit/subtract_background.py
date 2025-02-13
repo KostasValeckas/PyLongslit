@@ -1,11 +1,12 @@
 import matplotlib.pyplot as plt
 import argparse
+import numpy as np
 
 def subtract_background(reduced_files):
 
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir, background_params
-    from pylongslit.utils import hist_normalize, open_fits, write_to_fits
+    from pylongslit.utils import hist_normalize, open_fits, write_to_fits, PyLongslit_frame
 
     file_pairs = background_params["pairs"]
 
@@ -25,37 +26,47 @@ def subtract_background(reduced_files):
 
     # load the images
     images = {}
+    sigmas = {}
     headers = {}
+
     for file in reduced_files:
-        with open_fits(output_dir, file) as hdul:
+        with PyLongslit_frame.read_from_disc(file) as frame:
+            if frame.header["BCGSUBBED"] == True:
+                logger.warning(f"File {file} already had background subtracted. Skipping...")
+                continue
             new_filename = file.replace("reduced_science_", "").replace(
                 "reduced_std_", ""
             )
-            images[new_filename] = hdul[0].data
-            headers[new_filename] = hdul[0].header
+            images[new_filename] = frame.data
+            sigmas[new_filename] = frame.sigma
+            headers[new_filename] = frame.header
 
     subtracted_images = {}
+    new_sigmas = {}
+
     for i in range(len(file_pairs)):
         pair = file_pairs[str(i + 1)]
 
-        subtracted_image = images[pair["A"]] - images[pair["B"]]
+        # simple handling for skip-cases TODO: make this more robust
+        try:
+            subtracted_image = images[pair["A"]] - images[pair["B"]]
+        except KeyError:
+            continue
 
         subtracted_images[pair["A"]] = subtracted_image
+        new_sigmas[pair["A"]] = np.sqrt(sigmas[pair["A"]]**2 + sigmas[pair["B"]]**2)
 
-        # Histogram equalize the images
-        hist_eq_before = hist_normalize(images[pair["A"]])
-        hist_eq_after = hist_normalize(subtracted_image)
 
         # Create a plot with 2 subplots
-        fig, axes = plt.subplots(2, 1, figsize=(12, 6))
+        _, axes = plt.subplots(2, 1, figsize=(12, 6))
 
         # Show the histogram equalized image before subtraction
-        axes[0].imshow(hist_eq_before, cmap="gray")
+        axes[0].imshow(images[pair["A"]], cmap="gray")
         axes[0].set_title(f'Before Subtraction: {pair["A"]}')
         axes[0].axis("off")
 
         # Show the histogram equalized image after subtraction
-        axes[1].imshow(hist_eq_after, cmap="gray")
+        axes[1].imshow(subtracted_image, cmap="gray")
         axes[1].set_title(f'After Subtraction: {pair["A"]}')
         axes[1].axis("off")
 
@@ -65,14 +76,24 @@ def subtract_background(reduced_files):
 
     # save the subtracted images
     for filename in reduced_files:
-        new_filename = filename.replace("reduced_science_", "").replace(
-            "reduced_std_", ""
-        )
+
+        new_filename = filename.replace("reduced_science_", "").replace("reduced_std_", "")
+
         if new_filename in subtracted_images:
             image = subtracted_images[new_filename]
+            sigma = new_sigmas[new_filename]
             header = headers[new_filename]
-            logger.info(f"Saving subtracted image {filename} to disc.")
-            write_to_fits(image, header, filename, output_dir)
+
+            save_filename = filename.replace(".fits", "")
+
+            frame = PyLongslit_frame(image, sigma, header, save_filename)
+            frame.header["BCGSUBBED"] = True
+            
+            frame.show_frame(normalize=False)
+
+            logger.info(f"Saving subtracted image {save_filename} to disc.")
+            frame.write_to_disc()
+
 
     logger.info("Subtracted images saved to disc.")
 

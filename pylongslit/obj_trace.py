@@ -499,18 +499,17 @@ def find_obj_frame(filename, spacial_center, FWHM_AP):
 
     from pylongslit.logger import logger
     from pylongslit.parser import extract_params, output_dir
-    from pylongslit.utils import open_fits
+    from pylongslit.utils import open_fits, PyLongslit_frame
 
     # get initial guess for SNR threshold
     SNR_initial_guess = extract_params["SNR"]
     # get polynomial degree for fitting
     fit_deg = extract_params["OBJ_FIT_DEG"]
 
-    # open the file
-    hdul = open_fits(output_dir, filename)
-    data = hdul[0].data
+    frame = PyLongslit_frame.read_from_disc(filename)
+    data = frame.data
 
-    header = hdul[0].header
+    header = frame.header
     # get the cropped y offset for global detector coordinates
     y_lower = header["CROPY1"]
     y_upper = header["CROPY2"]
@@ -667,7 +666,7 @@ def write_obj_trace_results(obj_dict):
     for filename, (good_x, centers_fit_val, fwhm_fit_val) in obj_dict.items():
 
         # prepare a filename
-        filename = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+        filename = filename.replace("reduced_", "obj_").replace(".fits", ".dat")
 
         logger.info(f"Writing object trace results to {filename}...")
 
@@ -696,11 +695,11 @@ def run_obj_trace():
     """
 
     from pylongslit.logger import logger
-    from pylongslit.utils import get_skysub_files
+    from pylongslit.utils import get_reduced_frames
 
     logger.info("Starting object tracing routine...")
 
-    filenames = get_skysub_files()
+    filenames = get_reduced_frames()
 
     # get the user-guess for the object center
     center_dict = choose_obj_centrum_obj_trace(filenames)
