@@ -331,7 +331,7 @@ def run_flats():
     from pylongslit.parser import detector_params, flat_params, output_dir, data_params
     from pylongslit.utils import FileList, check_dimensions, open_fits, PyLongslit_frame
     from pylongslit.utils import list_files, load_bias
-    from pylongslit.overscan import subtract_overscan_from_frame, detect_overscan_direction
+    from pylongslit.overscan import estimate_frame_overscan_bias, detect_overscan_direction
     from pylongslit.stats import bootstrap_median_errors_framestack
 
     # Extract the detector parameters
@@ -386,7 +386,7 @@ def run_flats():
 
         # Subtract the bias
         if use_overscan:
-            data = subtract_overscan_from_frame(data, overscan_dir)
+            data = estimate_frame_overscan_bias(data, overscan_dir)
         else:
             data = data - BIAS
             logger.info("Subtracted the bias.")

@@ -67,35 +67,57 @@ def estimate_initial_error(data, exptime, master_bias):
     return error
 
 
-def read_crr_files():
-    """
-    Read the cosmic-ray removed files from the output directory and
-    perform some checks.
+def read_raw_object_files():
 
-    Returns
-    -------
-    science_files : list
-        A list of cosmic-ray removed science files.
-
-    standard_files : list
-        A list of cosmic-ray removed standard star files.
-    """
-
-    from pylongslit.utils import get_filenames
     from pylongslit.logger import logger
+    from pylongslit.parser import skip_science_or_standard_bool
+    from pylongslit.parser import science_params, standard_params
+    from pylongslit.utils import FileList, list_files
 
-    science_files = get_filenames(starts_with="crr_science")
-    standard_files = get_filenames(starts_with="crr_std")
+    # initiate user parameters
 
-    logger.info(f"Found {len(science_files)} cosmic-ray removed science files.")
-    logger.info(f"Found {len(standard_files)} cosmic-ray removed standard star files.")
 
-    # sort alphabetically to correctly match the centers
+    if skip_science_or_standard_bool == 0:
+        logger.critical(
+            'Both skip_science and skip_standard are set to "true" in the '
+            "config file. There is nothing to perform the reduction on."
+        )
+        logger.error('Set at least one of them "false" and try again.')
 
-    science_files.sort()
-    standard_files.sort()
+        exit()
 
-    return science_files, standard_files
+    elif skip_science_or_standard_bool == 1:
+        star_file_list = None
+        science_file_list = FileList(science_params["science_dir"])
+
+    elif skip_science_or_standard_bool == 2:
+        star_file_list = FileList(standard_params["standard_dir"])
+        science_file_list = None
+
+    else:
+        star_file_list = FileList(standard_params["standard_dir"])
+        science_file_list = FileList(science_params["science_dir"])
+
+    if star_file_list is not None:
+        logger.info(
+            f"Reducing {star_file_list.num_files} "
+            "standard star frames:"
+        )
+
+        list_files(star_file_list)
+
+    if science_file_list is not None:
+        logger.info(
+            f"Reducing {science_file_list.num_files} "
+            "science frames:"
+        )
+
+        list_files(science_file_list)
+
+
+    logger.info("Cosmic-ray removal procedure finished.")
+
+    return science_file_list, star_file_list
 
 
 def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, exptime):
@@ -171,7 +193,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
     return frame, error
 
 
-def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir, exptime):
+def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir, exptime, type):
     """
     Driver for 'reduce_frame' function. Reduces a list of frames.
 
@@ -190,18 +212,23 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir, exptime):
         Whether to use the overscan subtraction or not.
     """
 
-    from pylongslit.parser import output_dir
-    from pylongslit.utils import open_fits, write_to_fits, PyLongslit_frame
+    from pylongslit.parser import output_dir, science_params, standard_params, data_params
+    from pylongslit.utils import open_fits, PyLongslit_frame
     from pylongslit.utils import check_rotation, flip_and_rotate
     from pylongslit.logger import logger
+
+    if type != "science" and type != "standard":
+        logger.critical("Reduction type must be either 'science' or 'standard'.")
+        logger.critical("Contact the developers about this error.")
 
     for file in file_list:
 
         logger.info(f"Reducing frame {file} ...")
+        
 
-        hdu = open_fits(output_dir, file)
+        hdu = open_fits(science_params["science_dir"], file) if type == "science" else open_fits(standard_params["standard_dir"], file)
 
-        data = hdu[0].data
+        data = hdu[data_params["raw_data_hdu_index"]].data
 
         data, error = reduce_frame(
             data, BIAS, FLAT, use_overscan, overscan_dir, exptime
@@ -220,7 +247,8 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, overscan_dir, exptime):
 
         logger.info("Frame reduced, writing to disc...")
 
-        write_name = file.replace("crr_", "reduced_")
+        write_name = "reduced_science_" + file if type == "science" else "reduced_standard_" + file
+        write_name = write_name.replace(".fits", "")
 
         header = hdu[0].header
 
@@ -265,7 +293,7 @@ def reduce_all():
 
     logger.info(f"Fetching cosmic-ray removed files from {output_dir} ...")
 
-    science_files, standard_files = read_crr_files()
+    science_files, standard_files = read_raw_object_files()
 
     # Standard star reduction
 
@@ -278,7 +306,7 @@ def reduce_all():
 
         exptime = standard_params["exptime"]
 
-        reduce_group(standard_files, BIAS, FLAT, use_overscan, overscan_dir, exptime)
+        reduce_group(standard_files, BIAS, FLAT, use_overscan, overscan_dir, exptime, "standard")
 
     # Science reduction
 
@@ -292,7 +320,7 @@ def reduce_all():
 
         exptime = science_params["exptime"]
 
-        reduce_group(science_files, BIAS, FLAT, use_overscan, overscan_dir, exptime)
+        reduce_group(science_files, BIAS, FLAT, use_overscan, overscan_dir, exptime, "science")
 
 
 def main():

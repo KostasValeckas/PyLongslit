@@ -13,7 +13,7 @@ def combine_arcs():
     from pylongslit.parser import output_dir, arc_params, data_params, combine_arc_params
     from pylongslit.utils import FileList, open_fits, write_to_fits, list_files
     from pylongslit.utils import check_rotation, flip_and_rotate, load_bias, PyLongslit_frame
-    from pylongslit.overscan import subtract_overscan_from_frame, check_overscan
+    from pylongslit.overscan import estimate_frame_overscan_bias, check_overscan
 
     logger.info("Fetching arc frames...")
 
@@ -53,7 +53,7 @@ def combine_arcs():
         data = hdu[data_params["raw_data_hdu_index"]].data.astype(np.float32)
 
         if use_overscan:
-            data = subtract_overscan_from_frame(data)
+            data = estimate_frame_overscan_bias(data)
 
         if not skip_bias: data = data - BIAS
 

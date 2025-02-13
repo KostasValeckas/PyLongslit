@@ -144,6 +144,7 @@ class PyLongslit_frame:
             # Read the image HDU (sigma)
             sigma = hdulist[1].data
 
+        filename = filename.split(".")[0]
 
         return cls(data, sigma, header, filename)
 

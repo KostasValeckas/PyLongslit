@@ -3,9 +3,16 @@ from matplotlib.widgets import Slider, Button
 import argparse
 
 
-def crop_image(image):
+#TODO: this works for now, but should esentially be a class method of PyLongslit_frame
+
+
+def crop_image(frame):
 
     from pylongslit.utils import hist_normalize
+
+    image = frame.data.copy()
+    error = frame.error.copy()
+
 
     norm_image = hist_normalize(image)
 
@@ -33,35 +40,40 @@ def crop_image(image):
     sbottom.on_changed(update)
 
     resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
-    button = Button(resetax, "Reset", color=axcolor, hovercolor="0.975")
-
+    
     plt.show()
 
     top = int(stop.val)
     bottom = int(sbottom.val)
     image = image[top:bottom, :]
+    sigma = error[top:bottom, :]
 
     cropped_y = top, bottom
 
     plt.imshow(hist_normalize(image), cmap="gray")
     plt.show()
 
-    return image, cropped_y
+    return image, sigma, cropped_y
 
 
 def crop_files(files):
 
     from pylongslit.parser import output_dir
-    from pylongslit.utils import open_fits, write_to_fits
+    from pylongslit.utils import open_fits, write_to_fits, PyLongslit_frame
 
     for i, file in enumerate(files):
-        hdul = open_fits(output_dir, file)
-        header = hdul[0].header
-        data = hdul[0].data
-        data, cropped_y = crop_image(data)
-        header["CROPY1"] = cropped_y[0]
-        header["CROPY2"] = cropped_y[1]
-        write_to_fits(data, header, file, output_dir)
+
+        frame = PyLongslit_frame.read_from_disc(file)
+
+
+        data, error, cropped_y = crop_image(frame)
+        frame.data = data
+        frame.sigma = error
+        frame.header["CROPY1"] = cropped_y[0]
+        frame.header["CROPY2"] = cropped_y[1]
+
+        frame.write_to_disc()
+        
 
 
 def run_crop():
