@@ -881,7 +881,7 @@ def load_spec_data(group="science"):
         exit()
 
     filenames = get_filenames(
-        starts_with="1d_science" if group == "science" else "1d_std",
+        starts_with="1d_science" if group == "science" else "1d_standard",
     )
 
     if len(filenames) == 0:
