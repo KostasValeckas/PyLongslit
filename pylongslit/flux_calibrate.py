@@ -5,15 +5,23 @@ from numpy.polynomial.chebyshev import chebval
 import argparse
 
 
-def calibrate_spectrum(wavelength, counts, var, sens_coeffs, exptime):
+def calibrate_spectrum(wavelength, counts, var, sens_coeffs, error, exptime):
+
+    from pylongslit.sensitivity_function import eval_sensfunc
 
     # evaluate the sensitivity at the wavelength points
     # and convert back from logspaces
-    conv_factors = 10 ** chebval(wavelength, sens_coeffs)
+    conv_factors, conv_error = eval_sensfunc(sens_coeffs, error, wavelength)
+
 
     # divide by exposure time and multiply by evaluated sensitivity
     calibrated_flux = (counts / exptime) * conv_factors
-    calibrated_var = (var / (exptime**2)) * (conv_factors**2)
+    
+    error_counts = np.sqrt(var)
+
+    error_flux = np.sqrt(((counts/exptime)*conv_error)**2 + ((conv_factors/exptime)*error_counts)**2)
+
+    calibrated_var = error_flux**2
 
     return calibrated_flux, calibrated_var
 
@@ -33,7 +41,7 @@ def plot_calibrated_spectrum(
     plt.show()
 
 
-def calibrate_flux(spectra, sens_coeffs):
+def calibrate_flux(spectra, sens_coeffs, error):
 
     from pylongslit.parser import science_params
 
@@ -45,7 +53,7 @@ def calibrate_flux(spectra, sens_coeffs):
     for filename, (wavelength, counts, var) in spectra.items():
         # calibrate the spectrum
         calibrated_flux, calibrated_var = calibrate_spectrum(
-            wavelength, counts, var, sens_coeffs, exptime
+            wavelength, counts, var, sens_coeffs, error, exptime
         )
         # save the calibrated spectrum
         calibrated_spectra[filename] = (wavelength, calibrated_flux, calibrated_var)
@@ -93,9 +101,9 @@ def run_flux_calib():
 
     spectra = load_spec_data(group="science")
 
-    sens_coeffs = load_sensfunc_from_disc()
+    sens_coeffs, error = load_sensfunc_from_disc()
 
-    calibrated_spectra = calibrate_flux(spectra, sens_coeffs)
+    calibrated_spectra = calibrate_flux(spectra, sens_coeffs, error)
 
     write_calibrated_spectra_to_disc(calibrated_spectra)
 

@@ -41,17 +41,17 @@ def find_obj_frame_manual(filename, FWHM_AP):
 
     from pylongslit.logger import logger
     from pylongslit.parser import extract_params, output_dir
-    from pylongslit.utils import open_fits, hist_normalize, show_1d_fit_QA
+    from pylongslit.utils import open_fits, hist_normalize, show_1d_fit_QA, PyLongslit_frame
 
  
     # get polynomial degree for fitting
     fit_deg = extract_params["OBJ_FIT_DEG"]
 
     # open the file
-    hdul = open_fits(output_dir, filename)
-    data = hdul[0].data
+    frame = PyLongslit_frame.read_from_disc(filename)
+    data = frame.data
 
-    header = hdul[0].header
+    header = frame.header
     # get the cropped y offset for global detector coordinates
     y_lower = header["CROPY1"]
     y_upper = header["CROPY2"]
@@ -152,7 +152,7 @@ def find_obj_frame_manual(filename, FWHM_AP):
     # tracing is time consuming
 
     # prepare a filename
-    filename_out = filename.replace("skysub_", "obj_manual_").replace(".fits", ".dat")
+    filename_out = filename.replace("reduced_", "obj_manual_").replace(".fits", ".dat")
     
     with open(filename_out, "w") as f:
         for x, center, fwhm in zip(spectral_pixels, full_fit, fwhm_fit_val):
@@ -211,11 +211,11 @@ def run_obj_trace():
     """
 
     from pylongslit.logger import logger
-    from pylongslit.utils import get_skysub_files
+    from pylongslit.utils import get_reduced_frames
 
     logger.info("Starting object tracing routine...")
 
-    filenames = get_skysub_files()
+    filenames = get_reduced_frames()
 
     find_obj(filenames)
 

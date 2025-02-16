@@ -10,99 +10,12 @@ Module for removing cosmic rays from raw science and standard star frames.
 # TODO is there a sensful way to make QA plots for crremoval?
 
 
-def remove_cosmics(file_list, sigclip, sigfrac, objlim, niter, group):
-    """
-    A wrapper for astroscrappy.detect_cosmics.
-
-    Writes the cosmic-ray removed image to disc in the output directory
-    with the prefix 'crr_'.
-
-    Parameters
-    ----------
-    file_list : pylongslit.utils.FileList
-        A list of files to remove cosmic rays from.
-
-    sigclip : float
-        Laplacian-to-noise limit for cosmic ray detection.
-
-    sigfrac : float
-        Fractional detection limit for neighboring pixels.
-
-    objlim : float
-        Minimum contrast between Laplacian image and the fine structure image.
-
-    group : str
-        The group of files to remove cosmic rays from. Used for naming
-        the output files for easier sorting in next step.
-
-        Avaialble options: "science", "std"
-
-    niter : int
-        Number of iterations to perform.
-    """
-
-    from pylongslit.logger import logger
-    from pylongslit.parser import detector_params, output_dir, data_params
-    from pylongslit.utils import open_fits, write_to_fits, check_dimensions
-
-    # check the group parameter:
-    if group not in ["science", "std"]:
-        logger.error(
-            "The group parameter must be one of the following: " "'science', 'std'."
-        )
-        exit()
-
-    # check dimensions - this is the last part where we need to do this,
-    # since this is the last step with raw data
-    logger.info("Checking detector dimensions of the files...")
-    check_dimensions(file_list, detector_params["xsize"], detector_params["ysize"])
-
-    for file in file_list:
-        logger.info(f"Removing cosmic rays from {file}...")
-
-        hdu = open_fits(file_list.path, file)
-
-        _, clean_arr = astroscrappy.detect_cosmics(
-            hdu[data_params["raw_data_hdu_index"]].data,
-            sigclip=sigclip,
-            sigfrac=sigfrac,
-            objlim=objlim,
-            cleantype="medmask",
-            niter=niter,
-            sepmed=True,
-            verbose=True,
-        )
-
-        # Replace data array with cleaned image
-        hdu[data_params["raw_data_hdu_index"]].data = clean_arr
-
-        logger.info(f"Cosmic rays removed on {file}.")
-
-        logger.info(f"Writing output to disc...")
-
-        filename = "crr_" + group + "_" + file
-
-        write_to_fits(
-            hdu[data_params["raw_data_hdu_index"]].data,
-            hdu[data_params["raw_data_hdu_index"]].header,
-            filename,
-            output_dir,
-        )
-
-        logger.info(
-            f"Cosmic-ray removed file written to disc at in {output_dir}, "
-            f"filename {filename}."
-        )
-
-        hdu.close()
-
-
 def run_crremoval():
 
     from pylongslit.logger import logger
     from pylongslit.parser import detector_params, crr_params, skip_science_or_standard_bool
     from pylongslit.parser import science_params, standard_params
-    from pylongslit.utils import FileList, list_files
+    from pylongslit.utils import FileList, list_files, get_file_group, PyLongslit_frame
 
     # initiate user parameters
 
@@ -121,46 +34,38 @@ def run_crremoval():
     logger.info(f"gain = {gain}")
     logger.info(f"read_out_noise = {read_out_noise}")
 
-    if skip_science_or_standard_bool == 0:
-        logger.critical(
-            'Both skip_science and skip_standard are set to "true" in the '
-            "config file. There is nothing to perform the reduction on."
-        )
-        logger.error('Set at least one of them "false" and try again.')
+    file_list = get_file_group("reduced")
 
-        exit()
+    for file in file_list:
+        logger.info(f"Removing cosmic rays from {file}...")
 
-    elif skip_science_or_standard_bool == 1:
-        star_file_list = None
-        science_file_list = FileList(science_params["science_dir"])
+        frame = PyLongslit_frame.read_from_disc(file)
 
-    elif skip_science_or_standard_bool == 2:
-        star_file_list = FileList(standard_params["standard_dir"])
-        science_file_list = None
-
-    else:
-        star_file_list = FileList(standard_params["standard_dir"])
-        science_file_list = FileList(science_params["science_dir"])
-
-    if star_file_list is not None:
-        logger.info(
-            f"Removing cosmic rays from {star_file_list.num_files} "
-            "standard star frames:"
+        if frame.header["CRRREMOVD"]:
+            logger.warning(f"File {file} already had cosmic rays removed. Skipping...")
+            continue
+                                 
+        _, clean_arr = astroscrappy.detect_cosmics(
+            frame.data,
+            sigclip=sigclip,
+            sigfrac=frac,
+            objlim=objlim,
+            cleantype="medmask",
+            niter=niter,
+            sepmed=True,
+            verbose=True,
         )
 
-        list_files(star_file_list)
+        frame.data = clean_arr
 
-        remove_cosmics(star_file_list, sigclip, frac, objlim, niter, "std")
+        logger.info(f"Cosmic rays removed on {file}.")
 
-    if science_file_list is not None:
-        logger.info(
-            f"Removing cosmic rays from {science_file_list.num_files} "
-            "science frames:"
-        )
+        frame.header["CRRREMOVD"] = True
 
-        list_files(science_file_list)
+        logger.info(f"Writing output to disc...")
 
-        remove_cosmics(science_file_list, sigclip, frac, objlim, niter, "science")
+        frame.write_to_disc()
+    
 
     logger.info("Cosmic-ray removal procedure finished.")
 

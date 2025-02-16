@@ -15,6 +15,7 @@ from itertools import chain
 import warnings
 import astropy.modeling.fitting
 import argparse
+from tqdm import tqdm
 
 class GeneralizedNormal1D(Fittable1DModel):
     """
@@ -279,7 +280,7 @@ def trace_line_tilt(
             g_model,
             R2_threshold=TILT_TRACE_R2_TOL,
             bench_value=last_good_center,
-            bench_tolerance=3.0
+            bench_tolerance=0.3
         )
 
 
@@ -881,6 +882,7 @@ def reidentify(pixnumber, wavelength, master_arc):
             line_REID[str(j)] = {
                 "peak_pix": fit_center,
                 "wavelength": wavelength[j],
+                "FWHM": FWHM_local,
             }
 
     # plot the last plot if not filled up
@@ -888,10 +890,23 @@ def reidentify(pixnumber, wavelength, master_arc):
 
     all_pixels = [line_REID[key]["peak_pix"] for key in line_REID.keys()]
     all_wavelengths = [line_REID[key]["wavelength"] for key in line_REID.keys()]
-    all_fwhm = [FWHM_local for key in line_REID.keys()]
+    all_fwhm = [line_REID[key]["FWHM"] for key in line_REID.keys()]
 
     fit = chebfit(all_pixels, all_wavelengths, deg=fit_order)
     residuals = all_wavelengths - chebval(all_pixels, fit)
+    # Design matrix for Chebyshev polynomials
+    X = np.polynomial.chebyshev.chebvander(all_pixels, fit_order)
+
+    sigma_squared = np.var(residuals)
+
+    # Calculate the covariance matrix for the coefficients
+    # Covariance matrix: C = sigma^2 * (X^T X)^-1
+    XT_X_inv = np.linalg.inv(X.T @ X)
+    cov_matrix = sigma_squared * XT_X_inv
+
+    # The standard errors of the coefficients are the square roots of the diagonal elements of the covariance matrix
+    errors = np.sqrt(np.diag(cov_matrix))
+
     pixel_linspace = np.linspace(0, len(spec_1d), 1000)
     wavelength_linspace = chebval(pixel_linspace, fit)
 
@@ -910,7 +925,7 @@ def reidentify(pixnumber, wavelength, master_arc):
     # used when tracing tilts
     fwhm_mean = np.mean(all_fwhm)
 
-    return fit, line_REID, fwhm_mean
+    return fit, line_REID, fwhm_mean, errors
 
 
 def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
@@ -964,9 +979,11 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
         y_degree=ORDER_SPATIAL,
     )
 
-    fitter = LevMarLSQFitter()
+    fitter = LevMarLSQFitter(calc_uncertainties=True)
 
     fit2D = fitter(coeff_init, spectral_pixels, spacial_pixels, wavelength_values)
+    cov = fitter.fit_info['param_cov']
+    param_errors = np.sqrt(np.diag(cov))
 
     residuals = wavelength_values - fit2D(spectral_pixels, spacial_pixels)
     RMS = np.sqrt(np.mean(residuals**2))
@@ -989,7 +1006,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
 
     plt.show()
 
-    return fit2D
+    return fit2D, param_errors
 
 
 def construct_detector_map(fit2D_REID):
@@ -1134,6 +1151,143 @@ def plot_wavelengthcalib_QA(good_lines: dict, wave_fit, tilt_fit):
     wave_map = construct_wavelen_map(wave_fit, tilt_fit)
 
     plot_wavemap(wave_map)
+
+def simulate_wavelengthcalib_variance(wave_fit, wave_fit_error, tilt_fit, tilt_fit_error, n_sims=1000):
+
+    """
+    PURELY EXPERIMENTAL - DO NOT USE
+    """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import wavecalib_params
+    from pylongslit.parser import detector_params
+
+    logger.info("Simulating wavelength calibration variance...")
+    logger.info(f"Number of simulations: {n_sims}")
+
+    N_SPACIAL = (
+        detector_params["xsize"]
+        if detector_params["dispersion"]["spectral_dir"] == "y"
+        else detector_params["ysize"]
+    )
+
+    N_SPECTRAL = (
+        detector_params["ysize"]
+        if detector_params["dispersion"]["spectral_dir"] == "y"
+        else detector_params["xsize"]
+    )
+
+    wavemap_sum = np.zeros(
+        (
+            N_SPACIAL,
+            N_SPECTRAL,
+        ) 
+    )
+
+    wavemap_sum_squares = np.zeros(
+        (
+            N_SPACIAL,
+            N_SPECTRAL,
+        )
+    )   
+
+    wavemap_diffs = np.zeros(
+        (
+            N_SPACIAL,
+            N_SPECTRAL,
+        )
+    )
+
+    first_param_list = []
+
+    wavemap_initial = construct_wavelen_map(wave_fit, tilt_fit)
+
+    for _ in range(n_sims):
+    #for _ in tqdm(range(n_sims), desc="Estimating wavelength calibration variance"):
+        # simulate the variance in the wavelength map by sampling from the
+        # normal distribution of the fit parameters
+        random_wave_fit = np.random.normal(wave_fit, wave_fit_error, wave_fit.shape)
+        first_param_list.append(random_wave_fit[0])
+
+        random_tilt_params = np.random.normal(tilt_fit.parameters, tilt_fit_error, tilt_fit_error.shape)
+
+        random_tilt_fit = tilt_fit.copy()
+        random_tilt_fit.parameters = random_tilt_params
+
+        wave_map = construct_wavelen_map(random_wave_fit, random_tilt_fit)
+        wavemap_sum += wave_map
+        wavemap_sum_squares += wave_map**2
+        print(np.max(wavemap_sum_squares))
+
+        wavemap_diffs = wavemap_initial - wave_map
+
+    wavemap_mean = wavemap_sum / n_sims
+    variance_wavemap = wavemap_sum_squares/n_sims - wavemap_mean**2
+    error_wavemap = np.sqrt(variance_wavemap)/np.sqrt(n_sims)
+
+    plt.imshow(wavemap_mean, origin="lower")
+    plt.colorbar(label="Mean wavelength map (Å)")
+    plt.show()
+
+    plt.imshow(error_wavemap, origin="lower")
+    plt.colorbar(label="Error in wavelength map (Å)")
+    plt.show()
+
+    wavemap_diffs = wavemap_diffs / n_sims
+    plt.imshow(wavemap_diffs, origin="lower")   
+    plt.colorbar(label="Difference in wavelength map (Å)")
+    plt.show()
+
+
+  
+
+    plt.hist(first_param_list, bins=int(np.sqrt(n_sims)))
+    plt.title(f"Distribution of the first parameter of the wavelength fit. Original value: {wave_fit[0]}")  
+    plt.show()
+
+def calculate_final_fit_rms(wave_fit, tilt_fit, good_lines):
+    
+    from pylongslit.logger import logger
+    from pylongslit.utils import wavelength_sol
+    from pylongslit.parser import detector_params
+
+
+    residuals = np.array([])
+    
+    for key in good_lines.keys():
+        good_x = good_lines[key][1]
+        good_y= good_lines[key][2]
+        wavelength = float(key)
+
+        wavesol_wavelengths = wavelength_sol(good_x, good_y, wave_fit, tilt_fit)
+
+        residuals = np.append(residuals, wavesol_wavelengths - wavelength)  
+
+    print(residuals)
+
+    
+    residuals = np.array(residuals).flatten()
+    RMS = np.sqrt(np.mean(residuals**2))
+
+    N_SPACIAL = (
+        detector_params["xsize"]
+        if detector_params["dispersion"]["spectral_dir"] == "y"
+        else detector_params["ysize"]
+    )
+
+    N_SPECTRAL = (
+        detector_params["ysize"]
+        if detector_params["dispersion"]["spectral_dir"] == "y"
+        else detector_params["xsize"]
+    )
+
+    error_array = np.full((N_SPACIAL, N_SPECTRAL), RMS)
+
+    return error_array
+
+
+
+    
 
 
 def write_waveimage_to_disc(wavelength_map, master_arc):
@@ -1323,6 +1477,25 @@ def get_good_tilt_lines_from_disc():
 
     return good_lines
 
+def construct_wavemap_frame(wave_fit, tilt_fit, error):
+    
+    from pylongslit.utils import PyLongslit_frame
+
+    master_arc = PyLongslit_frame.read_from_disc("master_arc.fits")
+
+    hdr = master_arc.header
+
+    wave_map = construct_wavelen_map(wave_fit, tilt_fit)
+
+    wave_map_frame = PyLongslit_frame(wave_map, error, hdr, "wavelength_map")
+
+    wave_map_frame.show_frame(normalize=False)
+    wave_map_frame.write_to_disc()
+
+
+
+
+
 
 def load_fit2d_REID_from_disc():
     """
@@ -1358,7 +1531,9 @@ def load_fit2d_REID_from_disc():
 def run_wavecalib():
     """
     Run the wavelength calibration routine.
+    
     """
+
     from pylongslit.logger import logger
 
     logger.info("Starting wavelength calibration routine...")
@@ -1369,18 +1544,19 @@ def run_wavecalib():
 
     logger.info("Reidentifying the lines...")
 
-    wave_sol, lines, fwhm_mean = reidentify(pixnumber, wavelength, master_arc)
+    wave_sol, lines, fwhm_mean, wavesol_errors = reidentify(pixnumber, wavelength, master_arc)
 
     write_wavelen_fit_to_disc(wave_sol)
 
     logger.info("Reidentification done.")
     logger.info("Starting tilt tracing...")
 
+
     good_lines = trace_tilts(pixnumber, wavelength, master_arc, fwhm_mean)
 
     write_good_tilt_lines_to_disc(good_lines)
 
-    fit_2d_tilt_results = fit_2d_tilts(good_lines)
+    fit_2d_tilt_results, tilt_param_errors = fit_2d_tilts(good_lines)
 
     write_tilt_fit_to_disc(fit_2d_tilt_results)
 
@@ -1392,14 +1568,15 @@ def run_wavecalib():
     fit_2d_tilt_results = get_tilt_fit_from_disc()
     wave_sol = get_wavelen_fit_from_disc()
 
-
     """
 
-    # write_fit2d_REID_to_disc(fit_2d_results)
-
-    # wavelength_map = construct_wavelength_map(fit_2d_results, master_arc)
-
     plot_wavelengthcalib_QA(good_lines, wave_sol, fit_2d_tilt_results)
+
+    error = calculate_final_fit_rms(wave_sol, fit_2d_tilt_results, good_lines)
+
+    construct_wavemap_frame(wave_sol, fit_2d_tilt_results, error)
+
+
 
     # write_waveimage_to_disc(wavelength_map, master_arc)
 

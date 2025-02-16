@@ -29,7 +29,7 @@ def load_object_traces():
         logger.info(f"Found {len(filenames)} object traces:")
         list_files(filenames)
 
-    # sort as this is needed when cross referencing with skysubbed files
+    # sort as this is needed when cross referencing with reduced files
     filenames.sort()
 
     # this is the container that will be returned
@@ -99,6 +99,8 @@ def gaussweight(x, mu, sig):
 
 def estimate_variance(data, gain, read_out_noise):
     """
+    NOT USED
+
     Taken from Horne, K. (1986).
     An optimal extraction algorithm for CCD spectroscopy.
     Publications of the Astronomical Society of the Pacific,
@@ -124,7 +126,7 @@ def estimate_variance(data, gain, read_out_noise):
     return (read_out_noise / gain) ** 2 + np.abs(data)
 
 
-def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
+def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
     """
     Extraction algorithm taken from Horne, K. (1986).
     An optimal extraction algorithm for CCD spectroscopy.
@@ -137,8 +139,8 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
         The trace data from the object tracing procedure.
         Contains the pixel, center and FWHM of the object traces.
 
-    skysubbed_frame : str
-        The filename of the skysubbed frame to extract the object from.
+    reduced_frame : str
+        The filename of the reduced frame to extract the object from.
 
     gain : float
         The gain of the CCD. (electrons/ADU)
@@ -158,21 +160,20 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
         The variance of the extracted 1D spectrum. (in ADU)
     """
     from pylongslit.parser import output_dir
-    from pylongslit.utils import open_fits
+    from pylongslit.utils import open_fits, PyLongslit_frame
 
     pixel, center, FWHM = trace_data
 
-    # Open the skysubbed frame
-    hdul = open_fits(output_dir, skysubbed_frame)
+    frame = PyLongslit_frame.read_from_disc(reduced_frame)
 
-    skysubbed_data = hdul[0].data
+    reduced_data = frame.data
 
-    header = hdul[0].header
+    header = frame.header
     y_offset = header["CROPY1"]  # the y-offset from the cropping procedure
 
-    x_row_array = np.arange(skysubbed_data.shape[0])
+    x_row_array = np.arange(reduced_data.shape[0])
 
-    variance = estimate_variance(skysubbed_data, gain, read_out_noise)
+    variance = frame.sigma**2
 
     # these are the containers that will be filled for every value
     spec = []
@@ -185,11 +186,11 @@ def extract_object_optimal(trace_data, skysubbed_frame, gain, read_out_noise):
         obj_fwhm = FWHM[i] * gaussian_fwhm_to_sigma
         weight = gaussweight(x_row_array, obj_center, obj_fwhm)
 
-        skysubbed_data_slice = skysubbed_data[:, int(pixel[0]) + i]
+        reduced_data_slice = reduced_data[:, int(pixel[0]) + i]
 
         # Horne (1986) eq. 8
         spec.append(
-            np.sum(weight * skysubbed_data_slice / variance[:, i])
+            np.sum(weight * reduced_data_slice / variance[:, i])
             / np.sum(weight**2 / variance[:, i])
         )
         # Horne (1986) eq. 9
@@ -301,9 +302,9 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
     plt.show()
 
 
-def extract_objects(skysubbed_files, trace_dir):
+def extract_objects(reduced_files, trace_dir):
     """
-    Driver for the extraction of 1D spectra from skysubbed frames.
+    Driver for the extraction of 1D spectra from reduced frames.
 
     First used `extract_object_optimal` to extract the 1D spectrum, and then
     uses `wavelength_calibrate` to calibrate the spectrum to wavelength.
@@ -311,8 +312,8 @@ def extract_objects(skysubbed_files, trace_dir):
 
     Parameters
     ----------
-    skysubbed_files : list
-        List of filenames of skysubbed frames.
+    reduced_files : list
+        List of filenames of reduced frames.
 
     trace_dir : dict
         Dictionary containing the object traces.
@@ -336,11 +337,11 @@ def extract_objects(skysubbed_files, trace_dir):
     # This is the container for the resulting one-dimensional spectra
     results = {}
 
-    for filename in skysubbed_files:
+    for filename in reduced_files:
 
         logger.info(f"Extracting 1D spectrum from {filename}...")
 
-        filename_obj = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+        filename_obj = filename.replace("reduced_", "obj_").replace(".fits", ".dat")
 
         trace_data = trace_dir[filename_obj]
 
@@ -356,7 +357,7 @@ def extract_objects(skysubbed_files, trace_dir):
         )
 
         # make a new filename
-        new_filename = filename.replace("skysub_", "1d_").replace(".fits", ".dat")
+        new_filename = filename.replace("reduced_", "1d_").replace(".fits", ".dat")
 
         results[new_filename] = (wavelength, spectrum_calib, var_calib)
 
@@ -394,20 +395,20 @@ def write_extracted_1d_to_disc(results):
 def run_extract_1d():
 
     from pylongslit.logger import logger
-    from pylongslit.utils import get_skysub_files
+    from pylongslit.utils import get_reduced_frames
 
     logger.info("Running extract_1d")
 
     trace_dir = load_object_traces()
 
-    skysubbed_files = get_skysub_files()
+    reduced_files = get_reduced_frames()
 
-    if len(skysubbed_files) != len(trace_dir):
-        logger.error("Number of skysubbed files and object traces do not match.")
+    if len(reduced_files) != len(trace_dir):
+        logger.error("Number of reduced files and object traces do not match.")
         logger.error("Re-run both procedures or remove left-over files.")
         exit()
 
-    results = extract_objects(skysubbed_files, trace_dir)
+    results = extract_objects(reduced_files, trace_dir)
 
     write_extracted_1d_to_disc(results)
 

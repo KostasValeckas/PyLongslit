@@ -99,7 +99,9 @@ def fit_sky_one_column(
     # evaluate the fit
     sky_fit = chebval(x_spec, coeff_apsky)
 
-    return sky_fit, clip_mask, x_sky, sky_val
+    residuals = sky_val[~clip_mask] - chebval(x_sky[~clip_mask], coeff_apsky)
+
+    return sky_fit, clip_mask, x_sky, sky_val, residuals
 
 
 def fit_sky_QA(
@@ -156,28 +158,37 @@ def fit_sky_QA(
     # dummy x array for plotting
     x_spec = np.arange(len(slice_spec))
 
-    sky_fit, clip_mask, x_sky, sky_val = fit_sky_one_column(
+    sky_fit, clip_mask, x_sky, sky_val, reasiduals = fit_sky_one_column(
         slice_spec, refined_center, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
     )
 
-    plt.figure(figsize=figsize)
-    plt.axvline(x=sky_left, color="r", linestyle="--", label="Object boundary")
-    plt.axvline(x=sky_right, color="r", linestyle="--")
-    plt.plot(
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize, sharex=True)
+
+    # Plot the sky fit
+    ax1.axvline(x=sky_left, color="r", linestyle="--", label="Object boundary")
+    ax1.axvline(x=sky_right, color="r", linestyle="--")
+    ax1.plot(
         x_spec,
         slice_spec,
         label=f"Detector slice around spectral pixel {spectral_column}",
     )
-    plt.plot(x_sky[clip_mask], sky_val[clip_mask], "rx", label="Rejected Outliers")
-    plt.plot(x_spec, sky_fit, label="Sky fit")
-    plt.xlabel("Pixels (spatial direction)")
-    plt.ylabel("Detector counts (ADU)")
-    plt.legend()
-    plt.title(
+    ax1.plot(x_sky[clip_mask], sky_val[clip_mask], "rx", label="Rejected Outliers")
+    ax1.plot(x_spec, sky_fit, label="Sky fit")
+    ax1.set_ylabel("Detector counts (ADU)")
+    ax1.legend()
+    ax1.set_title(
         "Sky-background fitting QA. Ensure the fit is reasonable, and that the object "
         "is completely encapsulated by the red lines.\n"
         "If not, change relative parameters in the config file."
     )
+
+    # Plot the residuals
+    ax2.plot(x_sky[~clip_mask], reasiduals, "o", label="Residuals")
+    ax2.axhline(y=0, color="k", linestyle="--")
+    ax2.set_xlabel("Pixels (spatial direction)")
+    ax2.set_ylabel("Residuals (ADU)")
+    ax2.legend()
+
     plt.show()
 
 
@@ -216,7 +227,7 @@ def make_sky_map(
     """
 
     from pylongslit.logger import logger
-    from pylongslit.utils import show_frame
+    from pylongslit.utils import PyLongslit_frame
 
     # get detector shape
     n_spacial = data.shape[0]
@@ -224,11 +235,12 @@ def make_sky_map(
 
     # evaluate the sky column-wise and insert in this array
     sky_map = np.zeros((n_spacial, n_spectal))
+    sky_error = np.zeros((n_spacial, n_spectal))
 
     logger.info(f"Creating sky map for {filename}...")
     for column in tqdm(range(n_spectal), desc=f"Fitting sky background for {filename}"):
         slice_spec = data[:, column]
-        sky_fit, _, _, _ = fit_sky_one_column(
+        sky_fit, _, _, _, residuals = fit_sky_one_column(
             slice_spec,
             spatial_center_guess,
             FWHM_AP,
@@ -237,13 +249,14 @@ def make_sky_map(
             ORDER_APSKY,
         )
         sky_map[:, column] = sky_fit
+        RMS_residuals = np.sqrt(np.mean(residuals**2))
+        sky_error[:, column] = np.full(n_spacial, RMS_residuals)
 
-    # plot QA
-    title = f"Evaluated sky-background for {filename}"
+    sky_frame = PyLongslit_frame(sky_map, sky_error, None, "skymap_" + filename)
+    sky_frame.show_frame(normalize=False)
+    sky_frame.write_to_disc()
 
-    show_frame(sky_map, title)
-
-    return sky_map
+    return sky_frame
 
 
 def remove_sky_background(center_dict):
@@ -267,7 +280,7 @@ def remove_sky_background(center_dict):
     """
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir, extract_params
-    from pylongslit.utils import open_fits, show_frame
+    from pylongslit.utils import open_fits, show_frame, PyLongslit_frame
 
     # user-defined paramteres relevant for sky-subtraction
 
@@ -285,8 +298,27 @@ def remove_sky_background(center_dict):
     # every key in the dict is a filename
     for file in center_dict.keys():
 
-        frame = open_fits(output_dir, file)
-        data = frame[0].data
+        frame = PyLongslit_frame.read_from_disc(file)
+        if frame.header["SKYSUBBED"] == True:
+            logger.warning(f"Sky subtraction already performed for {file}. Skipping...")
+            continue
+
+        if frame.header["BCGSUBBED"] == True:
+            logger.warning(
+                f"Sky-subtraction was already performed by A-B image subtraction for {file}."
+            )
+            logger.warning(
+                f"Using this routine might not be neccesery."
+            )
+            logger.warning(
+                f"Inspect whether further sky-subtraction is needed."
+            )
+            logger.warning(
+                f"This routine introduces errors - and should not be used if not neeeded)"
+            )
+            
+        data = frame.data.copy()
+        error = frame.sigma.copy()
 
         clicked_point = center_dict[file]
 
@@ -320,24 +352,21 @@ def remove_sky_background(center_dict):
         logger.info(f"Sky map created for {file}")
         logger.info("Subtracting the sky background...")
 
-        skysub_data = data - sky_map
+        skysub_data = data - sky_map.data
+        skysub_error = np.sqrt(error**2 + sky_map.sigma**2)
 
-        # plot QA
+        frame.data = skysub_data
+        frame.sigma = skysub_error
+        frame.header["SKYSUBBED"] = True
 
-        title = f"Sky-subtracted frame {file}"
-
-        show_frame(skysub_data, title)
-
-        # create new filename for later handling
-        key = file.replace("reduced_", "skysub_")
-
-        subtracted_frames[key] = skysub_data
-
-    return subtracted_frames
+        frame.show_frame(normalize=False)
+        frame.write_to_disc()
 
 
 def write_sky_subtracted_frames_to_disc(subtracted_frames):
     """
+    NOT USED
+
     Writes sky-subtracted frames to the output directory.
 
     Parameters
@@ -378,22 +407,23 @@ def run_sky_subtraction():
 
     center_dict = choose_obj_centrum_sky(reduced_files)
 
-    subtracted_frames = remove_sky_background(center_dict)
-
-    write_sky_subtracted_frames_to_disc(subtracted_frames)
+    remove_sky_background(center_dict)
 
     logger.info("Sky subtraction complete.")
     print("\n------------------------------------")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit sky-subtraction procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit sky-subtraction procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_sky_subtraction()

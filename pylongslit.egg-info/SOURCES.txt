@@ -7,6 +7,7 @@ pylongslit/combine.py
 pylongslit/combine_arcs.py
 pylongslit/crop.py
 pylongslit/crremoval.py
+pylongslit/dark.py
 pylongslit/extract_1d.py
 pylongslit/extract_simple_1d.py
 pylongslit/flux_calibrate.py
@@ -22,6 +23,7 @@ pylongslit/parser.py
 pylongslit/reduce.py
 pylongslit/sensitivity_function.py
 pylongslit/skysubtract.py
+pylongslit/stats.py
 pylongslit/subtract_background.py
 pylongslit/utils.py
 pylongslit/wavecalib.py

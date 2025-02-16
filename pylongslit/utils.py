@@ -12,6 +12,154 @@ from skimage import exposure
 from numpy.polynomial.chebyshev import chebval
 
 
+class PyLongslit_frame:
+    def __init__(self, data, sigma, header, name):
+        """
+        """
+
+        self.data = data
+        self.sigma = sigma
+        self.header = header
+        self.name = name
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+
+    def path(self):
+        from pylongslit.parser import output_dir
+        return os.path.join(output_dir, self.name)
+
+
+    def write_to_disc(self):
+        """
+        """
+        
+        from pylongslit.logger import logger
+
+        # Create a PrimaryHDU object to store the data
+        hdu_data = fits.PrimaryHDU(self.data, header=self.header)
+        
+        # Create an ImageHDU object to store the sigma
+        hdu_sigma = fits.ImageHDU(self.sigma, name='1-SIGMA ERROR')
+        
+        # Create an HDUList to combine both HDUs
+        hdulist = fits.HDUList([hdu_data, hdu_sigma])
+        
+        # Write the HDUList to a FITS file
+        
+        hdulist.writeto(self.path() + ".fits", overwrite=True)
+        
+        logger.info(f"File written to {self.path()}.fits")
+
+
+    def show_frame(self, normalize=True, show=True, save=False, skip_sigma=False):
+        """
+        Show the frame data and sigma as two subfigures.
+
+        Parameters
+        ----------
+        normalize : bool
+            If True, normalize the data for better visualization.
+
+        new_figure : bool
+            If True, create a new figure.
+
+        show : bool
+            If True, display the plot.
+        """
+
+        # normalize to show detail
+
+        if not skip_sigma:
+
+            data = self.data.copy()
+            sigma = self.sigma.copy()
+
+            if normalize:
+                data = hist_normalize(data)
+                sigma = hist_normalize(sigma)
+
+            # create subplots
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 8))
+
+            # plot data
+            im = ax1.imshow(data, cmap="gray")
+            ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
+            ax1.set_xlabel("Pixels")
+            ax1.set_ylabel("Pixels")
+            fig.colorbar(im, ax=ax1, orientation='vertical')
+
+            # plot sigma
+            im = ax2.imshow(sigma, cmap="gray")
+            ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
+            ax2.set_xlabel("Pixels")
+            ax2.set_ylabel("Pixels")
+            fig.colorbar(im, ax=ax2, orientation='vertical')
+
+        else:
+
+            data = self.data.copy()
+
+            if normalize:
+                data = hist_normalize(data)
+            
+            plt.imshow(data, cmap="gray")
+            plt.title(f"{self.name}" + (" (normalized)" if normalize else ""))
+            plt.xlabel("Pixels")
+            plt.ylabel("Pixels")
+
+
+
+        if save: 
+            plt.savefig(self.path() + ".png")
+
+        if show:
+            plt.show()
+
+    @classmethod
+    def read_from_disc(cls, filename):
+        """
+        Read the frame data and sigma from a FITS file.
+
+        Parameters
+        ----------
+        filepath : str
+            Path to the FITS file.
+
+        Returns
+        -------
+        PyLongslit_frame
+            An instance of PyLongslit_frame with the read data, sigma, and header.
+        """
+        from pylongslit.logger import logger
+        from pylongslit.parser import output_dir
+
+
+        filepath = os.path.join(output_dir, filename)
+
+        # Open the FITS file
+        with fits.open(filepath) as hdulist:
+            # Read the primary HDU (data)
+            data = hdulist[0].data
+            header = hdulist[0].header
+
+            # Read the image HDU (sigma)
+            sigma = hdulist[1].data
+
+        filename = filename.split(".")[0]
+
+        return cls(data, sigma, header, filename)
+
+
+       
+
+
+
+
 
 class FileList:
     def __init__(self, path):
@@ -511,6 +659,7 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     """
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir
+    from pylongslit.utils import PyLongslit_frame
 
     logger.info("Starting object-choosing GUI. Follow the instructions on the plots.")
 
@@ -538,8 +687,8 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     # loop over the files and display the interactive plot
     for i, file in enumerate(file_list):
 
-        frame = open_fits(output_dir, file)
-        data = frame[0].data
+        frame = PyLongslit_frame.read_from_disc(file)
+        data = frame.data
 
         plt.figure(figsize=figsize)
         plt.connect("button_press_event", onclick)
@@ -732,7 +881,7 @@ def load_spec_data(group="science"):
         exit()
 
     filenames = get_filenames(
-        starts_with="1d_science" if group == "science" else "1d_std",
+        starts_with="1d_science" if group == "science" else "1d_standard",
     )
 
     if len(filenames) == 0:
@@ -851,7 +1000,7 @@ def get_bias_and_flats(skip_bias=False):
     return BIAS, FLAT
 
 
-def get_reduced_frames():
+def get_reduced_frames(only_science=False):
     """
     Driver for `get_reduced_frames` that acounts for skip_science and/or
     skip_standard parameters.
@@ -881,6 +1030,10 @@ def get_reduced_frames():
 
         reduced_files = get_file_group("reduced_science")
 
+    # used only when standard is to be skipped for some step, but not the whole reduction
+    elif only_science:
+        reduced_files = get_file_group("reduced_science")
+
     elif skip_science_or_standard_bool == 2:
 
         logger.warning("Science extraction is set to be skipped in the config file.")
@@ -890,7 +1043,7 @@ def get_reduced_frames():
 
     else:
 
-        reduced_files = get_file_group("reduced_science", "reduced_std")
+        reduced_files = get_file_group("reduced_science", "reduced_standard")
 
     return reduced_files
 

@@ -29,7 +29,7 @@ def load_object_traces(only_science=True):
         logger.info(f"Found {len(filenames)} object traces:")
         list_files(filenames)
 
-    # sort as this is needed when cross referencing with skysubbed files
+    # sort as this is needed when cross referencing with reduced files
     filenames.sort()
 
     # this is the container that will be returned
@@ -59,27 +59,26 @@ def load_object_traces(only_science=True):
     return trace_dict
 
 
-def extract_object_simple(trace_data, skysubbed_frame):
+def extract_object_simple(trace_data, reduced_frame):
     """ """
 
     from pylongslit.parser import output_dir, detector_params
-    from pylongslit.utils import open_fits
+    from pylongslit.utils import open_fits, PyLongslit_frame
     from pylongslit.extract_1d import estimate_variance
 
     pixel, center, FWHM = trace_data
 
-    # Open the skysubbed frame
-    hdul = open_fits(output_dir, skysubbed_frame)
+    # Open the reduced frame
+    frame = PyLongslit_frame.read_from_disc(reduced_frame)
 
-    skysubbed_data = hdul[0].data
+    reduced_data = frame.data
 
-    data_variance = estimate_variance(skysubbed_data, detector_params["gain"], detector_params["read_out_noise"])
-    data_error = np.sqrt(data_variance)
+    data_error = frame.sigma
 
-    header = hdul[0].header
+    header = frame.header
     y_offset = header["CROPY1"]  # the y-offset from the cropping procedure
 
-    x_row_array = np.arange(skysubbed_data.shape[0])
+    x_row_array = np.arange(reduced_data.shape[0])
 
     # these are the containers that will be filled for every value
     spec = []
@@ -98,7 +97,7 @@ def extract_object_simple(trace_data, skysubbed_frame):
         aperture = RectangularAperture((pixel_coord, obj_center), 1, fwhm)
 
         # extract the spectrum
-        spec_sum = aperture.do_photometry(skysubbed_data, error=data_error)
+        spec_sum = aperture.do_photometry(reduced_data, error=data_error)
 
         spec_sum_counts = spec_sum[0][0]
         spec_err_counts = spec_sum[1][0]
@@ -108,7 +107,7 @@ def extract_object_simple(trace_data, skysubbed_frame):
         
 
 
-    plot_trace_QA(skysubbed_data, pixel, center, FWHM, skysubbed_frame)
+    plot_trace_QA(reduced_data, pixel, center, FWHM, reduced_frame)
 
     spec = np.array(spec)
     spec_var = np.array(spec_var)
@@ -249,9 +248,9 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(10,
     plt.show()
 
 
-def extract_objects(skysubbed_files, trace_dir):
+def extract_objects(reduced_files, trace_dir):
     """
-    Driver for the extraction of 1D spectra from skysubbed frames.
+    Driver for the extraction of 1D spectra from reduced frames.
 
     First used `extract_object_simple` to extract the 1D spectrum, and then
     uses `wavelength_calibrate` to calibrate the spectrum to wavelength.
@@ -259,8 +258,8 @@ def extract_objects(skysubbed_files, trace_dir):
 
     Parameters
     ----------
-    skysubbed_files : list
-        List of filenames of skysubbed frames.
+    reduced_files : list
+        List of filenames of reduced frames.
 
     trace_dir : dict
         Dictionary containing the object traces.
@@ -278,11 +277,11 @@ def extract_objects(skysubbed_files, trace_dir):
     # This is the container for the resulting one-dimensional spectra
     results = {}
 
-    for filename in skysubbed_files:
+    for filename in reduced_files:
 
         logger.info(f"Extracting 1D spectrum from {filename}...")
 
-        filename_obj = filename.replace("skysub_", "obj_").replace(".fits", ".dat")
+        filename_obj = filename.replace("reduced_", "obj_").replace(".fits", ".dat")
 
         trace_data = trace_dir[filename_obj]
 
@@ -296,7 +295,7 @@ def extract_objects(skysubbed_files, trace_dir):
         )
 
         # make a new filename
-        new_filename = filename.replace("skysub_", "1d_").replace(".fits", ".dat")
+        new_filename = filename.replace("reduced_", "1d_").replace(".fits", ".dat")
 
         results[new_filename] = (wavelength, spectrum_calib, var_calib)
 
@@ -333,21 +332,21 @@ def write_extracted_1d_to_disc(results):
 
 def run_extract_1d():
 
-    from pylongslit.utils import get_skysub_files
+    from pylongslit.utils import get_reduced_frames
     from pylongslit.logger import logger
 
     logger.info("Running extract_1d")
 
     trace_dir = load_object_traces()
 
-    skysubbed_files = get_skysub_files(only_science=True)
+    reduced_files = get_reduced_frames(only_science=True)
 
-    if len(skysubbed_files) != len(trace_dir):
-        logger.error("Number of skysubbed files and object traces do not match.")
+    if len(reduced_files) != len(trace_dir):
+        logger.error("Number of reduced files and object traces do not match.")
         logger.error("Re-run both procedures or remove left-over files.")
         exit()
 
-    results = extract_objects(skysubbed_files, trace_dir)
+    results = extract_objects(reduced_files, trace_dir)
 
     write_extracted_1d_to_disc(results)
 

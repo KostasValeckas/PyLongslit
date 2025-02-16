@@ -7,6 +7,13 @@ from numpy.polynomial.chebyshev import chebfit, chebval
 import pickle
 from matplotlib.widgets import Slider
 
+def eval_sensfunc(coeff, RMS_residuals_log, wavelength):
+    fit_eval = 10 ** (chebval(wavelength, coeff))
+
+    error = np.abs((10 ** chebval(wavelength, coeff))*np.log(10)*RMS_residuals_log)
+
+    return fit_eval, error
+
 def read_sensfunc_params():
     """
     Reads the star parameters needed to run the sensitivity function procedure
@@ -418,9 +425,11 @@ def fit_sensfunc(wavelength, sens_points):
 
     fit_eval = 10 ** (chebval(wavelength, coeff))
 
-    residuals = sens_points[valid_indices] - fit_eval
+    residuals_log = sens_points_log - chebval(wavelength, coeff)
 
-    print(fit_eval)
+    RMS_residuals_log = np.sqrt(np.mean(residuals_log ** 2))
+
+    residuals = sens_points[valid_indices] - fit_eval
 
     show_1d_fit_QA(
         wavelength,
@@ -438,7 +447,7 @@ def fit_sensfunc(wavelength, sens_points):
         "\nNote that the fit is performed in log space.",
     )
 
-    return coeff
+    return coeff, RMS_residuals_log
 
 
 def flux_standard_QA(
@@ -506,20 +515,22 @@ def flux_standard_QA(
     plt.show()
 
 
-def write_sensfunc_to_disc(coeff):
+def write_sensfunc_to_disc(coeff, RMS_residuals):
 
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir
 
-    logger.info("Writing sensitivity function coefficients to disk...")
+    logger.info("Writing sensitivity function coefficients and error to disk...")
 
     os.chdir(output_dir)
 
+    output = (coeff, RMS_residuals)
+
     with open("sens_coeff.dat", "wb") as f:
-        pickle.dump(coeff, f)
+        pickle.dump(output, f)
 
     logger.info(
-        f"Sensitivity function coefficients written to {output_dir}, filename : sens_coeff.dat."
+        f"Sensitivity function coefficients and error written to {output_dir}, filename : sens_coeff.dat."
     )
 
 
@@ -528,16 +539,19 @@ def load_sensfunc_from_disc():
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir
 
-    logger.info("Loading sensitivity function coefficients from disk...")
+    logger.info("Loading sensitivity function coefficients and error from disk...")
 
     os.chdir(output_dir)
 
     with open("sens_coeff.dat", "rb") as f:
-        coeff = pickle.load(f)
+        out = pickle.load(f)
+        print(out)
 
-    logger.info("Sensitivity function coefficients loaded.")
+    coeff, error = out
 
-    return coeff
+    logger.info("Sensitivity function coefficients and error loaded.")
+
+    return coeff, error
 
 
 def run_sensitivity_function():
@@ -579,7 +593,7 @@ def run_sensitivity_function():
 
     logger.info("Fitting the sensitivity function...")
 
-    coeff = fit_sensfunc(ref_wavelength_cropped, sens_points)
+    coeff, RMS_residuals = fit_sensfunc(ref_wavelength_cropped, sens_points)
 
     flux_standard_QA(
         coeff,
@@ -591,7 +605,7 @@ def run_sensitivity_function():
         ext_data_cropped,
     )
 
-    write_sensfunc_to_disc(coeff)
+    write_sensfunc_to_disc(coeff, RMS_residuals)
 
     logger.info("Sensitivity function procedure done.")
     print("----------------------------\n")
