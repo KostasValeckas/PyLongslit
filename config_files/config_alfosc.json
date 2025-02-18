@@ -29,12 +29,12 @@
 
 
     "bias": {
-        "bias_dir": "/home/kostas/Documents/PyLongslit/raw_alt/bias",
+        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/bias",
         "bootstrap_errors": false
     },
 
     "flat": {
-        "flat_dir": "/home/kostas/Documents/PyLongslit/raw_alt/flats",
+        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/flats",
         "bootstrap_errors": false,
         "skip_spacial": false,
         "user_custom_norm_area": true,
@@ -45,7 +45,7 @@
     },
 
     "output": {
-        "out_dir": "/home/kostas/Documents/PyLongslit/output_alt"
+        "out_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt"
 
     },
 
@@ -72,23 +72,23 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostas/Documents/PyLongslit/raw_alt/science",
+        "science_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/science",
         "exptime": 300,
         "airmass": 1.000118678
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostas/Documents/PyLongslit/raw_alt/standard",
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/standard",
         "exptime": 30,
         "airmass": 1.030792009,
         "starname": "BD332642",
-        "flux_file_path": "/home/kostas/Documents/PyLongslit/database/bd33a.oke"
+        "flux_file_path": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/bd33a.oke"
 
     },
 
     "arc" : {
-        "arc_dir": "/home/kostas/Documents/PyLongslit/raw_alt/arcs"
+        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/raw_alt/arcs"
     },
 
     "combine_arcs" : {
@@ -97,13 +97,14 @@
 
     "wavecalib" : {
         "offset_middle_cut": 0,
-        "pixtable": "/home/kostas/Documents/PyLongslit/output/idarc.dat",
+        "pixtable": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output/idarc.dat",
         "FWHM": 6,
         "TOL_MEAN": 2,
         "TOL_FWHM": 1,
         "ORDER_WAVELEN": 5,
         "ORDER_SPECTRAL_TILT": 1,
         "ORDER_SPATIAL_TILT": 3,
+        "REIDENTIFY_R2_TOL": 0.90,
         "SPACIAL_R2_TOL": 0.95,
         "TILT_REJECT_LINE_FRACTION": 0.50,
         "TILT_TRACE_R2_TOL": 0.95    
@@ -120,8 +121,8 @@
     },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "/home/kostas/Documents/PyLongslit/output_alt/obj_science_ALHh050197.dat",
-        "frame_root": "/home/kostas/Documents/PyLongslit/output_alt/manual_obj_find/reduced_science_ALHh050196.fits",
+        "archived_spec_root": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt/obj_science_ALHh050197.dat",
+        "frame_root": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_alt/manual_obj_find/reduced_science_ALHh050196.fits",
         "FWHM": 4
     },
 
@@ -130,7 +131,7 @@
     },
 
     "flux_calib": {
-        "path_extinction_curve": "/home/kostas/Documents/PyLongslit/database/lapalma.dat"
+        "path_extinction_curve": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/database/lapalma.dat"
     },
 
     "combine": {

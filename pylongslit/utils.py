@@ -835,6 +835,8 @@ def show_1d_fit_QA(
         The size of the figure.
     """
 
+    RMS_residuals = np.sqrt(np.mean(residuals ** 2))
+
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
     ax1.plot(x_data, y_data, "s", color="black", label=legend_label, markersize=14)
@@ -853,7 +855,7 @@ def show_1d_fit_QA(
     ax2.set_xlim(ax1.get_xlim())
     ax1.set_xticks([])
 
-    fig.suptitle(title, fontsize=18)
+    fig.suptitle(title + f"\n RMS of residuals: {RMS_residuals}", fontsize=18)
 
     # Enhance tick font size
     ax1.tick_params(axis="both", which="major", labelsize=14)
