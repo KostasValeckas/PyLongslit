@@ -19,6 +19,7 @@ def estimate_initial_error(data, exptime, master_bias):
     from pylongslit.dark import estimate_dark
     from pylongslit.parser import detector_params
     from pylongslit.overscan import estimate_frame_overscan_bias
+    from pylongslit.utils import open_fits, hist_normalize
 
     gain = detector_params["gain"]  # e/ADU
     read_noise = detector_params["read_out_noise"]  # e
@@ -49,6 +50,12 @@ def estimate_initial_error(data, exptime, master_bias):
     else:
         error = np.sqrt(poisson_noise**2 + dark_noise_error**2 + master_bias.sigma**2 +  read_noise_error**2)
 
+    data_normalized = hist_normalize(data)
+    plt.imshow(data_normalized, origin="lower", cmap="gray")
+    plt.colorbar()
+    plt.show()
+
+
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
 
     ax1.imshow(data, origin="lower", cmap="gray")
@@ -58,6 +65,21 @@ def estimate_initial_error(data, exptime, master_bias):
 
     im = ax2.imshow(error, origin="lower", cmap="viridis")
     ax2.set_title("Error")
+    ax2.set_xlabel("X")
+    ax2.set_ylabel("Y")
+
+    fig.colorbar(im, ax=ax2, orientation="vertical")
+    plt.show()
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+
+    ax1.imshow(data, origin="lower", cmap="gray")
+    ax1.set_title("Data")
+    ax1.set_xlabel("X")
+    ax1.set_ylabel("Y")
+
+    im = ax2.imshow(error**2, origin="lower", cmap="viridis")
+    ax2.set_title("Variance")
     ax2.set_xlabel("X")
     ax2.set_ylabel("Y")
 
@@ -138,6 +160,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
 
     dark_current, dark_error = estimate_dark(frame, exptime)
 
+
     if use_overscan:
 
         overscan = estimate_frame_overscan_bias(frame)
@@ -180,6 +203,15 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
             ** 2)
         )
 
+        plt.imshow(error, origin="lower", cmap="gray")
+        plt.colorbar()
+        plt.title("Final error")
+        plt.show()
+
+    plt.imshow(error, origin="lower", cmap="gray")
+    plt.colorbar()
+    plt.show()
+
     # Handle NaNs and Infs
     if np.isnan(frame).any() or np.isinf(frame).any():
         logger.warning("NaNs or Infs detected in the frame. Replacing with zero.")
@@ -187,7 +219,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
 
     if np.isnan(error).any() or np.isinf(error).any():
         logger.warning("NaNs or Infs detected in the error-frame. Replacing with zero.")
-        error = np.nan_to_num(error, nan=0.0, posinf=0.0, neginf=0.0)
+        error = np.nan_to_num(error, nan=np.nanmean(error), posinf=np.nanmean(error), neginf=np.nanmean(error))
 
 
     return frame, error

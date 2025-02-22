@@ -516,9 +516,23 @@ def run_flats():
         overscan_y_start = detector_params["overscan"]["overscan_y_start"]
         overscan_y_end = detector_params["overscan"]["overscan_y_end"]
 
-        medianflat[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
+        master_flat[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
             1.0
         )
+
+        medianflat_error[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
+            np.nanmean(medianflat_error)
+        )
+
+    
+    master_flat[master_flat < 0.5] = 1.0
+    master_flat[master_flat > 1.5] = 1.0
+
+    master_flat[np.isnan(master_flat)] = 1.0
+    medianflat_error[np.isnan(medianflat_error)] = np.nanmean(medianflat_error)
+
+    medianflat_error[master_flat < 0.5] = np.nanmean(medianflat_error)
+    medianflat_error[master_flat > 1.5] = np.nanmean(medianflat_error)
 
     logger.info("Attaching header and writing to disc...")
 

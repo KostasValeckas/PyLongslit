@@ -175,9 +175,12 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
 
     variance = frame.sigma**2
 
+
     # these are the containers that will be filled for every value
     spec = []
     spec_var = []
+
+    test_spec = []
 
     # the extraction loop for every spectral pixel
     for i in range(len(center)):
@@ -186,15 +189,30 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
         obj_fwhm = FWHM[i] * gaussian_fwhm_to_sigma
         weight = gaussweight(x_row_array, obj_center, obj_fwhm)
 
+
         reduced_data_slice = reduced_data[:, int(pixel[0]) + i]
+
+        if i > 750:
+            #plt.plot(weight)
+            #plt.show() 
+
+            #plt.plot(reduced_data_slice, label="reduced_data_slice")
+            #plt.plot(variance[:, int(pixel[0]) + i], label="variance")
+            #plt.legend()
+            #plt.show()    
+            #print(reduced_data_slice/ variance[:, int(pixel[0]) + i])
+            pass
+
 
         # Horne (1986) eq. 8
         spec.append(
-            np.sum(weight * reduced_data_slice / variance[:, i])
-            / np.sum(weight**2 / variance[:, i])
+            np.nansum(weight * (reduced_data_slice / variance[:, i]))
+            / np.nansum(weight**2 / variance[:, i])
         )
+
         # Horne (1986) eq. 9
-        spec_var.append(1 / np.sum((weight**2) / variance[:, i]))
+        spec_var.append(1 / np.nansum((weight**2) / variance[:, i]))
+
 
     spec = np.array(spec)
     spec_var = np.array(spec_var)
@@ -295,7 +313,7 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
     ax.set_xlabel("Wavelength [Å]")
     ax.set_ylabel("Counts [ADU]")
     # any negative values may be due to numerical instability - don't show them
-    ax.set_ylim(-0.5, 1.1 * np.max(spec_calib))
+    ax.set_ylim(-0.5, 1.1 * np.nanmax(spec_calib))
     ax.legend()
     ax.grid()
 
