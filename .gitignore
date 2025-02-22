@@ -6,4 +6,4 @@
 .coverage
 *.log
 .pytest_cache/
-.pylongslit/__pycache__
+.pylongslit/__pycache__/*
