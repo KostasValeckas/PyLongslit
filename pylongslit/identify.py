@@ -436,8 +436,9 @@ class GraphicInterface(QMainWindow):
             #the offset is used if the middle of detector is not a good
             # place to take a sample of the arc lines
             middle_cut_offset = wavecalib_params["offset_middle_cut"]
-            ilow = raw_data.shape[0] // 2 - 2 + middle_cut_offset 
-            ihigh = raw_data.shape[0] // 2 + 2 + middle_cut_offset
+            pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
+            ilow = (raw_data.shape[0] // 2) - pixel_cut_extension + middle_cut_offset 
+            ihigh = (raw_data.shape[0] // 2) + pixel_cut_extension + middle_cut_offset
             self.arc1d = np.mean(raw_data[ilow:ihigh + 1, :], axis=0)
             self.pix = create_pixel_array()
             self.ax.lines[0].set_data(self.pix, self.arc1d)

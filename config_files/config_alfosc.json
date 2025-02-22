@@ -97,17 +97,21 @@
 
     "wavecalib" : {
         "offset_middle_cut": 0,
+        "pixel_cut_extension": 2,
+        "arcline_start": 0,
+        "arcline_end": 500,
         "pixtable": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output/idarc.dat",
         "FWHM": 6,
         "TOL_MEAN": 2,
         "TOL_FWHM": 1,
         "ORDER_WAVELEN": 5,
         "ORDER_SPECTRAL_TILT": 1,
+        "ORDER_SPATIAL_TILT_TEST": 3,   
         "ORDER_SPATIAL_TILT": 3,
         "REIDENTIFY_R2_TOL": 0.90,
-        "SPACIAL_R2_TOL": 0.95,
-        "TILT_REJECT_LINE_FRACTION": 0.50,
-        "TILT_TRACE_R2_TOL": 0.95    
+        "SPACIAL_R2_TOL": 0.99,
+        "TILT_REJECT_LINE_FRACTION": 0.1,
+        "TILT_TRACE_R2_TOL": 0.96   
     },
 
     "extract" : {

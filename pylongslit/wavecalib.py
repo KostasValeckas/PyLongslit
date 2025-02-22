@@ -16,6 +16,7 @@ import warnings
 import astropy.modeling.fitting
 import argparse
 from tqdm import tqdm
+from mpl_toolkits.mplot3d import Axes3D
 
 class GeneralizedNormal1D(Fittable1DModel):
     """
@@ -195,14 +196,23 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0
         #plt.plot(spectral_coords, center_row_spec, "x", color="black", label = f"R2: {R2}")
         #plt.plot(spectral_coords, g_fit(spectral_coords), color="red")
         #plt.legend()
+        #plt.title(f"Failed at R2: {R2}")
         #plt.show()
 
+        #print("fit_1d_fail")
+
         return False
+    
+    #print("Good fit")
+
+    #plt.plot(spectral_coords, center_row_spec, "x", color="black", label = f"R2: {R2}")
+    #plt.plot(spectral_coords, g_fit(spectral_coords), color="green")  
+    #plt.show()
 
     if bench_value is not None:
         if np.abs(g_fit.mean_0.value - bench_value) > bench_tolerance:
-            print("BIG CHANGE")
-            print(g_fit.mean_0.value, bench_value)
+            #print("BIG CHANGE")
+            #print(g_fit.mean_0.value, bench_value)
             return False
 
 
@@ -229,15 +239,37 @@ def trace_line_tilt(
     # further developtment or debugging.
     all_params = {}
     # mask for keeping the good fits, will be updated in the loop
-    keep_mask = np.ones(N_ROWS//5, dtype=bool)
+
+
+    #TODO this is very hacked, fix later
+
+    pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
+
+    start_pixel = wavecalib_params["arcline_start"]
+    end_pixel = wavecalib_params["arcline_end"]
+
+    if center_row > end_pixel or center_row < start_pixel:
+        logger.critical(f"Center row of arc frame at {center_row} is outside the defined start and end pixels {start_pixel, end_pixel}.")
+        logger.critical("Add an offset to the middle cut or change the arc line limits (this is done in the config file).")
+        exit(-1)
+
+    cut_width = pixel_cut_extension + 1
+
+    index_dict = {}
+    num_it = 0
+    for i in chain(range(center_row, end_pixel, cut_width), range(center_row - 1, start_pixel, -cut_width)): 
+        index_dict[str(i)] = num_it
+        num_it += 1
+
+    keep_mask = np.array([], dtype = bool)
 
     spectral_coords = np.arange(master_arc.data.shape[1])
 
     # read the parameter that decides when to abort the trace - i.e.
     # when the fit is bad for more than a certain number of rows
-    TILT_REJECTION_LINE_FRACTION = wavecalib_params["TILT_REJECT_LINE_FRACTION"]//5
+    TILT_REJECTION_LINE_FRACTION = wavecalib_params["TILT_REJECT_LINE_FRACTION"]
     bad_fit_counter = 0
-    bad_fit_threshold = N_ROWS * TILT_REJECTION_LINE_FRACTION
+    bad_fit_threshold = (num_it * TILT_REJECTION_LINE_FRACTION)
 
     # R2 tolerance for the fit of every row
     TILT_TRACE_R2_TOL = wavecalib_params["TILT_TRACE_R2_TOL"]
@@ -247,12 +279,12 @@ def trace_line_tilt(
     used_spacial =[]
 
     # Loop from center and up and then down with a jump of 5
-    for i in chain(range(center_row, N_ROWS, 5), range(center_row - 1, -1, -5)):
+    for i in chain(range(center_row, end_pixel, cut_width), range(center_row - 1, start_pixel, -cut_width)):
 
-            # if we are starting to loop downwards, we need to update the initial guesses
+        # if we are starting to loop downwards, we need to update the initial guesses
         # back to the center row values manually.
         if i == center_row - 1:
-            print("DETECTED DOWNWARDS MOTION")
+            #print("DETECTED DOWNWARDS MOTION")
             g_model.amplitude_0 = all_params[i + 1]["amplitude"]
             g_model.mean_0 = all_params[i + 1]["center"]
             g_model.stddev_0 = all_params[i + 1]["FWHM"] * gaussian_fwhm_to_sigma
@@ -274,8 +306,18 @@ def trace_line_tilt(
             g_model.mean_0.value + FWHM_guess
         )
 
+        if start_pixel < 0 or end_pixel > master_arc.shape[1]:
+            #print("skipping due to edge at: ", i)
+            #print(start_pixel, end_pixel)
+            #all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
+            #good_centers = all_centers[keep_mask]
+            #plt.plot(used_spacial, good_centers, "o")
+            #plt.show()
+            continue
+        #print("now at: ", i)
+
         # np.mean(sub_image[center_row-2:(center_row+2) + 1, :], axis = 0)
-        center_row_spec = np.mean(master_arc[i-2: i+3, start_pixel:end_pixel], axis = 0)
+        center_row_spec = np.mean(master_arc[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
         spectral_coords_sub = spectral_coords[start_pixel:end_pixel]
 
         keep_bool = fit_arc_1d(
@@ -285,9 +327,161 @@ def trace_line_tilt(
             g_model,
             R2_threshold=TILT_TRACE_R2_TOL,
             bench_value=last_good_center,
-            bench_tolerance=0.3
+            bench_tolerance=1.0
         )
 
+        if not keep_bool:
+
+            # try minimizing the FWHM - might be due to close lines:
+
+            # clip out the subimage around the line
+            start_pixel += 2
+            end_pixel -= 2
+
+            if start_pixel >= end_pixel:
+                keep_bool = False
+
+            else:
+
+                center_row_spec = np.mean(master_arc[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
+                spectral_coords_sub = spectral_coords[start_pixel:end_pixel]
+
+
+                #print("RECUTTING AND TRYING AGAIN")
+
+                keep_bool = fit_arc_1d(
+                    spectral_coords_sub,
+                    center_row_spec,
+                    fitter,
+                    g_model,
+                    R2_threshold=TILT_TRACE_R2_TOL,
+                    bench_value=None,
+                    bench_tolerance=1.0
+                )
+
+            if keep_bool:
+                #print("SUCCESSFUL RE-FIT")
+                all_params[i] = {
+                    "amplitude": g_model.amplitude_0.value,
+                    "center": g_model.mean_0.value,
+                    "FWHM": g_model.stddev_0.value * gaussian_sigma_to_fwhm,
+                    "beta": g_model.beta_0.value,
+                    "amplitude_1": g_model.amplitude_1.value,
+                }
+
+                keep_mask = np.append(keep_mask, True)
+
+                last_good_center = g_model.mean_0.value
+
+                used_spacial.append(i)
+
+                continue
+
+            else:
+
+                # for several bad fits, might be that the center guess is off
+                # if enough good fits are present, retry the fit
+
+                if np.sum(keep_mask) > 10:
+                    #print("ENOUGH GOOD FITS TO RETRY")
+
+                    all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
+                    
+                    good_centers = all_centers[keep_mask]
+
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        coeff = chebfit(used_spacial, good_centers, deg=wavecalib_params["ORDER_SPATIAL_TILT"])
+                    #plt.plot(used_spacial, good_centers, "o")
+                    #plt.plot(used_spacial, chebval(used_spacial, coeff))
+                    #plt.show()
+
+                    new_center_guess = chebval(i, coeff)
+
+                    R2 = r2_score(good_centers, chebval(used_spacial, coeff))
+
+                    if R2 < wavecalib_params["SPACIAL_R2_TOL"]:
+                        #print("R2 TOO LOW FOR NEW CENTER GUESS")
+                        keep_bool = False
+
+                    elif abs(new_center_guess - g_model.mean_0.value) > wavecalib_params["TOL_MEAN"]:
+                        #print("TOO BIG CHANGE IN NEW CENTER GUESS")
+                        keep_bool = False
+
+                    
+                    else:
+
+                        g_model.mean_0 = new_center_guess
+
+                        #print("NEW CENTER GUESS", new_center_guess)
+
+                        temp = used_spacial.copy()
+                        min, max = np.min(temp), np.max(temp)
+                        temp = np.linspace(min, max, 1000)
+                        temp_extra = np.linspace(max, max+100, 1000)
+
+                        #plt.plot(temp, chebval(temp, coeff))
+                        #plt.plot(temp_extra, chebval(temp_extra, coeff))
+                        #plt.show()  
+
+
+                        keep_bool = fit_arc_1d(
+                            spectral_coords_sub,
+                            center_row_spec,
+                            fitter,
+                            g_model,
+                            R2_threshold=TILT_TRACE_R2_TOL,
+                            bench_value=None,
+                            bench_tolerance=1.0
+                        )
+
+                    if keep_bool:
+                        #print("SUCCESSFUL RETRY IN FITTED CENTER ESTIMATION")
+                        all_params[i] = {
+                            "amplitude": g_model.amplitude_0.value,
+                            "center": g_model.mean_0.value,
+                            "FWHM": g_model.stddev_0.value * gaussian_sigma_to_fwhm,
+                            "beta": g_model.beta_0.value,
+                            "amplitude_1": g_model.amplitude_1.value,
+                        }
+
+                        keep_mask = np.append(keep_mask, True)
+
+                        last_good_center = g_model.mean_0.value
+
+                        used_spacial.append(i)
+
+                        continue
+
+                    else:
+
+                        all_params[i] = {
+                            "amplitude": g_model.amplitude_0.value,
+                            "center": g_model.mean_0.value,
+                            "FWHM": g_model.stddev_0.value * gaussian_sigma_to_fwhm,
+                            "beta": g_model.beta_0.value,
+                            "amplitude_1": g_model.amplitude_1.value,
+                        }
+
+                        bad_fit_counter += 1
+
+                        keep_mask = np.append(keep_mask, False)
+
+                        if bad_fit_counter > bad_fit_threshold:
+                            
+
+                            arc_trace_warning(
+                                f"Too many bad fits with R2 below {TILT_TRACE_R2_TOL} in the tilt trace. "
+                                "The selection parameters for this are: "
+                                f"TILT_REJECT_LINE_FRACTION = {TILT_REJECTION_LINE_FRACTION}, corresponding to {bad_fit_threshold} lines, "
+                                f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
+                            )
+
+
+                            return None, None, None
+
+                        else:
+                            continue
 
         all_params[i] = {
             "amplitude": g_model.amplitude_0.value,
@@ -297,31 +491,12 @@ def trace_line_tilt(
             "amplitude_1": g_model.amplitude_1.value,
         }
 
-        if keep_bool:
-            last_good_center = g_model.mean_0.value
+        keep_mask = np.append(keep_mask, True)
+
+        last_good_center = g_model.mean_0.value
 
 
-
-        if not keep_bool:
-
-            print("BAD FIT")
-
-            bad_fit_counter += 1
-
-            if bad_fit_counter > bad_fit_threshold:
-                
-
-                arc_trace_warning(
-                    f"Too many bad fits with R2 below {TILT_TRACE_R2_TOL} in the tilt trace. "
-                    "The selection parameters for this are: "
-                    f"TILT_REJECT_LINE_FRACTION = {TILT_REJECTION_LINE_FRACTION}, corresponding to {bad_fit_threshold} lines, "
-                    f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
-                )
-
-
-                return None, None, None
-
-            keep_mask[i//5] = False
+        
 
         used_spacial.append(i)
 
@@ -432,6 +607,7 @@ def trace_tilts(lines, master_arc):
         #exit()
 
     fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
+    fig_resid, ax_resid = plt.subplots(plot_height, plot_width, figsize=figsize)
 
     j = 0
 
@@ -465,9 +641,11 @@ def trace_tilts(lines, master_arc):
         start_pixel = pixel - FWHM_guess
         end_pixel = pixel + FWHM_guess
 
+        pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
+
 
         sub_image = master_arc[0].data[:, int(start_pixel):int(end_pixel)]
-        center_row_spec = np.mean(sub_image[center_row-2:(center_row+2) + 1, :], axis = 0)
+        center_row_spec = np.mean(sub_image[center_row-pixel_cut_extension:(center_row+pixel_cut_extension) + 1, :], axis = 0)
         spectral_coords_sub = spectral_coords[int(start_pixel):int(end_pixel)]
 
 
@@ -532,8 +710,8 @@ def trace_tilts(lines, master_arc):
 
         if False:
             if centers is not None and spacial_coords_used is not None:
-                plt.plot(spacial_coords_used[mask], centers[mask], "o")
-                plt.plot(spacial_coords_used[~mask], centers[~mask], "o", c="red")
+                plt.close("all")
+                plt.plot(spacial_coords_used, centers[mask], "o")
                 plt.show()
 
 
@@ -546,7 +724,7 @@ def trace_tilts(lines, master_arc):
         # keep the good traces. We keep the mask as it might be useful
         # in further development or debugging
         good_centers = centers[mask]
-        good_spacial_coords = spacial_coords_used[mask]
+        good_spacial_coords = spacial_coords_used
 
         # do a poly fit to the good centers
         coeff = chebfit(good_spacial_coords, good_centers, deg=spacial_fit_order)
@@ -580,7 +758,12 @@ def trace_tilts(lines, master_arc):
 
             good_fits += 1
 
-            # if the RMS is too high, discard the line
+            if False:
+                residuals = good_centers - chebval(good_spacial_coords, coeff)
+                plt.plot(good_spacial_coords, residuals, "x", color="black")
+                plt.show()
+
+                        # if the RMS is too high, discard the line
             if R2_offsets < R2_TOL:
                 arc_trace_warning(
                     f"Good line trace, but the RMS={R2_offsets} of the spacial polynomial is higher than the tolerance {R2_TOL}. "
@@ -613,6 +796,12 @@ def trace_tilts(lines, master_arc):
             label="fit R2: {:.2f}".format(R2_spat),
         )
 
+        residuals = good_centers - chebval(good_spacial_coords, coeff)
+
+        ax_resid[subplot_index].plot(
+            good_spacial_coords, residuals, "x", color="black"
+        )   
+
         if (
             # this condition checks if the plot has been filled up
             # plots if so, and adjust the offset so a new
@@ -623,6 +812,10 @@ def trace_tilts(lines, master_arc):
             show_cyclic_QA_plot(
                 fig, ax, title_text, "Spacial Pixels", "Spectral Pixels"
             )
+            show_cyclic_QA_plot(
+                fig_resid, ax_resid, title_text, "Spacial Pixels", "Residuals"
+            )
+            
             j_offset += plot_width * plot_height
             # prepare a new plot
             fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
@@ -630,12 +823,14 @@ def trace_tilts(lines, master_arc):
         j += 1
 
     show_cyclic_QA_plot(fig, ax, title_text, "Spacial Pixels", "Spectral Pixels")
+    show_cyclic_QA_plot(fig_resid, ax_resid, title_text, "Spacial Pixels", "Spectral Pixels")
 
     print("\n-------------------------------------")
     logger.info("Line tilt tracing done.")
     logger.info(f"Number of good traces: {good_traces} out of {len(lines)}.")
     logger.info(f"Number of good fits: {good_fits} out of {good_traces}.")
     print("\n-------------------------------------")
+
     return good_lines
 
 
@@ -685,10 +880,11 @@ def reidentify(pixnumber, wavelength, master_arc):
     # offset is needed if the mddle of the detector is not a good place
     # to take a sample
     middle_row_offset = wavecalib_params["offset_middle_cut"]
+    pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
 
     middle_row = (master_arc[0].data.shape[0] // 2) + middle_row_offset
     # limits of the slice
-    lower_cut, upper_cut = middle_row - 2, middle_row + 2
+    lower_cut, upper_cut = middle_row - pixel_cut_extension, middle_row + pixel_cut_extension
 
     # sum over the slice
     spec_1d = np.mean(master_arc[0].data[lower_cut:upper_cut+1, :], axis=0)
@@ -713,8 +909,6 @@ def reidentify(pixnumber, wavelength, master_arc):
 
     # re-identify every hand-identified line
     for j, peak_pix_init in enumerate(ID_init["peak"]):
-
-        print(peak_pix_init)
 
         # starts guess limits of the peak
 
@@ -866,8 +1060,6 @@ def reidentify(pixnumber, wavelength, master_arc):
             fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
 
         if not bad_line and R2 > final_r2_tol:
-            print("0",  g_fit.amplitude_0.value)
-            print("1",  g_fit.amplitude_1.value)
             line_REID[str(j)] = {
                 "peak_pix": fit_center,
                 "wavelength": wavelength[j],
@@ -932,7 +1124,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
     # extract the polynomial order parameter for the fit in spectral direction
     ORDER_SPECTRAL = wavecalib_params["ORDER_SPECTRAL_TILT"]
     # extract the polynomial order parameter for the fit in spatial direction
-    ORDER_SPATIAL = wavecalib_params["ORDER_SPATIAL_TILT"]
+    ORDER_SPATIAL = wavecalib_params["ORDER_SPATIAL_TILT_TEST"]
 
     logger.info(
         f"Fitting a 2d tilt solution of order {ORDER_SPECTRAL} in spectral direction and "
@@ -966,6 +1158,46 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
     wavelength_values = offset_values.flatten()
     spacial_pixels = spacial_pixels.flatten()
 
+    # plot a scatter plot for QA
+    plt.scatter(spectral_pixels, spacial_pixels, c=wavelength_values)
+    plt.xlabel("Spectral Pixels")
+    plt.ylabel("Spacial Pixels")
+    plt.title("Scatter plot of the reidentified lines")
+    plt.colorbar(label="Wavelength (Å)")
+    plt.show()
+
+    # take a slice at spacial pixel x = 1400
+    # to see the linearity of the reidentified lines
+
+
+    """
+    plt.plot(spacial_pixels, "+")
+    plt.show()
+
+    for i in range(10):
+        mask = spacial_pixels.astype(int) == np.random.choice(spacial_pixels)
+        print("mask: ", np.sum(mask))
+        spacial_1400 = spacial_pixels[mask]
+        spectral_1400 = spectral_pixels
+        wavelength_1400 = wavelength_values
+
+        plt.plot(spectral_1400, wavelength_1400)
+    plt.show()
+
+    for i in range(10):
+        maske = spectral_pixels.astype(int) == int(np.random.choice(spectral_pixels))
+        print("mask: ", np.sum(maske))
+        spacial_1400 = spacial_pixels
+        spectral_1400 = spectral_pixels[maske]
+        wavelength_1400 = wavelength_values
+
+        plt.plot(spacial_1400, wavelength_1400)
+    
+    plt.show()
+
+    exit()
+    """
+
     # set up the fitting model
 
     coeff_init = Chebyshev2D(
@@ -981,6 +1213,16 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
 
     residuals = wavelength_values - fit2D(spectral_pixels, spacial_pixels)
     RMS = np.sqrt(np.mean(residuals**2))
+
+    fig = plt.figure(figsize=figsize)
+    ax = fig.add_subplot(111, projection='3d')
+    sc = ax.scatter(spacial_pixels, spectral_pixels, residuals, c=residuals, cmap='viridis')
+    ax.set_ylabel("Spectral Pixels")
+    ax.set_xlabel("Spacial Pixels")
+    ax.set_zlabel("Residuals (Å)")
+    ax.set_title("Residuals of the 2D Fit")
+    fig.colorbar(sc, label="Residuals (Å)")
+    plt.show()
 
     # plot QA
 
@@ -1058,6 +1300,7 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
         axs[0].plot(
             spatials_1d[i],
             chebval(spatials_1d[i], coeffs),
+            "o",
             label=f"Central spec: {central_spec}",
         )
 
@@ -1068,7 +1311,7 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
 
     for i, spectral_array in enumerate(centers_1d):
         offsets_2d = fit2D_REID(spectral_array, spatials_1d[i])
-        axs[1].plot(spatials_1d[i], offsets_2d)
+        axs[1].plot(spatials_1d[i], offsets_2d, "o")
 
     axs[1].set_title("2D Fit detector tilt fit")
     axs[1].set_xlabel("Spatial Pixels")
@@ -1529,6 +1772,7 @@ def run_wavecalib():
     """
 
     from pylongslit.logger import logger
+    from pylongslit.utils import hist_normalize
 
     logger.info("Starting wavelength calibration routine...")
 
@@ -1540,6 +1784,7 @@ def run_wavecalib():
 
     wave_sol, lines, fwhm_mean, wavesol_errors = reidentify(pixnumber, wavelength, master_arc)
 
+
     write_wavelen_fit_to_disc(wave_sol)
 
     logger.info("Reidentification done.")
@@ -1549,6 +1794,17 @@ def run_wavecalib():
     good_lines = trace_tilts(lines, master_arc)
 
     write_good_tilt_lines_to_disc(good_lines)
+    #good_lines = get_good_tilt_lines_from_disc()
+
+
+
+    plt.imshow(hist_normalize(master_arc[0].data), aspect="auto")
+
+    for key in good_lines.keys():
+        plt.plot([good_lines[key][1]], [good_lines[key][2]], "x", color="red")
+
+    plt.show()
+
 
     fit_2d_tilt_results, tilt_param_errors = fit_2d_tilts(good_lines)
 
@@ -1558,7 +1814,7 @@ def run_wavecalib():
 
     # TODO: while developing just read the products from disc
 
-    good_lines = get_good_tilt_lines_from_disc()
+    
     fit_2d_tilt_results = get_tilt_fit_from_disc()
     wave_sol = get_wavelen_fit_from_disc()
 
@@ -1585,6 +1841,7 @@ def main():
     args = parser.parse_args()
     
     from pylongslit import set_config_file_path
+    
     set_config_file_path(args.config)
     
     run_wavecalib()

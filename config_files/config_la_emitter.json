@@ -27,11 +27,12 @@
     },
 
     "bias": {
-        "bias_dir": "/home/kostas/Documents/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias"
+        "bias_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/bias",
+        "bootstrap_errors": false
     },
 
     "flat": {
-        "flat_dir": "/home/kostas/Documents/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat",
+        "flat_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/flat",
         "user_custom_norm_area": true,
         "skip_spacial": true,
         "norm_area_start_x": 100,
@@ -41,7 +42,7 @@
     },
 
     "output": {
-        "out_dir": "/home/kostas/Documents/PyLongslit/output_OSIRIS"
+        "out_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS_new"
 
     },
 
@@ -68,14 +69,14 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "//home/kostas/Documents/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object",
+        "science_dir": "//home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/object",
         "exptime": 1000,
         "airmass": 1.8975
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostas/Documents/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds",
+        "standard_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/stds",
         "exptime": 25,
         "airmass": 1.206,
         "starname": "BD332642",
@@ -84,7 +85,7 @@
     },
 
     "arc" : {
-        "arc_dir": "/home/kostas/Documents/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc"
+        "arc_dir": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/GTC/Lyman-alpha_emitter/GTCMULTIPLE2J-23A/OB0022/arc"
     },
 
     "combine_arcs" : {
@@ -92,16 +93,22 @@
     },
 
     "wavecalib" : {
-        "pixtable": "/home/kostas/Documents/PyLongslit/output_OSIRIS/OSIRIS_R1000B_pixtable.dat",
-        "FWHM": 4,
-        "TOL_MEAN": 20,
-        "TOL_FWHM": 6,
+        "offset_middle_cut": 0,
+        "pixel_cut_extension": 3,
+        "arcline_start": 100,
+        "arcline_end": 1980,
+        "pixtable": "/home/kostasvaleckas/Documents/DAWN/PyLongslit/output_OSIRIS/OSIRIS_R1000B_pixtable.dat",
+        "FWHM": 6,
+        "TOL_MEAN": 35 ,
+        "TOL_FWHM": 2,
         "ORDER_WAVELEN": 5,
-        "ORDER_SPECTRAL_TILT": 1,
-        "ORDER_SPATIAL_TILT": 3,
-        "SPACIAL_R2_TOL": 0.99,
-        "TILT_REJECT_LINE_FRACTION": 0.5,
-        "TILT_TRACE_R2_TOL": 0.95    
+        "ORDER_SPECTRAL_TILT": 3,
+        "ORDER_SPATIAL_TILT": 4,
+        "ORDER_SPATIAL_TILT_TEST": 4,
+        "SPACIAL_R2_TOL": 0.98,
+        "REIDENTIFY_R2_TOL" : 0.96, 
+        "TILT_REJECT_LINE_FRACTION": 0.2,
+        "TILT_TRACE_R2_TOL": 0.96       
     },
 
     "extract" : {
