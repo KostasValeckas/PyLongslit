@@ -1,6 +1,0 @@
-Metadata-Version: 2.1
-Name: pylongslit
-Version: 0.1
-License-File: LICENSE.rst
-Requires-Dist: numpy
-Requires-Dist: scipy
