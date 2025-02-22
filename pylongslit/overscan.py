@@ -62,6 +62,8 @@ def show_overscan():
 
 def detect_overscan_direction():
     """
+    CURRENTLY NOT USED
+
     Detect the direction of the overscan region.
 
     Returns
@@ -123,7 +125,7 @@ def check_overscan():
     return True
 
 
-def estimate_frame_overscan_bias(image_data):
+def estimate_frame_overscan_bias(image_data, plot = True):
     """
     Subtract the overscan region from a single frame.
 
@@ -156,26 +158,15 @@ def estimate_frame_overscan_bias(image_data):
     overscan_image = numpy.zeros_like(image_data)
     error_image = numpy.zeros_like(image_data)
 
-    if overscan_direction == "horizontal":
-        # loop through the columns and subtract the mean value of the overscan region
-        for i in range(overscan_x_start, overscan_x_end + 1):
-            overscan = image_data[overscan_y_start:overscan_y_end, i]
-            mean = numpy.mean(overscan) 
-            overscan_image[:, i] = numpy.full(image_data.shape[0], mean)
-            error_image[:, i] = numpy.std(overscan)/numpy.sqrt(len(overscan))
+    overscan = image_data[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end]
+    mean = numpy.mean(overscan) 
+    overscan_image= numpy.full(image_data.shape, mean)
+    error = numpy.std(overscan)/numpy.sqrt(len(overscan))
+    error_image = numpy.full(image_data.shape, error)
             
 
-    elif overscan_direction == "vertical":
-        # loop through the rows and subtract the mean value of the overscan region
-        for i in range(overscan_y_start, overscan_y_end + 1):
-            overscan = image_data[i, overscan_x_start:overscan_x_end] 
-            mean = numpy.mean(overscan)
-            overscan_image[i, :] = numpy.full(image_data.shape[1], mean)
-            error_image[i, :] = numpy.std(overscan)/numpy.sqrt(len(overscan))
+    overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "Overscan")
 
-
-    overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "overscan-bias")
-
-    overscan_frame.show_frame(normalize=False)
+    if plot: overscan_frame.show_frame(normalize=False)
 
     return overscan_frame

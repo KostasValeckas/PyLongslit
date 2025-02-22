@@ -54,10 +54,14 @@ def run_bias():
 
         logger.info(f"Processing file: {file}")
 
-        data = numpy.array(rawbias[data_params["raw_data_hdu_index"]].data)
-
+        # this might result in underflows if unsigned integers are used, 
+        # dtype should always be set explicitly
+        data = numpy.array(rawbias[data_params["raw_data_hdu_index"]].data, dtype=int)
+        
         if use_overscan:
-            data = estimate_frame_overscan_bias(data)
+            overscan_bias = estimate_frame_overscan_bias(data, plot = False)
+            data = data - overscan_bias.data
+
 
         bigbias[i] = data
 
@@ -92,6 +96,7 @@ def run_bias():
     master_bias = PyLongslit_frame(medianbias, medianbias_error, hdr, "master_bias")
 
     master_bias.show_frame(normalize=False, save=True)
+    master_bias.show_frame(normalize=True, save=True)
     master_bias.write_to_disc()
     logger.info("Bias procedure completed.")
 

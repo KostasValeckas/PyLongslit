@@ -34,7 +34,7 @@ def combine_arcs():
 
     if not skip_bias:
 
-        logger.info("Subtracting bias...")
+        logger.info("Fetching bias...")
 
         BIAS_frame = PyLongslit_frame.read_from_disc("master_bias.fits")
         BIAS = BIAS_frame.data
@@ -53,9 +53,10 @@ def combine_arcs():
         data = hdu[data_params["raw_data_hdu_index"]].data.astype(np.float32)
 
         if use_overscan:
-            data = estimate_frame_overscan_bias(data)
+            overscan = estimate_frame_overscan_bias(data, plot = False)
+            data = data - overscan.data
 
-        if not skip_bias: data = data - BIAS
+        data = data - BIAS
 
         arc_data.append(data)
 

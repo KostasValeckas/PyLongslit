@@ -320,6 +320,8 @@ def trace_line_tilt(
         center_row_spec = np.mean(master_arc[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
         spectral_coords_sub = spectral_coords[start_pixel:end_pixel]
 
+        jump_tolerance = wavecalib_params["jump_tolerance"]
+
         keep_bool = fit_arc_1d(
             spectral_coords_sub,
             center_row_spec,
@@ -327,7 +329,7 @@ def trace_line_tilt(
             g_model,
             R2_threshold=TILT_TRACE_R2_TOL,
             bench_value=last_good_center,
-            bench_tolerance=1.0
+            bench_tolerance=jump_tolerance
         )
 
         if not keep_bool:
@@ -355,8 +357,8 @@ def trace_line_tilt(
                     fitter,
                     g_model,
                     R2_threshold=TILT_TRACE_R2_TOL,
-                    bench_value=None,
-                    bench_tolerance=1.0
+                    bench_value=last_good_center,
+                    bench_tolerance=jump_tolerance
                 )
 
             if keep_bool:
@@ -431,8 +433,8 @@ def trace_line_tilt(
                             fitter,
                             g_model,
                             R2_threshold=TILT_TRACE_R2_TOL,
-                            bench_value=None,
-                            bench_tolerance=1.0
+                            bench_value=last_good_center,
+                            bench_tolerance=jump_tolerance 
                         )
 
                     if keep_bool:
@@ -1124,7 +1126,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
     # extract the polynomial order parameter for the fit in spectral direction
     ORDER_SPECTRAL = wavecalib_params["ORDER_SPECTRAL_TILT"]
     # extract the polynomial order parameter for the fit in spatial direction
-    ORDER_SPATIAL = wavecalib_params["ORDER_SPATIAL_TILT_TEST"]
+    ORDER_SPATIAL = wavecalib_params["ORDER_SPATIAL_TILT"]
 
     logger.info(
         f"Fitting a 2d tilt solution of order {ORDER_SPECTRAL} in spectral direction and "

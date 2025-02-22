@@ -360,10 +360,6 @@ def run_flats():
     # initialize a big array to hold all the flat frames for stacking
     bigflat = np.zeros((file_list.num_files, ysize, xsize), float)
 
-    if use_overscan:
-
-        overscan_dir = detect_overscan_direction()
-
     logger.info("Fetching the master bias frame...")
 
     BIASframe = load_bias()
@@ -386,10 +382,11 @@ def run_flats():
 
         # Subtract the bias
         if use_overscan:
-            data = estimate_frame_overscan_bias(data, overscan_dir)
-        else:
-            data = data - BIAS
-            logger.info("Subtracted the bias.")
+            overscan = estimate_frame_overscan_bias(data, plot=False)
+            data = data - overscan.data
+
+        data = data - BIAS
+        logger.info("Subtracted the bias.")
 
         
         bigflat[i] = data
