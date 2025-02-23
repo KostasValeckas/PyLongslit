@@ -1,6 +1,8 @@
 import astroscrappy
 import argparse
 import os as os
+import numpy as np
+import matplotlib.pyplot as plt
 
 
 """
@@ -41,22 +43,37 @@ def run_crremoval():
 
         frame = PyLongslit_frame.read_from_disc(file)
 
+        frame_data_temp = frame.data.copy()
+
+
+
         if frame.header["CRRREMOVD"]:
             logger.warning(f"File {file} already had cosmic rays removed. Skipping...")
             continue
                                  
-        _, clean_arr = astroscrappy.detect_cosmics(
+        mask, clean_arr = astroscrappy.detect_cosmics(
             frame.data,
             sigclip=sigclip,
             sigfrac=frac,
             objlim=objlim,
             cleantype="medmask",
+            invar = np.array(frame.sigma**2, dtype = np.float32),
             niter=niter,
             sepmed=True,
             verbose=True,
+            gain=gain,
+            readnoise=read_out_noise,
         )
 
         frame.data = clean_arr
+
+        frame.sigma[mask] = np.nanmean(frame.sigma)
+
+        _, ax = plt.subplots(1, 1, figsize=(12, 12))
+        ax.imshow(frame.data, cmap="gray", origin="lower")
+        ax.imshow(mask, cmap="Reds", alpha=0.5, origin="lower")
+        ax.set_title(f"Cleaned data\n Red: cosmic rays - {np.sum(mask)} pixels found")
+        plt.show()  
 
         logger.info(f"Cosmic rays removed on {file}.")
 

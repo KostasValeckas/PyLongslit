@@ -199,8 +199,16 @@ def estimate_transmission_factor(
 
     logger.info("Estimating the transmission factor of the atmosphere...")
 
+    # Ensure the wavelength is within the range of ext_wave
+    if np.min(wavelength) < np.min(ext_wave) or np.max(wavelength) > np.max(ext_wave):
+        logger.warning(
+            "Wavelength range of the observed spectrum is outside the range of the extinction curve."
+        )
+        logger.warning("Extintion curve will be interpolated to the wavelength range of the observed spectrum.")
+        logger.warning("This may cause inaccuracies.")
+
     # interpolate the extinction file onto the wavelength grid of the object spectrum
-    f = interp1d(ext_wave, ext_data, kind="cubic")
+    f = interp1d(ext_wave, ext_data, kind="cubic", fill_value="extrapolate")
     ext_interp1d = f(wavelength)
 
     # multiply the extinction by the airmass

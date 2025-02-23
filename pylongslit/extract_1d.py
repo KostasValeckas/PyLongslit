@@ -190,7 +190,9 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
         weight = gaussweight(x_row_array, obj_center, obj_fwhm)
 
 
-        reduced_data_slice = reduced_data[:, int(pixel[0]) + i]
+        reduced_data_slice = reduced_data[:, int(pixel[0]) + i].copy()
+
+        reduced_data_slice[reduced_data_slice < 0] = np.nanmean(np.sqrt(variance[:, i]))
 
         if i > 750:
             #plt.plot(weight)

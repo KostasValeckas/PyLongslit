@@ -56,7 +56,7 @@ def combine_arcs():
             overscan = estimate_frame_overscan_bias(data, plot = False)
             data = data - overscan.data
 
-        data = data - BIAS
+        if not skip_bias: data = data - BIAS
 
         arc_data.append(data)
 

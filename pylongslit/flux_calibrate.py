@@ -5,10 +5,23 @@ from numpy.polynomial.chebyshev import chebval
 import argparse
 
 
-def calibrate_spectrum(wavelength, counts, var, sens_coeffs, error, exptime):
+def calibrate_spectrum(wavelength, counts, var, sens_coeffs, error, exptime, wavelength_ext, data_ext, airmass):
 
-    from pylongslit.sensitivity_function import eval_sensfunc
+    from pylongslit.sensitivity_function import eval_sensfunc, estimate_transmission_factor
 
+    
+    transmission_factor = estimate_transmission_factor(wavelength, airmass, wavelength_ext, data_ext)
+
+    plt.plot(wavelength, counts)
+
+    counts = counts * transmission_factor   
+
+    plt.plot(wavelength, counts)
+
+    plt.show()
+
+
+    
     # evaluate the sensitivity at the wavelength points
     # and convert back from logspaces
     conv_factors, conv_error = eval_sensfunc(sens_coeffs, error, wavelength)
@@ -44,8 +57,12 @@ def plot_calibrated_spectrum(
 def calibrate_flux(spectra, sens_coeffs, error):
 
     from pylongslit.parser import science_params
+    from pylongslit.sensitivity_function import load_extinction_data
 
     exptime = science_params["exptime"]
+    airmass = science_params["airmass"]
+
+    wavelength_ext, data_ext = load_extinction_data()
 
     # final product
     calibrated_spectra = {}
@@ -53,7 +70,7 @@ def calibrate_flux(spectra, sens_coeffs, error):
     for filename, (wavelength, counts, var) in spectra.items():
         # calibrate the spectrum
         calibrated_flux, calibrated_var = calibrate_spectrum(
-            wavelength, counts, var, sens_coeffs, error, exptime
+            wavelength, counts, var, sens_coeffs, error, exptime, wavelength_ext, data_ext, airmass
         )
         # save the calibrated spectrum
         calibrated_spectra[filename] = (wavelength, calibrated_flux, calibrated_var)

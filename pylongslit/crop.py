@@ -12,7 +12,7 @@ def crop_image(frame):
 
     image = frame.data.copy()
     error = frame.sigma.copy()
-
+    normalized = False
 
     fig, ax = plt.subplots()
     plt.subplots_adjust(left=0.25, bottom=0.25)
@@ -31,11 +31,23 @@ def crop_image(frame):
         top = int(stop.val)
         bottom = int(sbottom.val)
         cropped_img = image[top:bottom, :]
+        if normalized:
+            cropped_img = hist_normalize(cropped_img)
+            img_display.set_clim(0, 1)
+        else:
+            img_display.set_clim(cropped_img.min(), cropped_img.max())
         img_display.set_data(cropped_img)
-        fig.canvas.draw_idle()
+        fig.canvas.draw()
 
     stop.on_changed(update)
     sbottom.on_changed(update)
+
+    def toggle_hist_normalization(event):
+        nonlocal normalized
+        normalized = not normalized
+        update(None)
+
+    fig.canvas.mpl_connect('key_press_event', toggle_hist_normalization)
 
     resetax = plt.axes([0.8, 0.025, 0.1, 0.04])
     

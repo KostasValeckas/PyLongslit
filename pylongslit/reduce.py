@@ -1,6 +1,7 @@
 import numpy as np
 import glob as glob
 import matplotlib.pyplot as plt
+import matplotlib   
 import argparse
 
 """
@@ -53,7 +54,7 @@ def estimate_initial_error(data, exptime, master_bias):
     data_normalized = hist_normalize(data)
     plt.imshow(data_normalized, origin="lower", cmap="gray")
     plt.colorbar()
-    plt.show()
+    #plt.show()
 
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
@@ -69,7 +70,7 @@ def estimate_initial_error(data, exptime, master_bias):
     ax2.set_ylabel("Y")
 
     fig.colorbar(im, ax=ax2, orientation="vertical")
-    plt.show()
+    #plt.show()
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
 
@@ -84,7 +85,7 @@ def estimate_initial_error(data, exptime, master_bias):
     ax2.set_ylabel("Y")
 
     fig.colorbar(im, ax=ax2, orientation="vertical")
-    plt.show()
+    #plt.show()
 
     return error
 
@@ -206,11 +207,11 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
         plt.imshow(error, origin="lower", cmap="gray")
         plt.colorbar()
         plt.title("Final error")
-        plt.show()
+        #plt.show()
 
     plt.imshow(error, origin="lower", cmap="gray")
     plt.colorbar()
-    plt.show()
+    #plt.show()
 
     # Handle NaNs and Infs
     if np.isnan(frame).any() or np.isinf(frame).any():
@@ -371,6 +372,8 @@ def main():
     from pylongslit import set_config_file_path
 
     set_config_file_path(args.config)
+
+    matplotlib.use('Agg')
 
     reduce_all()
 
