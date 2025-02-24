@@ -56,7 +56,7 @@ class PyLongslit_frame:
         logger.info(f"File written to {self.path()}.fits")
 
 
-    def show_frame(self, normalize=True, show=True, save=False, skip_sigma=False):
+    def show_frame(self, show=True, save=False, skip_sigma=False):
         """
         Show the frame data and sigma as two subfigures.
 
@@ -74,48 +74,70 @@ class PyLongslit_frame:
 
         # normalize to show detail
 
-        if not skip_sigma:
+        data = self.data.copy()
+        sigma = self.sigma.copy()
 
-            data = self.data.copy()
-            sigma = self.sigma.copy()
+        self.colorbar1 = None
+        self.colorbar2 = None
 
-            if normalize:
-                data = hist_normalize(data)
-                sigma = hist_normalize(sigma)
+        def update_plot(normalize):
 
-            # create subplots
-            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(24, 8))
+            if not skip_sigma:
 
-            # plot data
-            im = ax1.imshow(data, cmap="gray")
-            ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
-            ax1.set_xlabel("Pixels")
-            ax1.set_ylabel("Pixels")
-            fig.colorbar(im, ax=ax1, orientation='vertical')
+                if (not self.colorbar1 == None) and (not self.colorbar2 == None):
+                    print("removing")
+                    self.colorbar1.remove()
+                    self.colorbar2.remove()
 
-            # plot sigma
-            im = ax2.imshow(sigma, cmap="gray")
-            ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
-            ax2.set_xlabel("Pixels")
-            ax2.set_ylabel("Pixels")
-            fig.colorbar(im, ax=ax2, orientation='vertical')
+                ax1.cla()
+                ax2.cla()
 
-        else:
+                if normalize:
+                    data_to_plot = hist_normalize(data)
+                    sigma_to_plot = hist_normalize(sigma)
+                else:
+                    data_to_plot = data
+                    sigma_to_plot = sigma
 
-            data = self.data.copy()
+                im1 = ax1.imshow(data_to_plot, cmap="gray")
+                ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
+                ax1.set_xlabel("Pixels")
+                ax1.set_ylabel("Pixels")
+                self.colorbar1 = fig.colorbar(im1, ax=ax1, orientation='vertical')
 
-            if normalize:
-                data = hist_normalize(data)
+                im2 = ax2.imshow(sigma_to_plot, cmap="gray")
+                ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
+                ax2.set_xlabel("Pixels")
+                ax2.set_ylabel("Pixels")
+                self.colorbar2 = fig.colorbar(im2, ax=ax2, orientation='vertical')
             
-            plt.imshow(data, cmap="gray")
-            plt.title(f"{self.name}" + (" (normalized)" if normalize else ""))
-            plt.xlabel("Pixels")
-            plt.ylabel("Pixels")
+            else:
+                if normalize:
+                    data_to_plot = hist_normalize(data)
+                else:
+                    data_to_plot = data
 
+                plt.imshow(data_to_plot, cmap="gray")
+                plt.title(f"{self.name}" + (" (normalized)" if normalize else ""))
+                plt.xlabel("Pixels")
+                plt.ylabel("Pixels")
 
+            if save:
+                plt.savefig(self.path() + ".png")
 
-        if save: 
-            plt.savefig(self.path() + ".png")
+            plt.draw()
+
+        fig, (ax1, ax2) = plt.subplots(1, 2)
+        update_plot(normalize=False)
+
+        def on_key(event):
+            if event.key == 'h':
+                print("normalizing")
+                on_key.normalize = not on_key.normalize
+                update_plot(normalize=on_key.normalize)
+
+        on_key.normalize = False
+        fig.canvas.mpl_connect('key_press_event', on_key)
 
         if show:
             plt.show()
@@ -155,17 +177,11 @@ class PyLongslit_frame:
         return cls(data, sigma, header, filename)
 
 
-       
-
-
-
-
-
 class FileList:
     def __init__(self, path):
         """
-        A class that reads all filenames from a directory
-        and counts them. Made iterable so files can be looped over.
+        A class that reads all filenames from a directory.
+        Made iterable so files can be looped over.
 
         Parameters
         ----------
@@ -185,6 +201,8 @@ class FileList:
         """
 
         from pylongslit.logger import logger
+
+
 
         self.path = path
 
@@ -207,6 +225,13 @@ class FileList:
 
     def __iter__(self):
         return iter(self.files)
+
+    def print_files(self):
+
+        print("------------------------------------")
+        for file in self:
+            print(file)
+        print("------------------------------------")
 
 
 def open_fits(dir_path, file_name):
@@ -467,22 +492,6 @@ def show_frame(
     if show:
         plt.show()
 
-
-def list_files(file_list: FileList):
-    """
-    List all files in a FileList object.
-
-    Parameters
-    ----------
-    file_list : FileList
-        A FileList object containing filenames.
-    """
-
-    print("------------------------------------")
-    for file in file_list:
-        print(file)
-    print("------------------------------------")
-    return None
 
 
 def check_rotation():

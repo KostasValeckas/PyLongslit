@@ -109,6 +109,8 @@ def detect_overscan_direction():
 
 def check_overscan():
     """
+    NOT USED
+
     A simple bool return to checck whether the user wants to use the overscan subtraction or not.
     """
 
@@ -152,8 +154,6 @@ def estimate_frame_overscan_bias(image_data, plot = True):
     overscan_x_end = detector_params["overscan"]["overscan_x_end"]
     overscan_y_start = detector_params["overscan"]["overscan_y_start"]
     overscan_y_end = detector_params["overscan"]["overscan_y_end"]
-
-    overscan_direction = detect_overscan_direction()
 
     overscan_image = numpy.zeros_like(image_data)
     error_image = numpy.zeros_like(image_data)

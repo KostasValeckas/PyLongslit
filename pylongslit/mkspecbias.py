@@ -1,6 +1,5 @@
 import numpy
 import argparse
-import matplotlib.pyplot as plt
 
 """
 Module for creating a master bias frame from raw bias frames.
@@ -18,14 +17,14 @@ def run_bias():
     from pylongslit.parser import detector_params, bias_params,data_params
     from pylongslit.logger import logger
     from pylongslit.utils import FileList, check_dimensions, open_fits
-    from pylongslit.utils import list_files, PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame
     from pylongslit.overscan import check_overscan, estimate_frame_overscan_bias
     from pylongslit.stats import bootstrap_median_errors_framestack
+    
     # Extract the detector parameters
     xsize = detector_params["xsize"]
     ysize = detector_params["ysize"]
 
-    # TODO: specify what direction is the spectral direction
     logger.info("Bias procedure running...")
     logger.info("Using the following parameters:")
     logger.info(f"xsize = {xsize}")
@@ -37,7 +36,7 @@ def run_bias():
     logger.info(f"Found {file_list.num_files} bias frames.")
     logger.info(f"Files used for bias processing:")
 
-    list_files(file_list)
+    file_list.print_files()
 
     # Check if all files have the wanted dimensions
     # Will exit if they don't
@@ -87,7 +86,6 @@ def run_bias():
 
 
     logger.info("Bias frames processed.")
-    logger.info("Attaching header and writing to disc...")
 
     # Write out result to fitsfile
     hdr = rawbias[0].header
@@ -95,8 +93,7 @@ def run_bias():
     # create a PyLongslit_frame object to hold the data and header
     master_bias = PyLongslit_frame(medianbias, medianbias_error, hdr, "master_bias")
 
-    master_bias.show_frame(normalize=False, save=True)
-    master_bias.show_frame(normalize=True, save=True)
+    master_bias.show_frame(save=True)
     master_bias.write_to_disc()
     logger.info("Bias procedure completed.")
 
