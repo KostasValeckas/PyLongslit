@@ -60,6 +60,8 @@ def check_dirs(any_errors):
 
     Loops over all the raw input directories in the configuration file.
 
+    The output is checked by the parser.
+
     Parameters
     ----------
     any_errors : bool
@@ -201,10 +203,6 @@ def check_detector(any_errors):
 
         # show overscan
         if detector_params["overscan"]["use_overscan"]:
-            logger.info(
-                "Showing the overscan region on a raw flat frame "
-                "for user inspection..."
-            )
             show_overscan()
 
         else:
@@ -272,7 +270,68 @@ def check_for_negative_params(any_errors):
                 )
                 logger.warning("All physical parameters should be positive.")
                 any_errors = True
+    if not any_errors:
+        logger.info("No negative physical parameters found in the configuration file.")
     return any_errors
+
+
+def check_science_and_standard():
+    """
+    Sanity checks for whether the user wants to use science frames,
+    standard star frames, or both for the given run.
+
+    Warns the user if one or the other is missing.
+
+    Returns
+    -------
+    A return code : int
+        0 - skip standard star and science reductions
+        (only bias, wavecalib and flats are possible).
+
+        1 - skip standard star reduction.
+
+        2 - skip science reduction.
+
+        3 - skip none.
+    """
+
+    from pylongslit.parser import science_params, standard_params
+    from pylongslit.logger import logger
+
+    skip_science = science_params["skip_science"]
+    skip_standard = standard_params["skip_standard"]
+
+    # check for unreasonable user input
+
+    if skip_science and skip_standard:
+        logger.warning(
+            'Both skip_science and skip_standard are set to "true" '
+            "in the config file. Only bias, wavecalibration and flat operations can be performed."
+        )
+        logger.warning("Pipeline will crash if you proceed beyond flats.")
+        return 0
+
+    if skip_standard:
+        logger.warning(
+            "Standard star reduction is set to be skipped in the config file. "
+            "This is okay if this is your intention - only the science frames "
+            "will be reduced."
+        )
+
+        return 1
+
+    if skip_science:
+        logger.warning(
+            "Science reduction is set to be skipped in the config file. "
+            "This is okay if this is your intention - only standard star "
+            "will be reduced."
+        )
+
+        return 2
+
+    else:
+
+        return 3
 
 
 def run_config_checks():
@@ -281,7 +340,10 @@ def run_config_checks():
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import check_science_and_standard
+
+    logger.info("Doing a test read of the configuration file...")
+
+    import pylongslit.parser
 
     any_errors = False
 
@@ -304,29 +366,9 @@ def run_config_checks():
 
     print("\n------------------------------------\n")
 
-
-    logger.info(
-        "Checking reduction parameters..."
-    )
-    return_code = check_science_and_standard()
-
-    if return_code == 0:
-        any_errors = True
-
-    else:
-        logger.info("Check complete.")
-
-    print("\n------------------------------------\n")
-
     logger.info("Checking for negative physical parameters...")
 
     any_errors = check_for_negative_params(any_errors)
-
-    if any_errors:
-        logger.warning("Negative physical parameters found.")
-        
-    else:
-        logger.info("All physical parameters are positive.")
 
     print("\n------------------------------------\n")
 
