@@ -1,15 +1,46 @@
+"""
+PyLongslit module for dark current estimation.
+
+For now this module only supports constant dark current estimation, 
+as no instrument has been tested where dark current has a noticable effect. 
+"""
+
 import numpy as np
+from astropy.io import fits
 
 def estimate_dark(frame, exptime):
+    """
+    Simple function to estimate the dark current in a frame by
+    assuming a constant dark current for every pixel and
+    scaling it by the exposure time.
 
+    Parameters
+    ----------
+    frame : numpy.ndarray
+        Any frame that matches the needed detector shape.
+    
+    exptime : float
+        The exposure time in seconds. 
+        The dark current will be scaled by this value.
+    """
+
+    from pylongslit.utils import PyLongslit_frame
     from pylongslit.parser import detector_params
+    from pylongslit.logger import logger
+
+    #TODO: For now, this is a simple solution with constant DARK currents
+    # that are assumed to be growing linearly with exptime. 
+    # Later on, add option to support DARK frames
+
+    
 
     gain = detector_params["gain"] #e/ADU
 
     dark = detector_params["dark_current"] #e/s/pixel
-    
-    # in electrons
-    dark_frame_e = dark * exptime
+
+    # in electrons:
+    dark_frame_e = np.ones_like(frame) * dark * exptime
+    # convert to ADU
     dark_frame_counts = dark_frame_e / gain
 
     # poisson noise for darks, from 
@@ -18,4 +49,17 @@ def estimate_dark(frame, exptime):
     # -Willmann-Bell (2005), p. 45 - 46
     dark_noise_error = np.sqrt(dark_frame_counts)
 
-    return dark_frame_counts, dark_noise_error
+    # Create an empty FITS header
+    header = fits.Header()
+
+    dark_frame = PyLongslit_frame(dark_frame_counts, dark_noise_error, header, "dark.fits")
+
+    if not dark == 0:
+        dark_frame.show_frame()
+        dark_frame.write_to_disc()
+
+    else:
+        logger.warning("Dark current is set to 0. No dark frame will be created.")
+        logger.warning("This is wanted behaviour for some instruments, but ensure that this is the case for your instrument.")
+
+    return dark_frame

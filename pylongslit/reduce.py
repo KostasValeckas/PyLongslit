@@ -25,9 +25,7 @@ def estimate_initial_error(data, exptime, master_bias):
     gain = detector_params["gain"]  # e/ADU
     read_noise = detector_params["read_out_noise"]  # e
 
-    dark = detector_params["dark_current"]  # e/s/pixel
-
-    dark_current, dark_noise_error = estimate_dark(dark, exptime)
+    dark_frame = estimate_dark(data, exptime)
 
     use_overscan = detector_params["overscan"]["use_overscan"]
     
@@ -39,17 +37,17 @@ def estimate_initial_error(data, exptime, master_bias):
 
     # Poisson noise
     if use_overscan:
-        poisson_noise = np.sqrt(data - dark_current - overscan_frame.data - master_bias.data)  
+        poisson_noise = np.sqrt(data - dark_frame.data - overscan_frame.data - master_bias.data)  
     
     else:
-        poisson_noise = np.sqrt(data - dark_current - master_bias.data)
+        poisson_noise = np.sqrt(data - dark_frame.data - master_bias.data)
 
     # total error
     if use_overscan:
-        error = np.sqrt(poisson_noise**2 + dark_noise_error**2 + overscan_frame.sigma**2 + master_bias.sigma**2 +  read_noise_error**2)
+        error = np.sqrt(poisson_noise**2 + dark_frame.sigma**2 + overscan_frame.sigma**2 + master_bias.sigma**2 +  read_noise_error**2)
 
     else:
-        error = np.sqrt(poisson_noise**2 + dark_noise_error**2 + master_bias.sigma**2 +  read_noise_error**2)
+        error = np.sqrt(poisson_noise**2 + dark_frame.sigma**2 + master_bias.sigma**2 +  read_noise_error**2)
 
     data_normalized = hist_normalize(data)
     plt.imshow(data_normalized, origin="lower", cmap="gray")
@@ -159,7 +157,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
 
     # subtract the dark current
 
-    dark_current, dark_error = estimate_dark(frame, exptime)
+    dark_frame = estimate_dark(frame, exptime)
 
 
     if use_overscan:
@@ -179,11 +177,11 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
 
         error = (1 / master_flat.data) * np.sqrt(
             initial_error**2
-            + dark_error**2
+            + dark_frame.sigma**2
             + overscan.sigma**2
             + master_bias.sigma**2
             + ((
-                (initial_frame - dark_current - overscan.data - master_bias.data)
+                (initial_frame - dark_frame.data - overscan.data - master_bias.data)
                 * master_flat.sigma
                 / master_flat.data
             )
@@ -194,10 +192,10 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, overscan_dir, ex
         
         error = (1 / master_flat.data) * np.sqrt(
             initial_error**2
-            + dark_error**2
+            + dark_frame.sigma**2
             + master_bias.sigma**2
             + ((
-                (initial_frame - dark_current - master_bias.data)
+                (initial_frame - dark_frame.error - master_bias.data)
                 * master_flat.sigma
                 / master_flat.data
             )
@@ -372,8 +370,6 @@ def main():
     from pylongslit import set_config_file_path
 
     set_config_file_path(args.config)
-
-    matplotlib.use('Agg')
 
     reduce_all()
 
