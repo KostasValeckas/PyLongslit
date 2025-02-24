@@ -28,10 +28,13 @@ def check_directory(directory, dir_type, error_message, empty_message, any_error
     empty_message : str
         A message to be printed if the directory is empty.
 
+    any_errors : bool
+        A boolean used by `run_config_checks` to track if any errors were found.
+
     Returns
     -------
     any_errors : bool
-        A boolean value indicating if any errors were found
+        A boolean used by `run_config_checks` to track if any errors were found.
     """
 
     from pylongslit.logger import logger
@@ -123,7 +126,7 @@ def check_dirs(any_errors):
 
     if not any_errors:
         print("\n")
-        logger.info("All input and output directories are found and not empty.")
+        logger.info("All input directories are found and not empty.")
 
     return any_errors
 
@@ -131,7 +134,7 @@ def check_dirs(any_errors):
 def check_regions(any_errors):
     """
     Check that rectangles defined by the user in the configuration file
-    for overscan and flat normalization regions are valid.
+    for overscan are valid.
 
     Parameters
     ----------
@@ -170,15 +173,15 @@ def check_regions(any_errors):
             logger.warning("End coordinates must be larger than start coordinates.")
             any_errors = True
 
-    if not any_errors:
-        logger.info("All user-defined regions are valid.")
+    else:
+        logger.info("Overscan is set to be skipped in configuration file.")
 
     return any_errors
 
 
 def check_detector(any_errors):
     """
-    Visualize the overscan and flat normalization regions on a raw flat frame.
+    Visualize the overscan on a raw flat frame.
 
     Parameters
     ----------
@@ -191,10 +194,8 @@ def check_detector(any_errors):
         A boolean used by `run_config_checks` to track if any errors were found.
     """
     from pylongslit.overscan import show_overscan
-    from pylongslit.parser import detector_params, flat_params
+    from pylongslit.parser import detector_params
     from pylongslit.logger import logger
-    from pylongslit.mkspecflat import show_flat_norm_region
-
 
     try:
 
@@ -209,26 +210,8 @@ def check_detector(any_errors):
         else:
             logger.info("Overscan is set to be skipped in configuration file.")
 
-        # show flat normalization region
-
-        if flat_params["user_custom_norm_area"]:
-            logger.info(
-                "Showing the flat normalization region on a raw flat frame "
-                "for user inspection..."
-            )
-            show_flat_norm_region()
-
-        else:
-            logger.info(
-                "Flat normalization region is set to be skipped in configuration file."
-            )
-
-        if (
-            not detector_params["overscan"]["use_overscan"]
-            and not flat_params["user_custom_norm_area"]
-        ):
-            logger.info("No regions are set to be shown in the configuration file.")
-
+    # except "catch all" are usually not allowed in the pipeline, but since
+    # this is a configuration check, we can allow it
     except:
         logger.warning("Could not show detector regions.")
         logger.warning("Check for any previous warnings.")
@@ -247,7 +230,7 @@ def check_for_negative_params(any_errors):
     """
     Checks for negative physical parameters in the configuration file.
 
-    Does not check overscan , but it checked in `check_regions`.
+    Does not check overscan , but it checkedwavecalib in `check_regions.
 
     Parameters
     ----------
@@ -262,6 +245,8 @@ def check_for_negative_params(any_errors):
 
     from pylongslit.parser import detector_params, bias_params, flat_params
     from pylongslit.parser import science_params, standard_params, arc_params
+    from pylongslit.parser import data_params, crr_params, wavecalib_params, extract_params
+    from pylongslit.parser import obj_trace_clone_params, sens_params
     from pylongslit.logger import logger
 
     # TODO re-use this list globally
@@ -272,6 +257,12 @@ def check_for_negative_params(any_errors):
         science_params,
         standard_params,
         arc_params,
+        data_params,
+        crr_params,
+        wavecalib_params,
+        extract_params,
+        obj_trace_clone_params,
+        sens_params,
     ]
     for param in params:
         for key, value in param.items():
@@ -292,8 +283,6 @@ def run_config_checks():
     from pylongslit.logger import logger
     from pylongslit.parser import check_science_and_standard
 
-
-
     any_errors = False
 
     print("\n------------------------------------")
@@ -304,32 +293,40 @@ def run_config_checks():
 
     print("\n------------------------------------")
 
-    logger.info("Checking user-defined detector regions...")
+    logger.info("Checking user-defined overscan region...")
 
     any_errors = check_regions(any_errors)
     print("\n------------------------------------\n")
 
-    logger.info("Showing user-defined detector regions...")
+    logger.info("Showing user-defined overscan region...")
 
     any_errors = check_detector(any_errors)
 
     print("\n------------------------------------\n")
 
-    # check if at least one of the science or standard star frames are present
 
     logger.info(
-        "Checking if at least one of the science or standard star frames are present..."
+        "Checking reduction parameters..."
     )
     return_code = check_science_and_standard()
 
     if return_code == 0:
         any_errors = True
 
+    else:
+        logger.info("Check complete.")
+
     print("\n------------------------------------\n")
 
     logger.info("Checking for negative physical parameters...")
 
     any_errors = check_for_negative_params(any_errors)
+
+    if any_errors:
+        logger.warning("Negative physical parameters found.")
+        
+    else:
+        logger.info("All physical parameters are positive.")
 
     print("\n------------------------------------\n")
 
@@ -344,7 +341,6 @@ def run_config_checks():
 def main():
     parser = argparse.ArgumentParser(description="Run the pylongslit config-file checker.")
     parser.add_argument('config', type=str, help='Configuration file path')
-    # Add more arguments as needed
 
     args = parser.parse_args()
 
