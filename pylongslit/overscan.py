@@ -127,7 +127,7 @@ def check_overscan():
     return True
 
 
-def estimate_frame_overscan_bias(image_data, plot = True):
+def estimate_frame_overscan_bias(image_data, plot = False):
     """
     Subtract the overscan region from a single frame.
 
@@ -169,7 +169,7 @@ def estimate_frame_overscan_bias(image_data, plot = True):
 
     overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "Overscan")
 
-    if plot: overscan_frame.show_frame(normalize=False)
+    if plot: overscan_frame.show_frame()
 
     return overscan_frame
 

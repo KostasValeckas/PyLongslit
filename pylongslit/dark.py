@@ -8,7 +8,7 @@ as no instrument has been tested where dark current has a noticable effect.
 import numpy as np
 from astropy.io import fits
 
-def estimate_dark(frame, exptime):
+def estimate_dark(frame, exptime, supress_warning = False):
     """
     Simple function to estimate the dark current in a frame by
     assuming a constant dark current for every pixel and
@@ -22,6 +22,14 @@ def estimate_dark(frame, exptime):
     exptime : float
         The exposure time in seconds. 
         The dark current will be scaled by this value.
+
+    supress_warning : bool
+        If True, the function will not print a warning if the dark current is set to 0.
+
+    Returns
+    -------
+    dark_frame : pylongslit.utils.PyLongslit_frame
+        A PyLongslit_frame object that contains the dark frame.
     """
 
     from pylongslit.utils import PyLongslit_frame
@@ -52,14 +60,13 @@ def estimate_dark(frame, exptime):
     # Create an empty FITS header
     header = fits.Header()
 
-    dark_frame = PyLongslit_frame(dark_frame_counts, dark_noise_error, header, "dark.fits")
+    dark_frame = PyLongslit_frame(dark_frame_counts, dark_noise_error, header, "dark")
 
     if not dark == 0:
-        dark_frame.show_frame()
         dark_frame.write_to_disc()
 
-    else:
-        logger.warning("Dark current is set to 0. No dark frame will be created.")
+    elif not supress_warning:
+        logger.warning("Dark current is set to 0 in the config file. No dark frame will be created.")
         logger.warning("This is wanted behaviour for some instruments, but ensure that this is the case for your instrument.")
 
     return dark_frame

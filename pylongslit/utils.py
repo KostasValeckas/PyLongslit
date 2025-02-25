@@ -95,6 +95,7 @@ class PyLongslit_frame:
                 if normalize:
                     data_to_plot = hist_normalize(data)
                     sigma_to_plot = hist_normalize(sigma)
+
                 else:
                     data_to_plot = data
                     sigma_to_plot = sigma
@@ -154,7 +155,7 @@ class PyLongslit_frame:
         plt.show()
 
         # actually it saves every time on update, but only print once on exit
-        logger.info(f"Saving plot to {self.path()}.png")
+        if save: logger.info(f"Saving plot to {self.path()}.png")
 
     @classmethod
     def read_from_disc(cls, filename):
@@ -420,8 +421,8 @@ def hist_normalize(data, z_thresh=3):
     """
 
     # Calculate the Z-scores
-    mean = np.mean(data)
-    std = np.std(data)
+    mean = np.nanmean(data)
+    std = np.nanstd(data)
     z_scores = (data - mean) / std
 
     # Remove outliers by setting them to the mean or a capped value
@@ -429,6 +430,9 @@ def hist_normalize(data, z_thresh=3):
 
     # Now apply histogram equalization
     data_equalized = exposure.equalize_hist(data_no_outliers)
+
+    # Ensure the data is equalized from 0 to 1
+    data_equalized = (data_equalized - np.min(data_equalized)) / (np.max(data_equalized) - np.min(data_equalized))
 
     return data_equalized
 

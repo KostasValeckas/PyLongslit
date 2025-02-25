@@ -90,7 +90,7 @@ def run_bias():
     # create a PyLongslit_frame object to hold the data and header
     master_bias = PyLongslit_frame(medianbias, medianbias_error, hdr, "master_bias")
 
-    master_bias.show_frame(save=True) if not use_overscan else master_bias.show_frame(save=True, title_addition="Overscan subtracted - therefore negative values are okay.") 
+    master_bias.show_frame() if not use_overscan else master_bias.show_frame(title_addition="Overscan subtracted - therefore negative values are okay.") 
     master_bias.write_to_disc()
     logger.info("Bias procedure completed.")
 

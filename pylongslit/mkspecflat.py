@@ -653,7 +653,7 @@ def run_flats():
 
     master_flat_frame = PyLongslit_frame(master_flat, medianflat_error, hdr, "master_flat")
 
-    master_flat_frame.show_frame(save=True)
+    master_flat_frame.show_frame()
     master_flat_frame.write_to_disc()
 
     
