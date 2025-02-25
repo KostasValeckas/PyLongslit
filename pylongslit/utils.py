@@ -94,6 +94,7 @@ class PyLongslit_frame:
 
                 if normalize:
                     data_to_plot = hist_normalize(data)
+                    # normalize the sigma twice for better visualization
                     sigma_to_plot = hist_normalize(sigma)
 
                 else:
