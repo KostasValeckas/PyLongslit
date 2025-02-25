@@ -56,7 +56,7 @@ class PyLongslit_frame:
         logger.info(f"File written to {self.path()}.fits")
 
 
-    def show_frame(self, show=True, save=False, skip_sigma=False):
+    def show_frame(self, save=False, skip_sigma=False, title_addition=""):
         """
         Show the frame data and sigma as two subfigures.
 
@@ -72,7 +72,11 @@ class PyLongslit_frame:
             If True, display the plot.
         """
 
-        # normalize to show detail
+        from pylongslit.logger import logger
+
+        # TODO: a few "hacked" solutions in this method in order for the same 
+        # method to be able to handle both single and double plots.
+        # Consider a refactor if this gives any issues down the road.
 
         data = self.data.copy()
         sigma = self.sigma.copy()
@@ -85,12 +89,8 @@ class PyLongslit_frame:
             if not skip_sigma:
 
                 if (not self.colorbar1 == None) and (not self.colorbar2 == None):
-                    print("removing")
                     self.colorbar1.remove()
                     self.colorbar2.remove()
-
-                ax1.cla()
-                ax2.cla()
 
                 if normalize:
                     data_to_plot = hist_normalize(data)
@@ -106,41 +106,55 @@ class PyLongslit_frame:
                 self.colorbar1 = fig.colorbar(im1, ax=ax1, orientation='vertical')
 
                 im2 = ax2.imshow(sigma_to_plot, cmap="gray")
-                ax2.set_title(f"{self.name} - Sigma" + (" (normalized)" if normalize else ""))
+                ax2.set_title(f"{self.name} - Error" + (" (normalized)" if normalize else ""))
                 ax2.set_xlabel("Pixels")
                 ax2.set_ylabel("Pixels")
                 self.colorbar2 = fig.colorbar(im2, ax=ax2, orientation='vertical')
             
             else:
+                
+                try:
+                    if not ax1 == None: ax1.remove()
+                    if not ax2 == None: ax2.remove()
+                except KeyError:
+                    pass
+                
+                if not self.colorbar1 == None:
+                    self.colorbar1.remove()
+
                 if normalize:
                     data_to_plot = hist_normalize(data)
                 else:
                     data_to_plot = data
 
                 plt.imshow(data_to_plot, cmap="gray")
+                self.colorbar1 = plt.colorbar()
                 plt.title(f"{self.name}" + (" (normalized)" if normalize else ""))
                 plt.xlabel("Pixels")
                 plt.ylabel("Pixels")
-
-            if save:
+            
+            # this overwrites the previous plot until the user exits
+            if save: 
                 plt.savefig(self.path() + ".png")
 
             plt.draw()
 
         fig, (ax1, ax2) = plt.subplots(1, 2)
+        fig.suptitle(f"{self.name} - Press \"h\" to normalize.\n {title_addition}")
         update_plot(normalize=False)
 
         def on_key(event):
             if event.key == 'h':
-                print("normalizing")
                 on_key.normalize = not on_key.normalize
                 update_plot(normalize=on_key.normalize)
 
         on_key.normalize = False
         fig.canvas.mpl_connect('key_press_event', on_key)
 
-        if show:
-            plt.show()
+        plt.show()
+
+        # actually it saves every time on update, but only print once on exit
+        logger.info(f"Saving plot to {self.path()}.png")
 
     @classmethod
     def read_from_disc(cls, filename):
@@ -380,6 +394,7 @@ def check_dimensions(FileList: FileList, x, y):
         hdul.close()
 
     logger.info("All files have the correct dimensions.")
+    print("------------------------------------")
     return None
 
 

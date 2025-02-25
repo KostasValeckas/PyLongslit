@@ -18,7 +18,7 @@ def run_bias():
     from pylongslit.logger import logger
     from pylongslit.utils import FileList, check_dimensions, open_fits
     from pylongslit.utils import PyLongslit_frame
-    from pylongslit.overscan import check_overscan, estimate_frame_overscan_bias
+    from pylongslit.overscan import check_overscan, subtract_overscan
     from pylongslit.stats import bootstrap_median_errors_framestack
     
     # Extract the detector parameters
@@ -57,10 +57,7 @@ def run_bias():
         # dtype should always be set explicitly
         data = numpy.array(rawbias[data_params["raw_data_hdu_index"]].data, dtype=int)
         
-        if use_overscan:
-            overscan_bias = estimate_frame_overscan_bias(data, plot = False)
-            data = data - overscan_bias.data
-
+        if use_overscan: data = subtract_overscan(data)
 
         bigbias[i] = data
 
@@ -93,7 +90,7 @@ def run_bias():
     # create a PyLongslit_frame object to hold the data and header
     master_bias = PyLongslit_frame(medianbias, medianbias_error, hdr, "master_bias")
 
-    master_bias.show_frame(save=True)
+    master_bias.show_frame(save=True) if not use_overscan else master_bias.show_frame(save=True, title_addition="Overscan subtracted - therefore negative values are okay.") 
     master_bias.write_to_disc()
     logger.info("Bias procedure completed.")
 

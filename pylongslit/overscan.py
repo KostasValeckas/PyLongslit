@@ -62,7 +62,7 @@ def show_overscan():
 
 def detect_overscan_direction():
     """
-    CURRENTLY NOT USED
+    NOT USED
 
     Detect the direction of the overscan region.
 
@@ -149,6 +149,8 @@ def estimate_frame_overscan_bias(image_data, plot = True):
     from pylongslit.parser import detector_params
     from pylongslit.utils import PyLongslit_frame
 
+    logger.info("Estimating the overscan bias...")
+
     # Extract the overscan region
     overscan_x_start = detector_params["overscan"]["overscan_x_start"]
     overscan_x_end = detector_params["overscan"]["overscan_x_end"]
@@ -170,3 +172,13 @@ def estimate_frame_overscan_bias(image_data, plot = True):
     if plot: overscan_frame.show_frame(normalize=False)
 
     return overscan_frame
+
+def subtract_overscan(data):
+
+    from pylongslit.logger import logger
+
+    overscan_bias = estimate_frame_overscan_bias(data, plot = False)
+    logger.info("Subtracting overscan bias from the frame.")
+    data = data - overscan_bias.data
+
+    return data
