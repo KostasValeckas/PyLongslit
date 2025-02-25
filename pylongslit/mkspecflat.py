@@ -123,6 +123,7 @@ def estimate_spectral_response(medianflat):
 
     # setup the B-spline fit
     num_interior_knots = flat_params["knots_spectral_bspline"]
+    degree = flat_params["degree_spectral_bspline"]
 
     # check that the number of knots is reasonable
     if num_interior_knots > len(wavelength_cut) // 2:
@@ -140,27 +141,19 @@ def estimate_spectral_response(medianflat):
         logger.error("Please reduce the number of knots in the configuration file.")
         exit()
 
-    if num_interior_knots < 4:
-        logger.error(
-            "The number of interior knots is less than 4."
-        )
-        logger.error("This will lead to underfitting.")
-        logger.error("Please increase the number of knots in the configuration file.")
-        exit()
-
     # Create the knots array
     t = np.concatenate(
         (
-            np.repeat(wavelength_cut[0], 4),  # k+1 knots at the beginning
+            np.repeat(wavelength_cut[0], degree + 1),  # k+1 knots at the beginning
             np.linspace(
                 wavelength_cut[1], wavelength_cut[-2], num_interior_knots
             ),  # interior knots
-            np.repeat(wavelength_cut[-1], 4),  # k+1 knots at the end
+            np.repeat(wavelength_cut[-1], degree + 1),  # k+1 knots at the end
         )
     )
     
     # this part does the actual fitting
-    spl = make_lsq_spline(wavelength_cut, spectrum_cut, t=t, k=3)
+    spl = make_lsq_spline(wavelength_cut, spectrum_cut, t=t, k=degree)
     bspline = BSpline(spl.t, spl.c, spl.k)
 
     residuals = spectrum_cut - bspline(wavelength_cut)
@@ -176,7 +169,7 @@ def estimate_spectral_response(medianflat):
         y_label="Counts (ADU)",
         legend_label="Extracted flat-field lamp spectrum",
         title=
-            f"Spectral response B-spline fit with {num_interior_knots} interior knots.\n"
+            f"Spectral response B-spline fit with {num_interior_knots} interior knots, degree {degree}.\n"
             "You should see very little to no large-scale structure in the residuals, \n"
             "with the lowest amount of knots possible (this is set in the configuration file).",
     )
@@ -209,6 +202,7 @@ def estimate_spacial_response(medianflat):
  
     from pylongslit.parser import detector_params, flat_params
     from pylongslit.utils import interactively_crop_spec
+    from pylongslit.logger import logger
 
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
@@ -268,6 +262,25 @@ def estimate_spacial_response(medianflat):
 
     residuals = np.array([])
 
+    num_interior_knots = flat_params["knots_spacial_bspline"]
+    degree = flat_params["degree_spacial_bspline"]
+
+    # check that the number of knots is reasonable
+    if num_interior_knots > len(spectral_array_cropped) // 2:
+        logger.warning(
+            "The number of interior knots is larger than half the number of data points."
+        )
+        logger.warning("This may lead to overfitting.")
+        logger.warning("Consider reducing the number of knots in the configuration file.")
+
+    if num_interior_knots >= len(spectral_array_cropped):
+        logger.error(
+            "The number of interior knots is larger than the number of data points."
+        )
+        logger.error("This will lead to overfitting.")
+        logger.error("Please reduce the number of knots in the configuration file.")
+        exit()
+
     for spacial_row_index in range(x_size) if spectral_axis == 0 else range(y_size):
 
         spacial_slice = (
@@ -288,24 +301,22 @@ def estimate_spacial_response(medianflat):
         spacial_slice_masked = spacial_slice_cropped[~mask]
         spectral_array_masked = spectral_array_cropped[~mask]
 
-        num_interior_knots = flat_params["knots_spacial_bspline"]
-
         # Create the knots array
         t = np.concatenate(
             (
-                np.repeat(spectral_array_masked[0], 4),  # k+1 knots at the beginning
+                np.repeat(spectral_array_masked[0], degree + 1),  # k+1 knots at the beginning
                 np.linspace(
                     spectral_array_masked[1], spectral_array_masked[-2], num_interior_knots
                 ),  # interior knots
-                np.repeat(spectral_array_masked[-1], 4),  # k+1 knots at the end
+                np.repeat(spectral_array_masked[-1], degree + 1),  # k+1 knots at the end
             )
         )
 
         # do the fit
-        spl = make_lsq_spline(spectral_array_masked, spacial_slice_masked, t=t, k=3)
+        spl = make_lsq_spline(spectral_array_masked, spacial_slice_masked, t=t, k=degree)
         bspline = BSpline(spl.t, spl.c, spl.k)
 
-        residuals_temp = spacial_slice_cropped - bspline(spectral_array_cropped)
+        residuals_temp = spacial_slice_masked - bspline(spectral_array_masked)
 
         residuals = np.append(residuals, residuals_temp)
 
@@ -333,7 +344,7 @@ def estimate_spacial_response(medianflat):
   
 
                 ax[plot_num, 1].plot(
-                    spectral_array_cropped, residuals_temp, 'o', color='black', label=f"Residuals at spacial pixel: {spacial_row_index}"
+                    spectral_array_masked, residuals_temp, 'o', color='black', label=f"Residuals at spacial pixel: {spacial_row_index}"
                 )
                 ax[plot_num, 1].axhline(0, color='red', linestyle='--')
 
@@ -343,10 +354,9 @@ def estimate_spacial_response(medianflat):
 
     fig.suptitle(
         "Slit illumination B-spline fits at different spectral pixels.\n"
-        f"Number of interior knots: {num_interior_knots} (this is set in the configuration file).\n"
+        f"Number of interior knots: {num_interior_knots}, fit degree {degree} (this is set in the configuration file).\n"
         "You should see very little to no large-scale structure in the residuals, with the lowest amount of knots possible.",
         fontsize=16,
-        y=1.02
     )
     fig.text(0.5, 0.04, "Spacial pixel", ha="center", fontsize=16)
     fig.text(
