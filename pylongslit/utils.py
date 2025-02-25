@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from skimage import exposure
 from numpy.polynomial.chebyshev import chebval
-
+from matplotlib.widgets import Slider
 
 class PyLongslit_frame:
     def __init__(self, data, sigma, header, name):
@@ -626,7 +626,7 @@ def get_file_group(*prefixes):
         logger.warning(f"No files found with prefixes {prefixes}.")
 
     logger.info(f"Found {len(files)} frames:")
-    list_files(files)
+    files.list_files()
 
     return files
 
@@ -863,9 +863,9 @@ def show_1d_fit_QA(
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
-    ax1.plot(x_data, y_data, "s", color="black", label=legend_label, markersize=14)
+    ax1.plot(x_data, y_data, "s", color="black", label=legend_label, markersize=12)
 
-    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=16)
+    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=14)
     ax1.set_ylabel(y_label, fontsize=14)
     ax1.legend(fontsize=14)
 
@@ -879,11 +879,11 @@ def show_1d_fit_QA(
     ax2.set_xlim(ax1.get_xlim())
     ax1.set_xticks([])
 
-    fig.suptitle(title + f"\n RMS of residuals: {RMS_residuals}", fontsize=18)
+    fig.suptitle(title + f"\n RMS of residuals: {RMS_residuals}", fontsize=16)
 
     # Enhance tick font size
-    ax1.tick_params(axis="both", which="major", labelsize=14)
-    ax2.tick_params(axis="both", which="major", labelsize=14)
+    ax1.tick_params(axis="both", which="major", labelsize=12)
+    ax2.tick_params(axis="both", which="major", labelsize=12)
 
     plt.show()
 
@@ -1080,3 +1080,52 @@ def wavelength_sol(spectral_pix, spatial_pix, wavelen_fit, tilt_fit):
     wavelength = chebval(spectral_pix + tilt_value, wavelen_fit)
 
     return wavelength
+
+def interactively_crop_spec(x,y, x_label: str = "", y_label: str = "", label: str = "", title: str = ""):
+
+    """
+    A general method for interactively cropping spectrum edges for noise
+    """
+    # Crop out any noisy bits before fitting.
+    fig, _ = plt.subplots()
+    plt.subplots_adjust(bottom=0.25)
+    (l,) = plt.plot(x, y, label=label)
+    plt.xlabel(x_label)
+    plt.ylabel(y_label)
+    plt.legend()
+    plt.title(title)
+
+    # Add sliders for selecting the range
+    axcolor = "lightgoldenrodyellow"
+    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+
+    smin = Slider(
+        axmin,
+        "Min "+x_label,
+        np.min(x),
+        np.max(x),
+        valinit=np.min(x),
+    )
+    smax = Slider(
+        axmax,
+        "Max "+x_label,
+        np.min(x),
+        np.max(x),
+        valinit=np.max(x),
+    )
+
+    def update(val):
+        min = smin.val.copy()
+        max = smax.val.copy()
+        valid_indices = (x >= min) & (x <= max)
+        l.set_xdata(x[valid_indices])
+        l.set_ydata(y[valid_indices])
+        fig.canvas.draw_idle()
+
+    smin.on_changed(update)
+    smax.on_changed(update)
+
+    plt.show()
+
+    return int(smin.val), int(smax.val)

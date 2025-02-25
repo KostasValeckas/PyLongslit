@@ -1,28 +1,55 @@
 import numpy as np
 import argparse
-from astropy.io import fits
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from scipy.interpolate import make_lsq_spline, BSpline
-from matplotlib.widgets import Slider
 
 """
-Module for creating a master flat from from raw flat frames.
+PyLongslit Module for creating a master flat from raw flat frames.
 """
 
 
-def normalize_spectral_response(medianflat):
+def estimate_spectral_response(medianflat):
 
-    from pylongslit.parser import detector_params, wavecalib_params
+    """
+    Estimates the flat-field lamp spectral response (later used in normalization)
+    from a median flat-field frame. This is done by fitting a B-spline to the
+    spectrum of the flat-field lamp.
+
+    Parameters
+    ----------
+    medianflat : numpy.ndarray
+        The median flat-field frame.
+
+    Returns
+    -------
+    spectral_response_model : numpy.ndarray
+        The 1D spectral response model.
+    
+    bpm : numpy.ndarray
+        The bad pixel mask for the spectral response model.
+
+    RMS : float
+        The root mean square of the residuals of the fit.
+    """
+
+    from pylongslit.parser import detector_params, wavecalib_params, flat_params
     from pylongslit.wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc, construct_wavelen_map
-    from pylongslit.utils import wavelength_sol, show_1d_fit_QA, check_rotation, flip_and_rotate
+    from pylongslit.utils import wavelength_sol, show_1d_fit_QA, check_rotation
+    from pylongslit.utils import flip_and_rotate, interactively_crop_spec
+    from pylongslit.logger import logger
 
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
 
+    # for taking a sample of the flat lamp,
     # offset is needed for cases where the detector middle is a bad place to
     # take a cut. 
     middle_offset = wavecalib_params["offset_middle_cut"]
+    
+
+    # the user can set a extraction width for the sample of the flat lamp
+    pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
 
 
     # TODO: right now we flip and rotate to universal frame configuration
@@ -30,102 +57,96 @@ def normalize_spectral_response(medianflat):
     # account for that here. Consider flipping the raw frames instead
     # for more readable code.
 
-    # extract the spectrum of the central 5 rows of the frame
+    # extract the spectrum of the flat lamp and allign with the orientation
 
     if detector_params["dispersion"]["spectral_dir"] == "x":
 
-        # extract the spectrum of the central 5 rows of the frame
         middle_row = (y_size // 2) + middle_offset
-        spectrum = np.mean(medianflat[middle_row - 2 : middle_row + 2, :], axis=0)
+        spectrum = np.mean(medianflat[middle_row - pixel_cut_extension : middle_row + pixel_cut_extension + 1, :], axis=0)
         spectral_array = np.arange(x_size)
 
-        spectrum = spectrum[::-1]
-        plt.plot(spectral_array, spectrum)  
-        plt.show()
-
+        # flip the spectrum to have it in the right order if needed
+        if not detector_params["dispersion"]["wavelength_grows_with_pixel"]:
+            spectrum = spectrum[::-1]
 
     else:
 
-        # extract the spectrum of the central 5 rows of the frame
         middle_row = (x_size // 2) + middle_offset
-        spectrum = np.mean(medianflat[:, middle_row - 2 : middle_row + 2], axis=1)
+        spectrum = np.mean(medianflat[:, middle_row - pixel_cut_extension : middle_row + pixel_cut_extension + 1], axis=1)
         spectral_array = np.arange(y_size)
+
+        # for y spectra we need to flip if it does grow with pixel, due to 
+        # the way the way numpy indexes arrays
+        if detector_params["dispersion"]["wavelength_grows_with_pixel"]:
+            spectrum = spectrum[::-1]
 
     # read the wavecalib data
     wavelen_fit = get_wavelen_fit_from_disc()
     tilt_fit = get_tilt_fit_from_disc()
 
-    # create a row of middle spacial pixel coordinates in order to map
-    # wavelengths.
-    middlew_row_array = np.full(len(spectral_array), middle_row)
+    # this is the y-coordinate of the middle row of the detector for the wavelength solution
+    middlew_row_array = np.full(len(spectral_array), middle_row + middle_offset)
 
     # create the wavelength array
     wavelength = wavelength_sol(
         spectral_array, middlew_row_array, wavelen_fit, tilt_fit
     )
 
-    # TODO: make these errors more user - friendly
-    # Check for NaN or infinite values
-    if np.any(np.isnan(wavelength)) or np.any(np.isnan(spectrum)):
-        raise ValueError("NaN values found in wavelength or spectrum.")
-    if np.any(np.isinf(wavelength)) or np.any(np.isinf(spectrum)):
-        raise ValueError("Infinite values found in wavelength or spectrum.")
+    # Mask NaN or infinite values in the spectrum and corresponding wavelength values
+    mask = np.isnan(spectrum) | np.isinf(spectrum)
+    spectrum = spectrum[~mask]
+    wavelength = wavelength[~mask]
 
     # Ensure wavelength is sorted
     if not np.all(np.diff(wavelength) > 0):
-        raise ValueError("Wavelength values are not sorted in ascending order.")
+        logger.error("Wavelength values are not sorted in ascending order.")
+        logger.error("Please check the wavelength solution.")
+        logger.error("Contact the developers if the wavelength solution is correct.")   
 
-    # TODO: make this a utils method, as it is used several places
-
-    # Initial plot
-    fig, ax = plt.subplots()
-    plt.subplots_adjust(bottom=0.25)
-    (l,) = plt.plot(wavelength, spectrum, label="Flat-field lamp spectrum")
-    plt.xlabel("Wavelength (Å)")
-    plt.ylabel("Counts (ADU)")
-    plt.legend()
-
-    # Add sliders for selecting the range
-    axcolor = "lightgoldenrodyellow"
-    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
-    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
-
-    smin = Slider(
-        axmin,
-        "Min Wavelength",
-        np.min(wavelength),
-        np.max(wavelength),
-        valinit=np.min(wavelength),
+    # crop the spec for noisy end-pieces
+    min_wave, max_wave = interactively_crop_spec(
+        wavelength, spectrum,
+        x_label="Wavelength (Å)",
+        y_label="Counts (ADU)",
+        label="Flat-field lamp spectrum",
+        title=
+        "Use sliders to crop out any noisy parts on detector edges.\n"
+        "Press \"Q\" or close the window when done."
     )
-    smax = Slider(
-        axmax,
-        "Max Wavelength",
-        np.min(wavelength),
-        np.max(wavelength),
-        valinit=np.max(wavelength),
-    )
-
-    def update(val):
-        min_wavelength = smin.val
-        max_wavelength = smax.val
-        valid_indices = (wavelength >= min_wavelength) & (wavelength <= max_wavelength)
-        l.set_xdata(wavelength[valid_indices])
-        l.set_ydata(spectrum[valid_indices])
-        fig.canvas.draw_idle()
-
-    smin.on_changed(update)
-    smax.on_changed(update)
-
-    plt.show()
 
     # Get the final selected range
-    min_wavelength = smin.val
-    max_wavelength = smax.val
+    min_wavelength = min_wave
+    max_wavelength = max_wave
     valid_indices = (wavelength >= min_wavelength) & (wavelength <= max_wavelength)
     wavelength_cut = wavelength[valid_indices]
     spectrum_cut = spectrum[valid_indices]
 
-    num_interior_knots = len(wavelength_cut) // 50  # (len(wavelength) - 2)//2
+    # setup the B-spline fit
+    num_interior_knots = flat_params["knots_spectral_bspline"]
+
+    # check that the number of knots is reasonable
+    if num_interior_knots > len(wavelength_cut) // 2:
+        logger.warning(
+            "The number of interior knots is larger than half the number of data points."
+        )
+        logger.warning("This may lead to overfitting.")
+        logger.warning("Consider reducing the number of knots in the configuration file.")
+
+    if num_interior_knots >= len(wavelength_cut):
+        logger.error(
+            "The number of interior knots is larger than the number of data points."
+        )
+        logger.error("This will lead to overfitting.")
+        logger.error("Please reduce the number of knots in the configuration file.")
+        exit()
+
+    if num_interior_knots < 4:
+        logger.error(
+            "The number of interior knots is less than 4."
+        )
+        logger.error("This will lead to underfitting.")
+        logger.error("Please increase the number of knots in the configuration file.")
+        exit()
 
     # Create the knots array
     t = np.concatenate(
@@ -137,7 +158,8 @@ def normalize_spectral_response(medianflat):
             np.repeat(wavelength_cut[-1], 4),  # k+1 knots at the end
         )
     )
-
+    
+    # this part does the actual fitting
     spl = make_lsq_spline(wavelength_cut, spectrum_cut, t=t, k=3)
     bspline = BSpline(spl.t, spl.c, spl.k)
 
@@ -153,15 +175,20 @@ def normalize_spectral_response(medianflat):
         x_label="Wavelength (Å)",
         y_label="Counts (ADU)",
         legend_label="Extracted flat-field lamp spectrum",
-        title="Spectral response B-spline fit",
+        title=
+            f"Spectral response B-spline fit with {num_interior_knots} interior knots.\n"
+            "You should see very little to no large-scale structure in the residuals, \n"
+            "with the lowest amount of knots possible (this is set in the configuration file).",
     )
 
+    # construct the model - map the spectral response to every pixel
     wave_map = construct_wavelen_map(wavelen_fit, tilt_fit)
 
     transpose, flip = check_rotation()
 
     spectral_response_model = bspline(wave_map)
 
+    # mark the pixels corresponding to the cropped wavelengths
     bpm = np.zeros_like(spectral_response_model, dtype=bool)
 
     bpm[wave_map < min_wavelength] = True
@@ -169,6 +196,7 @@ def normalize_spectral_response(medianflat):
 
     spectral_response_model[bpm] = 1.0
 
+    # flip back to original position of the raw data
     spectral_response_model = flip_and_rotate(
         spectral_response_model, transpose, flip, inverse=True
     )
@@ -177,9 +205,10 @@ def normalize_spectral_response(medianflat):
     return spectral_response_model, bpm, RMS
 
 
-def normalize_spacial_response(medianflat):
-
-    from pylongslit.parser import detector_params
+def estimate_spacial_response(medianflat):
+ 
+    from pylongslit.parser import detector_params, flat_params
+    from pylongslit.utils import interactively_crop_spec
 
     y_size = detector_params["ysize"]
     x_size = detector_params["xsize"]
@@ -189,22 +218,55 @@ def normalize_spacial_response(medianflat):
     # account for that here. Consider flipping the raw frames instead
     # for more readable code.
 
-    # extract the spectrum of the central 5 rows of the frame
-
+    # estimate orientaition
     spectral_axis = 0 if detector_params["dispersion"]["spectral_dir"] == "x" else 1
     spacial_axis = 1 if detector_params["dispersion"]["spectral_dir"] == "x" else 0
 
-    fig, ax = plt.subplots(5, 2, figsize=(10, 35))
+    middle_pixel = x_size // 2 if spectral_axis == 0 else y_size // 2
 
-    indices_to_plot = np.linspace(
-        10, x_size if spectral_axis == 0 else y_size, 10, endpoint=False, dtype=int
+    # first, do some initial cropping to get rid of the noisy edges
+
+    test_slice = (
+            medianflat[:, middle_pixel].copy()
+            if spacial_axis == 1
+            else medianflat[middle_pixel, :].copy()
+        )
+    
+    spectral_slice = np.arange(len(test_slice))
+    
+    min_spat, max_spat = interactively_crop_spec(
+        spectral_slice, test_slice,
+        x_label="Spacial pixel",
+        y_label="Counts (ADU)",
+        label=f"Flat-field frame cut at spacial puxel {middle_pixel}",
+        title=
+        "Use sliders to crop out any noisy parts on detector edges.\n"
+        "Press \"Q\" or close the window when done."
     )
 
-    plot_num = 0
+   
+    # 5 rows will be plotted for QA
+    fig, ax = plt.subplots(5, 2, figsize=(18, 32))
+
+    indices_to_plot = np.linspace(
+        5, x_size if spectral_axis == 0 else y_size, 5, endpoint=False, dtype=int
+    )
+
+    plot_num = 0 # a bit hacked solution for plotting
 
     spacial_model = np.zeros((y_size, x_size))
 
     residuals = np.zeros((y_size, x_size))
+
+    # loop over spacial columns and fit for every column
+
+    #used when fitting with cropped edges
+    spectral_array_cropped = np.arange(min_spat, max_spat)
+
+    # used when constructing the model
+    spectral_array = np.arange(y_size) if spectral_axis == 0 else np.arange(x_size)
+
+    residuals = np.array([])
 
     for spacial_row_index in range(x_size) if spectral_axis == 0 else range(y_size):
 
@@ -214,48 +276,77 @@ def normalize_spacial_response(medianflat):
             else medianflat[spacial_row_index, :].copy()
         )
 
-        x_axis = np.arange(len(spacial_slice))
+        # crop the spacial slice for user defined region
+        spacial_slice_cropped = spacial_slice[min_spat:max_spat]
 
-        num_interior_knots = len(x_axis) // 100  # (len(wavelength) - 2)//2
+        # remove outliers
+        mean = np.nanmean(spacial_slice_cropped)
+        two_std = 2 * np.nanstd(spacial_slice_cropped)
+        mask = np.isnan(spacial_slice_cropped) | np.isinf(spacial_slice_cropped) | (spacial_slice_cropped > (mean + two_std)) | (spacial_slice_cropped < (mean - two_std))
+        
+
+        spacial_slice_masked = spacial_slice_cropped[~mask]
+        spectral_array_masked = spectral_array_cropped[~mask]
+
+        num_interior_knots = flat_params["knots_spacial_bspline"]
 
         # Create the knots array
         t = np.concatenate(
             (
-                np.repeat(x_axis[0], 4),  # k+1 knots at the beginning
+                np.repeat(spectral_array_masked[0], 4),  # k+1 knots at the beginning
                 np.linspace(
-                    x_axis[1], x_axis[-2], num_interior_knots
+                    spectral_array_masked[1], spectral_array_masked[-2], num_interior_knots
                 ),  # interior knots
-                np.repeat(x_axis[-1], 4),  # k+1 knots at the end
+                np.repeat(spectral_array_masked[-1], 4),  # k+1 knots at the end
             )
         )
 
-        spl = make_lsq_spline(x_axis, spacial_slice, t=t, k=3)
+        # do the fit
+        spl = make_lsq_spline(spectral_array_masked, spacial_slice_masked, t=t, k=3)
         bspline = BSpline(spl.t, spl.c, spl.k)
 
+        residuals_temp = spacial_slice_cropped - bspline(spectral_array_cropped)
+
+        residuals = np.append(residuals, residuals_temp)
+
+        # evaluate the fit at the column and calculate residuals
         if spacial_axis == 1:
-            spacial_model[:, spacial_row_index] = bspline(x_axis)
-            residuals[:, spacial_row_index] = spacial_slice - bspline(x_axis)
+            spacial_model[:, spacial_row_index] = bspline(spectral_array)
 
         else:
-            spacial_model[spacial_row_index, :] = bspline(x_axis)
-            residuals[spacial_row_index, :] = spacial_slice - bspline(x_axis)
+            spacial_model[spacial_row_index, :] = bspline(spectral_array)
 
         if spacial_row_index in indices_to_plot:
-            if plot_num <= 9:
-                ax[plot_num // 2, plot_num % 2].plot(
-                    x_axis[1:-1], spacial_slice[1:-1], label="Data"
+            if plot_num <= 4:
+                ax[plot_num, 0].plot(
+                    spectral_array_masked, spacial_slice_masked, ".", label=f"Data at spacial pixel: {spacial_row_index}"
                 )
-                ax[plot_num // 2, plot_num % 2].plot(
-                    x_axis[1:-1], bspline(x_axis)[1:-1], label="Fit"
+                ax[plot_num, 0].plot(
+                    spectral_array_masked, bspline(spectral_array_masked), label="Fit"
                 )
-                ax[plot_num // 2, plot_num % 2].set_title(
-                    f"Spectral pixel: {spacial_row_index}"
+                ax[plot_num, 0].plot(
+                    spectral_array_cropped[mask], spacial_slice_cropped[mask], 'o', color='red', label="Masked outliers"
                 )
-                ax[plot_num // 2, plot_num % 2].legend()
+
+                ax[plot_num, 0].legend()
+
+  
+
+                ax[plot_num, 1].plot(
+                    spectral_array_cropped, residuals_temp, 'o', color='black', label=f"Residuals at spacial pixel: {spacial_row_index}"
+                )
+                ax[plot_num, 1].axhline(0, color='red', linestyle='--')
+
+                ax[plot_num, 1].legend()
+
                 plot_num += 1
 
-    plt.suptitle(
-        "Slit illumination B-spline fits at different spectral pixels", fontsize=16
+    fig.suptitle(
+        "Slit illumination B-spline fits at different spectral pixels.\n"
+        f"Number of interior knots: {num_interior_knots} (this is set in the configuration file).\n"
+        "You should see very little to no large-scale structure in the residuals, with the lowest amount of knots possible.",
+        fontsize=16,
+        y=1.02
     )
     fig.text(0.5, 0.04, "Spacial pixel", ha="center", fontsize=16)
     fig.text(
@@ -268,13 +359,15 @@ def normalize_spacial_response(medianflat):
     )
     plt.show()
 
-    RMS = np.sqrt(np.mean(residuals ** 2))
+    RMS = np.sqrt(np.nanmean(residuals ** 2))
 
     return spacial_model, RMS
 
 
 def show_flat_norm_region():
     """
+    NOT USED
+
     Show the user defined flat normalization region.
 
     Fetches a raw flat frame from the user defined directory
@@ -322,16 +415,16 @@ def run_flats():
     Driver for the flat-fielding procedure.
 
     The function reads the raw flat frames from the directory specified in the
-    'flat_dir' parameter in the 'config.json' file. It then subtracts the bias and normalizes the frames
-    by the median value of the frame. The final master flat-field is written to
-    disc in the output directory.
+    'flat_dir' parameter in the 'config.json' file. It subtracts the bias from
+    the raw frames, constructs a median master flat, and then normalizes it 
+    by the spectral and (optionally) the spacial response of the flat-field lamp.
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import detector_params, flat_params, output_dir, data_params
+    from pylongslit.parser import detector_params, flat_params, data_params
     from pylongslit.utils import FileList, check_dimensions, open_fits, PyLongslit_frame
-    from pylongslit.utils import list_files, load_bias
-    from pylongslit.overscan import estimate_frame_overscan_bias, detect_overscan_direction
+    from pylongslit.utils import load_bias
+    from pylongslit.overscan import estimate_frame_overscan_bias
     from pylongslit.stats import bootstrap_median_errors_framestack
 
     # Extract the detector parameters
@@ -340,7 +433,6 @@ def run_flats():
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
-    # TODO: specify what direction is the spectral direction
     logger.info("Flat-field procedure running...")
     logger.info("Using the following parameters:")
     logger.info(f"xsize = {xsize}")
@@ -351,7 +443,7 @@ def run_flats():
 
     logger.info(f"Found {file_list.num_files} flat frames.")
     logger.info(f"Files used for flat-fielding:")
-    list_files(file_list)
+    file_list.print_files()
 
     # Check if all files have the wanted dimensions
     # Will exit if they don't
@@ -362,9 +454,9 @@ def run_flats():
 
     logger.info("Fetching the master bias frame...")
 
-    BIASframe = load_bias()
+    BIASframe = PyLongslit_frame.read_from_disc("master_bias.fits")
 
-    BIAS = np.array(BIASframe[0].data)
+    BIAS = np.array(BIASframe.data)
     logger.info("Master bias frame found and loaded.")
 
     print("\n------------------------------------------------------------\n")
@@ -396,10 +488,11 @@ def run_flats():
 
         logger.info(f"File {file} processed.\n")
 
-    logger.info("Normalizing the final master flat-field....")
-
+    
     # Calculate flat is median at each pixel
     medianflat = np.median(bigflat, axis=0)
+
+    # Error estimation depending on user-chosen method
 
     if file_list.num_files < 30 and (not flat_params["bootstrap_errors"]):
         logger.warning(
@@ -413,7 +506,9 @@ def run_flats():
     else:
         medianflat_error = bootstrap_median_errors_framestack(bigflat)
 
-    spectral_response_model, _, RMS_spectral = normalize_spectral_response(medianflat)
+    logger.info("Estimating the spectral response and normalizing...")    
+
+    spectral_response_model, _, RMS_spectral = estimate_spectral_response(medianflat)
 
     spectral_normalized = medianflat / spectral_response_model
 
@@ -422,14 +517,14 @@ def run_flats():
         ((medianflat_error / medianflat)) ** 2 + ((RMS_spectral/spectral_response_model) ** 2)
     )
 
-
-
+    # correct any outliers (these are ususally the non-illuminated parts of the flat)
     spectral_normalized[spectral_normalized < 0.5] = 1
     spectral_normalized[spectral_normalized > 1.5] = 1
 
+    # if requested, do the spacial response normalization
     if not flat_params["skip_spacial"]:
-
-        spacial_response_model, RMS_spacial = normalize_spacial_response(spectral_normalized)
+        logger.info("Estimating the spacial response and normalizing...")    
+        spacial_response_model, RMS_spacial = estimate_spacial_response(spectral_normalized)
         master_flat = spectral_normalized / spacial_response_model
         medianflat_error = master_flat * np.sqrt(
             ((medianflat_error / medianflat)) ** 2 + ((RMS_spacial/spacial_response_model) ** 2)
@@ -439,9 +534,40 @@ def run_flats():
 
         master_flat = spectral_normalized
 
+    # the below code sets outliers to 1 - these are usually the non-illuminated parts of the flat
+
+    if use_overscan:
+        # if overscan was used, set the overscan region to one to avoid
+        # explosive values in the final flat
+
+        # Extract the overscan region
+        overscan_x_start = detector_params["overscan"]["overscan_x_start"]
+        overscan_x_end = detector_params["overscan"]["overscan_x_end"]
+        overscan_y_start = detector_params["overscan"]["overscan_y_start"]
+        overscan_y_end = detector_params["overscan"]["overscan_y_end"]
+
+        master_flat[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
+            1.0
+        )
+
+        medianflat_error[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
+            np.nanmean(medianflat_error)
+        )
+
+    
+    master_flat[master_flat < 0.5] = 1.0
+    master_flat[master_flat > 1.5] = 1.0
+
+    master_flat[np.isnan(master_flat)] = 1.0
+    medianflat_error[np.isnan(medianflat_error)] = np.nanmean(medianflat_error)
+
+    medianflat_error[master_flat < 0.5] = np.nanmean(medianflat_error)
+    medianflat_error[master_flat > 1.5] = np.nanmean(medianflat_error)
 
 
-    fig, ax = plt.subplots(5 if not flat_params["skip_spacial"] else 3, 2, figsize=(15, 12))
+
+
+    fig, ax = plt.subplots(5 if not flat_params["skip_spacial"] else 3, 2, figsize=(18, 32))
 
     # only show positive values to avoid outliers that disorts the color map
     ax[0][0].imshow(np.clip(medianflat.T, 0, None), cmap="gray", origin="lower")
@@ -485,54 +611,30 @@ def run_flats():
         a.set_ylabel("N pixels")
     for a in ax[-1, :]:
         a.set_xlabel("Counts (ADU)")
-    fig.tight_layout()
+  
     fig.subplots_adjust(left=0.1, right=0.9, top=0.95, bottom=0.05)
     fig.align_ylabels(ax[:, 1])
 
-    plt.show()
+    fig.suptitle(
+        "Make sure the models match the data, and that final flat field pixel "
+        "sensitivity distribution is somewhat Gaussian.",
+        fontsize=16, y = 1
+    )
 
-    logger.info("Flat frames processed.")
+    plt.show()
 
     logger.info(
         "Mean pixel value of the final master flat-field: "
-        f"{round(np.nanmean(master_flat),5)} (should be 1.0)."
+        f"{round(np.nanmean(master_flat),5)} +/- {np.std(master_flat)/np.sqrt(len(master_flat))} (should be 1.0)."
     )
 
     # check if the median is 1 to within 5 decimal places
-    if round(np.nanmean(master_flat), 5) != 1:
+    if round(np.nanmean(master_flat), 1) != 1.0:
         logger.warning(
             "The mean pixel value of the final master flat-field is not 1.0."
         )
         logger.warning("This may indicate a problem with the normalisation.")
         logger.warning("Check the normalisation region in the flat-field frames.")
-
-    if use_overscan:
-        # if overscan was used, set the overscan region to one to avoid
-        # explosive values in the final flat
-
-        # Extract the overscan region
-        overscan_x_start = detector_params["overscan"]["overscan_x_start"]
-        overscan_x_end = detector_params["overscan"]["overscan_x_end"]
-        overscan_y_start = detector_params["overscan"]["overscan_y_start"]
-        overscan_y_end = detector_params["overscan"]["overscan_y_end"]
-
-        master_flat[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
-            1.0
-        )
-
-        medianflat_error[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
-            np.nanmean(medianflat_error)
-        )
-
-    
-    master_flat[master_flat < 0.5] = 1.0
-    master_flat[master_flat > 1.5] = 1.0
-
-    master_flat[np.isnan(master_flat)] = 1.0
-    medianflat_error[np.isnan(medianflat_error)] = np.nanmean(medianflat_error)
-
-    medianflat_error[master_flat < 0.5] = np.nanmean(medianflat_error)
-    medianflat_error[master_flat > 1.5] = np.nanmean(medianflat_error)
 
     logger.info("Attaching header and writing to disc...")
 
@@ -541,8 +643,7 @@ def run_flats():
 
     master_flat_frame = PyLongslit_frame(master_flat, medianflat_error, hdr, "master_flat")
 
-    master_flat_frame.show_frame(normalize=False, save=True)    
-    master_flat_frame.show_frame(normalize=True)
+    master_flat_frame.show_frame(save=True)
     master_flat_frame.write_to_disc()
 
     
