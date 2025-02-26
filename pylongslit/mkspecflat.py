@@ -151,7 +151,7 @@ def estimate_spectral_response(medianflat):
             np.repeat(wavelength_cut[-1], degree + 1),  # k+1 knots at the end
         )
     )
-    
+
     # this part does the actual fitting
     spl = make_lsq_spline(wavelength_cut, spectrum_cut, t=t, k=degree)
     bspline = BSpline(spl.t, spl.c, spl.k)
@@ -248,7 +248,7 @@ def estimate_spacial_response(medianflat):
 
     plot_num = 0 # a bit hacked solution for plotting
 
-    spacial_model = np.zeros((y_size, x_size))
+    spacial_model = np.ones((y_size, x_size))
 
     residuals = np.zeros((y_size, x_size))
 
@@ -257,10 +257,8 @@ def estimate_spacial_response(medianflat):
     #used when fitting with cropped edges
     spectral_array_cropped = np.arange(min_spat, max_spat)
 
-    # used when constructing the model
-    spectral_array = np.arange(y_size) if spectral_axis == 0 else np.arange(x_size)
-
-    residuals = np.array([])
+    # used when constructing the model noise model
+    error = np.zeros_like(medianflat)
 
     num_interior_knots = flat_params["knots_spacial_bspline"]
     degree = flat_params["degree_spacial_bspline"]
@@ -316,16 +314,34 @@ def estimate_spacial_response(medianflat):
         spl = make_lsq_spline(spectral_array_masked, spacial_slice_masked, t=t, k=degree)
         bspline = BSpline(spl.t, spl.c, spl.k)
 
-        residuals_temp = spacial_slice_masked - bspline(spectral_array_masked)
 
-        residuals = np.append(residuals, residuals_temp)
+        min_spectral_masked = np.min(spectral_array_masked)
+        max_spectral_masked = np.max(spectral_array_masked)
+
+        good_spectral_interval = np.arange(min_spectral_masked + degree + 1, max_spectral_masked - (degree + 1))
+
+        good_model = bspline(good_spectral_interval)
+
+        residuals_column = spacial_slice_masked - bspline(spectral_array_masked)   
+
+        RMS = np.sqrt(np.nanmean(residuals_column ** 2))
+        
+        low_boundary = good_model[0]
+
+        high_boundary = good_model[-1]
 
         # evaluate the fit at the column and calculate residuals
         if spacial_axis == 1:
-            spacial_model[:, spacial_row_index] = bspline(spectral_array)
+            spacial_model[good_spectral_interval, spacial_row_index] = good_model
+            spacial_model[:min_spectral_masked + degree + 1, spacial_row_index] = low_boundary
+            spacial_model[max_spectral_masked - (degree + 1):, spacial_row_index] = high_boundary
+            error[: , spacial_row_index] = RMS
 
         else:
-            spacial_model[spacial_row_index, :] = bspline(spectral_array)
+            spacial_model[spacial_row_index, good_spectral_interval] = good_model
+            spacial_model[spacial_row_index, :min_spectral_masked + degree + 1] = low_boundary
+            spacial_model[spacial_row_index, max_spectral_masked - (degree + 1):] = high_boundary
+            error[spacial_row_index, :] = RMS
 
         if spacial_row_index in indices_to_plot:
             if plot_num <= 4:
@@ -344,7 +360,7 @@ def estimate_spacial_response(medianflat):
   
 
                 ax[plot_num, 1].plot(
-                    spectral_array_masked, residuals_temp, 'o', color='black', label=f"Residuals at spacial pixel: {spacial_row_index}"
+                    spectral_array_masked, residuals_column, 'o', color='black', label=f"Residuals at spacial pixel: {spacial_row_index}"
                 )
                 ax[plot_num, 1].axhline(0, color='red', linestyle='--')
 
@@ -369,9 +385,10 @@ def estimate_spacial_response(medianflat):
     )
     plt.show()
 
-    RMS = np.sqrt(np.nanmean(residuals ** 2))
+    plt.imshow(residuals)
+    plt.show()
 
-    return spacial_model, RMS
+    return spacial_model, residuals
 
 
 def show_flat_norm_region():
@@ -433,9 +450,8 @@ def run_flats():
     from pylongslit.logger import logger
     from pylongslit.parser import detector_params, flat_params, data_params
     from pylongslit.utils import FileList, check_dimensions, open_fits, PyLongslit_frame
-    from pylongslit.utils import load_bias
     from pylongslit.overscan import estimate_frame_overscan_bias
-    from pylongslit.stats import bootstrap_median_errors_framestack
+    from pylongslit.stats import bootstrap_median_errors_framestack, safe_mean
 
     # Extract the detector parameters
     xsize = detector_params["xsize"]
@@ -527,18 +543,33 @@ def run_flats():
         ((medianflat_error / medianflat)) ** 2 + ((RMS_spectral/spectral_response_model) ** 2)
     )
 
+    medianflat_error[np.isinf(medianflat_error)] = safe_mean(medianflat_error)
+    medianflat_error[np.isnan(medianflat_error)] = safe_mean(medianflat_error)
+    medianflat_error[spectral_normalized < 0.5] = safe_mean(medianflat_error)
+    medianflat_error[spectral_normalized > 1.5] = safe_mean(medianflat_error)
+
     # correct any outliers (these are ususally the non-illuminated parts of the flat)
     spectral_normalized[spectral_normalized < 0.5] = 1
     spectral_normalized[spectral_normalized > 1.5] = 1
+    spectral_normalized[np.isnan(spectral_normalized)] = 1
+    spectral_normalized[np.isinf(spectral_normalized)] = 1
 
     # if requested, do the spacial response normalization
     if not flat_params["skip_spacial"]:
         logger.info("Estimating the spacial response and normalizing...")    
         spacial_response_model, RMS_spacial = estimate_spacial_response(spectral_normalized)
+        plt.imshow(spacial_response_model, cmap="gray")
+        plt.title("2D slit illumination model")
+        plt.show()
         master_flat = spectral_normalized / spacial_response_model
         medianflat_error = master_flat * np.sqrt(
             ((medianflat_error / medianflat)) ** 2 + ((RMS_spacial/spacial_response_model) ** 2)
         )   
+
+        plt.imshow(medianflat_error, cmap="gray")
+        plt.title("Just after spacial normalization")
+        plt.show()
+
 
     else:
 
@@ -560,22 +591,19 @@ def run_flats():
             1.0
         )
 
-        medianflat_error[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = (
-            np.nanmean(medianflat_error)
-        )
+        medianflat_error[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = safe_mean(medianflat_error)
 
+    medianflat_error[np.isinf(medianflat_error)] = safe_mean(medianflat_error)
+    medianflat_error[np.isnan(medianflat_error)] = safe_mean(medianflat_error)
+
+    medianflat_error[master_flat < 0.5] = safe_mean(medianflat_error)
+    medianflat_error[master_flat > 1.5] = safe_mean(medianflat_error)
     
     master_flat[master_flat < 0.5] = 1.0
     master_flat[master_flat > 1.5] = 1.0
 
     master_flat[np.isnan(master_flat)] = 1.0
-    medianflat_error[np.isnan(medianflat_error)] = np.nanmean(medianflat_error)
-
-    medianflat_error[master_flat < 0.5] = np.nanmean(medianflat_error)
-    medianflat_error[master_flat > 1.5] = np.nanmean(medianflat_error)
-
-
-
+    master_flat[np.isinf(master_flat)] = 1.0
 
     fig, ax = plt.subplots(5 if not flat_params["skip_spacial"] else 3, 2, figsize=(18, 32))
 

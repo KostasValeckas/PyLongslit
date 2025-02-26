@@ -39,3 +39,9 @@ def bootstrap_median_errors_framestack(framestack, nboot=1000):
     median_errors = np.sqrt(variance_medians) / np.sqrt(nboot)
 
     return median_errors
+
+def safe_mean(array, axis=None):
+    """
+    Calculate the mean of an array, ignoring NaN and infs values.
+    """
+    return np.nanmean(array[np.isfinite(array)], axis=axis)
