@@ -5,9 +5,6 @@ from matplotlib.patches import Rectangle
 from scipy.interpolate import make_lsq_spline, BSpline
 from sklearn.metrics import r2_score
 from scipy.interpolate import griddata
-from scipy.interpolate import RegularGridInterpolator, RectBivariateSpline
-from scipy.interpolate import bisplrep, bisplev
-
 """
 PyLongslit Module for creating a master flat from raw flat frames.
 """
@@ -173,9 +170,9 @@ def estimate_spectral_response(medianflat):
         y_label="Counts (ADU)",
         legend_label="Extracted flat-field lamp spectrum",
         title=
-            f"Spectral response B-spline fit with {num_interior_knots} interior knots, degree {degree}.\n"
-            "You should see very little to no large-scale structure in the residuals, \n"
-            "with the lowest amount of knots possible (this is set in the configuration file).",
+            f"Spectral response B-spline fit with {num_interior_knots} interior knots, degree {degree} (this is set in the configuration file).\n"
+            "You should aim for very little to no large-scale structure in the residuals, "
+            "with the lowest amount of knots possible.",
     )
 
     # construct the model - map the spectral response to every pixel
@@ -194,9 +191,11 @@ def estimate_spectral_response(medianflat):
     spectral_response_model[bpm] = 1.0
 
     # flip back to original position of the raw data
+    logger.info("Rotating spectral response model...")
     spectral_response_model = flip_and_rotate(
         spectral_response_model, transpose, flip, inverse=True
     )
+    logger.info("Rotating the bad pixel mask...")
     bpm = flip_and_rotate(bpm, transpose, flip, inverse=True)
 
     return spectral_response_model, bpm, RMS
@@ -204,7 +203,7 @@ def estimate_spectral_response(medianflat):
 
 def estimate_spacial_response(medianflat):
  
-    from pylongslit.parser import detector_params, flat_params
+    from pylongslit.parser import detector_params, flat_params, developer_params
     from pylongslit.utils import interactively_crop_spec
     from pylongslit.logger import logger
     from pylongslit.stats import safe_mean
@@ -231,13 +230,14 @@ def estimate_spacial_response(medianflat):
             else medianflat[middle_pixel, :].copy()
         )
     
-    spectral_slice = np.arange(len(test_slice))
+    # these are the spacial coordinates (x values)
+    spacial_slice = np.arange(len(test_slice))
     
     min_spat, max_spat = interactively_crop_spec(
-        spectral_slice, test_slice,
+        spacial_slice, test_slice,
         x_label="Spacial pixel",
         y_label="Counts (ADU)",
-        label=f"Flat-field frame cut at spacial puxel {middle_pixel}",
+        label=f"Flat-field frame cut at spectral pixel {middle_pixel}",
         title=
         "Use sliders to crop out any noisy parts on detector edges.\n"
         "Press \"Q\" or close the window when done."
@@ -253,25 +253,26 @@ def estimate_spacial_response(medianflat):
 
     plot_num = 0 # a bit hacked solution for plotting
 
+    # these will be the actual models for the spacial response
     spacial_model = np.ones((y_size, x_size))
-    # used when constructing the model noise model
     error = np.zeros_like(medianflat)
 
-    #used when fitting with cropped edges
-    spectral_array_cropped = np.arange(min_spat, max_spat)
+    #x values - used when fitting with cropped edges
+    spacial_array_cropped = np.arange(min_spat, max_spat)
 
+    # loading the user - defined parameters   
     num_interior_knots = flat_params["knots_spacial_bspline"]
     degree = flat_params["degree_spacial_bspline"]
 
     # check that the number of knots is reasonable
-    if num_interior_knots > len(spectral_array_cropped) // 2:
+    if num_interior_knots > len(spacial_array_cropped) // 2:
         logger.warning(
             "The number of interior knots is larger than half the number of data points."
         )
         logger.warning("This may lead to overfitting.")
         logger.warning("Consider reducing the number of knots in the configuration file.")
 
-    if num_interior_knots >= len(spectral_array_cropped):
+    if num_interior_knots >= len(spacial_array_cropped):
         logger.error(
             "The number of interior knots is larger than the number of data points."
         )
@@ -281,20 +282,20 @@ def estimate_spacial_response(medianflat):
     
     # used for logging how many fits were successful
     num_fits = x_size if spectral_axis == 0 else y_size
-    bad_spacial_indices = np.array([])
+    bad_spectral_indices = np.array([])
 
+    # Used for rejecting bad fits
     R2_thresh = flat_params["R2_spacial_bspline"]
 
-    # this will be used to later extrapolate on the edges
-    # and bad fits 
+    # this keeps tracks of bad fits
     mask_int = np.ones_like(spacial_model, dtype=bool)
 
-    for spacial_row_index in range(num_fits):
+    for spectral_pixel in range(num_fits):
 
         spacial_slice = (
-            medianflat[:, spacial_row_index].copy()
+            medianflat[:, spectral_pixel].copy()
             if spacial_axis == 1
-            else medianflat[spacial_row_index, :].copy()
+            else medianflat[spectral_pixel, :].copy()
         )
 
         # crop the spacial slice for user defined region
@@ -307,39 +308,37 @@ def estimate_spacial_response(medianflat):
         
 
         spacial_slice_masked = spacial_slice_cropped[~mask]
-        spectral_array_masked = spectral_array_cropped[~mask]
+        spacial_array_masked = spacial_array_cropped[~mask]
 
         # Create the knots array
         t = np.concatenate(
             (
-                np.repeat(spectral_array_masked[0], degree + 1),  # k+1 knots at the beginning
+                np.repeat(spacial_array_masked[0], degree + 1),  # k+1 knots at the beginning
                 np.linspace(
-                    spectral_array_masked[1], spectral_array_masked[-2], num_interior_knots
+                    spacial_array_masked[1], spacial_array_masked[-2], num_interior_knots
                 ),  # interior knots
-                np.repeat(spectral_array_masked[-1], degree + 1),  # k+1 knots at the end
+                np.repeat(spacial_array_masked[-1], degree + 1),  # k+1 knots at the end
             )
         )
 
         # do the fit
-        spl = make_lsq_spline(spectral_array_masked, spacial_slice_masked, t=t, k=degree)
+        spl = make_lsq_spline(spacial_array_masked, spacial_slice_masked, t=t, k=degree)
         bspline = BSpline(spl.t, spl.c, spl.k)
-            
-        min_spectral_masked = np.min(spectral_array_masked) + degree + 1
-        max_spectral_masked = np.max(spectral_array_masked) - (degree + 1)
+        
+        # we trim the edges by fit degree + 1 as these are usually diverging
+        min_spacial_masked = np.min(spacial_array_masked) + degree + 1
+        max_spacial_masked = np.max(spacial_array_masked) - (degree + 1)
 
-        good_spectral_interval = np.arange(min_spectral_masked, max_spectral_masked)
+        good_spectral_interval = np.arange(min_spacial_masked, max_spacial_masked)
 
         good_model = bspline(good_spectral_interval)
 
 
-        R2 = r2_score(spacial_slice[min_spectral_masked: max_spectral_masked], good_model)
+        R2 = r2_score(spacial_slice[min_spacial_masked: max_spacial_masked], good_model)
   
 
-        if R2 < R2_thresh:
-            bad_spacial_indices = np.append(bad_spacial_indices, spacial_row_index)
-            continue
 
-        residuals_column = spacial_slice_masked - bspline(spectral_array_masked)   
+        residuals_column = spacial_slice_masked - bspline(spacial_array_masked)   
 
         RMS = np.sqrt(np.nanmean(residuals_column ** 2))
 
@@ -348,41 +347,63 @@ def estimate_spacial_response(medianflat):
         # diverging in a B-spline fit.
             
         sample_start = good_model[:10]
-        spectral_start = good_spectral_interval[:10]
-        fit_start = np.polyfit(spectral_start, sample_start, 1)
+        spacial_start = good_spectral_interval[:10]
+        fit_start = np.polyfit(spacial_start, sample_start, 1)
             
         sample_end = good_model[-10:]
-        spectral_end = good_spectral_interval[-10:]
-        fit_end = np.polyfit(spectral_end, sample_end, 1)
+        spacial_end = good_spectral_interval[-10:]
+        fit_end = np.polyfit(spacial_end, sample_end, 1)
 
         # evaluate the fit at the column and calculate residuals
         if spacial_axis == 1:
-            spacial_model[good_spectral_interval, spacial_row_index] = good_model
-            spacial_model[:min_spectral_masked, spacial_row_index] = np.polyval(fit_start, np.arange(min_spectral_masked))
-            spacial_model[max_spectral_masked:, spacial_row_index] = np.polyval(fit_end, np.arange(max_spectral_masked, y_size))
+            # bad fits
+            if R2 < R2_thresh:
+                bad_spectral_indices = np.append(bad_spectral_indices, spectral_pixel)
+            # good fits - keep the data
+            else: 
+                spacial_model[good_spectral_interval, spectral_pixel] = good_model
+                spacial_model[:min_spacial_masked, spectral_pixel] = np.polyval(fit_start, np.arange(min_spacial_masked))
+                spacial_model[max_spacial_masked:, spectral_pixel] = np.polyval(fit_end, np.arange(max_spacial_masked, y_size))        
+                
+                if developer_params["debug_plots"]:
+                    plt.plot(spacial_model[:, spectral_pixel])
+                    plt.title(f"Estimated slit illumination at spectral pixel: {spectral_pixel}")
+                    plt.show()
 
-            #plt.plot(spacial_model[:, spacial_row_index])
-            #plt.show()
-
-            error[: , spacial_row_index] = RMS
+                error[: , spectral_pixel] = RMS
             
         else:
-            spacial_model[spacial_row_index, good_spectral_interval] = good_model            
-            spacial_model[spacial_row_index, :min_spectral_masked] = np.polyval(fit_start, np.arange(min_spectral_masked))
-            spacial_model[spacial_row_index, max_spectral_masked:] = np.polyval(fit_end, np.arange(max_spectral_masked, x_size))
-            error[spacial_row_index, :] = RMS
+            # bad fits
+            if R2 < R2_thresh:
+                bad_spectral_indices = np.append(bad_spectral_indices, spectral_pixel)
+            # good fits - keep the data
+            else:
+                spacial_model[spectral_pixel, good_spectral_interval] = good_model            
+                spacial_model[spectral_pixel, :min_spacial_masked] = np.polyval(fit_start, np.arange(min_spacial_masked))
+                spacial_model[spectral_pixel, max_spacial_masked:] = np.polyval(fit_end, np.arange(max_spacial_masked, x_size))
 
-        if spacial_row_index in indices_to_plot:
+                if developer_params["debug_plots"]:
+                    plt.plot(spacial_model[spectral_pixel, :])
+                    plt.title(f"Estimated slit illumination at spectral pixel: {spectral_pixel}")
+                    plt.show()
+
+                error[spectral_pixel, :] = RMS
+
+        if spectral_pixel in indices_to_plot:
             if plot_num <= 4:
                 ax[plot_num, 0].plot(
-                    spectral_array_masked, spacial_slice_masked, ".", label=f"Data at spacial pixel: {spacial_row_index}"
+                    spacial_array_masked, spacial_slice_masked, ".", label=f"Data at spectral pixel: {spectral_pixel}"
                 )
                 ax[plot_num, 0].plot(
-                    spectral_array_masked, bspline(spectral_array_masked), label="Fit with R2: {:.3f}".format(R2), 
+                    spacial_array_masked, bspline(spacial_array_masked), label="Fit with R2: {:.3f}".format(R2), 
                     c = 'red' if R2 < R2_thresh else 'black'
                 )
+                error[spectral_pixel, :] = RMS
+
+        if spectral_pixel in indices_to_plot:
+            if plot_num <= 4:
                 ax[plot_num, 0].plot(
-                    spectral_array_cropped[mask], spacial_slice_cropped[mask], 'o', color='red', label="Masked outliers"
+                    spacial_array_cropped[mask], spacial_slice_cropped[mask], 'o', color='red', label="Masked outliers"
                 )
 
                 ax[plot_num, 0].legend()
@@ -390,7 +411,7 @@ def estimate_spacial_response(medianflat):
   
 
                 ax[plot_num, 1].plot(
-                    spectral_array_masked, residuals_column, 'o', color='black', label=f"Residuals at spacial pixel: {spacial_row_index}"
+                    spacial_array_masked, residuals_column, 'o', color='black', label=f"Residuals at spectral pixel: {spectral_pixel}"
                 )
                 ax[plot_num, 1].axhline(0, color='red', linestyle='--')
 
@@ -399,9 +420,9 @@ def estimate_spacial_response(medianflat):
                 plot_num += 1
 
     fig.suptitle(
-        f"Slit illumination B-spline fits at different spectral pixels. Rejection set in the config file is R2 < {R2_thresh} \n"
+        f"Slit illumination B-spline fits at different spectral pixels. Rejection set in the configuration file is R2 < {R2_thresh}. \n"
         f"Number of interior knots: {num_interior_knots}, fit degree {degree} (this is set in the configuration file).\n"
-        "You should see very little to no large-scale structure in the residuals, with the lowest amount of knots possible.",
+        "You should aim for very little to no large-scale structure in the residuals, with the lowest amount of knots possible.",
         fontsize=16,
     )
     fig.text(0.5, 0.04, "Spacial pixel", ha="center", fontsize=16)
@@ -415,17 +436,30 @@ def estimate_spacial_response(medianflat):
     )
     plt.show()
 
-    logger.warning(f"Number of fits with R2 < {R2_thresh}: {len(bad_spacial_indices)} out of total {num_fits} fits.")
-    logger.warning(f"Bad spacial indices: {bad_spacial_indices}")
-    logger.warning(f"These will be interpolated")
+    # throw a warning if more than a fith of the fits fails
+    if len(bad_spectral_indices)>num_fits*20:
+        logger.warning(f"{(len(bad_spectral_indices)/num_fits) * 100} %% has been not fitted succesfully.")
+        logger.warning("This might be expected if you detector has a lot of not-illuminated pixels - but the majority of illuminated pixel should be fitted succesfully.")
+        logger.warning("Pay attention to the upcoming quality assesment plots, and revise the spacial flat parameters in the configuration file if needed.")
+    else:
+        logger.info(f"Number of fits with R2 < {R2_thresh}: {len(bad_spectral_indices)} out of total {num_fits} fits. A handfull is expected.")
+    
+    logger.info(f"Bad spectral indices: {bad_spectral_indices.astype(int)}")
+    logger.info(f"These will be interpolated.")
     
     if spacial_axis == 1:
-        mask_int[:, bad_spacial_indices.astype(int)] = False
+        mask_int[:, bad_spectral_indices.astype(int)] = False
     else:
-        mask_int[bad_spacial_indices.astype(int), :] = False
+        mask_int[bad_spectral_indices.astype(int), :] = False
 
-    plt.imshow(mask_int, cmap="gray")
-    plt.title("Bad pixel mask for spacial response model")
+    plt.close("all")
+    plt.figure(figsize = (16,16))
+    plt.imshow(~mask_int, cmap="grey")
+    plt.title(
+        "The marked lines (value 1) have not beed fitted succesfully, and will be interpolated.\n"
+        "A handfull is expected, but if a substantial amount of fits are bad,\n revise the spacial flat parameters in the configuration file."
+    )
+    plt.colorbar()
     plt.show()
 
     spacial_rows = y_size if spectral_axis == 0 else x_size
@@ -433,18 +467,21 @@ def estimate_spacial_response(medianflat):
     spectral_array = np.arange(y_size) if spectral_axis == 1 else np.arange(x_size)
 
     for spacial_row in range(spacial_rows):
-        print(f"{spacial_row}")
         mask_cut = mask_int[:, spacial_row] if spectral_axis == 1 else mask_int[spacial_row, :]
         if sum(mask_cut) < len(spectral_array) * 0.5:
-            print(f" Skipping spacial row {spacial_row} due to too many bad values")
+            if developer_params["verbose_print"]:
+                print(f" Skipping spacial row {spacial_row} due to too many bad values")
             continue
 
         else:
             model_cut = spacial_model[:, spacial_row] if spectral_axis == 1 else spacial_model[spacial_row, :]
-            #plt.plot(spectral_array[mask_cut], model_cut[mask_cut], label=f"Good values at spacial pixel: {spacial_row}")
-            #plt.plot(spectral_array[~mask_cut], model_cut[~mask_cut], 'o', color='red', label=f"Bad values at spacial pixel: {spacial_row}")
-            #plt.legend()
-            #plt.show()
+            
+            if developer_params["debug_plots"]:
+                plt.plot(spectral_array[mask_cut], model_cut[mask_cut], label=f"Good values at spacial pixel: {spacial_row}")
+                plt.plot(spectral_array[~mask_cut], model_cut[~mask_cut], 'o', color='red', label=f"Bad values at spacial pixel: {spacial_row}")
+                plt.legend()
+                plt.show()
+            
             #interpolate the bad values using a simple 1d nearest neibhour interpolation
             interpolated_values = griddata(
                 spectral_array[mask_cut],
@@ -458,19 +495,20 @@ def estimate_spacial_response(medianflat):
             else:
                 spacial_model[spacial_row, ~mask_cut] = interpolated_values 
 
-            #plt.plot(spectral_array[mask_cut], model_cut[mask_cut], label=f"Good values at spacial pixel: {spacial_row}")
-            #plt.plot(spectral_array[~mask_cut], model_cut[~mask_cut], 'o', color='red', label=f"Bad values at spacial pixel: {spacial_row}")
-            #plt.plot(spectral_array[~mask_cut], interpolated_values, 'x', color='green', label=f"Interpolated values at spacial pixel: {spacial_row}")
-            #plt.legend()
-            #plt.show()
+            if developer_params["debug_plots"]:
+                plt.plot(spectral_array[mask_cut], model_cut[mask_cut], label=f"Good values at spacial pixel: {spacial_row}")
+                plt.plot(spectral_array[~mask_cut], model_cut[~mask_cut], 'o', color='red', label=f"Bad values at spacial pixel: {spacial_row}")
+                plt.plot(spectral_array[~mask_cut], interpolated_values, 'x', color='green', label=f"Interpolated values at spacial pixel: {spacial_row}")
+                plt.legend()
+                plt.show()
         
 
     error[~mask_int] = safe_mean(error[mask_int])
 
-  
-    plt.imshow(error)
-    plt.title("Error map for the spacial response model")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.imshow(error)
+        plt.title("Error map for the spacial response model")
+        plt.show()
 
     return spacial_model, error
 
@@ -532,7 +570,7 @@ def run_flats():
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import detector_params, flat_params, data_params
+    from pylongslit.parser import detector_params, flat_params, data_params, developer_params
     from pylongslit.utils import FileList, check_dimensions, open_fits, PyLongslit_frame
     from pylongslit.overscan import estimate_frame_overscan_bias
     from pylongslit.stats import bootstrap_median_errors_framestack, safe_mean
@@ -616,22 +654,24 @@ def run_flats():
     else:
         medianflat_error = bootstrap_median_errors_framestack(bigflat)
 
+    if developer_params["debug_plots"]:
+        plt.imshow(medianflat_error, cmap="gray")
+        plt.title("Errors in the median flat")
+        plt.show()
 
-    plt.imshow(medianflat_error, cmap="gray")
-    plt.title("Errors in the median flat")
-    plt.show()
-
+    print("\n-------------------------\n")
     logger.info("Estimating the spectral response and normalizing...")    
 
     spectral_response_model, bpm, RMS_spectral = estimate_spectral_response(medianflat)
 
-    plt.imshow(spectral_response_model, cmap="gray")
-    plt.title("2D spectral response model")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.imshow(spectral_response_model, cmap="gray")
+        plt.title("2D spectral response model")
+        plt.show()
 
-    plt.imshow(bpm, cmap="gray")
-    plt.title("Bad pixel mask for spectral response model")
-    plt.show()
+        plt.imshow(bpm, cmap="gray")
+        plt.title("Bad pixel mask for spectral response model")
+        plt.show()
 
     spectral_normalized = medianflat / spectral_response_model
 
@@ -639,6 +679,8 @@ def run_flats():
     medianflat_error = spectral_normalized * np.sqrt(
         ((medianflat_error / medianflat)) ** 2 + ((RMS_spectral/spectral_response_model) ** 2)
     )
+
+    logger.info("Spectral response normalization done.")
 
     # correct any outliers (these are ususally the non-illuminated parts of the flat)
     medianflat_error[bpm] = safe_mean(medianflat_error[~bpm])
@@ -654,25 +696,36 @@ def run_flats():
     spectral_normalized[np.isnan(spectral_normalized)] = 1
     spectral_normalized[np.isinf(spectral_normalized)] = 1
 
-    plt.imshow(medianflat_error, cmap="gray")
-    plt.title("Just after spectral normalization")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.imshow(medianflat_error, cmap="gray")
+        plt.title("Just after spectral normalization")
+        plt.show()
 
     # if requested, do the spacial response normalization
     if not flat_params["skip_spacial"]:
+        print("\n-------------------------\n")
         logger.info("Estimating the spacial response and normalizing...")    
         spacial_response_model, RMS_spacial = estimate_spacial_response(spectral_normalized)
-        plt.imshow(spacial_response_model, cmap="gray")
-        plt.title("2D slit illumination model")
-        plt.show()
+        
+        if developer_params["debug_plots"]:
+            plt.imshow(spacial_response_model, cmap="gray")
+            plt.title("2D slit illumination model")
+            plt.show()
+
         master_flat = spectral_normalized / spacial_response_model
         medianflat_error = master_flat * np.sqrt(
             ((medianflat_error / medianflat)) ** 2 + ((RMS_spacial/spacial_response_model) ** 2)
         )   
 
-    else:
+        logger.info("Spacial response normalization done.")
 
+    else:
+        logger.info("Skipping spacial normalization as requested in the configuration file...")
         master_flat = spectral_normalized
+
+    print("\n-------------------------\n")
+
+    logger.info("Rejecting outliers and plotting the results...")
 
     # the below code sets outliers to 1 - these are usually the non-illuminated parts of the flat
 
@@ -690,6 +743,8 @@ def run_flats():
         
         medianflat_error[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end] = safe_mean(medianflat_error)
 
+    # TODO: this code is used several times, make a method
+    # purge the flat of any outliers once more
     medianflat_error[np.isinf(medianflat_error)] = safe_mean(medianflat_error)
     medianflat_error[np.isnan(medianflat_error)] = safe_mean(medianflat_error)
     medianflat_error[master_flat < 0.5] = safe_mean(medianflat_error)
@@ -703,9 +758,10 @@ def run_flats():
     master_flat[np.isnan(master_flat)] = 1.0
     master_flat[np.isinf(master_flat)] = 1.0
 
-    plt.imshow(medianflat_error, cmap="gray")
-    plt.title("After all normalizations")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.imshow(medianflat_error, cmap="gray")
+        plt.title("Error after all normalizations")
+        plt.show()
 
     fig, ax = plt.subplots(5 if not flat_params["skip_spacial"] else 3, 2, figsize=(18, 32))
 

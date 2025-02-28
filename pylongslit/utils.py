@@ -140,7 +140,7 @@ class PyLongslit_frame:
 
             plt.draw()
 
-        fig, (ax1, ax2) = plt.subplots(1, 2)
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 12))  
         fig.suptitle(f"{self.name} - Press \"h\" to normalize.\n {title_addition}")
         update_plot(normalize=False)
 
@@ -419,11 +419,6 @@ def hist_normalize(data, z_thresh=3):
     data_equalized : numpy.ndarray
         The normalized data.
     """
-
-    print("Data shape: ", data.shape)
-    print(data)
-    plt.imshow(data, cmap="gray")
-    plt.show()
 
     # Calculate the Z-scores
     mean = np.nanmean(data)
