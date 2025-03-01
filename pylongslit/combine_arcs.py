@@ -1,5 +1,5 @@
 """
-Module to combine arc frames into a single master arc frame.
+PyLongslit module to combine arc frames into a single master arc frame.
 """
 
 import numpy as np
@@ -9,10 +9,20 @@ import argparse
 
 def combine_arcs():
 
+    """
+    Simple procedure to combine arc frames into a single master arc frame.
+    Only preprocessing steps are bias subtraction and overscan correction,
+    if requested in the config file, and also alligning the frames to have
+    the dispersion axis as the x-axis with wavelength increasing with pixel
+    number. The frames are simply summed to create the master arc frame.
+
+    The master arc frame is saved to disc as 'master_arc.fits'.
+    """
+
     from pylongslit.logger import logger
-    from pylongslit.parser import output_dir, arc_params, data_params, combine_arc_params
-    from pylongslit.utils import FileList, open_fits, write_to_fits, list_files
-    from pylongslit.utils import check_rotation, flip_and_rotate, load_bias, PyLongslit_frame
+    from pylongslit.parser import arc_params, data_params, combine_arc_params
+    from pylongslit.utils import FileList, open_fits
+    from pylongslit.utils import check_rotation, flip_and_rotate, PyLongslit_frame
     from pylongslit.overscan import estimate_frame_overscan_bias, check_overscan
 
     logger.info("Fetching arc frames...")
@@ -26,7 +36,7 @@ def combine_arcs():
         exit()
 
     logger.info(f"Found {arc_files.num_files} raw arc files:")
-    list_files(arc_files)
+    arc_files.print_files()
 
     use_overscan = check_overscan()
 
@@ -36,8 +46,16 @@ def combine_arcs():
 
         logger.info("Fetching bias...")
 
-        BIAS_frame = PyLongslit_frame.read_from_disc("master_bias.fits")
-        BIAS = BIAS_frame.data
+        try:
+            BIAS_frame = PyLongslit_frame.read_from_disc("master_bias.fits")
+            BIAS = BIAS_frame.data
+        except FileNotFoundError:
+            logger.critical("Master bias frame not found.")
+            logger.critical("Bias subtraction is requested in the config file.")
+            logger.critical("Please create the master bias frame first.")
+            exit()
+
+        logger.info("Bias frame loaded successfully.")
 
     else:
         logger.warning("Skipping bias subtraction in arc combination.")
@@ -48,6 +66,10 @@ def combine_arcs():
 
     for arc_file in arc_files:
 
+        print("--------------------------------------------------")
+
+        logger.info(f"Processing arc frame: {arc_file}...")
+
         hdu = open_fits(arc_files.path, arc_file)
 
         data = hdu[data_params["raw_data_hdu_index"]].data.astype(np.float32)
@@ -55,13 +77,19 @@ def combine_arcs():
         if use_overscan:
             overscan = estimate_frame_overscan_bias(data, plot = False)
             data = data - overscan.data
+            logger.info("Overscan subtracted.")
 
-        if not skip_bias: data = data - BIAS
+        if not skip_bias: 
+            data = data - BIAS
+            logger.info("Master bias subtracted.")
 
         arc_data.append(data)
 
+        print("--------------------------------------------------")
+
     logger.info("Combining arc frames...")
 
+    # we simply sum, as we only are interested in the line positions
     master_arc = np.sum(arc_data, axis=0)
 
     # Handle NaNs and Infs
@@ -76,11 +104,12 @@ def combine_arcs():
 
     # transpose and/or flip the frame if needed
     if transpose or flip:
+        logger.info("Alligning the frame to default direction...")
         master_arc = flip_and_rotate(master_arc, transpose, flip)
 
     master_arc = PyLongslit_frame(master_arc, None, hdu[0].header, "master_arc")
 
-    master_arc.show_frame(skip_sigma=True, normalize=True)
+    master_arc.show_frame(skip_sigma=True)
 
     logger.info("Master arc created successfully, writing to disc...")
 

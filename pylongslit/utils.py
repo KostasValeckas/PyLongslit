@@ -79,7 +79,7 @@ class PyLongslit_frame:
         # Consider a refactor if this gives any issues down the road.
 
         data = self.data.copy()
-        sigma = self.sigma.copy()
+        if not skip_sigma: sigma = self.sigma.copy()
 
         self.colorbar1 = None
         self.colorbar2 = None
@@ -266,12 +266,18 @@ def open_fits(dir_path, file_name):
     hdul : HDUList
         An HDUList object containing the data from the file.
     """
-
+    from pylongslit.logger import logger
     try:
-        hdul = fits.open(dir_path + file_name)
-    # acount for the user forgetting to add a slash at the end of the path
+        try:
+            hdul = fits.open(dir_path + file_name)
+        # acount for the user forgetting to add a slash at the end of the path
+        except FileNotFoundError:
+            hdul = fits.open(dir_path + "/" + file_name)
     except FileNotFoundError:
-        hdul = fits.open(dir_path + "/" + file_name)
+        logger.error(f"File {file_name} not found in {dir_path}.")
+        logger.error("Check the file path in the configuration file.")
+        exit()
+
 
     return hdul
 
