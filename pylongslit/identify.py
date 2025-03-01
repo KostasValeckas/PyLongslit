@@ -14,7 +14,6 @@ __doc__ = (
 __version__ = "PyLongslit"
 
 import os
-import sys
 import numpy as np
 import matplotlib
 import argparse
@@ -182,7 +181,9 @@ class GraphicInterface(QMainWindow):
         load_file_action.triggered.connect(self.load_spectrum)
         if locked:
             load_file_action.setEnabled(False)
-        toolbar.addAction(load_file_action)
+        # For PyLongslit, we don't need to load the spectrum from the GUI
+        # , do it automatically for more robust appraoch
+        #toolbar.addAction(load_file_action)
 
         save_pixtab_action = QAction("Save PixTable", self)
         save_pixtab_action.setShortcut("ctrl+S")
@@ -235,7 +236,9 @@ class GraphicInterface(QMainWindow):
 
         main_menu = self.menuBar()
         file_menu = main_menu.addMenu("File")
-        file_menu.addAction(load_file_action)
+        # For PyLongslit, we don't need to load the spectrum from the GUI
+        # , do it automatically for more robust appraoch
+        #file_menu.addAction(load_file_action)
         file_menu.addAction(load_ref_action)
         file_menu.addSeparator()
         file_menu.addAction(save_pixtab_action)
