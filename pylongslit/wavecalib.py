@@ -1,3 +1,7 @@
+"""
+PyLongslit module for wavelength calibration.
+"""
+
 import numpy as np
 from astropy.table import Table
 import matplotlib.pyplot as plt
@@ -15,8 +19,6 @@ from itertools import chain
 import warnings
 import astropy.modeling.fitting
 import argparse
-from tqdm import tqdm
-from mpl_toolkits.mplot3d import Axes3D
 
 class GeneralizedNormal1D(Fittable1DModel):
     """
@@ -25,7 +27,7 @@ class GeneralizedNormal1D(Fittable1DModel):
     but has a shape parameter beta that controls the flatness of the peak.
     """
 
-    # the default values here are set to 0 as they are not used
+    # the default values here are set to 0 as they are not used ("dummies")
     amplitude = Parameter(default=0)
     mean = Parameter(default=0)
     stddev = Parameter(default=0)
@@ -38,7 +40,7 @@ class GeneralizedNormal1D(Fittable1DModel):
 
 def read_pixtable():
     """
-    Read the pixel table from the path specified in the config file.
+    Read the pixel table from the path specified in the configurations file.
 
     Returns
     -------
@@ -65,7 +67,7 @@ def read_pixtable():
         logger.critical(f"File {path_to_pixtable} not found.")
         logger.critical("You have to run the identify routine first.")
         logger.critical(
-            "In identify routine, you have to create the pixel table, "
+            "In identify routine, you have to create the center guess pixel table, "
             "and set its' path in the config file."
         )
     return pixnumber, wavelength
@@ -77,18 +79,17 @@ def get_master_arc():
 
     Returns
     -------
-    master_arc : array
+    master_arc : pylongslit.utils.PyLongslit_frame
         Master arc image.
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import output_dir
-    from pylongslit.utils import open_fits
+    from pylongslit.utils import PyLongslit_frame
 
     logger.info("Trying to fetch the master arc frame...")
 
     try:
-        master_arc = open_fits(output_dir, "master_arc.fits")
+        master_arc = PyLongslit_frame.read_from_disc("master_arc.fits")
     except FileNotFoundError:
         logger.critical("Master arc not found.")
         logger.critical("You have to run the combine_arcs routine first.")
@@ -102,7 +103,13 @@ def get_master_arc():
 def arc_trace_warning(message):
     """
     A helper method for logging warnings during the arc tracing.
-    Mostly to avoid code repetition.
+    Mostly to avoid code repetition. Appends a pre-designed
+    ending to the message. Prints and logs when called.
+
+    Parameters
+    ----------
+    message : str
+        Warning message
     """
 
     from pylongslit.logger import logger
@@ -116,9 +123,11 @@ def arc_trace_warning(message):
 
 def update_model_parameters(g_model, g_fit):
     """
-    Update the model parameters with the fitted values.
+    Update the arc-line fitting model parameters with the fitted values.
 
     Helper method for avoiding code repetition.
+
+    Modifies the model in-place.
 
     Parameters
     ----------
@@ -143,14 +152,12 @@ def update_model_parameters(g_model, g_fit):
     g_model.mean_0.bounds = (g_model.mean_0.value - tolerance_mean, g_model.mean_0.value + tolerance_mean)
     g_model.stddev_0.bounds = (g_model.stddev_0.value - tolerance_FWHM * gaussian_fwhm_to_sigma,  g_model.stddev_0.value + tolerance_FWHM * gaussian_fwhm_to_sigma)
 
-    
 
-
-def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0.99,
+def fit_arc_1d(spectral_coords, counts, fitter, g_model, R2_threshold=0.99,
                 bench_value=None,
                     bench_tolerance=1.0):
     """
-    Method for fitting seperate 1d arc lines.
+    Method for fitting 1d arc lines.
 
     Modifies the fitter object in place with the new fit.
 
@@ -159,18 +166,26 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0
     spectral_coords : array
         Spectral coordinates.
 
-    center_row_spec : array
-        Center row spectrum.
+    counts : array
+        Counts for the spectral coordinates.
 
     fitter : `~astropy.modeling.fitting.LevMarLSQFitter`
-        Fitter object.trace_tilt
+        Fitter object
 
     g_model : `~astropy.modeling.models.GeneralizedNormal1D`
-        Generalized normal distribution model.
+        Generalized gaussian distribution model.
 
     R2_threshold : float
         Threshold for R2 score. Used to determine if the fit is good.
         Default is 0.99.
+
+    bench_value : float
+        Benchmark value for the center. If the center value is too far from
+        the benchmark value, the fit is considered bad. Default is None - 
+        meaning that deviation from the benchmark value is not checked.
+
+    bench_tolerance : float
+        Tolerance for the deviaition from the benchmark value. Default is 1.0.
 
     Returns
     -------
@@ -178,41 +193,48 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0
         True if the fit is good, False otherwise.
     """
 
-    # Suppress warnings during fitting
+    from pylongslit.parser import developer_params
+
+    # Suppress warnings during fitting - we handle these ourselves
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        #TODO: the below exception is not a good fix - refactor
+        #TODO: the below exception is not a robust good fix - refactor
         try:
-            g_fit = fitter(g_model, spectral_coords, center_row_spec)
+            g_fit = fitter(g_model, spectral_coords, counts)
         except (TypeError, ValueError, astropy.modeling.fitting.NonFiniteValueError):
             return False
 
-    R2 = r2_score(center_row_spec, g_fit(spectral_coords))
+    R2 = r2_score(counts, g_fit(spectral_coords))
 
-
-
+    # failed fit
     if R2 < R2_threshold:
-        
-        #plt.plot(spectral_coords, center_row_spec, "x", color="black", label = f"R2: {R2}")
-        #plt.plot(spectral_coords, g_fit(spectral_coords), color="red")
-        #plt.legend()
-        #plt.title(f"Failed at R2: {R2}")
-        #plt.show()
 
-        #print("fit_1d_fail")
+        if developer_params["debug_plots"]:
+
+            # debugging - plot all bad fits
+            plt.plot(spectral_coords, counts, "x", color="black", label = f"R2: {R2}")
+            plt.plot(spectral_coords, g_fit(spectral_coords), color="red")
+            plt.legend()
+            plt.title(f"Failed at R2: {R2}")
+            plt.show()
+
+        if developer_params["verbose_print"]: print("fit_1d_fail")
 
         return False
     
-    #print("Good fit")
-
-    #plt.plot(spectral_coords, center_row_spec, "x", color="black", label = f"R2: {R2}")
-    #plt.plot(spectral_coords, g_fit(spectral_coords), color="green")  
-    #plt.show()
+    # not returned yet - good fit
+    
+    if developer_params["verbose_print"]: print("Good fit")
+    if developer_params["debug_plots"]:
+        plt.plot(spectral_coords, counts, "x", color="black", label = f"R2: {R2}")
+        plt.plot(spectral_coords, g_fit(spectral_coords), color="green")  
+        plt.show()
 
     if bench_value is not None:
         if np.abs(g_fit.mean_0.value - bench_value) > bench_tolerance:
-            #print("BIG CHANGE")
-            #print(g_fit.mean_0.value, bench_value)
+            if developer_params["verbose_print"]:
+                print("BIG CHANGE")
+                print(g_fit.mean_0.value, bench_value)
             return False
 
 
@@ -223,68 +245,111 @@ def fit_arc_1d(spectral_coords, center_row_spec, fitter, g_model, R2_threshold=0
 
 def trace_line_tilt(
     master_arc,
-    N_ROWS,
     center_row,
     fitter,
     g_model,
     FWHM_guess
 ):
+    """
+    Driver method for tracing the tilt of a single line.
+
+    Parameters
+    ----------
+    master_arc : pylongslit.utils.PyLongslit_frame
+        Master arc image.
+
+    center_row : int
+        Spacial index from where to start the fitting. User can shift it from the center, calling it "center-row" is just a convention.
+
+    fitter : `~astropy.modeling.fitting.LevMarLSQFitter`
+        Fitter object.
+
+    g_model : `~astropy.modeling.models.GeneralizedNormal1D`
+        Generalized Gaussian distribution model.
+
+    FWHM_guess : float
+        Initial guess for the FWHM of the line.
+
+    Returns
+    -------
+    all_centers : array
+        Centers of the lines.
+
+    used_spacial : array
+        Spacial coordinates used for the fit of the line.
+
+    keep_mask : array
+        Mask for keeping the good fits.
+    """
     
     from pylongslit.logger import logger
-    from pylongslit.parser import wavecalib_params
+    from pylongslit.parser import wavecalib_params, developer_params
 
-    # container for fit parameters.
+    # Container for fit parameters.
     # Sometimes used for initial guesses for the next row.
-    # For holds more information than needed, but this is nice to have in
+    # For now holds more information than needed, but this is nice to have in
     # further developtment or debugging.
     all_params = {}
-    # mask for keeping the good fits, will be updated in the loop
 
-
-    #TODO this is very hacked, fix later
-
+    # This amount of pixels is used +/- around the spacial pixel 
+    # in order to create a mean count array for the line (reduces noise).
     pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
 
+    # sanity check for the extension
+    if center_row - pixel_cut_extension < 0 or center_row + pixel_cut_extension > master_arc.data.shape[0]:
+        logger.critical("The pixel cut extension is too large for the current center row.")
+        logger.critical("Decrease the pixel cut extension or change the center row offset in the configuration file.")
+        exit()
+
+    # this allows the user to manually crop-out any noise end bits.
     start_pixel = wavecalib_params["arcline_start"]
     end_pixel = wavecalib_params["arcline_end"]
 
+    # Sanity checks for the user defined start and end pixels
     if center_row > end_pixel or center_row < start_pixel:
         logger.critical(f"Center row of arc frame at {center_row} is outside the defined start and end pixels {start_pixel, end_pixel}.")
         logger.critical("Add an offset to the middle cut or change the arc line limits (this is done in the config file).")
-        exit(-1)
+        exit()
 
+    # new variable to deal with python indexing - the end pixel is not included
     cut_width = pixel_cut_extension + 1
 
+    # for book-keeping what index corresponds to what spacial pixel
     index_dict = {}
     num_it = 0
     for i in chain(range(center_row, end_pixel, cut_width), range(center_row - 1, start_pixel, -cut_width)): 
         index_dict[str(i)] = num_it
         num_it += 1
 
+    # return array for the centers of the lines
     keep_mask = np.array([], dtype = bool)
 
+    #  "x" values for the fit
     spectral_coords = np.arange(master_arc.data.shape[1])
 
-    # read the parameter that decides when to abort the trace - i.e.
-    # when the fit is bad for more than a certain number of rows
+    # read the parameter that decides when to abort the trace 
     TILT_REJECTION_LINE_FRACTION = wavecalib_params["TILT_REJECT_LINE_FRACTION"]
     bad_fit_counter = 0
     bad_fit_threshold = (num_it * TILT_REJECTION_LINE_FRACTION)
-
-    # R2 tolerance for the fit of every row
     TILT_TRACE_R2_TOL = wavecalib_params["TILT_TRACE_R2_TOL"]
+    jump_tolerance = wavecalib_params["jump_tolerance"]
 
+    # this is the benchmark value to avoid "jumps" between lines - 
+    # the fitter checks that the next fit is not too far from the previous one
     last_good_center = g_model.mean_0.value
 
+    # container for what spacial pixels the fits were successful for
     used_spacial =[]
 
-    # Loop from center and up and then down with a jump of 5
+    # This is the driver loop - we loop over the spacial pixels from the center row
+    # and go in both directions until we reach the edge of the detector.
+
     for i in chain(range(center_row, end_pixel, cut_width), range(center_row - 1, start_pixel, -cut_width)):
 
-        # if we are starting to loop downwards, we need to update the initial guesses
-        # back to the center row values manually.
+        # if we are starting to loop downwards from going upwards, we need to update the 
+        # initial guesses back to the center row values manually.
         if i == center_row - 1:
-            #print("DETECTED DOWNWARDS MOTION")
+            if developer_params["verbose_print"]: print("DETECTED DOWNWARDS MOTION")
             g_model.amplitude_0 = all_params[i + 1]["amplitude"]
             g_model.mean_0 = all_params[i + 1]["center"]
             g_model.stddev_0 = all_params[i + 1]["FWHM"] * gaussian_fwhm_to_sigma
@@ -305,23 +370,19 @@ def trace_line_tilt(
         end_pixel = int(
             g_model.mean_0.value + FWHM_guess
         )
-
-        if start_pixel < 0 or end_pixel > master_arc.shape[1]:
-            #print("skipping due to edge at: ", i)
-            #print(start_pixel, end_pixel)
-            #all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
-            #good_centers = all_centers[keep_mask]
-            #plt.plot(used_spacial, good_centers, "o")
-            #plt.show()
+        
+        # if the line is too close to the detector edge, skip it
+        if start_pixel < 0 or end_pixel > master_arc.data.shape[1]:
+            if developer_params["verbose_print"]: 
+                print("skipping due to edge at: ", i)
+                print(start_pixel, end_pixel)
             continue
-        #print("now at: ", i)
 
-        # np.mean(sub_image[center_row-2:(center_row+2) + 1, :], axis = 0)
-        center_row_spec = np.mean(master_arc[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
+        # extract the subimage around the line, and average over the spacial pixels
+        center_row_spec = np.mean(master_arc.data[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
         spectral_coords_sub = spectral_coords[start_pixel:end_pixel]
 
-        jump_tolerance = wavecalib_params["jump_tolerance"]
-
+        # the actual fitting
         keep_bool = fit_arc_1d(
             spectral_coords_sub,
             center_row_spec,
@@ -332,24 +393,26 @@ def trace_line_tilt(
             bench_tolerance=jump_tolerance
         )
 
+        # not successful - this will trigger a few attempts to recover
         if not keep_bool:
 
             # try minimizing the FWHM - might be due to close lines:
 
-            # clip out the subimage around the line
+            # clip out the subimage around the line - 2 pixels hardcoded for now
             start_pixel += 2
             end_pixel -= 2
 
+            # too narrow cut - fail the fit
             if start_pixel >= end_pixel:
                 keep_bool = False
 
             else:
-
-                center_row_spec = np.mean(master_arc[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
+                # try the fit again
+                center_row_spec = np.mean(master_arc.data[i-pixel_cut_extension: i+pixel_cut_extension + 1, start_pixel:end_pixel], axis = 0)
                 spectral_coords_sub = spectral_coords[start_pixel:end_pixel]
 
 
-                #print("RECUTTING AND TRYING AGAIN")
+                if developer_params["verbose_print"]: print("RECUTTING AND TRYING AGAIN")
 
                 keep_bool = fit_arc_1d(
                     spectral_coords_sub,
@@ -361,8 +424,10 @@ def trace_line_tilt(
                     bench_tolerance=jump_tolerance
                 )
 
+            # successful fit - pack-up and continue
             if keep_bool:
-                #print("SUCCESSFUL RE-FIT")
+                if developer_params["verbose_print"]: print("SUCCESSFUL RE-FIT")
+                
                 all_params[i] = {
                     "amplitude": g_model.amplitude_0.value,
                     "center": g_model.mean_0.value,
@@ -378,55 +443,58 @@ def trace_line_tilt(
                 used_spacial.append(i)
 
                 continue
-
+            
+            # last resort before failing completely
             else:
 
                 # for several bad fits, might be that the center guess is off
-                # if enough good fits are present, retry the fit
+                # if enough good fits are present. Try to fit for the line tilt
+                # and use the tilt to estimate the center of the line at the current 
+                # spacial row
 
+                # at least 10 good fits are needed to try this - hardcoded value for now
                 if np.sum(keep_mask) > 10:
-                    #print("ENOUGH GOOD FITS TO RETRY")
+                    if developer_params["verbose_print"]: print("ENOUGH GOOD FITS TO RETRY") 
 
+                    # extract what is needed for the tilt fit
                     all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
                     
                     good_centers = all_centers[keep_mask]
 
+                    # try the fit
                     with warnings.catch_warnings():
                         warnings.simplefilter("ignore")
                         coeff = chebfit(used_spacial, good_centers, deg=wavecalib_params["ORDER_SPATIAL_TILT"])
-                    #plt.plot(used_spacial, good_centers, "o")
-                    #plt.plot(used_spacial, chebval(used_spacial, coeff))
-                    #plt.show()
 
+                    if developer_params["debug_plots"]:
+                        plt.plot(used_spacial, good_centers, "o")
+                        plt.plot(used_spacial, chebval(used_spacial, coeff))
+                        plt.show()
+
+                    # check if the fit is good before using it
                     new_center_guess = chebval(i, coeff)
 
                     R2 = r2_score(good_centers, chebval(used_spacial, coeff))
 
+                    # bad titl fit - abort
                     if R2 < wavecalib_params["SPACIAL_R2_TOL"]:
-                        #print("R2 TOO LOW FOR NEW CENTER GUESS")
+                        if developer_params["verbose_print"]: print("R2 TOO LOW FOR NEW CENTER GUESS")
                         keep_bool = False
 
+                    # too big change in the center guess - abort
                     elif abs(new_center_guess - g_model.mean_0.value) > wavecalib_params["TOL_MEAN"]:
-                        #print("TOO BIG CHANGE IN NEW CENTER GUESS")
+                        if developer_params["verbose_print"]: print("TOO BIG CHANGE IN NEW CENTER GUESS")
                         keep_bool = False
 
-                    
+                    # successful tilt fit - try the fit again with the new center guess
+                    # and the new cut          
                     else:
 
                         g_model.mean_0 = new_center_guess
 
-                        #print("NEW CENTER GUESS", new_center_guess)
+                        if developer_params["verbose_print"]: print("NEW CENTER GUESS", new_center_guess)
 
-                        temp = used_spacial.copy()
-                        min, max = np.min(temp), np.max(temp)
-                        temp = np.linspace(min, max, 1000)
-                        temp_extra = np.linspace(max, max+100, 1000)
-
-                        #plt.plot(temp, chebval(temp, coeff))
-                        #plt.plot(temp_extra, chebval(temp_extra, coeff))
-                        #plt.show()  
-
-
+                        # try to fit again
                         keep_bool = fit_arc_1d(
                             spectral_coords_sub,
                             center_row_spec,
@@ -434,11 +502,12 @@ def trace_line_tilt(
                             g_model,
                             R2_threshold=TILT_TRACE_R2_TOL,
                             bench_value=last_good_center,
-                            bench_tolerance=jump_tolerance 
+                            bench_tolerance=jump_tolerance
                         )
 
+                    # successful fit - pack-up and continue
                     if keep_bool:
-                        #print("SUCCESSFUL RETRY IN FITTED CENTER ESTIMATION")
+                        if developer_params["verbose_print"]: print("SUCCESSFUL RETRY IN FITTED CENTER ESTIMATION")
                         all_params[i] = {
                             "amplitude": g_model.amplitude_0.value,
                             "center": g_model.mean_0.value,
@@ -454,7 +523,8 @@ def trace_line_tilt(
                         used_spacial.append(i)
 
                         continue
-
+                    
+                    # Failed fit
                     else:
 
                         all_params[i] = {
@@ -468,7 +538,8 @@ def trace_line_tilt(
                         bad_fit_counter += 1
 
                         keep_mask = np.append(keep_mask, False)
-
+                        
+                        # too many bad center fits - abort the line all-together
                         if bad_fit_counter > bad_fit_threshold:
                             
 
@@ -487,6 +558,8 @@ def trace_line_tilt(
                         else:
                             continue
 
+        # this is the successful fit at first try - pack-up and continue
+
         all_params[i] = {
             "amplitude": g_model.amplitude_0.value,
             "center": g_model.mean_0.value,
@@ -498,11 +571,10 @@ def trace_line_tilt(
         keep_mask = np.append(keep_mask, True)
 
         last_good_center = g_model.mean_0.value
-
-
         
-
         used_spacial.append(i)
+
+    # fitting done - extract results and return
 
     # extract the centers of the lines
     all_centers = np.array([all_params[key]["center"] for key in all_params.keys()])
@@ -567,7 +639,7 @@ def trace_tilts(lines, master_arc):
     plt.close("all")    
 
     # get detector shape parameters
-    N_ROWS = master_arc[0].data.shape[0]
+    N_ROWS = master_arc.data.shape[0]
     
     #the offset is needed if the middle of the detector is not a good place
     # to take a sample
@@ -575,7 +647,7 @@ def trace_tilts(lines, master_arc):
     
     center_row = (N_ROWS // 2) + center_row_offset
     spacial_coords = np.arange(N_ROWS)
-    spectral_coords = np.arange(master_arc[0].data.shape[1])
+    spectral_coords = np.arange(master_arc.data.shape[1])
 
     # get the tolerance for the RMS of the tilt line fit
     R2_TOL = wavecalib_params["SPACIAL_R2_TOL"]
@@ -604,7 +676,7 @@ def trace_tilts(lines, master_arc):
 
         all_peak_pix = [lines[key]["peak_pix"] for key in lines.keys()]
 
-        plt.imshow(master_arc[0].data, aspect="auto")
+        plt.imshow(master_arc.data, aspect="auto")
         plt.plot(all_peak_pix, np.full_like(all_peak_pix, center_row), "x", color="red")
         plt.show()
         #exit()
@@ -646,7 +718,7 @@ def trace_tilts(lines, master_arc):
         pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
 
 
-        sub_image = master_arc[0].data[:, int(start_pixel):int(end_pixel)]
+        sub_image = master_arc.data[:, int(start_pixel):int(end_pixel)]
         center_row_spec = np.mean(sub_image[center_row-pixel_cut_extension:(center_row+pixel_cut_extension) + 1, :], axis = 0)
         spectral_coords_sub = spectral_coords[int(start_pixel):int(end_pixel)]
 
@@ -702,8 +774,7 @@ def trace_tilts(lines, master_arc):
 
 
         centers, spacial_coords_used, mask = trace_line_tilt(
-            master_arc[0].data,
-            N_ROWS,
+            master_arc,
             center_row,
             fitter,
             g_model,
@@ -881,12 +952,12 @@ def reidentify(pixnumber, wavelength, master_arc):
     middle_row_offset = wavecalib_params["offset_middle_cut"]
     pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
 
-    middle_row = (master_arc[0].data.shape[0] // 2) + middle_row_offset
+    middle_row = (master_arc.data.shape[0] // 2) + middle_row_offset
     # limits of the slice
     lower_cut, upper_cut = middle_row - pixel_cut_extension, middle_row + pixel_cut_extension
 
     # sum over the slice
-    spec_1d = np.mean(master_arc[0].data[lower_cut:upper_cut+1, :], axis=0)
+    spec_1d = np.mean(master_arc.data[lower_cut:upper_cut+1, :], axis=0)
 
     spectral_coords = np.arange(len(spec_1d))
 
@@ -1557,7 +1628,7 @@ def write_waveimage_to_disc(wavelength_map, master_arc):
     logger.info("Writing wavelength calibration results to disc...")
 
     # steal header from master_arc
-    header = master_arc[0].header
+    header = master_arc.header
     write_to_fits(wavelength_map, header, "wavelength_map.fits", output_dir)
 
     logger.info("Wavelength calibration results written to disc.")
@@ -1809,7 +1880,7 @@ def run_wavecalib():
 
 
 
-    plt.imshow(hist_normalize(master_arc[0].data), aspect="auto")
+    plt.imshow(hist_normalize(master_arc.data), aspect="auto")
 
     for key in good_lines.keys():
         plt.plot([good_lines[key][1]], [good_lines[key][2]], "x", color="red")
