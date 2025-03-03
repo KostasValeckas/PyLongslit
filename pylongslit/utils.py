@@ -873,7 +873,7 @@ def show_1d_fit_QA(
 
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
-    ax1.plot(x_data, y_data, "s", color="black", label=legend_label, markersize=12)
+    ax1.plot(x_data, y_data, ".", color="black", label=legend_label, markersize=12)
 
     ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=14)
     ax1.set_ylabel(y_label, fontsize=14)
