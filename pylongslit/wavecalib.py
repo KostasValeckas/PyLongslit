@@ -52,9 +52,9 @@ def read_pixtable():
     from pylongslit.logger import logger
     from pylongslit.parser import wavecalib_params
 
-    path_to_pixtable = wavecalib_params["pixtable"]
+    path_to_pixtable = wavecalib_params["center_guess_pixtable"]
 
-    logger.info(f"Trying to read pixtable table from {path_to_pixtable}...")
+    logger.info(f"Trying to read center_guess_pixtable table from {path_to_pixtable}...")
 
     try:
         data = np.loadtxt(path_to_pixtable)
@@ -473,10 +473,12 @@ def trace_line_tilt(
                             
 
                             arc_trace_warning(
-                                f"Too many bad fits with R2 below {TILT_TRACE_R2_TOL} in the tilt trace. "
-                                "The selection parameters for this are: "
-                                f"TILT_REJECT_LINE_FRACTION = {TILT_REJECTION_LINE_FRACTION}, corresponding to {bad_fit_threshold} lines, "
-                                f"and TILT_TRACE_R2_TOL. = {TILT_TRACE_R2_TOL}"
+                                f"Line trace rejected.\n"
+                                "The selection parameters for this are set in the configuration file, and currently are: \n"
+                                f"Bad center fit fraction at when to abandon line tracing (bad fits / all fits) : {TILT_REJECTION_LINE_FRACTION}, corresponding to {int(bad_fit_threshold)} fits out of {num_it}. \n"
+                                f"R2 tolerance for individual fits of the center: >{TILT_TRACE_R2_TOL}. \n"
+                                f"Maximum allowed shift in center since last successful fit: {jump_tolerance}. \n"
+                                f"Maximum allowed deviation in FWHM from the initial guess: {wavecalib_params['TOL_FWHM']}."
                             )
 
 
@@ -512,7 +514,7 @@ def trace_line_tilt(
     return all_centers, np.array(used_spacial), keep_mask
 
 
-def show_cyclic_QA_plot(fig, ax, title_text=None, x_label=None, y_label=None):
+def show_cyclic_QA_plot(fig, ax, title_text=None, x_label=None, y_label=None, show=True):
     """ """
 
     # this removes scientific notation for the y-axis
@@ -529,7 +531,10 @@ def show_cyclic_QA_plot(fig, ax, title_text=None, x_label=None, y_label=None):
 
     for ax_row in ax:
         for ax_col in ax_row:
-            ax_col.legend()
+            # some plots might not have a legend, ignore the warning
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore", UserWarning)
+                ax_col.legend()
 
     fig.suptitle(title_text, fontsize=11, va="top", ha="center")
 
@@ -547,7 +552,7 @@ def show_cyclic_QA_plot(fig, ax, title_text=None, x_label=None, y_label=None):
             rotation="vertical",
             fontsize=12,
         )
-    plt.show()
+    if show: plt.show(block = True)
 
 
 def trace_tilts(lines, master_arc):
@@ -555,7 +560,7 @@ def trace_tilts(lines, master_arc):
     Trace the tilts of the lines in the arc spectrum.
     """
     from pylongslit.logger import logger
-    from pylongslit.parser import wavecalib_params
+    from pylongslit.parser import wavecalib_params, developer_params
 
     logger.info("Tracing the tilts of the lines in the arc spectrum...")
 
@@ -589,17 +594,13 @@ def trace_tilts(lines, master_arc):
     good_traces = 0
     good_fits = 0
 
-    # this offset value allows to make cyclic subplots, as we use the index
-    # together with integer division and module to cycle through subplots
-    j_offset = 0
-
-    plot_height = 4
-    plot_width = 3
+    plot_height = 6
+    plot_width = 2
     figsize = (24, 20)
 
-    if False:
+    if developer_params["debug_plots"]:
 
-        # somtomes used for debugging
+        # sometimes used for debugging - plot the line centers
 
         all_peak_pix = [lines[key]["peak_pix"] for key in lines.keys()]
 
@@ -609,16 +610,15 @@ def trace_tilts(lines, master_arc):
         #exit()
 
     fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
-    fig_resid, ax_resid = plt.subplots(plot_height, plot_width, figsize=figsize)
 
+    # for book-keeping the cyclic plots
     j = 0
 
     title_text = (
-        f"Line Tilt Tracing Results. Green: accepted, Red: rejected. \n"
-        f"Acceptance Criteria: \n"
-        f"R2 of the spacial polynomial fit > {R2_TOL}. This can be set in the config file."
+        f"Line Tilt Tracing Results. Green: accepted, Red: rejected. Polynomial order: {spacial_fit_order}.\n"
+        f"Acceptance Criteria: R2 of the spacial polynomial fit > {R2_TOL}.\n"
+        f"These parameters can be changed in the configuration file."
     )
-
 
     for key in lines.keys():
         pixel = lines[key]["peak_pix"]
@@ -786,46 +786,44 @@ def trace_tilts(lines, master_arc):
 
             RMS_all[wavelength] = R2_offsets
 
-        subplot_index = (j - j_offset) // plot_width, (j - j_offset) % plot_width
 
-        ax[subplot_index].plot(good_spacial_coords, good_centers, "x", color="black")
+        ax[j][0].plot(good_spacial_coords, good_centers, "x", color="black")
         # plot the fit
         spat_fine = np.linspace(0, N_ROWS, 1000)
-        ax[subplot_index].plot(
+        ax[j][0].plot(
             spat_fine,
             chebval(spat_fine, coeff),
             color=plot_color,
-            label="fit R2: {:.2f}".format(R2_spat),
+            label=f"Fit R2: {R2_spat}",
         )
 
         residuals = good_centers - chebval(good_spacial_coords, coeff)
 
-        ax_resid[subplot_index].plot(
-            good_spacial_coords, residuals, "x", color="black"
-        )   
-
+        ax[j][1].plot(
+            good_spacial_coords, residuals, "x", color="black", label="Residuals"
+        )
+        ax[j][1].axhline(0, color="red", linestyle="--")
+        ax[j][1].legend()
+    
         if (
             # this condition checks if the plot has been filled up
             # plots if so, and adjust the offset so a new
             # plot can be created and filled up
-            (j - j_offset) // plot_width == plot_height - 1
-            and (j - j_offset) % plot_width == plot_width - 1
+            j == (plot_height - 1)
         ):
             show_cyclic_QA_plot(
                 fig, ax, title_text, "Spacial Pixels", "Spectral Pixels"
             )
-            show_cyclic_QA_plot(
-                fig_resid, ax_resid, title_text, "Spacial Pixels", "Residuals"
-            )
-            
-            j_offset += plot_width * plot_height
-            # prepare a new plot
+
+            j = 0
+
             fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
+            
+            continue
 
         j += 1
 
     show_cyclic_QA_plot(fig, ax, title_text, "Spacial Pixels", "Spectral Pixels")
-    show_cyclic_QA_plot(fig_resid, ax_resid, title_text, "Spacial Pixels", "Spectral Pixels")
 
     print("\n-------------------------------------")
     logger.info("Line tilt tracing done.")
@@ -839,7 +837,6 @@ def trace_tilts(lines, master_arc):
 # TODO: see if this can be optimized runtime-wise
 def reidentify(pixnumber, wavelength, master_arc):
     """
-
     Parameters
     ----------
     pixnumber : array
@@ -868,7 +865,7 @@ def reidentify(pixnumber, wavelength, master_arc):
 
     final_r2_tol = wavecalib_params["REIDENTIFY_R2_TOL"]
 
-    fit_order = wavecalib_params["ORDER_WAVELEN"]
+    fit_order = wavecalib_params["ORDER_WAVELEN_1D"]
 
     # create a container for hand-identified lines
     ID_init = Table(dict(peak=pixnumber, wavelength=wavelength))
@@ -905,8 +902,9 @@ def reidentify(pixnumber, wavelength, master_arc):
 
     title_text = (
         f"Reidentification Results. Green: accepted, Red: rejected. \n"
-        f"Acceptance Criteria: \n"
-        f"Coefficient of Determination R2 > {final_r2_tol} (this  can be set in the config file)."
+        f"Acceptance Criteria:  R2 > {final_r2_tol}.\n"
+        f"Initial guess from FWHM is {FWHM}, allowed deviation from line center guess is {tol_mean}, allowed deviation from FWHM guess is {tol_FWHM}. \n"
+        f"All of these parameters can be changed in the configuration file."
     )
 
     # re-identify every hand-identified line
@@ -1039,6 +1037,16 @@ def reidentify(pixnumber, wavelength, master_arc):
                 color=plot_color,
                 label="fit R2: {:.2f}, FWHM: {:.2f}".format(R2,FWHM_local),
             )
+            ax[subplot_index].axvline(
+                mean_init, color="black", linestyle="--", label=f"Initial center guess {mean_init:.2f}"
+            )
+            ax[subplot_index].plot(
+                fit_center,
+                g_fit(fit_center),
+                "o",
+                color=plot_color,
+                label=f"Fitted center: {fit_center:.2f}",
+            )
         # this is needed to catch the case when the fit is bad and the values
         # don't get defined
         except UnboundLocalError:
@@ -1058,8 +1066,9 @@ def reidentify(pixnumber, wavelength, master_arc):
         ):
             show_cyclic_QA_plot(fig, ax, title_text, "Spectral Pixels", "Counts (ADU)")
             j_offset += plot_width * plot_height
-            # prepare a new plot
-            fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
+            # prepare a new plot, if not the last iteration
+            if (j+1) < len(ID_init):
+                fig, ax = plt.subplots(plot_height, plot_width, figsize=figsize)
 
         if not bad_line and R2 > final_r2_tol:
             line_REID[str(j)] = {
