@@ -147,7 +147,7 @@ def run_crremoval(figsize = (14, 14)):
             frame.sigma[mask] = safe_mean(frame.sigma)
 
             # Show QA plot
-            fig, ax = plt.subplots(1, 2, figsize=figsize)
+            fig, ax = plt.subplots(1, 2, figsize=figsize) if data_backup.shape[0] > data_backup.shape[1]  else plt.subplots(2, 1, figsize=figsize)
             ax[0].imshow(data_backup, cmap="gray", origin="lower")
             ax[0].scatter(np.where(mask)[1], np.where(mask)[0], color="red", s=1)
             ax[0].set_title(

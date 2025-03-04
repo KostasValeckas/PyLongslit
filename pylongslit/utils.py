@@ -139,8 +139,10 @@ class PyLongslit_frame:
                 plt.savefig(self.path() + ".png")
 
             plt.draw()
-
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 12))  
+        if data.shape[0] > data.shape[1]:
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 12))
+        else:
+            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 18))  
         fig.suptitle(f"{self.name} - Press \"h\" to normalize.\n {title_addition}")
         update_plot(normalize=False)
 

@@ -13,7 +13,7 @@ def run_background_subtraction():
 
     from pylongslit.logger import logger
     from pylongslit.parser import background_params
-    from pylongslit.utils import PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame, hist_normalize
     from pylongslit.utils import get_reduced_frames
 
     reduced_files = get_reduced_frames()
@@ -66,6 +66,16 @@ def run_background_subtraction():
 
         logger.info(f"Subtracting background from {pair['A']} using {pair['B']}.")
 
+        # check the dimensions of the images
+        if images[pair["A"]].shape != images[pair["B"]].shape:
+            logger.error(
+                f"Image dimensions do not match for {pair['A']} and {pair['B']}."
+            )
+            logger.error("Please check the images.")
+            logger.error("Don't run the crop procedure before the background subtraction.")
+            logger.error("If you have already run the crop procedure, please re-reduce the images.")
+            exit()
+
         # simple handling for skip-cases TODO: make this more robust
         try:
             subtracted_image = images[pair["A"]] - images[pair["B"]]
@@ -75,6 +85,24 @@ def run_background_subtraction():
         subtracted_images[pair["A"]] = subtracted_image
         # propagating the errors
         new_sigmas[pair["A"]] = np.sqrt(sigmas[pair["A"]]**2 + sigmas[pair["B"]]**2)
+
+        # for visualization purposes
+        normalized = False
+
+        def update(event):
+            if normalized:
+                axes[0].imshow(hist_normalize(images[pair["A"]]), cmap="gray")
+                axes[1].imshow(hist_normalize(subtracted_image), cmap="gray")
+            else:
+                axes[0].imshow(images[pair["A"]], cmap="gray")
+                axes[1].imshow(subtracted_image, cmap="gray")
+            fig.canvas.draw_idle()
+
+        def on_key(event):
+            nonlocal normalized
+            if event.key == 'h':
+                normalized = not normalized
+                update(event)
 
         # Create a plot with 2 subplots
         fig, axes = plt.subplots(2, 1, figsize=(16, 16))
@@ -89,10 +117,12 @@ def run_background_subtraction():
         axes[1].axis("off")
 
         fig.suptitle(
-            f"Background Subtraction for {pair['A']}.\n"
+            f"Background Subtraction for {pair['A']}. Press \"h\" to histogram normalize. \n"
             f"Ensure that the traces of the objects do not overlay each other.\n"
             f"If they do, it might be best to depend on polynomial background estimation only."
         )
+
+        fig.canvas.mpl_connect('key_press_event', on_key)
         
         plt.show()
 

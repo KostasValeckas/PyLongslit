@@ -5,6 +5,10 @@ from numpy.polynomial.chebyshev import chebfit, chebval
 from tqdm import tqdm
 import argparse
 
+"""
+PyLongslit sky-subtraction module for polynomial sky-fitting.
+"""
+
 
 def choose_obj_centrum_sky(file_list):
     """
@@ -27,8 +31,9 @@ def choose_obj_centrum_sky(file_list):
     # used for more readable plotting code
     plot_title = (
         lambda file: f"Object position estimation for {file}.\n"
-        "Press on the object on a spectral point with no bright sky-lines (but away from detector edges.)"
-        "\nYou can try several times. Press 'q' or close plot when done."
+        "Press on the object away from detector edges."
+        "\nYou can try several times. Press 'q' or close plot when done.\n"
+        "If no center is clicked, the procedure will be skipped for this frame."
     )
 
     titles = [plot_title(file) for file in file_list]
@@ -39,14 +44,14 @@ def choose_obj_centrum_sky(file_list):
 def fit_sky_one_column(
     slice_spec,
     spatial_center_guess,
-    FWHM_AP,
-    SIGMA_APSKY,
-    ITERS_APSKY,
-    ORDER_APSKY,
+    fwhm_guess,
+    sigma_cut,
+    sigma_iters,
+    sky_order,
 ):
     """
     In a detector slice, evaluates the sky region using `estimate_sky_regions`,
-    removes the outlies using sigma-clipping, and fits the sky using a Chebyshev polynomial.
+    removes the outliers using sigma-clipping, and fits the sky using a Chebyshev polynomial.
 
     Parameters
     ----------
@@ -56,29 +61,38 @@ def fit_sky_one_column(
     spatial_center_guess : int
         The user clicked center of the object.
 
-    FWHM_AP : int
-        The FWHM of the object.
+    fwhm_guess : int
+        The FWHM guess of the object.
 
-    SIGMA_APSKY : float
+    sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
 
-    ITERS_APSKY : int
+    sigma_iters : int
         The number of iterations for sigma-clipping in the sky fitting.
 
-    ORDER_APSKY : int
+    sky_order : int
         The order of the Chebyshev polynomial to fit the sky.
 
     Returns
     -------
     sky_fit : array
         The fitted sky background (evaluated fit).
+
+    clip_mask : array
+        A boolean mask of the outliers.
+
+    x_sky : array
+        The x (spacial pixels) values of the sky region.
+
+    sky_val : array
+        The y (counts) values of the sky region.
     """
 
     from pylongslit.utils import estimate_sky_regions
 
     # sky region for this column
     _, sky_left, sky_right = estimate_sky_regions(
-        slice_spec, spatial_center_guess, FWHM_AP
+        slice_spec, spatial_center_guess, fwhm_guess
     )
 
     # x array for the fit
@@ -89,11 +103,11 @@ def fit_sky_one_column(
     sky_val = np.concatenate((slice_spec[:sky_left], slice_spec[sky_right:]))
 
     # mask the outliers
-    clip_mask = sigma_clip(sky_val, sigma=SIGMA_APSKY, maxiters=ITERS_APSKY).mask
+    clip_mask = sigma_clip(sky_val, sigma=sigma_cut, maxiters=sigma_iters).mask
 
     # fit the sky
     coeff_apsky, _ = chebfit(
-        x_sky[~clip_mask], sky_val[~clip_mask], deg=ORDER_APSKY, full=True
+        x_sky[~clip_mask], sky_val[~clip_mask], deg=sky_order, full=True
     )
 
     # evaluate the fit
@@ -108,17 +122,17 @@ def fit_sky_QA(
     slice_spec,
     spatial_center_guess,
     spectral_column,
-    FWHM_AP,
-    SIGMA_APSKY,
-    ITERS_APSKY,
-    ORDER_APSKY,
+    fwhm_guess,
+    sigma_cut,
+    sigma_iters,
+    sky_order,
     figsize=(18, 12),
 ):
     """
     A QA method for the sky fitting. Performs the sky-fitting routine
     for one column of the detector, and plots the results.
 
-    This is used for used insection, before looping through the whole detector
+    This is used for user insection, before looping through the whole detector
     in the `make_sky_map` method.
 
     Parameters
@@ -132,16 +146,16 @@ def fit_sky_QA(
     spectral_column : int
         The spectral column to extract
 
-    FWHM_AP : int
+    fwhm_guess : int
         The FWHM of the object.
 
-    SIGMA_APSKY : float
+    sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
 
-    ITERS_APSKY : int
+    sigma_iters : int
         The number of iterations for sigma-clipping in the sky fitting.
 
-    ORDER_APSKY : int
+    sky_order : int
         The order of the Chebyshev polynomial to fit the sky.
 
     figsize : tuple
@@ -152,17 +166,19 @@ def fit_sky_QA(
     from pylongslit.utils import estimate_sky_regions
 
     refined_center, sky_left, sky_right = estimate_sky_regions(
-        slice_spec, spatial_center_guess, FWHM_AP
+        slice_spec, spatial_center_guess, fwhm_guess
     )
 
     # dummy x array for plotting
     x_spec = np.arange(len(slice_spec))
 
+    # fit the sky
     sky_fit, clip_mask, x_sky, sky_val, reasiduals = fit_sky_one_column(
-        slice_spec, refined_center, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
+        slice_spec, refined_center, fwhm_guess, sigma_cut, sigma_iters, sky_order
     )
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize, sharex=True)
+    # plot the results
+    _, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize, sharex=True)
 
     # Plot the sky fit
     ax1.axvline(x=sky_left, color="r", linestyle="--", label="Object boundary")
@@ -179,7 +195,7 @@ def fit_sky_QA(
     ax1.set_title(
         "Sky-background fitting QA. Ensure the fit is reasonable, and that the object "
         "is completely encapsulated by the red lines.\n"
-        "If not, change relative parameters in the config file."
+        "If not, change relative parameters (polynomial order and object FWHM) in the configuration file."
     )
 
     # Plot the residuals
@@ -193,7 +209,7 @@ def fit_sky_QA(
 
 
 def make_sky_map(
-    filename, data, spatial_center_guess, FWHM_AP, SIGMA_APSKY, ITERS_APSKY, ORDER_APSKY
+    filename, data, spatial_center_guess, fwhm_guess, sigma_cut, sigma_iters, sky_order
 ):
     """
     Loops through the detector columns, and fits the sky background for each one.
@@ -208,16 +224,16 @@ def make_sky_map(
     spatial_center_guess : int
         User-clicked spatial center of the object.
 
-    FWHM_AP : int
+    fwhm_guess : int
         The FWHM of the object.
 
-    SIGMA_APSKY : float
+    sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
 
-    ITERS_APSKY : int
+    sigma_iters : int
         The number of iterations for sigma-clipping in the sky fitting.
 
-    ORDER_APSKY : int
+    sky_order : int
         The order of the Chebyshev polynomial to fit the sky.
 
     Returns
@@ -233,7 +249,7 @@ def make_sky_map(
     n_spacial = data.shape[0]
     n_spectal = data.shape[1]
 
-    # evaluate the sky column-wise and insert in this array
+    # evaluate the sky column-wise and insert in this array, together with the error
     sky_map = np.zeros((n_spacial, n_spectal))
     sky_error = np.zeros((n_spacial, n_spectal))
 
@@ -243,17 +259,18 @@ def make_sky_map(
         sky_fit, _, _, _, residuals = fit_sky_one_column(
             slice_spec,
             spatial_center_guess,
-            FWHM_AP,
-            SIGMA_APSKY,
-            ITERS_APSKY,
-            ORDER_APSKY,
+            fwhm_guess,
+            sigma_cut,
+            sigma_iters,
+            sky_order,
         )
+        # insert the results
         sky_map[:, column] = sky_fit
         RMS_residuals = np.sqrt(np.mean(residuals**2))
         sky_error[:, column] = np.full(n_spacial, RMS_residuals)
 
     sky_frame = PyLongslit_frame(sky_map, sky_error, None, "skymap_" + filename)
-    sky_frame.show_frame(normalize=False)
+    sky_frame.show_frame()
     sky_frame.write_to_disc()
 
     return sky_frame
@@ -279,26 +296,33 @@ def remove_sky_background(center_dict):
         Format: {filename: data}
     """
     from pylongslit.logger import logger
-    from pylongslit.parser import output_dir, extract_params
-    from pylongslit.utils import open_fits, show_frame, PyLongslit_frame
+    from pylongslit.parser import extract_params, sky_params
+    from pylongslit.utils import PyLongslit_frame, hist_normalize
 
     # user-defined paramteres relevant for sky-subtraction
 
-    # user-guess of FWHM of the object
-    FWHM_AP = extract_params["FWHM_AP"]
     # sigma clipping parameters
-    SIGMA_APSKY = extract_params["SIGMA_APSKY"]
-    ITERS_APSKY = extract_params["ITERS_APSKY"]
+    sigma_cut = sky_params["sigma_cut"]
+    sigma_iters = sky_params["sigma_clip_iters"]
     # order of the sky-fit
-    ORDER_APSKY = extract_params["ORDER_APSKY"]
-
-    # final container - this keeps the results
-    subtracted_frames = {}
+    sky_order = sky_params["fit_order"]
 
     # every key in the dict is a filename
     for file in center_dict.keys():
 
-        frame = PyLongslit_frame.read_from_disc(file)
+        # depending if it is a science or standard frame, the FWHM is different
+        if "science" in file:
+            fwhm_guess = extract_params["object"]["fwhm_guess"]
+        else:
+            fwhm_guess = extract_params["standard"]["fwhm_guess"]
+
+        logger.info(f"Starting sky subtraction for {file}...")
+        try:
+            frame = PyLongslit_frame.read_from_disc(file)
+        except FileNotFoundError:
+            logger.error(f"File {file} not found. Try running the reduction first.")
+            exit()
+
         if frame.header["SKYSUBBED"] == True:
             logger.warning(f"Sky subtraction already performed for {file}. Skipping...")
             continue
@@ -314,12 +338,12 @@ def remove_sky_background(center_dict):
                 f"Inspect whether further sky-subtraction is needed."
             )
             logger.warning(
-                f"This routine introduces errors - and should not be used if not neeeded)"
+                f"This routine introduces noise - and should not be used if not neeeded."
             )
-            
+
+        # get the data and the center    
         data = frame.data.copy()
         error = frame.sigma.copy()
-
         clicked_point = center_dict[file]
 
         # start with a QA at user defined point
@@ -332,10 +356,10 @@ def remove_sky_background(center_dict):
             slice_spec,
             spacial_center_guess,
             spectral_center_guess,
-            FWHM_AP,
-            SIGMA_APSKY,
-            ITERS_APSKY,
-            ORDER_APSKY,
+            fwhm_guess,
+            sigma_cut,
+            sigma_iters,
+            sky_order,
         )
 
         # create the sky map and subtract
@@ -343,10 +367,10 @@ def remove_sky_background(center_dict):
             file,
             data,
             spacial_center_guess,
-            FWHM_AP,
-            SIGMA_APSKY,
-            ITERS_APSKY,
-            ORDER_APSKY,
+            fwhm_guess,
+            sigma_cut,
+            sigma_iters,
+            sky_order,
         )
 
         logger.info(f"Sky map created for {file}")
@@ -355,11 +379,25 @@ def remove_sky_background(center_dict):
         skysub_data = data - sky_map.data
         skysub_error = np.sqrt(error**2 + sky_map.sigma**2)
 
+        # plot the difference for QA 
+        fig, ax = plt.subplots(2, 1, figsize=(12, 18))
+        ax[0].imshow(hist_normalize(data), cmap="gray")
+        ax[0].set_title("Original data (histogram normalized)")
+        ax[1].imshow(hist_normalize(skysub_data), cmap="gray")
+        ax[1].set_title("Sky-subtracted data (histogram normalized)")
+        fig.suptitle(
+            f"Sky subtraction QA for {file}.\n"
+            f"Ensure that only random noise is left in the background.\n"
+            f"If not, revise the sky subtraction parameters in the configuration file."
+        )
+        plt.show()
+    
+        # Swap the data and sigma in the frame, show and write to disc
         frame.data = skysub_data
         frame.sigma = skysub_error
         frame.header["SKYSUBBED"] = True
 
-        frame.show_frame(normalize=False)
+        frame.show_frame()
         frame.write_to_disc()
 
 
@@ -401,12 +439,18 @@ def run_sky_subtraction():
     from pylongslit.logger import logger
     from pylongslit.utils import get_reduced_frames
 
-    logger.info("Starting the 1d extraction process...")
+    logger.info("Starting the sky-subtraction process...")
 
+    logger.info("Fetching the reduced frames...")
     reduced_files = get_reduced_frames()
+    if len(reduced_files) == 0:
+        logger.error("No reduced frames found. Please run the reduction procedure first.")
+        exit()
 
+    # get the center estimations
     center_dict = choose_obj_centrum_sky(reduced_files)
 
+    # this is the main driver method.
     remove_sky_background(center_dict)
 
     logger.info("Sky subtraction complete.")

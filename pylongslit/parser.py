@@ -44,6 +44,7 @@ try:
     standard_params = data["standard"]
     arc_params = data["arc"]
     wavecalib_params = data["wavecalib"]
+    sky_params = data["sky"]
     extract_params = data["extract"]
     obj_trace_clone_params = data["obj_trace_clone"]
     sens_params = data["sensfunc"]
