@@ -2,12 +2,25 @@ import matplotlib.pyplot as plt
 import argparse
 import numpy as np
 
-def subtract_background(reduced_files):
+def run_background_subtraction():
+    """
+    Subtract the background from the reduced files using A - B image pairs.
+    The pairs are given in the config file.
+
+    This method loads the files, checks if they have been reduced, 
+    and subtracts the background. The frames are altered in place.
+    """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import output_dir, background_params
-    from pylongslit.utils import hist_normalize, open_fits, write_to_fits, PyLongslit_frame
+    from pylongslit.parser import background_params
+    from pylongslit.utils import PyLongslit_frame
+    from pylongslit.utils import get_reduced_frames
 
+    reduced_files = get_reduced_frames()
+
+    # these are the pairs of object - background files, given in the config file
+    # they are given as a dictionary of dictionaries, where the key is the pair number
+    # and the value is a dictionary with keys "A" and "B" which are the object and background files
     file_pairs = background_params["pairs"]
 
     logger.info(f"Found {len(file_pairs)} object - background pairs.")
@@ -34,6 +47,7 @@ def subtract_background(reduced_files):
             if frame.header["BCGSUBBED"] == True:
                 logger.warning(f"File {file} already had background subtracted. Skipping...")
                 continue
+            # strp prefix to match original file names
             new_filename = file.replace("reduced_science_", "").replace(
                 "reduced_std_", ""
             )
@@ -41,44 +55,54 @@ def subtract_background(reduced_files):
             sigmas[new_filename] = frame.sigma
             headers[new_filename] = frame.header
 
+    logger.info("Images loaded.")
+
+    # these are the containers for the final results
     subtracted_images = {}
     new_sigmas = {}
 
     for i in range(len(file_pairs)):
         pair = file_pairs[str(i + 1)]
 
+        logger.info(f"Subtracting background from {pair['A']} using {pair['B']}.")
+
         # simple handling for skip-cases TODO: make this more robust
         try:
             subtracted_image = images[pair["A"]] - images[pair["B"]]
         except KeyError:
             continue
-
+        
         subtracted_images[pair["A"]] = subtracted_image
+        # propagating the errors
         new_sigmas[pair["A"]] = np.sqrt(sigmas[pair["A"]]**2 + sigmas[pair["B"]]**2)
 
-
         # Create a plot with 2 subplots
-        _, axes = plt.subplots(2, 1, figsize=(12, 6))
+        fig, axes = plt.subplots(2, 1, figsize=(16, 16))
 
-        # Show the histogram equalized image before subtraction
+        # Show the image before and after subtraction
         axes[0].imshow(images[pair["A"]], cmap="gray")
         axes[0].set_title(f'Before Subtraction: {pair["A"]}')
         axes[0].axis("off")
 
-        # Show the histogram equalized image after subtraction
         axes[1].imshow(subtracted_image, cmap="gray")
         axes[1].set_title(f'After Subtraction: {pair["A"]}')
         axes[1].axis("off")
 
-        # Display the plot
-        plt.tight_layout()
+        fig.suptitle(
+            f"Background Subtraction for {pair['A']}.\n"
+            f"Ensure that the traces of the objects do not overlay each other.\n"
+            f"If they do, it might be best to depend on polynomial background estimation only."
+        )
+        
         plt.show()
 
     # save the subtracted images
     for filename in reduced_files:
 
+        # crop the prefix to find the original file name
         new_filename = filename.replace("reduced_science_", "").replace("reduced_std_", "")
 
+        # use the original file name to create the subtracted frame.
         if new_filename in subtracted_images:
             image = subtracted_images[new_filename]
             sigma = new_sigmas[new_filename]
@@ -87,9 +111,10 @@ def subtract_background(reduced_files):
             save_filename = filename.replace(".fits", "")
 
             frame = PyLongslit_frame(image, sigma, header, save_filename)
+            # this header prevents double subtraction
             frame.header["BCGSUBBED"] = True
             
-            frame.show_frame(normalize=False)
+            frame.show_frame()
 
             logger.info(f"Saving subtracted image {save_filename} to disc.")
             frame.write_to_disc()
@@ -98,12 +123,6 @@ def subtract_background(reduced_files):
     logger.info("Subtracted images saved to disc.")
 
 
-def run_background_subtraction():
-
-    from pylongslit.utils import get_reduced_frames
-
-    reduced_files = get_reduced_frames()
-    subtract_background(reduced_files)
 
 def main():
     parser = argparse.ArgumentParser(description="Run the pylongslit background-subtraction procedure.")

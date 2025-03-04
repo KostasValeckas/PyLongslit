@@ -120,6 +120,7 @@ def run_crremoval(figsize = (14, 14)):
             # for stability, don't allow the same file to be processed twice
             if frame.header["CRRREMOVD"]:
                 logger.warning(f"File {file} already had cosmic rays removed. Skipping...")
+                logger.warning("If you want to re-run the cosmic-ray removal, reduce the frame again to reset.")  
                 continue
 
             # take backup data to show the difference
