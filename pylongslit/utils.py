@@ -101,16 +101,16 @@ class PyLongslit_frame:
                     sigma_to_plot = sigma
 
                 im1 = ax1.imshow(data_to_plot, cmap="gray")
-                ax1.set_title(f"{self.name} - Data" + (" (normalized)" if normalize else ""))
                 ax1.set_xlabel("Pixels")
                 ax1.set_ylabel("Pixels")
                 self.colorbar1 = fig.colorbar(im1, ax=ax1, orientation='vertical')
+                ax1.set_title(f"Data" + (" (normalized)" if normalize else ""))
 
                 im2 = ax2.imshow(sigma_to_plot, cmap="gray")
-                ax2.set_title(f"{self.name} - Error" + (" (normalized)" if normalize else ""))
                 ax2.set_xlabel("Pixels")
                 ax2.set_ylabel("Pixels")
                 self.colorbar2 = fig.colorbar(im2, ax=ax2, orientation='vertical')
+                ax2.set_title(f"Error" + (" (normalized)" if normalize else ""))
             
             else:
                 
@@ -609,6 +609,8 @@ def flip_and_rotate(frame_data, transpose, flip, inverse=False):
 
 
 def get_file_group(*prefixes):
+    # TODO: code would be more clean if this returned an isntance of the
+    # class FileList, instead of a list of filenames
     """
     Helper method to retrieve the names of the
     reduced frames (science or standard) from the output directory.
@@ -636,7 +638,8 @@ def get_file_group(*prefixes):
         logger.warning(f"No files found with prefixes {prefixes}.")
 
     logger.info(f"Found {len(files)} frames:")
-    files.list_files()
+    for file in files: print(file)
+    print("------------------------------------")
 
     return files
 

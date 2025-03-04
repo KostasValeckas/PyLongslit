@@ -6,82 +6,174 @@ import matplotlib.pyplot as plt
 
 
 """
-Module for removing cosmic rays from raw science and standard star frames.
+PyLongslit module for removing cosmic rays from raw science and standard star frames.
 """
 
-# TODO is there a sensful way to make QA plots for crremoval?
+def run_crremoval(figsize = (14, 14)):
+    """
+    This whole method is a wrapper for the astroscrappy.detect_cosmics method.
+    It reads the reduced files from the disc, 
+    removes cosmic rays from them and writes the cleaned files back to the disc.
 
+    The reduced files are being modified in place.
 
-def run_crremoval():
+    Parameters
+    ----------
+    figsize : tuple, optional
+        Size of the figure to display the QA plot. The default is (14, 14).
+    """
 
     from pylongslit.logger import logger
     from pylongslit.parser import detector_params, crr_params, skip_science_or_standard_bool
     from pylongslit.parser import science_params, standard_params
-    from pylongslit.utils import FileList, list_files, get_file_group, PyLongslit_frame
+    from pylongslit.utils import get_file_group, PyLongslit_frame
+    from pylongslit.stats import safe_mean
 
-    # initiate user parameters
-
-    # detecctor
+    # initiate user-set parameters from the configuration file
     gain = detector_params["gain"]
     read_out_noise = detector_params["read_out_noise"]
-
-    # astroscrappy.detect_cosmics
-    sigclip = crr_params["sigclip"]
-    frac = crr_params["frac"]
-    objlim = crr_params["objlim"]
-    niter = crr_params["niter"]
 
     logger.info("Cosmic-ray removal procedure running...")
     logger.info("Using the following detector parameters:")
     logger.info(f"gain = {gain}")
     logger.info(f"read_out_noise = {read_out_noise}")
 
-    file_list = get_file_group("reduced")
+    # check skip science or standard bool when fetching files
+    # should not be a problem if it passed the reduction step, but just in case
+    if skip_science_or_standard_bool == 0:
+        logger.error("Both science and standard star frames are set to be skipped in the configuration file.")
+        logger.error("Only calibration frames can be processed in this configuration.")
+        logger.error("Please set at least one of them to False.")
+        exit()
 
-    for file in file_list:
-        logger.info(f"Removing cosmic rays from {file}...")
+    if skip_science_or_standard_bool == 1:
+        logger.warning("Standard star frames are set to be skipped in the configuration file.")
+        logger.warning("Only science frames will be processed.")
+    else:
+        logger.info("Getting standard star files...")
+        standard_star_file_list = get_file_group("reduced_standard")
 
-        frame = PyLongslit_frame.read_from_disc(file)
+        if len(standard_star_file_list) == 0:
+            logger.error("No reduced standard star files found. Please run the reduction procedure first.")
+            exit()
 
-        frame_data_temp = frame.data.copy()
+    if skip_science_or_standard_bool == 2:
+        logger.warning("Science frames are set to be skipped in the configuration file.")
+        logger.warning("Only standard star frames will be processed.")
+    else:
+        logger.info("Getting science files...")
+        science_file_list = get_file_group("reduced_science")
 
+        if len(science_file_list) == 0:
+            logger.error("No reduced science files found. Please run the reduction procedure first.")
+            exit()
 
+    # we do science and stananrd star frames separately, as they
+    # usually need different parameters due to very different S/N ratios
+    # - this calls for a different parameter set for cosmic-ray removal
 
-        if frame.header["CRRREMOVD"]:
-            logger.warning(f"File {file} already had cosmic rays removed. Skipping...")
-            continue
-                                 
-        mask, clean_arr = astroscrappy.detect_cosmics(
-            frame.data,
-            sigclip=sigclip,
-            sigfrac=frac,
-            objlim=objlim,
-            cleantype="medmask",
-            invar = np.array(frame.sigma**2, dtype = np.float32),
-            niter=niter,
-            sepmed=True,
-            verbose=True,
-            gain=gain,
-            readnoise=read_out_noise,
-        )
+    # but all files in a dict for later looping:
+    if skip_science_or_standard_bool == 3:
+        file_list = {"standard": standard_star_file_list, "science": science_file_list}
+    elif skip_science_or_standard_bool == 1:
+        file_list = {"science": science_file_list}
+    else:
+        file_list = {"standard": standard_star_file_list}
+    
 
-        frame.data = clean_arr
+    # standard star frames:
 
-        frame.sigma[mask] = np.nanmean(frame.sigma)
+    sigclip_std = crr_params["standard"]["sigclip"]
+    frac_std = crr_params["standard"]["frac"]
+    objlim_std = crr_params["standard"]["objlim"]
+    niter_std = crr_params["standard"]["niter"]
 
-        _, ax = plt.subplots(1, 1, figsize=(12, 12))
-        ax.imshow(frame.data, cmap="gray", origin="lower")
-        ax.imshow(mask, cmap="Reds", alpha=0.5, origin="lower")
-        ax.set_title(f"Cleaned data\n Red: cosmic rays - {np.sum(mask)} pixels found")
-        plt.show()  
+    # science frames:
 
-        logger.info(f"Cosmic rays removed on {file}.")
+    sigclip_sci = crr_params["science"]["sigclip"]
+    frac_sci = crr_params["science"]["frac"]
+    objlim_sci = crr_params["science"]["objlim"]
+    niter_sci = crr_params["science"]["niter"]
 
-        frame.header["CRRREMOVD"] = True
+    for key, file_list in file_list.items():
+        
+        if key == "standard":
+            sigclip = sigclip_std
+            frac = frac_std
+            objlim = objlim_std
+            niter = niter_std
+            exptime = standard_params["exptime"]
+        else:
+            sigclip = sigclip_sci
+            frac = frac_sci
+            objlim = objlim_sci
+            niter = niter_sci
+            exptime = science_params["exptime"]
+        
+        for file in file_list:
 
-        logger.info(f"Writing output to disc...")
+            print("-----------------------------------")
+            logger.info(f"Removing cosmic rays from {file}...")
 
-        frame.write_to_disc()
+            frame = PyLongslit_frame.read_from_disc(file)
+
+            # for stability, don't allow the same file to be processed twice
+            if frame.header["CRRREMOVD"]:
+                logger.warning(f"File {file} already had cosmic rays removed. Skipping...")
+                continue
+
+            # take backup data to show the difference
+            data_backup = frame.data.copy()
+
+            # mask is a boolean array with True values where cosmic rays are detected
+            # clean_arr is the cleaned data array                              
+            mask, clean_arr = astroscrappy.detect_cosmics(
+                frame.data,
+                sigclip=sigclip,
+                sigfrac=frac,
+                objlim=objlim,
+                cleantype="medmask",
+                invar = np.array(frame.sigma**2, dtype = np.float32),
+                niter=niter,
+                sepmed=True,
+                verbose=True,
+                gain=gain,
+                readnoise=read_out_noise,
+            )
+        
+            # swap out the data arrays, and replace the sigma array with the mean value
+            frame.data = clean_arr
+            frame.sigma[mask] = safe_mean(frame.sigma)
+
+            # Show QA plot
+            fig, ax = plt.subplots(1, 2, figsize=figsize)
+            ax[0].imshow(data_backup, cmap="gray", origin="lower")
+            ax[0].scatter(np.where(mask)[1], np.where(mask)[0], color="red", s=1)
+            ax[0].set_title(
+                f"Detected cosmic rays (red)- {np.sum(mask)} pixels found.\n"
+                f"Use the zoom function to inspect the cosmic rays."
+            )
+            ax[0].set_xlabel("Spectral Pixels")
+            ax[0].set_ylabel("Spatial Pixels")
+
+            ax[1].imshow(clean_arr, cmap="gray", origin="lower")
+            ax[1].set_title("Cleaned data")
+            ax[1].set_xlabel("Spectral Pixels")
+        
+
+            fig.suptitle(
+                f"Cosmic-ray removal QA plot for {file} with exptime {exptime} seconds.\n"
+                f"If the detection under/overestimating cosmic-rays, try changing the parameters in the configuration file."
+            )
+            plt.show()
+    
+            logger.info(f"Cosmic rays removed on {file}.")
+
+            frame.header["CRRREMOVD"] = True
+
+            logger.info(f"Writing output to disc...")
+
+            frame.write_to_disc()
     
 
     logger.info("Cosmic-ray removal procedure finished.")

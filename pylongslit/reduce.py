@@ -1,6 +1,5 @@
 import numpy as np
 import glob as glob
-import matplotlib.pyplot as plt
 import argparse
 
 """
