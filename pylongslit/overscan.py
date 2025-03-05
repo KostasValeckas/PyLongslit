@@ -1,28 +1,58 @@
 import numpy
 from matplotlib.patches import Rectangle
 import matplotlib.pyplot as plt
+import numpy as np
 
 """
-Module for subtracting overscan from a frame.
+PyLongslit module for handling overscan bias.
 """
 
 
-def show_overscan():
+def show_overscan(figsize = (16,16)):
     """
     Show the user defined ovsercan region.
 
     Fetches a raw flat frame from the user defined directory
     and displays the overscan region overlayed on it.
+
+    Does not crash if no flats are present, but simply returns without showing
+    anything.
+
+    Parameters
+    ----------
+    figsize : tuple, optional
+        The size of the figure to display. Default is (16, 16).
     """
     from pylongslit.logger import logger
-    from pylongslit.parser import detector_params
-    from pylongslit.utils import show_flat
+    from pylongslit.parser import data_params, flat_params, detector_params
+    from pylongslit.utils import FileList, open_fits, hist_normalize
 
     logger.info(
         "Showing the overscan region on a raw flat frame for user inspection..."
     )
 
-    show_flat()
+    logger.info("Trying to open the first file in the flat directory...")
+    # read the names of the flat files from the directory
+    file_list = FileList(flat_params["flat_dir"])
+
+    if len(file_list.files) == 0:
+        logger.error("No files found in the flat directory.")
+        logger.error("Please check the configuration file.")
+        logger.error("Can't show overscan region without a flat frame. Skipping...")   
+        return
+
+    # open the first file in the directory
+    raw_flat = open_fits(flat_params["flat_dir"], file_list.files[0])
+    logger.info("File opened successfully.")
+
+    # get the data and normalize
+    data = np.array(raw_flat[data_params["raw_data_hdu_index"]].data)
+    norm_data = hist_normalize(data)
+
+    plt.figure(figsize=figsize)
+
+    # show the overscan region overlayed on a raw flat frame
+    plt.imshow(norm_data, cmap="gray")
 
     # Add rectangular box to show the overscan region
     width = (
@@ -53,11 +83,14 @@ def show_overscan():
     plt.xlabel("Pixels in x-direction")
     plt.ylabel("Pixels in y-direction")
     plt.title(
-        "Overscan region overlayed on a raw flat frame with logaritghmic normalization.\n"
+        "Overscan region overlayed on a raw (normalized) flat frame.\n"
         "The overscan region should be dark compared to the rest of the frame.\n"
-        "If it is not, check the overscan region definition in the config file."
+        "If it is not, check the overscan region definition in the config file.\n"
+        "Remember that the overscan subtraction is optional, and can be disabled in the configuration file."
     )
     plt.show()
+
+    return
 
 
 def detect_overscan_direction():
@@ -129,20 +162,20 @@ def check_overscan():
 
 def estimate_frame_overscan_bias(image_data, plot = False):
     """
-    Subtract the overscan region from a single frame.
+    Estimate the overscan bias of a frame.
 
     Parameters
     ----------
-    input_dir : str
+    input_dir : pylongslit.utils.PyLongslit_frame
         The directory where the frame is located.
 
-    file : str
-        The name of the frame.
+    plot : bool, optional
+        Whether to plot the estimated overscan bias. Default is False.
 
     Returns
     -------
-    image_data : numpy.ndarray
-        The frame with the overscan region subtracted.
+    overscan_frame : pylongslit.utils.PyLongslit_frame
+        The overscan bias frame
     """
 
     from pylongslit.logger import logger
@@ -157,6 +190,9 @@ def estimate_frame_overscan_bias(image_data, plot = False):
     overscan_y_start = detector_params["overscan"]["overscan_y_start"]
     overscan_y_end = detector_params["overscan"]["overscan_y_end"]
 
+    # create a frame with same shape as the input frame, and fill up the 
+    # mean of the overscan region. As error, take the error of the mean
+    # for a Gaussian distribution.
     overscan_image = numpy.zeros_like(image_data)
     error_image = numpy.zeros_like(image_data)
 
@@ -165,15 +201,31 @@ def estimate_frame_overscan_bias(image_data, plot = False):
     overscan_image= numpy.full(image_data.shape, mean)
     error = numpy.std(overscan)/numpy.sqrt(len(overscan))
     error_image = numpy.full(image_data.shape, error)
-            
-
-    overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "Overscan")
+        
+    # construct the overscan frame and return it
+    overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "overscan_bias")
 
     if plot: overscan_frame.show_frame()
 
     return overscan_frame
 
 def subtract_overscan(data):
+    """
+    Subtract the overscan bias from the frame.
+    
+    Uses 'estimate_frame_overscan_bias' to estimate the overscan bias
+    and subtracts it from the frame.
+
+    Parameters
+    ----------
+    data : numpy array
+        The data to subtract the overscan bias from.
+
+    Returns
+    -------
+    data : numpy array
+        The data with the overscan bias subtracted.
+    """
 
     from pylongslit.logger import logger
 

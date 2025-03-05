@@ -445,34 +445,6 @@ def hist_normalize(data, z_thresh=3):
     return data_equalized
 
 
-def show_flat():
-    """
-    Shows the first flat-frame in the user defined flat-directory.
-
-    This is used together with ´overscan.show_overscan()´ and
-    ´mkspecflat.show_flat_norm_region()´
-    for sanity checks of the user defined regions.
-    """
-
-    from pylongslit.logger import logger
-    from pylongslit.parser import data_params, flat_params
-
-    logger.info("Opening the first file in the flat directory...")
-    # read the names of the flat files from the directory
-    file_list = FileList(flat_params["flat_dir"])
-
-    # open the first file in the directory
-    raw_flat = open_fits(flat_params["flat_dir"], file_list.files[0])
-    logger.info("File opened successfully.")
-
-    data = np.array(raw_flat[data_params["raw_data_hdu_index"]].data)
-
-    norm_data = hist_normalize(data)
-
-    # show the overscan region overlayed on a raw flat frame
-    plt.imshow(norm_data, cmap="gray")
-
-
 def show_frame(
     inp_data, title=None, figsize=(18, 12), normalize=True, new_figure=True, show=True
 ):

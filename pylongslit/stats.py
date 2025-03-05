@@ -1,10 +1,27 @@
+"""
+PyLongslit module for statistics.
+"""
+#TODO: some utils might be more appropriate to move here
+
 import numpy as np
 from tqdm import tqdm
 
 def bootstrap_median_errors_framestack(framestack, nboot=1000):
     """
     Calculate the standard error of the median using bootstrapping.
-    Assumes frames are stacked along the first axis.
+    Assumes frames are stacked along the first axis. The median is calculated
+    along the first axis.
+
+    framestack : numpy array
+        The framestack to calculate the median errors of.
+
+    nboot : int, optional
+        The number of bootstrap samples to take. Default is 1000.
+
+    Returns
+    -------
+    median_errors : numpy array
+        The standard error of the median of each pixel in the framestack.
     """
 
     from pylongslit.logger import logger
@@ -12,7 +29,7 @@ def bootstrap_median_errors_framestack(framestack, nboot=1000):
     # Check the input
     if not isinstance(framestack, np.ndarray):
         logger.critical('Input failure in error estimation. Contact the developers.')
-        raise TypeError('Input data must be a numpy array.')
+        exit()
 
     # Initialize variables for incremental calculation
     shape = framestack.shape[1:]
@@ -43,5 +60,17 @@ def bootstrap_median_errors_framestack(framestack, nboot=1000):
 def safe_mean(array, axis=None):
     """
     Calculate the mean of an array, ignoring NaN and infs values.
+
+    array : numpy array
+        The array to calculate the mean of.
+    
+    axis : int, optional
+        The axis along which to calculate the mean.
+        If None, the mean of the whole array is calculated.
+
+    Returns
+    -------
+    mean : float
+        The mean of the array.
     """
     return np.nanmean(array[np.isfinite(array)], axis=axis)
