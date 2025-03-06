@@ -10,6 +10,8 @@ from tqdm import tqdm
 import argparse
 from sklearn.metrics import r2_score
 from astropy.modeling.models import Const1D
+import warnings
+import astropy.modeling.fitting
 
 def choose_obj_centrum_obj_trace(file_list):
     """
@@ -32,8 +34,9 @@ def choose_obj_centrum_obj_trace(file_list):
     # used for more readable plotting code
     plot_title = (
         lambda file: f"Object position estimation for {file}.\n"
-        "Press on the object on a bright point"
+        "Press on the object on a bright point."
         "\nYou can try several times. Press 'q' or close plot when done."
+        "\nIf you want to skip this file, simply do not choose a center before closing."
     )
 
     titles = [plot_title(file) for file in file_list]
@@ -45,7 +48,7 @@ def estimate_signal_to_noise(data, fitted_amplitude, sky_left, sky_right):
     """
     A very simple and approximate signal to noise estimation.
 
-    Takes the mean of the absolute values of the data sky as the noise.
+    Takes the mean of the absolute values of the sky data as the noise.
 
     Takes the fitted amplitude of the object Gaussian fit as the signal.
 
@@ -69,129 +72,108 @@ def estimate_signal_to_noise(data, fitted_amplitude, sky_left, sky_right):
     return fitted_amplitude / noise
 
 
-def find_obj_one_column(x, val, spacial_center, fwhm_guess, R2_threshold):
+def find_obj_one_column(obj_x, obj_val, refined_center, params):
     """
-    Perform a Gaussian fit to a single column of the detector image to
+    Performs a Gaussian fit to a single column of the detector image to
     estimate the object center and FWHM.
 
     Parameters
     ----------
-    x : array
-        The x values.
+    obj_x : array
+        The spatial pixel array.
 
-    val : array
-        The data values.
+    obj_val : array
+        The data array.
 
-    spacial_center : float
-        The user-guess for the object center.
+    refined_center : float
+        The estimated object center.
 
-    FWHM_AP : float
-        The user-guess for the FWHM of the object.
-
-    column_index : int
-        The index of the column (this is the spectral pixel).
+    params : dict
+        A dictionary containing the fit parameters - this is the dictionary
+        that is fetched directly from the configuration file (['trace']['object']
+        or ['trace']['standard'].
 
     Returns
     -------
-    fit_center : float
-        The fitted object center.
-
-    fitted_FWHM : float
-        The fitted FWHM of the object.
-
-    signal_to_noise : float
-        The signal to noise ratio.
+    g_fit : 'astropy.modeling.models.Gaussian1D'
+        The fitted Gaussian model object.
 
     good_fit : bool
-        Whether the fit was successful or not.
+        A boolean value indicating whether the fit was good or not.
+
+    R2 : float
+        The R2 score of the fit.
     """
-    from pylongslit.utils import estimate_sky_regions
-    from pylongslit.parser import developer_params
-    from astropy.modeling.models import Const1D
-    from pylongslit.wavecalib import GeneralizedNormal1D
 
-    
-    # we don't want negative values in the data, as they might come from the 
-    # A-B subtraction. We invert the data if it is negative, to keep the noise
-    # properties the same.
-
-    val = np.abs(val)
-
-    # get the area only around the object
-    refined_center, sky_left, sky_right = estimate_sky_regions(
-        val, spacial_center, fwhm_guess
-    )
-
-    obj_x = x[sky_left:sky_right]
-    obj_val = val[sky_left:sky_right]
-
-    # this is neeeded for the fitting process
+    # estimate the amplitude guess for initial guess for the Gaussian fitter
     amplitude_guess = np.max(obj_val)
 
     # construct tuples of min_max values for the Gaussian fitter
 
     # The amplitude should not deviate from max value by much, and not be negative
     amplitude_interval = (0.1, 1.1 * amplitude_guess)
-    # allow the mean to vary by FWHM
-    mean_interval = (refined_center - fwhm_guess, refined_center + fwhm_guess) 
-    # allow the stddev to start at 0.1 pixel and vary by 2 FWHM
+    # allow the center to vary by a user defined parameter
+    mean_interval = (refined_center - params["center_thresh"], refined_center + params["center_thresh"]) 
+    # allow the stddev vary by a user defined parameter
     stddev_interval = (
-        0.1 * gaussian_fwhm_to_sigma,
-        2 * fwhm_guess * gaussian_fwhm_to_sigma,
+        (params["fwhm_guess"] - params["fwhm_thresh"]) * gaussian_fwhm_to_sigma,
+        (params["fwhm_guess"] + params["fwhm_thresh"]) * gaussian_fwhm_to_sigma,
     )
-
-    beta_init = 1
-
-    # build a Gaussian fitter
-    g_init = GeneralizedNormal1D(
+    
+    # construct the fitter 
+    # TODO: this has some repeated code from wavecalib - consider a utils method
+    g_init = Gaussian1D(
         amplitude=amplitude_guess,
         mean=refined_center,
-        stddev=fwhm_guess * gaussian_fwhm_to_sigma,
-        beta=beta_init,
+        stddev=params["fwhm_guess"] * gaussian_fwhm_to_sigma,
         bounds={
             "amplitude": amplitude_interval,
             "mean": mean_interval,
             "stddev": stddev_interval,
-            # beta > 2 flattens peak, beta > 20 is almost a step function
-            "beta": (0.1, 20),
         },
     )
 
     # a constant model to add to the Gaussian - sometimes needed
-    # if a continuum is present in the line spectrum
+    # if sky is not subtracted properly - as this adds a continuum
     const = Const1D(amplitude=0)
     g_model = g_init + const
+    fitter = LevMarLSQFitter()
 
     # perform the fit
-    fitter = LevMarLSQFitter()
-    g_fit = fitter(g_model, obj_x, obj_val)
-
+    # Suppress warnings during fitting - we handle these ourselves
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        #TODO: the below exception is not a robust good fix - refactor
+        try:
+            g_fit = fitter(g_model, obj_x, obj_val)
+        except (TypeError, ValueError, astropy.modeling.fitting.NonFiniteValueError):
+            return False
+    
+    # user defined R2 is used as a threshold for the fit
     R2 = r2_score(obj_val, g_fit(obj_x))
 
-    if R2_threshold > R2:
+    if params["fit_R2"] > R2:
         good_fit = False
     else:
         good_fit = True
 
-    # extract the amplitude to estimate the signal to noise ratio
-    amplitude = g_fit.amplitude_0.value
-
-    
-    # estimate the signal to noise ratio for later QA
-    signal_to_noise = estimate_signal_to_noise(val, amplitude, sky_left, sky_right)
-
-    return fitter, g_fit, signal_to_noise, good_fit
+    return g_fit, good_fit, R2
 
 
 def find_obj_position(
-    signal_to_noise_array, snr_threshold, minimum_connected_pixels=10
+    spectral, signal_to_noise_array, snr_threshold, minimum_connected_pixels=10
 ):
     """
     Estimes the object start and end by searching for a connected region of pixels
-    with a signal to noise ratio above the threshold.
+    with a signal to noise ratio above a threshold. Used for as a first guess
+    for the interactive adjustment of the object limits in the method 
+    `interactive_adjust_obj_limits`.
 
     Parameters
     ----------
+    spectral : array
+        The spectral pixel array.
+
     signal_to_noise_array : array
         An array containing the signal to noise ratio for each pixel.
 
@@ -204,11 +186,11 @@ def find_obj_position(
 
     Returns
     -------
-    start_index : int
-        The index where the object starts.
+    start_pixel : int
+        The estimated spectral pixel where the object starts.
 
-    end_index : int
-        The index where the object ends.
+    end_pixel : int
+        The estimated spectral pixel where the object ends.
     """
 
     start_index = None
@@ -227,12 +209,11 @@ def find_obj_position(
 
         if consecutive_count >= minimum_connected_pixels:
             break
-
+    
+    # now the same "backwards"
     end_index = None
     consecutive_count = 0
 
-    # loop through the signal to noise array and find the end index
-    # from where the previous 10 pixels have a signal to noise ratio above the threshold
     for i in range(len(signal_to_noise_array) - 1, -1, -1):
         snr = signal_to_noise_array[i]
         if snr > snr_threshold:
@@ -246,11 +227,16 @@ def find_obj_position(
         if consecutive_count >= minimum_connected_pixels:
             break
 
-    return start_index, end_index
+    # convert snr array indexes to spectral indexes
+    start_pixel = spectral[start_index]
+    end_pixel = spectral[end_index]
+
+    return start_pixel, end_pixel
 
 
 def interactive_adjust_obj_limits(
     image,
+    spectral,
     center_data,
     signal_to_noise_array,
     SNR_initial_guess,
@@ -261,23 +247,29 @@ def interactive_adjust_obj_limits(
     A interactive method that allows the user to adjust the object limits
     by adjusting the signal to noise threshold and visually inspecting the results.
 
+    Used for refining the object limits after the initial guess from the method
+    `find_obj_position` before fittitng the object trace.
+
     Parameters
     ----------
     image : array
         The detector image.
 
+    spectral : array
+        The spectral pixel array.
+
     center_data : array
         The estimated object centers.
 
     signal_to_noise_array : array
-        The signal to noise ratio for each pixel.
+        The signal to noise ratio for each center.
 
     SNR_initial_guess : float
         The initial guess for the signal to noise threshold.
 
     good_fit_array : array
         An array containing boolean values for each pixel,
-        indicating whether the fit was good or not.
+        indicating whether the fit for center was good or not.
 
     figsize : tuple
         The figure size. Default is (18, 12).
@@ -292,24 +284,23 @@ def interactive_adjust_obj_limits(
     """
 
     from pylongslit.utils import hist_normalize
+    from pylongslit.parser import developer_params
 
+    # renaming for clarity in code later on
     SNR_threshold = SNR_initial_guess
 
     # estimate the start and end index of the object
-    start_index, end_index = find_obj_position(signal_to_noise_array, SNR_threshold)
+    start_index, end_index = find_obj_position(spectral, signal_to_noise_array, SNR_threshold)
 
     # normalize detector image data for plotting
     image = hist_normalize(image)
 
-    # spectral pixel array for plotting
-    x = np.arange(len(center_data))
-
     # create masked arrays for good and bad center fits
     good_center_data = np.ma.array(center_data, mask=~good_fit_array)
-    x_good = np.ma.array(x, mask=~good_fit_array)
+    x_good = np.ma.array(spectral, mask=~good_fit_array)
 
     bad_center_data = np.ma.array(center_data, mask=good_fit_array)
-    x_bad = np.ma.array(x, mask=good_fit_array)
+    x_bad = np.ma.array(spectral, mask=good_fit_array)
 
     # plot the results
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
@@ -336,7 +327,7 @@ def interactive_adjust_obj_limits(
         ax1.axvline(x=end_index, color="red", linestyle="--", label="Object end")
 
         ax1.set_title(
-            "Adjust SNR threshold with arrowkeys to exclude parts that are too noisy.\n"
+            "Adjust SNR threshold with arrowkeys to exclude parts that are too noisy, if needed.\n"
             "Press up/down arrows for small changes (+/- 0.1), right/left for large changes (+/- 1).\n"
             f"Current SNR threshold: {SNR_threshold}. Press 'q' or close window when done."
         )
@@ -347,20 +338,22 @@ def interactive_adjust_obj_limits(
         ax2.clear()
         ax2.imshow(image, cmap="gray", label="Detector Image")
         ax2.scatter(
-            np.arange(len(center_data)),
+            spectral,
             center_data,
-            marker=".",
+            marker="X",
             color="red",
-            label="Estimated object center (faint red line)",
-            s=0.7,
-            alpha=0.2,
+            label="Estimated object center",
+            #s=0.7,
+            alpha=0.5,
         )
         ax2.axvline(x=start_index, color="red", linestyle="--", label="Object start")
         ax2.axvline(x=end_index, color="red", linestyle="--", label="Object end")
         ax2.set_xlabel("Spectral pixel")
         ax2.set_ylabel("Spatial pixel")
         ax2.legend()
+        # we invert since python by default has (0,0) in the upper left corner
         ax2.invert_yaxis()
+        ax2.set_title("Detector image with estimated object center - use zoom tool for better view.")
 
         # setting the x-axis to be shared between the two plots
         ax1.set_xlim(ax2.get_xlim())
@@ -383,7 +376,7 @@ def interactive_adjust_obj_limits(
             SNR_threshold += 1
         elif event.key == "left":
             SNR_threshold -= 1
-        start_index, end_index = find_obj_position(signal_to_noise_array, SNR_threshold)
+        start_index, end_index = find_obj_position(spectral, signal_to_noise_array, SNR_threshold)
         update_plot(start_index, end_index)
 
     # call the update_plot method to plot the initial state
@@ -393,7 +386,8 @@ def interactive_adjust_obj_limits(
     plt.legend()
     plt.show()
 
-    print(f"Object start index: {start_index}, object end index: {end_index}")
+    if developer_params["verbose_print"]:
+        print(f"Object start spectral pixel: {start_index}, object end spectral pixel: {end_index}")
 
     return start_index, end_index
 
@@ -408,6 +402,8 @@ def show_obj_trace_QA(
     resid_centers,
     resid_FWHMs,
     filename,
+    fit_degree_trace,
+    fit_degree_fwhm
 ):
     """
     A wrapper for `utils.show_1d_fit_QA` that is used in the object-finding routine.
@@ -441,6 +437,12 @@ def show_obj_trace_QA(
 
     filename : str
         The filename of the observation.
+
+    fit_degree_trace : int
+        The polynomial degree of the center fit.
+
+    fit_degree_fwhm : int
+        The polynomial degree of the FWHM fit.
     """
     from pylongslit.utils import show_1d_fit_QA
 
@@ -453,9 +455,9 @@ def show_obj_trace_QA(
         residuals=resid_centers,
         x_label="Spectral pixel",
         y_label="Spatial pixel",
-        legend_label="Fitted centers for every detector column",
-        title=f"Center finding QA for {filename}.\n Ensure the fit is good and residuals are random."
-        "\nIf not, adjust the fit parameters in the config file.",
+        legend_label="Fitted centers",
+        title=f"Center finding QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
+        f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_degree_trace}."
     )
 
     # plot the result of FWHM finding for QA
@@ -467,18 +469,18 @@ def show_obj_trace_QA(
         residuals=resid_FWHMs,
         x_label="Spectral pixel",
         y_label="Spatial pixels",
-        legend_label="Fitted FWHMs for every detector column",
-        title=f"FWHM finding QA for {filename}.\n Ensure the fit is good and residuals are random."
-        "\nIf not, adjust the fit parameters in the config file.",
+        legend_label="Fitted FWHMss",
+        title=f"FWHM finding QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
+        f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_degree_fwhm}."
     )
 
 
-def find_obj_frame(filename, spacial_center, params):
+def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
     """
     Driver method for finding an object in a single frame.
 
-    First, uses `find_obj_one_column` to find the object in every
-    column of the detector image.
+    First, uses `find_obj_one_column` to find the object in 
+    columns of the detector image.
 
     Then, uses `interactive_adjust_obj_limits` to interactively adjust the object limits.
 
@@ -493,9 +495,17 @@ def find_obj_frame(filename, spacial_center, params):
     spacial_center : float
         The user-guess for the object center.
 
+    params : dict
+        A dictionary containing the fit parameters - this is the dictionary
+        that is fetched directly from the configuration file (['trace']['object']
+        or ['trace']['standard'].
+
+    figsize : tuple
+        The QA figure size. Default is (18, 18).
+
     Returns
     -------
-    good_x : array
+    spectral_pixels : array
         The spectral pixel array.
 
     centers_fit_pix : array
@@ -508,31 +518,32 @@ def find_obj_frame(filename, spacial_center, params):
     from pylongslit.logger import logger
     from pylongslit.parser import developer_params
     from pylongslit.utils import PyLongslit_frame
+    from pylongslit.utils import estimate_sky_regions
 
-    # get initial guess for SNR threshold
-    SNR_initial_guess = params["SNR"]
-    # get polynomial degree for fitting
-    fit_deg = params["fit_order"]
+    logger.info(f"Starting object tracing on {filename}...")
 
+    # get the frame data
     frame = PyLongslit_frame.read_from_disc(filename)
+    # check if frame has been skysubtracted and crr removed, else throw
+    # a warning
+    if not frame.header["CRRREMOVD"]:
+        logger.warning(f"{filename} has not been cosmic ray removed.")
+        logger.warning("This may affect the quality of the object trace.")
+        logger.warning("Consider running the cosmic ray removal routine - but continuing for now...")
+
+    if not frame.header["SKYSUBBED"] and not frame.header["BCGSUBBED"]:
+        logger.warning(f"{filename} has not been sky subtracted.")
+        logger.warning("This may affect the quality of the object trace.")
+        logger.warning("Consider running the sky subtraction or A-B background subtraction routines - but continuing for now...")
+
     data = frame.data
 
-    header = frame.header
-    # get the cropped y offset for global detector coordinates
-    # this is needed for matching the wavesolution in extraction
-    y_lower = header["CROPY1"]
-    y_upper = header["CROPY2"]
-
-    if developer_params["verbose_print"]:
-        print("Got cropped values: ", y_lower, y_upper)
-
     # final containers for the results
-    used_spectral = []
-    centers = []
-    FWHMs = []
-    signal_to_noise_array = []
-    # this is used for distinguishing good and bad fits in the plots
-    good_fit_array = []
+    good_fit_array = np.array([], dtype=bool)
+    spectral = np.array([])
+    centers = np.array([])
+    FWHMs = np.array([])
+    signal_to_noise_array = np.array([])
 
     # instead of looping through every spectral pixel, the user can take a mean
     # of a slice +/- the cut extension value to get more robust results.  
@@ -542,18 +553,9 @@ def find_obj_frame(filename, spacial_center, params):
         logger.warning(f"The spectral pixel extension is set to {cut_extension}")
         logger.warning("This is a large value and may corrupt the quality of the object trace.")
         logger.warning("Consider adjusting the value in the config file.")
-    """
-    # find the indices for the spectral pixel range
-    # TODO: a bit hacked but works - same as in wavecalib tilt tracing
-    # consider a utils method for this
-    index_dict = {}
-    num_it = 0
-    for i in range(cut_extension, data.shape[1], cut_extension + 1):
-        index_dict[num_it] = i
-        num_it += 1
-    """
 
-    fig, ax = plt.subplots(3, 3, figsize=(18, 12))
+    # plot QA for 9 equally spaced columns
+    fig, ax = plt.subplots(3, 3, figsize=figsize)
     # for plot indexing
     plot_nr = 0
 
@@ -563,13 +565,21 @@ def find_obj_frame(filename, spacial_center, params):
     for i in range(cut_extension, data.shape[1], cut_extension + 1): num_it += 1
 
     # find 9 equally spaced indices to which plot QA fits, cut the edges a bit
-    qa_indices = np.linspace(50, data.shape[1]-50, 9).astype(int)
-    print(qa_indices)
-
+    # handle the unlicely case where the number of columns is less than 100
+    if data.shape[1] < 100:
+        qa_indices = np.linspace(0, data.shape[1], 9).astype(int)
+    else:
+        qa_indices = np.linspace(50, data.shape[1]-50, 9).astype(int) 
+    
+    if developer_params["verbose_print"]: print(qa_indices)
 
     # loop through the columns and find obj in each
     logger.info(f"Finding object in {filename}...")
+
+    # these are the detector pixel values on the spacial axis
     x_spat = np.arange(data.shape[0])
+
+    # loop through the columns - the tqdm is a progress bar
     for i in tqdm(range(cut_extension, data.shape[1], cut_extension + 1), desc=f"Fitting object trace for {filename}"):
         
         if cut_extension == 0:
@@ -578,74 +588,117 @@ def find_obj_frame(filename, spacial_center, params):
         else:
             val = np.mean(data[:, i-cut_extension:i+cut_extension+1], axis=1)
 
-   
-        fitter, g_fit, signal_to_noise, good_fit = find_obj_one_column(
-                x_spat, val, spacial_center, params["fwhm_guess"], params["fit_R2"]
+        # get the area only around the object
+        refined_center, sky_left, sky_right = estimate_sky_regions(
+            val, spacial_center, params["fwhm_guess"]
+        )
+
+        obj_x = x_spat[sky_left:sky_right]
+        obj_val = val[sky_left:sky_right]
+
+        # check if the object is in the frame
+        if len(obj_x) == 0 or len(obj_val) == 0:
+            continue
+
+        # perform the Gaussian fit
+        g_fit, good_fit, R2 = find_obj_one_column(
+                obj_x, obj_val, refined_center, params
             )
         
-        # extract the fit values:
+        # extract the fit values used from the fitter:
 
         center = g_fit.mean_0.value
         FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
 
+        # extract the amplitude to estimate the signal to noise ratio
+        amplitude = g_fit.amplitude_0.value
 
-        if any(np.abs(i - qa_index) in np.arange(0, cut_extension) for qa_index in qa_indices) and plot_nr < 9:
+            
+        # estimate the signal to noise ratio for later interactive adjustment
+        signal_to_noise = estimate_signal_to_noise(val, amplitude, sky_left, sky_right)
 
-            print(f"Plotting QA for column {i}...") 
+        # check if the column is one of the QA columns. The complicated if statement
+        # checks if the column is within the cut_extension pixels of the QA index
+        if any((i - qa_index) in np.arange(0, cut_extension+1) for qa_index in qa_indices) and plot_nr < 9:
 
-            x_spat_linspace = np.linspace(x_spat[0], x_spat[-1], 1000)
+            if developer_params["verbose_print"]: print(f"Plotting QA for column {i}...") 
+
+            obj_x_linspace = np.linspace(obj_x[0], obj_x[-1], 1000)
 
             # plot the fit
             row = plot_nr // 3
             col = plot_nr % 3
-            ax[row, col].plot(x_spat, val, ".-", label="Data")
-            ax[row, col].plot(x_spat_linspace, g_fit(x_spat_linspace), label="Fit", c = "red" if not good_fit else "green") 
-            ax[row, col].axvline(center, color="green", linestyle="--", label="Fitted center")
-            ax[row, col].set_title(f"Column {i}, fitted FWHM: {FWHM:.2f}, FWHM guess: {params['fwhm_guess']:.2f}")
+            ax[row, col].plot(obj_x, obj_val, ".-", label=f"Data at column {i}")
+            ax[row, col].plot(obj_x_linspace, g_fit(obj_x_linspace), label=f"Fit with R2:{R2:.2f}\n FWHM {FWHM:.2f}", c = "red" if not good_fit else "green") 
+            ax[row, col].axvline(center, color="green", linestyle="--", label=f"Fitted center {center:.2f}")
             ax[row, col].legend()
-
+            ax[row, col].grid(True)
             plot_nr += 1
 
-
-
-
-
-        """
-        centers.append(center)
-        FWHMs.append(FWHM)
-        signal_to_noise_array.append(signal_to_noise)
-        good_fit_array.append(good_fit)
-        """
-
+        # append the results to the containers
+        spectral = np.append(spectral, i)
+        centers = np.append(centers, center)
+        FWHMs = np.append(FWHMs, FWHM)
+        signal_to_noise_array = np.append(signal_to_noise_array, signal_to_noise)
+        good_fit_array = np.append(good_fit_array, good_fit)
     
+    fig.suptitle(
+        f"QA for a sample of object center fits in {filename}. Green - accepted, red - rejected.\n"
+        f"Current rejection threshold is R2 > {params['fit_R2']},\n" 
+        f"with allowed center deviation of {params['center_thresh']} pixels away from max data value,\n"  
+        f"and {params['fwhm_thresh']} pixels from FWHM guess. Initial FWHM guess is {params['fwhm_guess']}. All of these can be changed in the configuration file."
+    )
+    fig.text(0.5, 0.04, "Spacial Pixels", ha="center", va="center", fontsize=12)
+    fig.text(
+        0.04,
+        0.5,
+        "Counts",
+        ha="center",
+        va="center",
+        rotation="vertical",
+        fontsize=12,
+    )
     plt.show()
-    exit()
 
-    # ensure good_fit_array is a python array, since it is used for masking
-    good_fit_array = np.array(good_fit_array)
+    # center estimation done, now interactive adjustment of object limits
+
+    # get initial guess for SNR threshold
+    SNR_initial_guess = params["SNR"]
+
 
     logger.info("Starting interactive user refinement of object limits...")
     logger.info("Follow the instructions in the plot.")
     # interactive user refinment of object limits
     obj_start_index, obj_end_index = interactive_adjust_obj_limits(
-        data, centers, signal_to_noise_array, SNR_initial_guess, good_fit_array
+        data, spectral, centers, signal_to_noise_array, SNR_initial_guess, good_fit_array
     )
 
-    # make a dummy x_array for fitting
-    good_x = np.arange(obj_start_index, obj_end_index)
+    # the indexes are not on the same grid as the detector array, 
+    # so we have to convert to array indexes
+    obj_start_index = np.argmin(np.abs(spectral - obj_start_index))
+    obj_end_index = np.argmin(np.abs(spectral - obj_end_index))
 
-    # for centers and FWHMs, mask everythong below obj_start_index and above obj_end_index
+    # now the object and fwhm fitting
 
-    good_centers = np.array(centers)[obj_start_index:obj_end_index]
-    good_FWHMs = np.array(FWHMs)[obj_start_index:obj_end_index]
+    # get polynomial degree for fitting
+    fit_deg_trace = params["fit_order_trace"]
+    fit_deg_fwhm = params["fit_order_fwhm"]
 
-    # add the offset from the crop procedure
-    # good_centers += y_lower
+    # for centers and FWHMs, mask everything below obj_start_index and above obj_end_index,
+    # and only keep the good center fits
+    good_fits_cropped = good_fit_array[obj_start_index:obj_end_index]
+
+    good_x = spectral[obj_start_index:obj_end_index][good_fits_cropped]
+    good_centers = centers[obj_start_index:obj_end_index][good_fits_cropped]
+    good_FWHMs = FWHMs[obj_start_index:obj_end_index][good_fits_cropped]
+
 
     logger.info("Fitting object centers and FWHMs...")
 
-    centers_fit = chebfit(good_x, good_centers, deg=fit_deg)
-    fwhm_fit = chebfit(good_x, good_FWHMs, deg=fit_deg)
+    # the actual fitting and QA
+
+    centers_fit = chebfit(good_x, good_centers, deg=fit_deg_trace)
+    fwhm_fit = chebfit(good_x, good_FWHMs, deg=fit_deg_fwhm)
 
     # dummy x array for plotting the fit
     x_fit = np.linspace(good_x[0], good_x[-1], 1000)
@@ -677,6 +730,8 @@ def find_obj_frame(filename, spacial_center, params):
         resid_centers,
         resid_FWHMs,
         filename,
+        fit_deg_trace,
+        fit_deg_fwhm
     )
 
     return spectral_pixels, centers_fit_pix, fwhm_fit_pix
@@ -698,7 +753,7 @@ def find_obj(center_dict):
     -------
     obj_dict : dict
         A dictionary containing the results of the object finding routine.
-        Format: {filename: (good_x, centers_fit_val, fwhm_fit_val)}
+        Format: {filename: (spectral_pixel, object_center, fwhm)}
     """
 
     from pylongslit.logger import logger
@@ -716,6 +771,8 @@ def find_obj(center_dict):
             logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
             exit()
 
+        # the parameters are different for standard and object frames, 
+        # as the apertures usually differ in size
         if "standard" in filename:
             params = trace_params["standard"]
             logger.info("This is a standard star frame.")
@@ -726,17 +783,23 @@ def find_obj(center_dict):
         logger.info(f"Finding object in {filename}...")
         # we only need the spatial center
         spacial_center = center[1]
-        good_x, centers_fit_val, fwhm_fit_val = find_obj_frame(
+        spectral, centers_fit_val, fwhm_fit_val = find_obj_frame(
             filename, spacial_center, params
         )
-        obj_dict[filename] = (good_x, centers_fit_val, fwhm_fit_val)
+        obj_dict[filename] = (spectral, centers_fit_val, fwhm_fit_val)
+
+        logger.info(f"Object tracing routine finished for {filename}.")
+        print("----------------------------\n")
+
+    logger.info("Object tracing routine finished for all frames.")
+
 
     return obj_dict
 
 
 def write_obj_trace_results(obj_dict):
     """
-    Writes the object trace results to a file.
+    Writes the object trace results to a file in the output directory.
 
     Parameters
     ----------
@@ -766,9 +829,6 @@ def write_obj_trace_results(obj_dict):
         # close the file
         f.close()
 
-        # change back to the working directory
-        os.chdir("..")
-
         logger.info(
             f"Object trace results written to directory {output_dir}, filename: {filename}."
         )
@@ -783,13 +843,15 @@ def run_obj_trace():
     from pylongslit.utils import get_reduced_frames
 
     logger.info("Starting object tracing routine...")
-
+    logger.info("Fetching reduced frames...")
     filenames = get_reduced_frames()
 
     # get the user-guess for the object center
     center_dict = choose_obj_centrum_obj_trace(filenames)
 
     obj_dict = find_obj(center_dict)
+
+    logger.info("Writing object trace results...")
 
     write_obj_trace_results(obj_dict)
 

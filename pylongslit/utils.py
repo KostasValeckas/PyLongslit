@@ -716,12 +716,12 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
     return center_dict
 
 
-def refine_obj_center(x, slice, clicked_center, FWHM_AP):
+def refine_obj_center(x, slice, clicked_center):
     """
     Refine the object center based on the slice of the data.
 
     Try a simple numerical estimation of the object center, and check
-    if it is within the expected region. If not, use the clicked point.
+    if it is not a nan value. If it is, return the clicked center.
 
     Used it in the `trace_sky` method.
 
@@ -736,8 +736,6 @@ def refine_obj_center(x, slice, clicked_center, FWHM_AP):
     clicked_center : int
         The center of the object clicked by the user.
 
-    FWHM_AP : int
-        The FWHM of the object.
 
     Returns
     -------
@@ -748,9 +746,15 @@ def refine_obj_center(x, slice, clicked_center, FWHM_AP):
     # assume center is at the maximum of the slice
     center = x[np.argmax(slice)]
 
-    # check if the center is within the expected region (2FWHM from the clicked point)
-    if center < clicked_center - 3 * FWHM_AP or center > clicked_center + 3 * FWHM_AP:
-        center = clicked_center
+    # if the center is a nan value, return the clicked center
+    if np.isnan(center):
+        return clicked_center
+    
+    
+    # if it is an inf value, return the clicked center
+    if np.isinf(center):
+        return
+    
 
     return center
 
@@ -794,7 +798,7 @@ def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
 
     x_spec = np.arange(len(slice_spec))
 
-    center = refine_obj_center(x_spec, slice_spec, spatial_center_guess, FWHM_AP)
+    center = refine_obj_center(x_spec, slice_spec, spatial_center_guess)
 
     # QA for sky region selection
     sky_left = center - 3 * FWHM_AP
@@ -1062,6 +1066,11 @@ def get_reduced_frames(only_science=False):
     else:
 
         reduced_files = get_file_group("reduced_science", "reduced_standard")
+
+    if len(reduced_files) == 0:
+        logger.error("No reduced files found.")
+        logger.error("Run the extraction procedure first.")
+        exit()
 
     return reduced_files
 
