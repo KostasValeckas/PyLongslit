@@ -296,7 +296,7 @@ def remove_sky_background(center_dict):
         Format: {filename: data}
     """
     from pylongslit.logger import logger
-    from pylongslit.parser import extract_params, sky_params
+    from pylongslit.parser import trace_params, sky_params
     from pylongslit.utils import PyLongslit_frame, hist_normalize
 
     # user-defined paramteres relevant for sky-subtraction
@@ -312,9 +312,9 @@ def remove_sky_background(center_dict):
 
         # depending if it is a science or standard frame, the FWHM is different
         if "science" in file:
-            fwhm_guess = extract_params["object"]["fwhm_guess"]
+            fwhm_guess = trace_params["object"]["fwhm_guess"]
         else:
-            fwhm_guess = extract_params["standard"]["fwhm_guess"]
+            fwhm_guess = trace_params["standard"]["fwhm_guess"]
 
         logger.info(f"Starting sky subtraction for {file}...")
         try:

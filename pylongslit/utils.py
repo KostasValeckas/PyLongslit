@@ -180,14 +180,19 @@ class PyLongslit_frame:
 
         filepath = os.path.join(output_dir, filename)
 
-        # Open the FITS file
-        with fits.open(filepath) as hdulist:
-            # Read the primary HDU (data)
-            data = hdulist[0].data
-            header = hdulist[0].header
+        try:
+            # Open the FITS file
+            with fits.open(filepath) as hdulist:
+                # Read the primary HDU (data)
+                data = hdulist[0].data
+                header = hdulist[0].header
 
-            # Read the image HDU (sigma)
-            sigma = hdulist[1].data
+                # Read the image HDU (sigma)
+                sigma = hdulist[1].data
+        except FileNotFoundError:
+            logger.error(f"File {filename} not found in {output_dir}.")
+            logger.error("Check the log prior to this message and the configuration file.")
+            exit()
 
         filename = filename.split(".")[0]
 
