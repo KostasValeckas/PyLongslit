@@ -6,37 +6,7 @@ import argparse
 
 def find_obj_frame_manual(filename, FWHM_AP):
     """
-    Driver method for finding an object in a single frame.
 
-    First, uses `find_obj_one_column` to find the object in every
-    column of the detector image.
-
-    Then, uses `interactive_adjust_obj_limits` to interactively adjust the object limits.
-
-    Finally, fits a Chebyshev polynomial to the object centers and FWHMs,
-    and shows QA for the results.
-
-    Parameters
-    ----------
-    filename : str
-        The filename of the observation.
-
-    spacial_center : float
-        The user-guess for the object center.
-
-    FWHM_AP : float
-        The user-guess for the FWHM of the object.
-
-    Returns
-    -------
-    good_x : array
-        The spectral pixel array.
-
-    centers_fit_pix : array
-        The fitted object centers.
-
-    fwhm_fit_pix : array
-        The fitted FWHMs.
     """
 
     from pylongslit.logger import logger
@@ -68,7 +38,7 @@ def find_obj_frame_manual(filename, FWHM_AP):
     hist_norm = True
     colormap = 'gray'
     ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)
-    ax.set_title("Hover over the object centers and press '+' to add, '-' to delete last point, 'h' to toggle histogram normalization, 'c' to change colormap. Close the plot when done.")
+    ax.set_title("Hover over the object centers and press '+' to add, '-' to delete last point, 'h' to toggle histogram normalization, 'c' to change colormap, 'q' to skip. Close the plot when done.")
     points = []
 
     def on_key(event):
@@ -105,6 +75,8 @@ def find_obj_frame_manual(filename, FWHM_AP):
             for x, y in points:
                 ax.plot(x, y, '+', c='r')
             fig.canvas.draw()
+        elif event.key == 'q':
+            return
 
     fig.canvas.mpl_connect('key_press_event', on_key)
     plt.show()
@@ -186,16 +158,29 @@ def find_obj(filenames):
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import extract_params
-
-    # extract the user-guess for the FWHM of the object
-    FWHM_AP = extract_params["FWHM_AP"]
-
-    # this is the container for the results
-    obj_dict = {}
+    from pylongslit.parser import trace_params
 
     # loop through the files
     for filename in filenames:
+
+        # sanity check for the filename
+        if "science" not in filename and "standard" not in filename:
+            logger.error(f"Unrecognized file type for {filename}.")
+            logger.error("Make sure not to manually rename any files.")
+            logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
+            exit()
+
+        # the parameters are different for standard and object frames, 
+        # as the apertures usually differ in size
+        if "standard" in filename:
+            params = trace_params["standard"]
+            logger.info("This is a standard star frame.")
+        else: 
+            params = trace_params["object"]
+            logger.info("This is a science frame.")
+
+
+
         logger.info(f"Finding object in {filename}...")
 
         find_obj_frame_manual(filename, FWHM_AP)
