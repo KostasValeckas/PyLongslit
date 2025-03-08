@@ -9,10 +9,16 @@ import argparse
 def load_object_traces():
     """
     Loads the object traces from the output directory.
+
+    Returns
+    -------
+    trace_dict : dict
+        Dictionary containing the object traces.
+        Format is {filename: (pixel, center, FWHM)}
     """
 
     from pylongslit.parser import output_dir
-    from pylongslit.utils import list_files, get_filenames
+    from pylongslit.utils import get_filenames
     from pylongslit.logger import logger
 
     logger.info("Loading object traces")
@@ -27,12 +33,12 @@ def load_object_traces():
 
     else:
         logger.info(f"Found {len(filenames)} object traces:")
-        list_files(filenames)
+        for filename in filenames: print(filename)
 
     # sort as this is needed when cross referencing with reduced files
     filenames.sort()
 
-    # this is the container that will be returned
+    # this is the container that will be returned from this method
     trace_dict = {}
 
     # change to output_dir
@@ -44,6 +50,13 @@ def load_object_traces():
             pixel = trace_data[:, 0]
             obj_center = trace_data[:, 1]
             obj_fwhm = trace_data[:, 2]
+
+            if pixel is None or obj_center is None or obj_fwhm is None:
+                logger.error(f"Error reading {filename}.")
+                logger.error("Check the file for errors.")
+                logger.error("The file should contain three columns: pixel, center, FWHM.")
+                logger.error("Re-run the object tracing procedure, contact developers if error persists.")
+                exit()
 
             trace_dict[filename] = (pixel, obj_center, obj_fwhm)
 
@@ -96,6 +109,43 @@ def gaussweight(x, mu, sig):
 
     return P
 
+def cauchyweight(x, mu, gamma):
+    """
+    This method calculates the probability that a photon is detected at a certain
+    spacial pixel on the detector row. This is used in `extract_object_optimal`
+    , as the P factor in the Horne (1986) optimal extraction algorithm.
+
+    Parameters
+    ----------
+    x : array-like
+        The pixel values.
+    
+    mu : float
+        The center of the Cauchy object profile.
+
+    gamma : float
+        The HWHM of the Cauchy object profile.
+
+    Returns
+    -------
+    array-like
+        The weight for each pixel in the extraction aperture (normalized).
+    """
+
+    from pylongslit.logger import logger
+
+    P = 1 / (np.pi * gamma * (1 + ((x - mu) / gamma) ** 2))
+
+    if np.round(P.sum(), decimals=0) != 1:
+        logger.error(
+            "Probability distribution for extraction aperture not normalized correctly."
+        )
+        logger.error(f"Sum of probabilities: {P.sum()} - should be 1.")
+        logger.error("Revisit earlier procedures and check for warning and errors.")
+        exit()
+
+    return P
+
 
 def estimate_variance(data, gain, read_out_noise):
     """
@@ -126,7 +176,7 @@ def estimate_variance(data, gain, read_out_noise):
     return (read_out_noise / gain) ** 2 + np.abs(data)
 
 
-def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
+def extract_object_optimal(trace_data, trace_params, filename):
     """
     Extraction algorithm taken from Horne, K. (1986).
     An optimal extraction algorithm for CCD spectroscopy.
@@ -136,17 +186,16 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
     Parameters
     ----------
     trace_data : tuple
-        The trace data from the object tracing procedure.
-        Contains the pixel, center and FWHM of the object traces.
+        The object trace data.
+        Format is (pixel, center, FWHM).
 
-    reduced_frame : str
-        The filename of the reduced frame to extract the object from.
+    trace_params : dict
+        Dictionary containing the object trace parameters.
+        These are the parameters used to determine the object model, taken
+        from the configuration file.
 
-    gain : float
-        The gain of the CCD. (electrons/ADU)
-
-    read_out_noise : float
-        The read out noise of the CCD. (electrons)
+    filename : str
+        The filename of the reduced frame from which the 1D spectrum is extracted.
 
     Returns
     -------
@@ -159,52 +208,68 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
     spec_var : array-like
         The variance of the extracted 1D spectrum. (in ADU)
     """
-    from pylongslit.parser import output_dir
-    from pylongslit.utils import open_fits, PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame
+    from pylongslit.logger import logger
+    from pylongslit.parser import developer_params
 
+    # unpack the trace data
     pixel, center, FWHM = trace_data
 
-    frame = PyLongslit_frame.read_from_disc(reduced_frame)
+    plt.plot(pixel, center, label="Object trace")
+    plt.show()
 
-    reduced_data = frame.data
+    # get the reduced frame and unpack
+    frame = PyLongslit_frame.read_from_disc(filename)
+
+    reduced_data = frame.data.copy()
+
+    
+    plt.imshow(reduced_data, origin="lower", aspect="auto")
+    plt.title(f"Reduced frame {filename}")
+    plt.show()
 
     header = frame.header
-    y_offset = header["CROPY1"]  # the y-offset from the cropping procedure
+    # the y-offset from the cropping procedure. This is used in wavelength calibration
+    # to match the global pixel coordinates with the wavelength solution. We
+    # extract it here as we do not want to handle header data in the wavelength calibration.
+    y_offset = header["CROPY1"]  
 
+    # the spatial pixel array
     x_row_array = np.arange(reduced_data.shape[0])
 
-    variance = frame.sigma**2
+    variance = frame.sigma.copy()**2
+
+    plt.imshow(variance, origin="lower", aspect="auto")
+    plt.title(f"Variance frame {filename}")
+    plt.show()
+
+    # remove negative values
+    reduced_data[reduced_data < 0] = 0
 
 
     # these are the containers that will be filled for every value
     spec = []
     spec_var = []
 
-    test_spec = []
-
     # the extraction loop for every spectral pixel
     for i in range(len(center)):
 
         obj_center = center[i]
-        obj_fwhm = FWHM[i] * gaussian_fwhm_to_sigma
-        weight = gaussweight(x_row_array, obj_center, obj_fwhm)
+        obj_fwhm = FWHM[i]
+        if trace_params["model"] == "Gaussian":
+            weight = gaussweight(x_row_array, obj_center, obj_fwhm * gaussian_fwhm_to_sigma)  
+        elif trace_params["model"] == "Cauchy":
+            # gamma for cauchy is FWHM/2
+            weight = cauchyweight(x_row_array, obj_center, obj_fwhm/2)
+        else:
+            logger.error("Trace model not recognized.")
+            logger.error("Check the configuration file.")
+            logger.error("Re-run the object tracing procedure.")
+            logger.error("Allowed models are: Gaussian, Cauchy.")
+            exit()
 
 
-        reduced_data_slice = reduced_data[:, int(pixel[0]) + i].copy()
-
-        reduced_data_slice[reduced_data_slice < 0] = np.nanmean(np.sqrt(variance[:, i]))
-
-        if i > 750:
-            #plt.plot(weight)
-            #plt.show() 
-
-            #plt.plot(reduced_data_slice, label="reduced_data_slice")
-            #plt.plot(variance[:, int(pixel[0]) + i], label="variance")
-            #plt.legend()
-            #plt.show()    
-            #print(reduced_data_slice/ variance[:, int(pixel[0]) + i])
-            pass
-
+        reduced_data_slice = reduced_data[:, i].copy()
 
         # Horne (1986) eq. 8
         spec.append(
@@ -215,9 +280,19 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
         # Horne (1986) eq. 9
         spec_var.append(1 / np.nansum((weight**2) / variance[:, i]))
 
-
+    # convert to numpy arrays for easier later handling
     spec = np.array(spec)
     spec_var = np.array(spec_var)
+
+    if developer_params["debug_plots"]:
+        plt.figure(figsize=(18, 12))
+        plt.plot(spec, label="Extracted 1D spectrum")
+        plt.plot(spec_var, label="Variance")
+        plt.xlabel("Spectral pixel")
+        plt.ylabel("Flux [ADU]")
+        plt.title("Extracted 1D spectrum and variance")
+        plt.legend()
+        plt.show()
 
     return pixel, spec, spec_var, y_offset
 
@@ -225,7 +300,7 @@ def extract_object_optimal(trace_data, reduced_frame, gain, read_out_noise):
 def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     """
     Wavelegth calibration of the extracted 1D spectrum,
-    to convert from ADU/pixel to ADU/Å.
+    to convert from ADU/spectral pixel to ADU/Å.
 
     Parameters
     ----------
@@ -242,9 +317,9 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     var : array-like
         The variance of the extracted 1D spectrum. (in ADU)
 
-    fit2d_REID : chebyshev1d object
-        The wavelength calibration solution.
-        For type, see output of `wavecalib.load_fit2d_REID_from_disc`.
+    y_offset : float
+        The y-offset from the cropping procedure. This is used in wavelength calibration
+        to match the global pixel coordinates with the wavelength solution.
 
     Returns
     -------
@@ -260,23 +335,26 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     from pylongslit.wavecalib import get_tilt_fit_from_disc, get_wavelen_fit_from_disc
     from pylongslit.utils import wavelength_sol
 
+    # the object trace centers are local pixel coordinates, we need to add the y-offset
+    # to get the global pixel coordinates for wavelength calibration
     centers_global = centers + y_offset
 
+    # get the wavelength and tilt fits from disc
     wavelen_fit = get_wavelen_fit_from_disc()
     tilt_fit = get_tilt_fit_from_disc()
 
     # evaluate the wavelength solution at the object trace centers
-    ap_wavelen = wavelength_sol(pixels, centers_global, wavelen_fit, tilt_fit)
+    obj_wavelen = wavelength_sol(pixels, centers_global, wavelen_fit, tilt_fit)
 
     # interpolate the spectrum and variance to a homogenous wavelength grid
-    wavelen_homogenous = np.linspace(ap_wavelen[0], ap_wavelen[-1], len(spec))
+    wavelen_homogenous = np.linspace(obj_wavelen[0], obj_wavelen[-1], len(spec))
 
     spec_interpolate = interp1d(
-        ap_wavelen, spec, fill_value="extrapolate", kind="cubic"
+        obj_wavelen, spec, fill_value="extrapolate", kind="cubic"
     )
     spec_calibrated = spec_interpolate(wavelen_homogenous)
 
-    var_interpolate = interp1d(ap_wavelen, var, fill_value="extrapolate", kind="cubic")
+    var_interpolate = interp1d(obj_wavelen, var, fill_value="extrapolate", kind="cubic")
     var_calibrated = var_interpolate(wavelen_homogenous)
 
     return wavelen_homogenous, spec_calibrated, var_calibrated
@@ -285,6 +363,7 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
 def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18, 12)):
     """
     Plot of the extracted 1D spectrum (counts [ADU] vs. wavelength [Å]).
+    Wrapper for `pylongslit.utils.plot_1d_spec_interactive_limits`.
 
     Parameters
     ----------
@@ -304,25 +383,19 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
         The figure size. Default is (18, 12).
     """
 
-    fig, ax = plt.subplots(figsize=figsize)
+    from pylongslit.utils import plot_1d_spec_interactive_limits
 
-    ax.plot(wavelengths, spec_calib, label="Calibrated spectrum")
-    ax.plot(
-        wavelengths, np.sqrt(var_calib), label="1-sigma error spectrum", linestyle="--"
+    plot_1d_spec_interactive_limits(
+        wavelengths,
+        spec_calib,
+        y_error = np.sqrt(var_calib),
+        x_label="Wavelength [Å]",
+        y_label="Flux [ADU]",
+        label="Extracted 1D spectrum",
+        title=f"Extracted 1D spectrum from {filename}. Use the sliders to crop out noisy edges if needed.", 
     )
 
-    ax.set_title(f"Extracted 1D spectrum from {filename}")
-    ax.set_xlabel("Wavelength [Å]")
-    ax.set_ylabel("Counts [ADU]")
-    # any negative values may be due to numerical instability - don't show them
-    ax.set_ylim(-0.5, 1.1 * np.nanmax(spec_calib))
-    ax.legend()
-    ax.grid()
-
-    plt.show()
-
-
-def extract_objects(reduced_files, trace_dir):
+def extract_objects(reduced_files, trace_dict):
     """
     Driver for the extraction of 1D spectra from reduced frames.
 
@@ -335,7 +408,7 @@ def extract_objects(reduced_files, trace_dir):
     reduced_files : list
         List of filenames of reduced frames.
 
-    trace_dir : dict
+    trace_dict : dict
         Dictionary containing the object traces.
         Format is {filename: (pixel, center, FWHM)}
 
@@ -348,6 +421,10 @@ def extract_objects(reduced_files, trace_dir):
 
     from pylongslit.parser import output_dir, detector_params
     from pylongslit.logger import logger
+    from pylongslit.obj_trace import get_params
+
+    print(reduced_files)
+    print(trace_dict)
 
 
     # get gain and read out noise parameters
@@ -361,12 +438,15 @@ def extract_objects(reduced_files, trace_dir):
 
         logger.info(f"Extracting 1D spectrum from {filename}...")
 
+        # get the trace parameters, as these determine the object model
+        trace_params = get_params(filename)
+
         filename_obj = filename.replace("reduced_", "obj_").replace(".fits", ".dat")
 
-        trace_data = trace_dir[filename_obj]
+        trace_data = trace_dict[filename_obj]
 
         pixel, spec, spec_var, y_offset = extract_object_optimal(
-            trace_data, filename, gain, read_out_noise
+            trace_data, trace_params, filename
         )
 
         logger.info("Spectrum extracted.")
@@ -419,16 +499,16 @@ def run_extract_1d():
 
     logger.info("Running extract_1d")
 
-    trace_dir = load_object_traces()
+    trace_dict = load_object_traces()
 
     reduced_files = get_reduced_frames()
 
-    if len(reduced_files) != len(trace_dir):
+    if len(reduced_files) != len(trace_dict):
         logger.error("Number of reduced files and object traces do not match.")
         logger.error("Re-run both procedures or remove left-over files.")
         exit()
 
-    results = extract_objects(reduced_files, trace_dir)
+    results = extract_objects(reduced_files, trace_dict)
 
     write_extracted_1d_to_disc(results)
 

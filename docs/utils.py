@@ -1072,9 +1072,6 @@ def get_reduced_frames(only_science=False):
         logger.error("Run the extraction procedure first.")
         exit()
 
-    # sort as this is needed when cross referencing with traces
-    reduced_files.sort()
-
     return reduced_files
 
 
@@ -1133,77 +1130,3 @@ def interactively_crop_spec(x,y, x_label: str = "", y_label: str = "", label: st
     plt.show()
 
     return int(smin.val), int(smax.val)
-
-def plot_1d_spec_interactive_limits(x,y, y_error = None, x_label: str = "", y_label: str = "", label: str = "", title: str = "", figsize = (16, 16)):
-    """
-    Plot a 1D spectrum with interactive sliders to adjust the x and y-axis limits.
-    
-    Parameters
-    ----------
-    x : array-like
-        The x data.
-    y : array-like
-        The y data.
-    y_error : array-like, optional
-        The error in the y data (1 sigma).
-    x_label : str, optional
-        The label for the x-axis.
-    y_label : str, optional
-        The label for the y-axis.
-    label : str, optional
-        The label for the plot legend.
-    title : str, optional
-        The title of the plot.
-    figsize : tuple, optional
-        The size of the figure.
-    """
-
-    
-    # Create the figure and axis
-    fig, ax = plt.subplots(figsize=figsize)
-    plt.subplots_adjust(bottom=0.25)
-    (l,) = ax.plot(x, y, label=label, color="black")
-    if y_error is not None:
-        (l_error,) = ax.plot(x, y_error, label=f"{label} Error - 1 $\sigma$", color="red")
-    plt.xlabel(x_label)
-    plt.ylabel(y_label)
-    plt.legend()
-    plt.title(title)
-    
-    # Add sliders for selecting the range
-    axcolor = "lightgoldenrodyellow"
-    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
-    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
-    
-    smin = Slider(
-        axmin,
-        "Min " + x_label,
-        np.min(x),
-        np.max(x),
-        valinit=np.min(x),
-    )
-    smax = Slider(
-        axmax,
-        "Max " + x_label,
-        np.min(x),
-        np.max(x),
-        valinit=np.max(x),
-    )
-    
-    def update(val):
-        min_val = smin.val
-        max_val = smax.val
-        valid_indices = (x >= min_val) & (x <= max_val)
-        ax.set_xlim([min_val, max_val])
-        ax.set_ylim([np.min(y[valid_indices]), 1.1 * np.max(y[valid_indices])])
-        l.set_xdata(x[valid_indices])
-        l.set_ydata(y[valid_indices])
-        if y_error is not None:
-            l_error.set_xdata(x[valid_indices])
-            l_error.set_ydata(y_error[valid_indices])
-        fig.canvas.draw_idle()
-    
-    smin.on_changed(update)
-    smax.on_changed(update)
-    
-    plt.show()

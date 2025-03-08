@@ -940,7 +940,6 @@ def get_params(filename):
         logger.error("Make sure not to manually rename any files.")
         logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
         exit()
-    logger.info(f"Finding object in {filename}...")
     # the parameters are different for standard and object frames, 
     # as the apertures usually differ in size
     if "standard" in filename:
