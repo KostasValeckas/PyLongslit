@@ -759,7 +759,7 @@ def refine_obj_center(x, slice, clicked_center):
     return center
 
 
-def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
+def estimate_sky_regions(slice_spec, spatial_center_guess, fwhm_guess, fwhm_thresh):
     # TODO - modify returns - choose between return obj or return sky
     # or maybe return just the sky_left, sky_righrt and let other modules
     # take care of the rest
@@ -801,10 +801,10 @@ def estimate_sky_regions(slice_spec, spatial_center_guess, FWHM_AP):
     center = refine_obj_center(x_spec, slice_spec, spatial_center_guess)
 
     # QA for sky region selection
-    sky_left = center - 3 * FWHM_AP
-    sky_right = center + 3 * FWHM_AP
+    sky_left = center - 3 * fwhm_guess - fwhm_thresh
+    sky_right = center + 3 * fwhm_guess + fwhm_thresh
 
-    return center, sky_left, sky_right
+    return int(center), int(sky_left), int(sky_right)
 
 
 def show_1d_fit_QA(

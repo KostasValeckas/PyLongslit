@@ -45,6 +45,7 @@ def fit_sky_one_column(
     slice_spec,
     spatial_center_guess,
     fwhm_guess,
+    fwhm_thresh,
     sigma_cut,
     sigma_iters,
     sky_order,
@@ -63,6 +64,9 @@ def fit_sky_one_column(
 
     fwhm_guess : int
         The FWHM guess of the object.
+
+    fwhm_thresh : int
+        The threshold for the object FWHM.  
 
     sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
@@ -92,7 +96,7 @@ def fit_sky_one_column(
 
     # sky region for this column
     _, sky_left, sky_right = estimate_sky_regions(
-        slice_spec, spatial_center_guess, fwhm_guess
+        slice_spec, spatial_center_guess, fwhm_guess, fwhm_thresh
     )
 
     # x array for the fit
@@ -123,6 +127,7 @@ def fit_sky_QA(
     spatial_center_guess,
     spectral_column,
     fwhm_guess,
+    fwhm_thresh,
     sigma_cut,
     sigma_iters,
     sky_order,
@@ -149,6 +154,9 @@ def fit_sky_QA(
     fwhm_guess : int
         The FWHM of the object.
 
+    fwhm_thresh : int
+        The threshold for the object FWHM.
+
     sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
 
@@ -166,7 +174,7 @@ def fit_sky_QA(
     from pylongslit.utils import estimate_sky_regions
 
     refined_center, sky_left, sky_right = estimate_sky_regions(
-        slice_spec, spatial_center_guess, fwhm_guess
+        slice_spec, spatial_center_guess, fwhm_guess, fwhm_thresh
     )
 
     # dummy x array for plotting
@@ -174,7 +182,7 @@ def fit_sky_QA(
 
     # fit the sky
     sky_fit, clip_mask, x_sky, sky_val, reasiduals = fit_sky_one_column(
-        slice_spec, refined_center, fwhm_guess, sigma_cut, sigma_iters, sky_order
+        slice_spec, refined_center, fwhm_guess, fwhm_thresh, sigma_cut, sigma_iters, sky_order
     )
 
     # plot the results
@@ -209,7 +217,7 @@ def fit_sky_QA(
 
 
 def make_sky_map(
-    filename, data, spatial_center_guess, fwhm_guess, sigma_cut, sigma_iters, sky_order
+    filename, data, spatial_center_guess, fwhm_guess, fwhm_thresh, sigma_cut, sigma_iters, sky_order
 ):
     """
     Loops through the detector columns, and fits the sky background for each one.
@@ -226,6 +234,9 @@ def make_sky_map(
 
     fwhm_guess : int
         The FWHM of the object.
+
+    fwhm_thresh : int
+        The threshold for the object FWHM.
 
     sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
@@ -260,6 +271,7 @@ def make_sky_map(
             slice_spec,
             spatial_center_guess,
             fwhm_guess,
+            fwhm_thresh,
             sigma_cut,
             sigma_iters,
             sky_order,
@@ -313,8 +325,10 @@ def remove_sky_background(center_dict):
         # depending if it is a science or standard frame, the FWHM is different
         if "science" in file:
             fwhm_guess = trace_params["object"]["fwhm_guess"]
+            fwhm_thresh = trace_params["object"]["fwhm_thresh"]
         else:
             fwhm_guess = trace_params["standard"]["fwhm_guess"]
+            fwhm_thresh = trace_params["standard"]["fwhm_thresh"]
 
         logger.info(f"Starting sky subtraction for {file}...")
         try:
@@ -357,6 +371,7 @@ def remove_sky_background(center_dict):
             spacial_center_guess,
             spectral_center_guess,
             fwhm_guess,
+            fwhm_thresh,
             sigma_cut,
             sigma_iters,
             sky_order,
@@ -368,6 +383,7 @@ def remove_sky_background(center_dict):
             data,
             spacial_center_guess,
             fwhm_guess,
+            fwhm_thresh,
             sigma_cut,
             sigma_iters,
             sky_order,
