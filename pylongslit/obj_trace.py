@@ -206,6 +206,8 @@ def find_obj_position(
     spectral, signal_to_noise_array, snr_threshold, minimum_connected_pixels=10
 ):
     """
+    NOT USED
+
     Estimes the object start and end by searching for a connected region of pixels
     with a signal to noise ratio above a threshold. Used for as a first guess
     for the interactive adjustment of the object limits in the method 
@@ -600,6 +602,89 @@ def fit_distribution_parameter(use_bsplie, parameter, params, good_x, good_y, da
 
     return spectral_pixels, param_fit_pix
 
+def objmodel_QA(data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=(18, 18)):
+
+    """
+    Construct the object model and overlay the raw data for QA purposes.
+
+    Parameters
+    ----------
+    data : array
+        The detector image.
+
+    params : dict
+        A dictionary containing the fit parameters - this is the dictionary
+        that is fetched directly from the configuration file (['trace']['object']
+        or ['trace']['standard'].
+
+    centers_fit_pix : array
+        The fitted object centers.
+
+    fwhm_fit_pix : array
+        The fitted FWHMs.s
+
+    filename : str
+        The filename of the observation.
+
+    figsize : tuple
+        The figure size. Default is (18, 18).
+    """
+
+    from pylongslit.utils import hist_normalize
+    from pylongslit.parser import developer_params
+
+    obj_model = np.zeros_like(data)
+    x_spat = np.arange(data.shape[0])
+    # loop through the spectral pixels and construct the model
+    # we set amplitude to 1 for simplicity
+    for i in range(data.shape[1]):
+        obj_model[:, i] = Cauchy1D().evaluate(
+            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / 2
+        ) if params["model"] == "Cauchy" else Gaussian1D().evaluate(
+            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / gaussian_fwhm_to_sigma
+        )
+
+        if developer_params["debug_plots"] and i % 100 == 0:
+            print(f"Model at column {i} constructed.")
+            print(f"Center: {centers_fit_pix[i]}, FWHM: {fwhm_fit_pix[i]}")
+            plt.plot(x_spat, obj_model[:, i], label=f"Model at column {i}")
+            plt.show()
+
+    # plot the QA for the object model
+    fig, ax = plt.subplots(3, 1, figsize=figsize)
+    ax1, ax2, ax3 = ax
+    
+    ax1.imshow(hist_normalize(data), cmap="cool", label="Detector image")
+    ax1.set_title("Detector image.")
+
+    ax2.imshow(obj_model, cmap="hot", label="Object model")
+    ax2.set_title("Object model.")
+
+    ax3.imshow(hist_normalize(data), cmap="cool")
+    ax3.imshow(obj_model, cmap="hot", alpha=0.3)
+    ax3.set_title("Object model overlayed on detector image.")
+
+    fig.text(0.5, 0.04, "Spectral pixels", ha="center", va="center", fontsize=12)
+    fig.text(
+        0.04,
+        0.5,
+        "Spacial pixels",
+        ha="center",
+        va="center",
+        rotation="vertical",
+        fontsize=12,
+    )
+
+    fig.suptitle(
+        f"QA for the object model in {filename}. The object model is constructed from the fitted object centers and FWHMs.\n"
+        f"The object model should be a good representation of the object in the detector image. \n"
+        f"It is okay if it exceeds the extent of the object in spectral direction.\n"
+        f"If the model is not a good representation, revise the object trace routine - pay attention to warnings and QA plots."
+    )
+
+    plt.show()
+
+
 
 
 def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
@@ -822,58 +907,7 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
 
     # lastly, construct the object model for QA
 
-    obj_model = np.zeros_like(data)
-    # loop through the spectral pixels and construct the model
-    # we set amplitude to 1 for simplicity
-    for i in range(data.shape[1]):
-        obj_model[:, i] = Cauchy1D().evaluate(
-            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / 2
-        ) if params["model"] == "Cauchy" else Gaussian1D().evaluate(
-            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / gaussian_fwhm_to_sigma
-        )
-
-        if developer_params["debug_plots"] and i % 100 == 0:
-            print(f"Model at column {i} constructed.")
-            print(f"Center: {centers_fit_pix[i]}, FWHM: {fwhm_fit_pix[i]}")
-            plt.plot(x_spat, obj_model[:, i], label=f"Model at column {i}")
-            plt.show()
-
-    # plot the QA for the object model
-    fig, ax = plt.subplots(3, 1, figsize=figsize)
-    ax1, ax2, ax3 = ax
-    
-    ax1.imshow(hist_normalize(data), cmap="cool", label="Detector image")
-    ax1.set_title("Detector image.")
-
-    ax2.imshow(obj_model, cmap="hot", label="Object model")
-    ax2.set_title("Object model.")
-
-    ax3.imshow(hist_normalize(data), cmap="cool", label="Detector image")
-    ax3.imshow(obj_model, cmap="hot", label="Object model", alpha=0.3)
-    ax3.set_title("Object model overlayed on detector image.")
-    ax3.legend()
-
-    fig.text(0.5, 0.04, "Spectral pixels", ha="center", va="center", fontsize=12)
-    fig.text(
-        0.04,
-        0.5,
-        "Spacial pixels",
-        ha="center",
-        va="center",
-        rotation="vertical",
-        fontsize=12,
-    )
-
-    fig.suptitle(
-        f"QA for the object model in {filename}. The object model is constructed from the fitted object centers and FWHMs.\n"
-        f"The object model should be a good representation of the object in the detector image. \n"
-        f"It is okay if it exceeds the extent of the object in spectral direction.\n"
-        f"If the model is not a good representation, revise the object trace routine - pay attention to warnings and QA plots."
-    )
-
-    plt.show()
-
-
+    objmodel_QA(data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=figsize)
 
     return spectral_pixels, centers_fit_pix, fwhm_fit_pix
 
@@ -912,6 +946,8 @@ def find_obj(center_dict):
             logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
             exit()
 
+        logger.info(f"Finding object in {filename}...")
+
         # the parameters are different for standard and object frames, 
         # as the apertures usually differ in size
         if "standard" in filename:
@@ -920,8 +956,7 @@ def find_obj(center_dict):
         else: 
             params = trace_params["object"]
             logger.info("This is a science frame.")
-
-        logger.info(f"Finding object in {filename}...")
+            
         # we only need the spatial center
         spacial_center = center[1]
         spectral, centers_fit_val, fwhm_fit_val = find_obj_frame(
