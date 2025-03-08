@@ -17,6 +17,9 @@ from astropy.modeling import Fittable1DModel, Parameter
 class Cauchy1D(Fittable1DModel):
     """
     This is a Cauchy distribution model for fitting the object trace.
+
+    The model is defined as:
+    amplitude / (1 + ((x - mean) / gamma) ** 2), where gamma is the FWHM/2.
     """
 
     # the default values here are set to 0 as they are not used ("dummies")
@@ -630,7 +633,6 @@ def objmodel_QA(data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=(
         The figure size. Default is (18, 18).
     """
 
-    from pylongslit.utils import hist_normalize
     from pylongslit.parser import developer_params
 
     obj_model = np.zeros_like(data)
@@ -641,7 +643,7 @@ def objmodel_QA(data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=(
         obj_model[:, i] = Cauchy1D().evaluate(
             x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / 2
         ) if params["model"] == "Cauchy" else Gaussian1D().evaluate(
-            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / gaussian_fwhm_to_sigma
+            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] * gaussian_fwhm_to_sigma
         )
 
         if developer_params["debug_plots"] and i % 100 == 0:
@@ -654,13 +656,13 @@ def objmodel_QA(data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=(
     fig, ax = plt.subplots(3, 1, figsize=figsize)
     ax1, ax2, ax3 = ax
     
-    ax1.imshow(hist_normalize(data), cmap="cool", label="Detector image")
+    ax1.imshow(data, cmap="cool", label="Detector image")
     ax1.set_title("Detector image.")
 
     ax2.imshow(obj_model, cmap="hot", label="Object model")
     ax2.set_title("Object model.")
 
-    ax3.imshow(hist_normalize(data), cmap="cool")
+    ax3.imshow(data, cmap="cool")
     ax3.imshow(obj_model, cmap="hot", alpha=0.3)
     ax3.set_title("Object model overlayed on detector image.")
 
@@ -911,6 +913,47 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
 
     return spectral_pixels, centers_fit_pix, fwhm_fit_pix
 
+def get_params(filename):
+
+    """
+    Checks the filename and returns the correct parameters for the object trace,
+    depending on whether the frame is a standard star or a science frame.
+
+    Parameters
+    ----------
+    filename : str
+        The filename of the observation.
+
+    Returns
+    -------
+    params : dict
+        A dictionary containing the fit parameters - this is the dictionary
+        that is fetched directly from the configuration file (['trace']['object']
+        or ['trace']['standard']).
+    """
+
+    from pylongslit.logger import logger
+    from pylongslit.parser import trace_params
+    # sanity check for the filename
+    if "science" not in filename and "standard" not in filename:
+        logger.error(f"Unrecognized file type for {filename}.")
+        logger.error("Make sure not to manually rename any files.")
+        logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
+        exit()
+    logger.info(f"Finding object in {filename}...")
+    # the parameters are different for standard and object frames, 
+    # as the apertures usually differ in size
+    if "standard" in filename:
+        params = trace_params["standard"]
+        logger.info("This is a standard star frame.")
+    else: 
+        params = trace_params["object"]
+        logger.info("This is a science frame.")
+
+    return params
+
+
+
 
 def find_obj(center_dict):
     """
@@ -932,31 +975,15 @@ def find_obj(center_dict):
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import trace_params
 
     # this is the container for the results
     obj_dict = {}
 
     # loop through the files
     for filename, center in center_dict.items():
-        # sanity check for the filename
-        if "science" not in filename and "standard" not in filename:
-            logger.error(f"Unrecognized file type for {filename}.")
-            logger.error("Make sure not to manually rename any files.")
-            logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
-            exit()
 
-        logger.info(f"Finding object in {filename}...")
+        params = get_params(filename)
 
-        # the parameters are different for standard and object frames, 
-        # as the apertures usually differ in size
-        if "standard" in filename:
-            params = trace_params["standard"]
-            logger.info("This is a standard star frame.")
-        else: 
-            params = trace_params["object"]
-            logger.info("This is a science frame.")
-            
         # we only need the spatial center
         spacial_center = center[1]
         spectral, centers_fit_val, fwhm_fit_val = find_obj_frame(

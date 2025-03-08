@@ -50,6 +50,9 @@ def find_obj_frame_manual(filename, params, figsize=(16,16)):
     colormap = 'gray'
     ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)
     ax.set_title(title)
+
+    # disable the default key bindings, so we can use the keys without conflicts
+    fig.canvas.mpl_disconnect(fig.canvas.manager.key_press_handler_id)
         
     points = []
 
@@ -88,6 +91,8 @@ def find_obj_frame_manual(filename, params, figsize=(16,16)):
             for x, y in points:
                 ax.plot(x, y, '+', c='r')
             fig.canvas.draw()
+        elif event.key == 'q':
+            plt.close(fig)
 
     fig.canvas.mpl_connect('key_press_event', on_key)
     plt.show()
@@ -153,28 +158,14 @@ def find_obj(filenames):
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import trace_params
+    from pylongslit.obj_trace import get_params
 
     # loop through the files
     for filename in filenames:
 
         logger.info(f"Finding object in {filename}...")
 
-        # sanity check for the filename
-        if "science" not in filename and "standard" not in filename:
-            logger.error(f"Unrecognized file type for {filename}.")
-            logger.error("Make sure not to manually rename any files.")
-            logger.error("Restart from the reduction procedure. Contact the developers if the problem persists.")
-            exit()
-
-        # the parameters are different for standard and object frames, 
-        # as the apertures usually differ in size
-        if "standard" in filename:
-            params = trace_params["standard"]
-            logger.info("This is a standard star frame.")
-        else: 
-            params = trace_params["object"]
-            logger.info("This is a science frame.")
+        params = get_params(filename)
 
         find_obj_frame_manual(filename, params)
 
