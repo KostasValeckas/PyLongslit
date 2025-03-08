@@ -9,10 +9,24 @@ import os
 from tqdm import tqdm
 import argparse
 from sklearn.metrics import r2_score
-from astropy.modeling.models import Const1D
 import warnings
 import astropy.modeling.fitting
 from scipy.interpolate import make_lsq_spline, BSpline
+from astropy.modeling import Fittable1DModel, Parameter
+
+class Cauchy1D(Fittable1DModel):
+    """
+    This is a Cauchy distribution model for fitting the object trace.
+    """
+
+    # the default values here are set to 0 as they are not used ("dummies")
+    amplitude = Parameter(default=0)
+    mean = Parameter(default=0)
+    gamma = Parameter(default=0)
+
+    @staticmethod
+    def evaluate(x, amplitude, mean, gamma):
+        return amplitude / (1 + ((x - mean) / gamma) ** 2)
 
 
 
@@ -108,43 +122,63 @@ def find_obj_one_column(obj_x, obj_val, refined_center, params):
         The R2 score of the fit.
     """
 
-    from pylongslit.wavecalib import GeneralizedNormal1D
+    from pylongslit.logger import logger
 
     # estimate the amplitude guess for initial guess for the Gaussian fitter
     amplitude_guess = np.max(obj_val)
 
-    # construct tuples of min_max values for the Gaussian fitter
-
+    # construct tuples of min_max values for the fitters
     # The amplitude should not deviate from max value by much, and not be negative
     amplitude_interval = (0.1, 1.1 * amplitude_guess)
     # allow the center to vary by a user defined parameter
     mean_interval = (refined_center - params["center_thresh"], refined_center + params["center_thresh"]) 
-    # allow the stddev vary by a user defined parameter
-    gamma_interval = (
-        (params["fwhm_guess"] - params["fwhm_thresh"]) * gaussian_fwhm_to_sigma,
-        (params["fwhm_guess"] + params["fwhm_thresh"]) * gaussian_fwhm_to_sigma,
-    )
-    beta_interval = (2, 2)
-    
-    # construct the fitter 
-    # TODO: this has some repeated code from wavecalib - consider a utils method
-    g_init = GeneralizedNormal1D(
-        amplitude=amplitude_guess,
-        mean=refined_center,
-        stddev=params["fwhm_guess"] * gaussian_fwhm_to_sigma,
-        beta=2,
-        bounds={
-            "amplitude": amplitude_interval,
-            "mean": mean_interval,
-            "stddev": stddev_interval,
-            "beta": beta_interval,
-        },
-    )
 
-    # a constant model to add to the Gaussian - sometimes needed
-    # if sky is not subtracted properly - as this adds a continuum
-    const = Const1D(amplitude=0)
-    g_model = g_init + const
+    # construct the fitter after user choice
+    if params["model"] == "Gaussian":
+        stddev_interval = (
+            (params["fwhm_guess"] - params["fwhm_thresh"]) * gaussian_fwhm_to_sigma,
+            (params["fwhm_guess"] + params["fwhm_thresh"]) * gaussian_fwhm_to_sigma
+        )
+        # stddev should not be zero or negative
+        if stddev_interval[0] <= 0:
+            stddev_interval = (0.1, stddev_interval[1])
+        fit_model = Gaussian1D(
+            amplitude=amplitude_guess,
+            mean=refined_center,
+            stddev=params["fwhm_guess"] / 2,
+            bounds={
+                "amplitude": amplitude_interval,
+                "mean": mean_interval,
+                "stddev": stddev_interval,
+            },
+        )
+
+    elif params["model"] == "Cauchy":
+        # for Cauchy, the gamma is the FWHM/2
+        gamma_interval = (
+            (params["fwhm_guess"] - params["fwhm_thresh"])/2,
+            (params["fwhm_guess"] + params["fwhm_thresh"])/2,
+        )
+        # gamma should not be zero or negative
+        if gamma_interval[0] <= 0:
+            gamma_interval = (0.1, gamma_interval[1])
+        fit_model = Cauchy1D(
+            amplitude=amplitude_guess,
+            mean=refined_center,
+            gamma=params["fwhm_guess"]/2,
+            bounds={
+                "amplitude": amplitude_interval,
+                "mean": mean_interval,
+                "gamma": gamma_interval,
+            },
+        )
+    
+    else:
+
+        logger.error("Unrecognized model for object trace - options are 'Gaussian' or 'Cauchy'.")  
+        logger.error("Please check the configuration file.")
+        exit()
+
     fitter = LevMarLSQFitter()
 
     # perform the fit
@@ -153,7 +187,7 @@ def find_obj_one_column(obj_x, obj_val, refined_center, params):
         warnings.simplefilter("ignore")
         #TODO: the below exception is not a robust good fix - refactor
         try:
-            g_fit = fitter(g_model, obj_x, obj_val)
+            g_fit = fitter(fit_model, obj_x, obj_val)
         except (TypeError, ValueError, astropy.modeling.fitting.NonFiniteValueError):
             return False
     
@@ -246,14 +280,12 @@ def interactive_adjust_obj_limits(
     image,
     spectral,
     center_data,
-    signal_to_noise_array,
-    SNR_initial_guess,
     good_fit_array,
+    params,
     figsize=(18, 12),
 ):
     """
-    A interactive method that allows the user to adjust the object limits
-    by adjusting the signal to noise threshold and visually inspecting the results.
+    A interactive method that allows the user to adjust the object limits.
 
     Used for refining the object limits after the initial guess from the method
     `find_obj_position` before fittitng the object trace.
@@ -269,15 +301,14 @@ def interactive_adjust_obj_limits(
     center_data : array
         The estimated object centers.
 
-    signal_to_noise_array : array
-        The signal to noise ratio for each center.
-
-    SNR_initial_guess : float
-        The initial guess for the signal to noise threshold.
-
     good_fit_array : array
         An array containing boolean values for each pixel,
         indicating whether the fit for center was good or not.
+
+    params : dict
+        A dictionary containing the fit parameters - this is the dictionary
+        that is fetched directly from the configuration file (['trace']['object']
+        or ['trace']['standard'].
 
     figsize : tuple
         The figure size. Default is (18, 12).
@@ -294,11 +325,10 @@ def interactive_adjust_obj_limits(
     from pylongslit.utils import hist_normalize
     from pylongslit.parser import developer_params
 
-    # renaming for clarity in code later on
-    SNR_threshold = SNR_initial_guess
 
-    # estimate the start and end index of the object
-    start_index, end_index = find_obj_position(spectral, signal_to_noise_array, SNR_threshold)
+    # start at the edges of the object
+    start_index = 1
+    end_index = image.shape[1] - 1
 
     # normalize detector image data for plotting
     image = hist_normalize(image)
@@ -335,9 +365,10 @@ def interactive_adjust_obj_limits(
         ax1.axvline(x=end_index, color="red", linestyle="--", label="Object end")
 
         ax1.set_title(
-            "Adjust SNR threshold with arrowkeys to exclude parts that are too noisy, if needed.\n"
-            "Press up/down arrows for small changes (+/- 0.1), right/left for large changes (+/- 1).\n"
-            f"Current SNR threshold: {SNR_threshold}. Press 'q' or close window when done."
+            "Adjust object limits with arrowkeys to exclude parts that are too noisy, if needed.\n"
+            "Red points are not used, even when theyin the selected interval.\n"
+            "Press up/down to change lower boundary, right/left to change upper boundary.\n"
+            f"Press 'q' or close window when done."
         )
         ax1.legend()
         ax1.set_ylabel("Spacial pixel")
@@ -346,12 +377,19 @@ def interactive_adjust_obj_limits(
         ax2.clear()
         ax2.imshow(image, cmap="gray", label="Detector Image")
         ax2.scatter(
-            spectral,
-            center_data,
+            x_good,
+            good_center_data,
+            marker="X",
+            color="green",
+            label="Estimated object center (accepted)",
+            alpha=0.5,
+        )
+        ax2.scatter(
+            x_bad,
+            bad_center_data,
             marker="X",
             color="red",
-            label="Estimated object center",
-            #s=0.7,
+            label="Estimated object center (rejected)",
             alpha=0.5,
         )
         ax2.axvline(x=start_index, color="red", linestyle="--", label="Object start")
@@ -369,22 +407,27 @@ def interactive_adjust_obj_limits(
 
         fig.canvas.draw()
 
+    # we move by the cut size, as this corresponds to one point in data
+    pixel_cut = params["spectral_pixel_extension"]
+
     # we attachh this to the interactive plot, it calls update_plot every time
     # a key is pressed
     def on_key(event):
         # this allows accesing the SNR_threshold variable outside the scope
-        nonlocal SNR_threshold
         nonlocal start_index
         nonlocal end_index
         if event.key == "up":
-            SNR_threshold += 0.1
+            if start_index < end_index:
+                start_index += 1 + 2 * pixel_cut
         elif event.key == "down":
-            SNR_threshold -= 0.1
+            if start_index > 1  + 2 * pixel_cut:
+                start_index -= 1  + 2 * pixel_cut
         elif event.key == "right":
-            SNR_threshold += 1
+            if end_index < image.shape[1] - (1  + 2 * pixel_cut):
+                end_index += 1  + 2 * pixel_cut
         elif event.key == "left":
-            SNR_threshold -= 1
-        start_index, end_index = find_obj_position(spectral, signal_to_noise_array, SNR_threshold)
+            if end_index > start_index:
+                end_index -= 1  + 2 * pixel_cut
         update_plot(start_index, end_index)
 
     # call the update_plot method to plot the initial state
@@ -398,6 +441,164 @@ def interactive_adjust_obj_limits(
         print(f"Object start spectral pixel: {start_index}, object end spectral pixel: {end_index}")
 
     return start_index, end_index
+
+
+def fit_distribution_parameter(use_bsplie, parameter, params, good_x, good_y, data, filename):
+
+    """
+    This is a helper method to 'find_obj_frame' that fits either the object centers or FWHMs
+    through the whole detector image.
+
+    Parameters
+    ----------
+    use_bsplie : bool
+        A boolean value indicating whether to use B-spline fitting or not.
+
+    parameter : "Object Center" or "FWHM"
+        A string indicating whether to fit the object centers or FWHMs.
+        Only "Object Center" or "FWHM" are allowed.
+
+    params : dict
+        A dictionary containing the fit parameters - this is the dictionary
+        that is fetched directly from the configuration file (['trace']['object']
+        or ['trace']['standard'].
+
+    good_x : array
+        The spectral pixels used for the fit.
+
+    good_y : array
+        The object centers or FWHMs corresponding to good_x.
+
+    data : array
+        The detector image.
+
+    filename : str
+        The filename of the observation. Used for QA purposes.
+
+    Returns
+    -------
+    spectral_pixels : array
+        The spectral pixel array for whole detector.
+
+    param_fit_pix : array
+        The fitted object centers or
+        FWHMs through the whole detector image.
+    """
+
+    from pylongslit.logger import logger
+    from pylongslit.utils import show_1d_fit_QA
+    from pylongslit.parser import developer_params
+
+    # sanity check on the fit parameter variable
+    if parameter not in ["Object Center", "FWHM"]:
+        logger.error("Unrecognized parameter for fitting in fit_distribution_parameter.")
+        logger.error("Please check the code, or contact the developers if you have not changed the code.")
+        exit()
+
+    fit_degree = params["fit_order_trace"] if parameter == "Object Center" else params["fit_order_fwhm"]
+
+    # if the user chooses to use the bspline. This is not recommended for the object trace
+    # and should only be used if the trace can not be fitted with a regular polynomial.
+    if use_bsplie:
+        logger.warning(f"B-spline fitting is selected for {parameter} tracing.")
+        logger.warning(f"This should only be used when the {parameter} can not be fitted with a regular polynomial.")
+        logger.warning("This won't work well if there are many unfitted object centers.")
+        logger.warning("Watch out for overfitting.")
+
+        n_knots = params["knots_bspline"]
+
+        # Create the knots array
+        t = np.concatenate(
+            (
+                np.repeat(good_x[0], fit_degree + 1),  # k+1 knots at the beginning
+                np.linspace(
+                    good_x[1], good_x[-2], n_knots
+                ),  # interior knots
+                np.repeat(good_x[-1], fit_degree + 1),  # k+1 knots at the end
+            )
+        )
+        # fit and construct the spline
+        spl = make_lsq_spline(good_x, good_y, t=t, k=fit_degree)
+        bspline = BSpline(spl.t, spl.c, spl.k)
+
+        show_1d_fit_QA(
+            good_x[1:-1],
+            good_y[1:-1],
+            x_fit_values=good_x[1:-1],
+            y_fit_values=bspline(good_x[1:-1]),
+            residuals=good_y[1:-1] - bspline(good_x[1:-1]),
+            x_label="Spectral Pixel",
+            y_label="Counts (ADU)",
+            legend_label=f"Individually fitted {parameter}'s",
+            title=
+                f"{parameter} B-spline fit for {filename} with {n_knots} interior knots, degree {fit_degree} (this is set in the configuration file).\n"
+                "You should aim for very little to no large-scale structure in the residuals, "
+                "with the lowest amount of knots possible.",
+        )
+
+
+        # now evaluate the trace through whole detector 
+        # for the bspline fits we need to extrapolate beyond the fit, so the
+        # containers are filled up in several steps
+        spectral_pixels = np.arange(data.shape[1])
+        param_fit_pix = np.zeros_like(spectral_pixels, dtype=float)
+
+        good_spline_start = int(good_x[1])+1
+        good_spline_end = int(good_x[-2])-1
+        
+        param_fit_pix[good_spline_start:good_spline_end] = bspline(spectral_pixels[good_spline_start:good_spline_end])
+
+        # we take the first and last 10 points of good data points and extrapolate the ends 
+        # with a line since the B-spline is ususally diverging at the ends
+        start_fit = chebfit(good_x[:10], good_y[:10], deg=1)
+        end_fit = chebfit(good_x[-11: -1], good_y[-11:-1], deg=1)
+
+        # insert the linear extrapolations
+        param_fit_pix[:good_spline_start] = chebval(spectral_pixels[:good_spline_start], start_fit)
+        param_fit_pix[good_spline_end:] = chebval(spectral_pixels[good_spline_end:], end_fit)
+
+        if developer_params["debug_plots"]:
+            plt.axvline(x=good_spline_start, color='blue', linestyle='--', label='Spline/Extrapolation')
+            plt.axvline(x=good_spline_end, color='blue', linestyle='--', label='Spline/Extrapolation')
+            plt.plot(spectral_pixels, param_fit_pix)
+            plt.show()
+
+    # regular Chebyshev fitting - the default appraoch
+    else:
+
+        param_fit = chebfit(good_x, good_y, deg=fit_degree)
+
+        # dummy x array for plotting the fit
+        x_fit = np.linspace(good_x[0], good_x[-1], 1000)
+
+        # evaluate the fit at the used pixel interval
+        param_fit_val = chebval(x_fit, param_fit)
+
+        # evaluate the fit at used pixels for residuals
+        param_fit_pts = chebval(good_x, param_fit)
+
+        # residuals
+        resid = good_y - param_fit_pts
+
+        # now evaluate the trace through whole detector and return
+        spectral_pixels = np.arange(data.shape[1], dtype=float)
+        param_fit_pix = chebval(spectral_pixels, param_fit)
+
+
+        show_1d_fit_QA(
+            good_x,
+            good_y,
+            x_fit_values=x_fit,
+            y_fit_values=param_fit_val,
+            residuals=resid,
+            x_label="Spectral Pixel",
+            y_label="Counts (ADU)",
+            legend_label=f"Individually fitted {parameter}'s",
+            title=f"{parameter} fitting QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
+            f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_degree}."
+        )
+
+    return spectral_pixels, param_fit_pix
 
 
 
@@ -443,10 +644,8 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
 
     from pylongslit.logger import logger
     from pylongslit.parser import developer_params
-    from pylongslit.utils import PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame, hist_normalize
     from pylongslit.utils import estimate_sky_regions
-    from pylongslit.utils import show_1d_fit_QA, hist_normalize
-    from pylongslit.wavecalib import GeneralizedNormal1D
 
     logger.info(f"Starting object tracing on {filename}...")
 
@@ -471,9 +670,7 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
     spectral = np.array([])
     centers = np.array([])
     FWHMs = np.array([])
-    signal_to_noise_array = np.array([])
-    # beta params (this decides the shape of the fitted distribution)
-    betas = np.array([])
+
 
     # instead of looping through every spectral pixel, the user can take a mean
     # of a slice +/- the cut extension value to get more robust results.  
@@ -495,7 +692,7 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
     for i in range(cut_extension, data.shape[1], cut_extension + 1): num_it += 1
 
     # find 9 equally spaced indices to which plot QA fits, cut the edges a bit
-    # handle the unlicely case where the number of columns is less than 100
+    # , handle the unlicely case where the number of columns is less than 100
     if data.shape[1] < 100:
         qa_indices = np.linspace(0, data.shape[1], 9).astype(int)
     else:
@@ -520,7 +717,7 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
 
         # get the area only around the object
         refined_center, sky_left, sky_right = estimate_sky_regions(
-            val, spacial_center, params["fwhm_guess"]
+            val, spacial_center, params["fwhm_guess"], params["fwhm_thresh"]
         )
 
         obj_x = x_spat[sky_left:sky_right]
@@ -540,22 +737,12 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
             continue
         
         # extract the fit values used from the fitter:
-
-        center = g_fit.mean_0.value
-        FWHM = g_fit.stddev_0.value * gaussian_sigma_to_fwhm
-
-        # extract the amplitude to estimate the signal to noise ratio
-        amplitude = g_fit.amplitude_0.value
-
-        # this is the beta parameter that decides the shape of the fitted distribution
-        beta = g_fit.beta_0.value
-
-            
-        # estimate the signal to noise ratio for later interactive adjustment
-        signal_to_noise = estimate_signal_to_noise(val, amplitude, sky_left, sky_right)
+        center = g_fit.mean.value
+        # FWHM depends on the model used
+        FWHM = g_fit.gamma.value * 2 if params["model"] == "Cauchy" else g_fit.stddev.value * gaussian_sigma_to_fwhm
 
         # check if the column is one of the QA columns. The complicated if statement
-        # checks if the column is within the cut_extension pixels of the QA index
+        # checks if the column is within the interval of +/- cut extension from the QA indices
         if any((i - qa_index) in np.arange(0, cut_extension+1) for qa_index in qa_indices) and plot_nr < 9:
 
             if developer_params["verbose_print"]: print(f"Plotting QA for column {i}...") 
@@ -576,13 +763,11 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
         spectral = np.append(spectral, i)
         centers = np.append(centers, center)
         FWHMs = np.append(FWHMs, FWHM)
-        signal_to_noise_array = np.append(signal_to_noise_array, signal_to_noise)
         good_fit_array = np.append(good_fit_array, good_fit)
-        betas = np.append(betas, beta)
     
     fig.suptitle(
-        f"QA for a sample of object center fits in {filename}. Green - accepted, red - rejected.\n"
-        f"Current rejection threshold is R2 > {params['fit_R2']},\n" 
+        f"QA for a sample of object center fits in {filename}. Green - accepted, red - rejected. Model\n"
+        f"Fit model chosen: {params['model']}. Current rejection threshold is R2 > {params['fit_R2']},\n" 
         f"with allowed center deviation of {params['center_thresh']} pixels away from max data value,\n"  
         f"and {params['fwhm_thresh']} pixels from FWHM guess. Initial FWHM guess is {params['fwhm_guess']}. All of these can be changed in the configuration file."
     )
@@ -600,15 +785,11 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
 
     # center estimation done, now interactive adjustment of object limits
 
-    # get initial guess for SNR threshold
-    SNR_initial_guess = params["SNR"]
-
-
     logger.info("Starting interactive user refinement of object limits...")
     logger.info("Follow the instructions in the plot.")
     # interactive user refinment of object limits
     obj_start_pixel, obj_end_pixel = interactive_adjust_obj_limits(
-        data, spectral, centers, signal_to_noise_array, SNR_initial_guess, good_fit_array
+        data, spectral, centers, good_fit_array, params
     )
 
     # the indexes are not on the same grid as the detector array, 
@@ -617,13 +798,7 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
     obj_end_index = np.argmin(np.abs(spectral - obj_end_pixel))
 
     # now the object and fwhm fitting
-
-    # get polynomial degree for fitting
-    fit_deg_trace = params["fit_order_trace"]
-    fit_deg_fwhm = params["fit_order_fwhm"]
-    fit_order_beta = params["fit_order_beta"]
     
-
     # for centers and FWHMs, mask everything below obj_start_index and above obj_end_index,
     # and only keep the good center fits
     good_fits_cropped = good_fit_array[obj_start_index:obj_end_index]
@@ -631,232 +806,19 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
     good_x = spectral[obj_start_index:obj_end_index][good_fits_cropped]
     good_centers = centers[obj_start_index:obj_end_index][good_fits_cropped]
     good_FWHMs = FWHMs[obj_start_index:obj_end_index][good_fits_cropped]
-    good_betas = betas[obj_start_index:obj_end_index][good_fits_cropped]
 
+    # the actual fits are performed in the helper method
+    logger.info("Fitting object center...")
 
-    logger.info("Fitting object centers and FWHMs...")
+    spectral_pixels, centers_fit_pix = fit_distribution_parameter(
+        params["use_bspline_obj"], "Object Center", params, good_x, good_centers, data, filename
+    )
 
-    # if the uses chooses to use the bspline. This is not recommended for the object trace
-    # and should only be used if the trace can not be fitted with a regular polynomial.
-    if params["use_bspline"]:
-        logger.warning("B-spline fitting is selected for object tracing.")
-        logger.warning("This should only be used when the trace can not be fitted with a regular polynomial.")
-        logger.warning("This won't work well if there are many unfitted object centers.")
-        logger.warning("Watch out for overfitting.")
+    logger.info("Fitting object FWHM...")
 
-        n_knots = params["knots_bspline"]
-
-        # Create the knots array
-        t_trace = np.concatenate(
-            (
-                np.repeat(good_x[0], fit_deg_trace + 1),  # k+1 knots at the beginning
-                np.linspace(
-                    good_x[1], good_x[-2], n_knots
-                ),  # interior knots
-                np.repeat(good_x[-1], fit_deg_trace + 1),  # k+1 knots at the end
-            )
-        )
-
-        t_fwhm = np.concatenate(
-            (
-                np.repeat(good_x[0], fit_deg_fwhm + 1),  # k+1 knots at the beginning
-                np.linspace(
-                    good_x[1], good_x[-2], n_knots
-                ),  # interior knots
-                np.repeat(good_x[-1], fit_deg_fwhm + 1),  # k+1 knots at the end
-            )
-        )
-
-        t_beta = np.concatenate(
-            (
-                np.repeat(good_x[0], fit_order_beta + 1),  # k+1 knots at the beginning
-                np.linspace(
-                    good_x[1], good_x[-2], n_knots
-                ),  # interior knots
-                np.repeat(good_x[-1], fit_order_beta + 1),  # k+1 knots at the end
-            )
-        )   
-
-        spl_trace = make_lsq_spline(good_x, good_centers, t=t_trace, k=fit_deg_trace)
-        bspline_trace = BSpline(spl_trace.t, spl_trace.c, spl_trace.k)
-
-        spl_fwhm = make_lsq_spline(good_x, good_FWHMs, t=t_fwhm, k=fit_deg_fwhm)    
-        bspline_fwhm = BSpline(spl_fwhm.t, spl_fwhm.c, spl_fwhm.k)
-
-        spl_beta = make_lsq_spline(good_x, good_betas, t=t_beta, k=fit_order_beta)
-        bspline_beta = BSpline(spl_beta.t, spl_beta.c, spl_beta.k)
-
-        show_1d_fit_QA(
-            good_x[1:-1],
-            good_centers[1:-1],
-            x_fit_values=good_x[1:-1],
-            y_fit_values=bspline_trace(good_x[1:-1]),
-            residuals=good_centers[1:-1] - bspline_trace(good_x[1:-1]),
-            x_label="Wavelength (Å)",
-            y_label="Counts (ADU)",
-            legend_label="Extracted flat-field lamp spectrum",
-            title=
-                f"Object trace B-spline fit with {n_knots} interior knots, degree {fit_deg_trace} (this is set in the configuration file).\n"
-                "You should aim for very little to no large-scale structure in the residuals, "
-                "with the lowest amount of knots possible.",
-        )
-
-        show_1d_fit_QA(
-            good_x[1:-1],
-            good_FWHMs[1:-1],
-            x_fit_values=good_x[1:-1],
-            y_fit_values=bspline_fwhm(good_x[1:-1]),
-            residuals=good_FWHMs[1:-1] - bspline_fwhm(good_x[1:-1]),
-            x_label="Wavelength (Å)",
-            y_label="Counts (ADU)",
-            legend_label="Extracted flat-field lamp spectrum",
-            title=
-                f"FWHM B-spline fit with {n_knots} interior knots, degree {fit_deg_fwhm} (this is set in the configuration file).\n"
-                "You should aim for very little to no large-scale structure in the residuals, "
-                "with the lowest amount of knots possible.",
-        )
-
-        show_1d_fit_QA(
-            good_x[1:-1],
-            good_betas[1:-1],
-            x_fit_values=good_x[1:-1],
-            y_fit_values=bspline_beta(good_x[1:-1]),
-            residuals=good_betas[1:-1] - bspline_beta(good_x[1:-1]),
-            x_label="Wavelength (Å)",
-            y_label="Counts (ADU)",
-            legend_label="Extracted flat-field lamp spectrum",
-            title=
-                f"Beta (shape parameter for the distribution) B-spline fit with {n_knots} interior knots, degree {fit_order_beta} (this is set in the configuration file).\n"
-                "You should aim for very little to no large-scale structure in the residuals, "
-                "with the lowest amount of knots possible.",
-        )
-
-        # now evaluate the trace through whole detector 
-
-        # for the bspline fits we need to extrapolate beyond the fit, so the
-        # containers are filled up in several steps
-        spectral_pixels = np.arange(data.shape[1])
-        centers_fit_pix = np.zeros_like(spectral_pixels, dtype=float)
-        fwhm_fit_pix = np.zeros_like(spectral_pixels, dtype=float)
-        betas_fit_pix = np.zeros_like(spectral_pixels, dtype=float)
-
-        good_spline_start = int(good_x[1])+1
-        good_spline_end = int(good_x[-2])-1
-        
-        centers_fit_pix[good_spline_start:good_spline_end] = bspline_trace(spectral_pixels[good_spline_start:good_spline_end])
-        fwhm_fit_pix[good_spline_start:good_spline_end] = bspline_fwhm(spectral_pixels[good_spline_start:good_spline_end])
-        betas_fit_pix[good_spline_start:good_spline_end] = bspline_beta(spectral_pixels[good_spline_start:good_spline_end])
-
-        # we take the first and last 10 points of good data points and extrapolate the ends 
-        # with a line since the B-spline is ususally diverging at the ends
-        start_fit_trace = chebfit(good_x[:10], good_centers[:10], deg=1)
-        end_fit_trace = chebfit(good_x[-11: -1], good_centers[-11:-1], deg=1)
-
-        start_fit_fwhm = chebfit(good_x[:10], good_FWHMs[:10], deg=1)
-        end_fit_fwhm = chebfit(good_x[-11: -1], good_FWHMs[-11:-1], deg=1)
-
-        start_fit_beta = chebfit(good_x[:10], good_betas[:10], deg=1)
-        end_fit_beta = chebfit(good_x[-11: -1], good_betas[-11:-1], deg=1)
-        
-        # insert the linear extrapolations
-        centers_fit_pix[:good_spline_start] = chebval(spectral_pixels[:good_spline_start], start_fit_trace)
-        centers_fit_pix[good_spline_end:] = chebval(spectral_pixels[good_spline_end:], end_fit_trace)
-
-        fwhm_fit_pix[:good_spline_start] = chebval(spectral_pixels[:good_spline_start], start_fit_fwhm)
-        fwhm_fit_pix[good_spline_end:] = chebval(spectral_pixels[good_spline_end:], end_fit_fwhm)
-
-        betas_fit_pix[:good_spline_start] = chebval(spectral_pixels[:good_spline_start], start_fit_beta)
-        betas_fit_pix[good_spline_end:] = chebval(spectral_pixels[good_spline_end:], end_fit_beta)
-
-        if developer_params["debug_plots"]:
-            plt.axvline(x=good_spline_start, color='blue', linestyle='--', label='Spline/Extrapolation')
-            plt.axvline(x=good_spline_end, color='blue', linestyle='--', label='Spline/Extrapolation')
-            plt.plot(spectral_pixels, centers_fit_pix)
-            plt.show()
-
-    # regular Chebyshev fitting - the default appraoch
-    else:
-
-
-        centers_fit = chebfit(good_x, good_centers, deg=fit_deg_trace)
-        fwhm_fit = chebfit(good_x, good_FWHMs, deg=fit_deg_fwhm)
-        betas_fit = chebfit(good_x, good_betas, deg=fit_order_beta)
-
-        # dummy x array for plotting the fit
-        x_fit = np.linspace(good_x[0], good_x[-1], 1000)
-
-        centers_fit_val = chebval(x_fit, centers_fit)
-        fwhm_fit_val = chebval(x_fit, fwhm_fit)
-        betas_fit_val = chebval(x_fit, betas_fit)
-
-        # evaluate the fit at used pixels for residuals
-        centers_fit_pts = chebval(good_x, centers_fit)
-        fwhm_fit_pts = chebval(good_x, fwhm_fit)
-        betas_fit_pts = chebval(good_x, betas_fit)
-
-        # residuals
-        resid_centers = good_centers - centers_fit_pts
-        resid_FWHMs = good_FWHMs - fwhm_fit_pts
-        resdid_betas = good_betas - betas_fit_pts
-
-        # now evaluate the trace through whole detector and return
-        spectral_pixels = np.arange(data.shape[1], dtype=float)
-        centers_fit_pix = chebval(spectral_pixels, centers_fit)
-        fwhm_fit_pix = chebval(spectral_pixels, fwhm_fit)
-        betas_fit_pix = chebval(spectral_pixels, betas_fit)
-
-
-        show_1d_fit_QA(
-            good_x,
-            good_centers,
-            x_fit_values=x_fit,
-            y_fit_values=centers_fit_val,
-            residuals=resid_centers,
-            x_label="Spectral pixel",
-            y_label="Spatial pixel",
-            legend_label="Fitted centers",
-            title=f"Object center fitting QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
-            f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_deg_trace}."
-        )
-
-        # plot the result of FWHM finding for QA
-        show_1d_fit_QA(
-            good_x,
-            good_FWHMs,
-            x_fit_values=x_fit,
-            y_fit_values=fwhm_fit_val,
-            residuals=resid_FWHMs,
-            x_label="Spectral pixel",
-            y_label="Spatial pixels",
-            legend_label="Fitted FWHMss",
-            title=f"FWHM fitting QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
-            f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_deg_fwhm}."
-        )
-
-        show_1d_fit_QA(
-            good_x,
-            good_betas,
-            x_fit_values=x_fit,
-            y_fit_values=betas_fit_val,
-            residuals=resdid_betas,
-            x_label="Spectral pixel",
-            y_label="Spatial pixels",
-            legend_label="Fitted Beta values",
-            title=f"Beta (parameter deciding shape of the distribution) fitting QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
-            f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_order_beta}."
-        )
-
-
-        
-
-        if developer_params["debug_plots"]:
-            plt.plot(spectral_pixels, centers_fit_pix, label='centers')
-            plt.plot(spectral_pixels, fwhm_fit_pix, label='fwhm')
-            plt.plot(spectral_pixels, betas_fit_pix, label='betas')
-            plt.plot(spectral_pixels, betas_fit_pix)
-            plt.legend()
-            plt.show()
-
+    spectral_pixels, fwhm_fit_pix = fit_distribution_parameter(
+        params["use_bspline_fwhm"], "FWHM", params, good_x, good_FWHMs, data, filename
+    )
 
     # lastly, construct the object model for QA
 
@@ -864,26 +826,51 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
     # loop through the spectral pixels and construct the model
     # we set amplitude to 1 for simplicity
     for i in range(data.shape[1]):
-        obj_model[:, i] = GeneralizedNormal1D().evaluate(
-            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] * gaussian_fwhm_to_sigma, betas_fit_pix[i]
+        obj_model[:, i] = Cauchy1D().evaluate(
+            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / 2
+        ) if params["model"] == "Cauchy" else Gaussian1D().evaluate(
+            x_spat, 1, centers_fit_pix[i], fwhm_fit_pix[i] / gaussian_fwhm_to_sigma
         )
+
         if developer_params["debug_plots"] and i % 100 == 0:
             print(f"Model at column {i} constructed.")
-            print(f"Center: {centers_fit_pix[i]}, FWHM: {fwhm_fit_pix[i]}, Beta: {betas_fit_pix[i]}")
+            print(f"Center: {centers_fit_pix[i]}, FWHM: {fwhm_fit_pix[i]}")
             plt.plot(x_spat, obj_model[:, i], label=f"Model at column {i}")
             plt.show()
 
     # plot the QA for the object model
-    fig, ax = plt.subplots(3, 1, figsize=(18, 9))
+    fig, ax = plt.subplots(3, 1, figsize=figsize)
     ax1, ax2, ax3 = ax
     
-    ax1.imshow(data, cmap="cool", label="Detector image")
+    ax1.imshow(hist_normalize(data), cmap="cool", label="Detector image")
+    ax1.set_title("Detector image.")
 
     ax2.imshow(obj_model, cmap="hot", label="Object model")
+    ax2.set_title("Object model.")
 
+    ax3.imshow(hist_normalize(data), cmap="cool", label="Detector image")
+    ax3.imshow(obj_model, cmap="hot", label="Object model", alpha=0.3)
+    ax3.set_title("Object model overlayed on detector image.")
+    ax3.legend()
 
-    ax3.imshow(obj_model, cmap="hot", label="Object model", alpha=0.5)
-    ax3.imshow(data, cmap="cool", label="Detector image", alpha=0.5)
+    fig.text(0.5, 0.04, "Spectral pixels", ha="center", va="center", fontsize=12)
+    fig.text(
+        0.04,
+        0.5,
+        "Spacial pixels",
+        ha="center",
+        va="center",
+        rotation="vertical",
+        fontsize=12,
+    )
+
+    fig.suptitle(
+        f"QA for the object model in {filename}. The object model is constructed from the fitted object centers and FWHMs.\n"
+        f"The object model should be a good representation of the object in the detector image. \n"
+        f"It is okay if it exceeds the extent of the object in spectral direction.\n"
+        f"If the model is not a good representation, revise the object trace routine - pay attention to warnings and QA plots."
+    )
+
     plt.show()
 
 
