@@ -148,7 +148,7 @@ def extract_object_simple(trace_data, trace_params, filename):
         fwhm = FWHM[i]
 
         # define the aperture
-        aperture = RectangularAperture((pixel_coord, obj_center), 1, fwhm)
+        aperture = RectangularAperture((pixel_coord, obj_center), 1, 2 * fwhm)
 
         # extract the spectrum
         spec_sum = aperture.do_photometry(reduced_data, error=data_error)

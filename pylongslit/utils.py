@@ -1085,18 +1085,18 @@ def wavelength_sol(spectral_pix, spatial_pix, wavelen_fit, tilt_fit):
 
     return wavelength
 
-def interactively_crop_spec(x,y, x_label: str = "", y_label: str = "", label: str = "", title: str = ""):
+def interactively_crop_spec(x,y, x_label: str = "", y_label: str = "", label: str = "", title: str = "", figsize = (16, 16)):
 
     """
     A general method for interactively cropping spectrum edges for noise
     """
     # Crop out any noisy bits before fitting.
-    fig, _ = plt.subplots()
+    fig, _ = plt.subplots(figsize = figsize)
     plt.subplots_adjust(bottom=0.25)
     (l,) = plt.plot(x, y, label=label)
     plt.xlabel(x_label)
     plt.ylabel(y_label)
-    plt.legend()
+    if label not in [None, ""]: plt.legend() 
     plt.title(title)
 
     # Add sliders for selecting the range
