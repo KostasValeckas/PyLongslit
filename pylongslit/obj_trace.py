@@ -731,24 +731,15 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
 
     from pylongslit.logger import logger
     from pylongslit.parser import developer_params
-    from pylongslit.utils import PyLongslit_frame, hist_normalize
+    from pylongslit.utils import PyLongslit_frame, check_crr_and_sky
     from pylongslit.utils import estimate_sky_regions
 
     logger.info(f"Starting object tracing on {filename}...")
 
     # get the frame data
     frame = PyLongslit_frame.read_from_disc(filename)
-    # check if frame has been skysubtracted and crr removed, else throw
-    # a warning
-    if not frame.header["CRRREMOVD"]:
-        logger.warning(f"{filename} has not been cosmic ray removed.")
-        logger.warning("This may affect the quality of the object trace.")
-        logger.warning("Consider running the cosmic ray removal routine - but continuing for now...")
 
-    if not frame.header["SKYSUBBED"] and not frame.header["BCGSUBBED"]:
-        logger.warning(f"{filename} has not been sky subtracted.")
-        logger.warning("This may affect the quality of the object trace.")
-        logger.warning("Consider running the sky subtraction or A-B background subtraction routines - but continuing for now...")
+    check_crr_and_sky(frame.header, filename)
 
     data = frame.data
 

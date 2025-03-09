@@ -1207,3 +1207,17 @@ def plot_1d_spec_interactive_limits(x,y, y_error = None, x_label: str = "", y_la
     smax.on_changed(update)
     
     plt.show()
+
+def check_crr_and_sky(header, filename):
+    from pylongslit.logger import logger
+    # check if frame has been skysubtracted and crr removed, else throw
+    # a warning
+    if not header["CRRREMOVD"]:
+        logger.warning(f"{filename} has not been cosmic ray removed.")
+        logger.warning("This may affect the quality of the object trace.")
+        logger.warning("Consider running the cosmic ray removal routine - but continuing for now...")
+
+    if not header["SKYSUBBED"] and not header["BCGSUBBED"]:
+        logger.warning(f"{filename} has not been sky subtracted.")
+        logger.warning("This may affect the quality of the object trace.")
+        logger.warning("Consider running the sky subtraction or A-B background subtraction routines - but continuing for now...")

@@ -208,7 +208,7 @@ def extract_object_optimal(trace_data, trace_params, filename):
     spec_var : array-like
         The variance of the extracted 1D spectrum. (in ADU)
     """
-    from pylongslit.utils import PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame, check_crr_and_sky
     from pylongslit.logger import logger
     from pylongslit.parser import developer_params
 
@@ -222,6 +222,8 @@ def extract_object_optimal(trace_data, trace_params, filename):
 
     # get the reduced frame and unpack
     frame = PyLongslit_frame.read_from_disc(filename)
+
+    check_crr_and_sky(frame.header, filename)
 
     reduced_data = frame.data.copy()
 
@@ -245,10 +247,6 @@ def extract_object_optimal(trace_data, trace_params, filename):
         plt.imshow(variance, origin="lower", aspect="auto")
         plt.title(f"Variance frame {filename}")
         plt.show()
-
-    # remove negative values
-    reduced_data[reduced_data < 0] = 0
-
 
     # these are the containers that will be filled for every value
     spec = []
@@ -399,7 +397,7 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
         figsize=figsize
     )
 
-def extract_objects(reduced_files, trace_dict):
+def extract_objects(reduced_files, trace_dict, method=extract_object_optimal):
     """
     Driver for the extraction of 1D spectra from reduced frames.
 
@@ -415,6 +413,33 @@ def extract_objects(reduced_files, trace_dict):
     trace_dict : dict
         Dictionary containing the object traces.
         Format is {filename: (pixel, center, FWHM)}
+
+    method : function
+        The extraction method to use. Default is `extract_object_optimal`.
+        
+        The method should take the following input vector:
+        (trace_data, trace_params, filename), with:
+        - trace_data : tuple
+            The object trace data.
+            Format is (pixel, center, FWHM).
+        - trace_params : dict
+            Dictionary containing the object trace parameters
+            taken from the configuration file.
+        - filename : str
+            The filename of the reduced frame from which the 1D spectrum is extracted.
+
+        The method should return the following output vector:
+        (pixel, spec, spec_var, y_offset), with:
+        - pixel : array-like
+            The spectral pixel values of the object trace.
+        - spec : array-like
+            The extracted 1D spectrum. (in ADU)
+        - spec_var : array-like
+            The variance of the extracted 1D spectrum. (in ADU)
+        - y_offset : float
+            The y-offset from the cropping procedure. This is used in wavelength calibration
+            to match the global pixel coordinates with the wavelength solution.
+        
 
     Returns
     -------
@@ -440,7 +465,7 @@ def extract_objects(reduced_files, trace_dict):
 
         trace_data = trace_dict[filename_obj]
 
-        pixel, spec, spec_var, y_offset = extract_object_optimal(
+        pixel, spec, spec_var, y_offset = method(
             trace_data, trace_params, filename
         )
 

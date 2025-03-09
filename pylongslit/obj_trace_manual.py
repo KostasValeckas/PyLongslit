@@ -24,13 +24,14 @@ def find_obj_frame_manual(filename, params, figsize=(16,16)):
 
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir
-    from pylongslit.utils import hist_normalize, PyLongslit_frame
+    from pylongslit.utils import hist_normalize, PyLongslit_frame, check_crr_and_sky
     from pylongslit.obj_trace import fit_distribution_parameter, objmodel_QA
 
  
     # open the file
     logger.info(f"Opening file {filename}...")
     frame = PyLongslit_frame.read_from_disc(filename)
+    check_crr_and_sky(frame.header, filename)
     data = frame.data
     logger.info(f"File {filename} opened.")
 

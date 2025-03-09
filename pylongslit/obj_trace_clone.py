@@ -58,7 +58,7 @@ def load_frame():
         The frame for object trace cloning.
     """
 
-    from pylongslit.utils import PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame, check_crr_and_sky
     from pylongslit.parser import obj_trace_clone_params
     from pylongslit.logger import logger
 
@@ -67,6 +67,8 @@ def load_frame():
     file_path = obj_trace_clone_params["frame_root"]
 
     frame = PyLongslit_frame.read_from_disc(file_path)
+
+    check_crr_and_sky(frame.header, frame.name)
 
     return frame
 
