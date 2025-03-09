@@ -174,6 +174,8 @@ def load_extinction_data():
     # load extinction file - should be AB magnitudes / airmass
     extinction_file_name = flux_params["path_extinction_curve"]
 
+    logger.info(f"Loading the extinction curve from {extinction_file_name}...")
+
     # open the file
 
     # make sure we are in the output_dir
@@ -781,7 +783,6 @@ def run_sensitivity_function():
 
     ref_wavelength, ref_flux = load_ref_spec(flux_file)
 
-    logger.info("Loading the extinction curve...")
     wavelength_ext, data_ext = load_extinction_data()
 
     global_wavelength, obs_count_cropped, ref_spec_cropped, ext_data_cropped = crop_all_spec(

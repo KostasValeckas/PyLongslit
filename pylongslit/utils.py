@@ -1091,7 +1091,7 @@ def interactively_crop_spec(x,y, x_label: str = "", y_label: str = "", label: st
     A general method for interactively cropping spectrum edges for noise
     """
     # Crop out any noisy bits before fitting.
-    fig, _ = plt.subplots(figsize = figsize)
+    fig, _ = plt.subplots(figsize = figsize) 
     plt.subplots_adjust(bottom=0.25)
     (l,) = plt.plot(x, y, label=label)
     plt.xlabel(x_label)
@@ -1189,10 +1189,17 @@ def plot_1d_spec_interactive_limits(x,y, y_error = None, x_label: str = "", y_la
         np.max(x),
         valinit=np.max(x),
     )
-    
+
     def update(val):
         min_val = smin.val
         max_val = smax.val
+
+        # Ensure the sliders do not pass each other
+        if min_val >= (max_val - 10):
+            smin.set_val(np.min(x))
+            smax.set_val(np.max(x))
+            return
+
         valid_indices = (x >= min_val) & (x <= max_val)
         ax.set_xlim([min_val, max_val])
         ax.set_ylim([0, 1.1 * np.max(y[valid_indices])])
@@ -1202,7 +1209,7 @@ def plot_1d_spec_interactive_limits(x,y, y_error = None, x_label: str = "", y_la
             l_error.set_xdata(x[valid_indices])
             l_error.set_ydata(y_error[valid_indices])
         fig.canvas.draw_idle()
-    
+
     smin.on_changed(update)
     smax.on_changed(update)
     
