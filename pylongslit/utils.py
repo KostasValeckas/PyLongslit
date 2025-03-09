@@ -1164,7 +1164,7 @@ def plot_1d_spec_interactive_limits(x,y, y_error = None, x_label: str = "", y_la
     plt.subplots_adjust(bottom=0.25)
     (l,) = ax.plot(x, y, label=label, color="black")
     if y_error is not None:
-        (l_error,) = ax.plot(x, y_error, label=f"{label} Error - 1 $\sigma$", color="red")
+        (l_error,) = ax.plot(x, y_error, label=f"{label} Noise - 1 $\sigma$", color="red")
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     plt.legend()
@@ -1195,7 +1195,7 @@ def plot_1d_spec_interactive_limits(x,y, y_error = None, x_label: str = "", y_la
         max_val = smax.val
         valid_indices = (x >= min_val) & (x <= max_val)
         ax.set_xlim([min_val, max_val])
-        ax.set_ylim([np.min(y[valid_indices]), 1.1 * np.max(y[valid_indices])])
+        ax.set_ylim([0, 1.1 * np.max(y[valid_indices])])
         l.set_xdata(x[valid_indices])
         l.set_ydata(y[valid_indices])
         if y_error is not None:

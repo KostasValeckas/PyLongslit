@@ -21,7 +21,7 @@ def load_object_traces():
     from pylongslit.utils import get_filenames
     from pylongslit.logger import logger
 
-    logger.info("Loading object traces")
+    logger.info("Loading object traces...")
 
     # Get all filenames from output_dir starting with "obj_"
     filenames = get_filenames(starts_with="obj_")
@@ -215,18 +215,20 @@ def extract_object_optimal(trace_data, trace_params, filename):
     # unpack the trace data
     pixel, center, FWHM = trace_data
 
-    plt.plot(pixel, center, label="Object trace")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.plot(pixel, center, label="Object trace")
+        plt.legend()
+        plt.show()
 
     # get the reduced frame and unpack
     frame = PyLongslit_frame.read_from_disc(filename)
 
     reduced_data = frame.data.copy()
 
-    
-    plt.imshow(reduced_data, origin="lower", aspect="auto")
-    plt.title(f"Reduced frame {filename}")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.imshow(reduced_data, origin="lower", aspect="auto")
+        plt.title(f"Reduced frame {filename}")
+        plt.show()
 
     header = frame.header
     # the y-offset from the cropping procedure. This is used in wavelength calibration
@@ -239,9 +241,10 @@ def extract_object_optimal(trace_data, trace_params, filename):
 
     variance = frame.sigma.copy()**2
 
-    plt.imshow(variance, origin="lower", aspect="auto")
-    plt.title(f"Variance frame {filename}")
-    plt.show()
+    if developer_params["debug_plots"]:
+        plt.imshow(variance, origin="lower", aspect="auto")
+        plt.title(f"Variance frame {filename}")
+        plt.show()
 
     # remove negative values
     reduced_data[reduced_data < 0] = 0
@@ -360,7 +363,7 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     return wavelen_homogenous, spec_calibrated, var_calibrated
 
 
-def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18, 12)):
+def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18, 18)):
     """
     Plot of the extracted 1D spectrum (counts [ADU] vs. wavelength [Å]).
     Wrapper for `pylongslit.utils.plot_1d_spec_interactive_limits`.
@@ -390,9 +393,10 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
         spec_calib,
         y_error = np.sqrt(var_calib),
         x_label="Wavelength [Å]",
-        y_label="Flux [ADU]",
+        y_label="Counts [ADU]",
         label="Extracted 1D spectrum",
-        title=f"Extracted 1D spectrum from {filename}. Use the sliders to crop out noisy edges if needed.", 
+        title=f"Extracted 1D spectrum from {filename}. Use the sliders to crop out noisy edges if needed.",
+        figsize=figsize
     )
 
 def extract_objects(reduced_files, trace_dict):
@@ -419,17 +423,8 @@ def extract_objects(reduced_files, trace_dict):
         Format is {filename: (wavelength, spectrum_calib, var_calib)}
     """
 
-    from pylongslit.parser import output_dir, detector_params
     from pylongslit.logger import logger
     from pylongslit.obj_trace import get_params
-
-    print(reduced_files)
-    print(trace_dict)
-
-
-    # get gain and read out noise parameters
-    gain = detector_params["gain"]
-    read_out_noise = detector_params["read_out_noise"]
 
     # This is the container for the resulting one-dimensional spectra
     results = {}
@@ -464,15 +459,28 @@ def extract_objects(reduced_files, trace_dict):
         # plot results for QA
         plot_extracted_1d(new_filename, wavelength, spectrum_calib, var_calib)
 
+        logger.info(f"1D spectrum extracted and wavelength calibrated for {filename}.")
+        print("-------------------------\n")
+
     return results
 
 
 def write_extracted_1d_to_disc(results):
+    """
+    Writes the extracted 1D spectra to disc, in the output directory 
+    specified in the configuration file.
+
+    Parameters
+    ----------
+    results : dict
+        Dictionary containing the extracted 1D spectra.
+        Format is {filename: (wavelength, spectrum_calib, var_calib)}
+    """
 
     from pylongslit.parser import output_dir
     from pylongslit.logger import logger
 
-    logger.info("Writing extracted 1D spectra to disc")
+    logger.info("Writing extracted 1D spectra to disc...")
 
     os.chdir(output_dir)
 
@@ -489,18 +497,22 @@ def write_extracted_1d_to_disc(results):
 
     os.chdir("..")
 
-    logger.info("All extracted 1D spectra written to disc")
+    logger.info("All extracted 1D spectra written to disc.")
 
 
 def run_extract_1d():
+    """
+    Main driver for the extract-1d procedure.
+    """
 
     from pylongslit.logger import logger
     from pylongslit.utils import get_reduced_frames
 
-    logger.info("Running extract_1d")
+    logger.info("Starting 1d extraction procedure...")
 
     trace_dict = load_object_traces()
 
+    logger.info("Loading corresponding reduced frames...")
     reduced_files = get_reduced_frames()
 
     if len(reduced_files) != len(trace_dict):
@@ -512,7 +524,7 @@ def run_extract_1d():
 
     write_extracted_1d_to_disc(results)
 
-    logger.info("extract_1d done")
+    logger.info("Extraction procedure complete.")
     print("-------------------------\n")
 
 def main():
