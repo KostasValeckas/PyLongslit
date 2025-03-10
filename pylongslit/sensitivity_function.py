@@ -757,7 +757,6 @@ def load_sensfunc_from_disc():
     try:
         with open("sensfunc.dat", "rb") as f:
             out = pickle.load(f)
-            print(out)
     except FileNotFoundError:
         logger.error("Sensitivity function file not found.")
         logger.error("Run the sensitivity function procedure first.")

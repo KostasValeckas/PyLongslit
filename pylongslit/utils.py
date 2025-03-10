@@ -936,10 +936,12 @@ def load_fluxed_spec():
     from pylongslit.logger import logger
     from pylongslit.parser import output_dir
 
+    logger.info("Loading the fluxed spectra...")
+
     filenames = get_filenames(starts_with="1d_fluxed_science")
 
     if len(filenames) == 0:
-        logger.error(f"No pectra found.")
+        logger.error(f"No spectra found.")
         logger.error("Run the flux calibration 1d procedure first.")
 
         exit()
