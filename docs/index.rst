@@ -49,7 +49,7 @@ please know that the software is not designed/tested for data does not meet the 
 #. We strive for **transparency**. *We look at documentation as an active part of the code.
    No line of code is deemed complete if it is not documented appropriately.
    We specially aim to disclose the limitations of the software, and to provide
-   guidance on how to interpret the results.*
+   guidance on how to interpret the results - specially through carefully designed quality-assesment plots.*
 #. We strive for **robustness**. *We pay special attention to error handling and to
    providing guidance on how to troubleshoot common issues. We commit to providing 
    support to users who are struggling with the software to our best ability.*
