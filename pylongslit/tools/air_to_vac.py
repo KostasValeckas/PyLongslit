@@ -14,6 +14,7 @@ if __name__ == "__main__":
     )
     parser.add_argument(
         "infile", type=str, help="Input file containing wavelengths in air."
+        "Expected format: Wavelength in air (Angstroms), Ion Name (optional)"
     )
     parser.add_argument(
         "outfile", type=str, help="Output file containing wavelengths in vacuum."

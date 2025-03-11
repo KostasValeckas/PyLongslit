@@ -1,6 +1,8 @@
 Installation
 ~~~~~~~~~~~~~~
 
+test
+
 .. note::
     The steps in this documentation have been tested on 
     Linux Ubuntu 22.04.4 LTS (which should also cover MacOS functionality

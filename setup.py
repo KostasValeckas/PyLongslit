@@ -5,10 +5,39 @@ setup(
     version='0.1',
     packages=find_packages(),  # Automatically find and include all your modules
     install_requires=[          # External dependencies
-        'numpy',                # Example dependency
-        'scipy',                # Example dependency
+        'astropy==6.1.7',
+        'astroscrappy==1.2.0',
+        'bidict==0.23.1',
+        'colorama==0.4.6',
+        'contourpy==1.3.1',
+        'cycler==0.12.1',
+        'fonttools==4.56.0',
+        'imageio==2.37.0',
+        'joblib==1.4.2',
+        'kiwisolver==1.4.8',
+        'lazy_loader==0.4',
+        'matplotlib==3.8.0',
+        'networkx==3.4.2',
+        'numpy==1.26.4',
+        'photutils==2.0.2',
+        'pillow==11.1.0',
+        'ply==3.11',
+        'PyAstronomy==0.22.0',
+        'pyerfa==2.0.1.5',
+        'pyparsing==3.2.1',
+        'PyQt5==5.15.10',
+        'python-dateutil==2.9.0.post0',
+        'PyYAML==6.0.2',
+        'quantities==0.16.1',
+        'scikit-image==0.25.2',
+        'scikit-learn==1.6.1',
+        'scipy==1.15.2',
+        'six==1.17.0',
+        'threadpoolctl==3.5.0',
+        'tifffile==2025.2.18',
+        'tqdm==4.67.1'
     ],
-    entry_points={             # Define your CLI tools here
+    entry_points={              # Define command-line scripts
         'console_scripts': [
             'pylongslit_check_config = pylongslit.check_config:main',
             'pylongslit_bias = pylongslit.mkspecbias:main', 
