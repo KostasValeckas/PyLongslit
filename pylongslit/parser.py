@@ -17,7 +17,7 @@ except FileNotFoundError:
 
     logger.error("Config file not found.")
     logger.error(
-        'Make sure a config file exists. \n'
+        "Make sure a config file exists. \n"
         "See the docs at:\n"
         "https://kostasvaleckas.github.io/PyLongslit/"
     )
@@ -69,11 +69,14 @@ if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     except OSError:
         logger.error(f"Creation of the directory {output_dir} failed")
-        logger.error("Check if you have the necessary permissions, and if the path in the config file is correct.")
+        logger.error(
+            "Check if you have the necessary permissions, and if the path in the config file is correct."
+        )
         exit()
 else:
     logger.info(f"Output directory {output_dir} found.")
 
 # Check if the user wants to skip the science or standard star reduction
 from pylongslit.check_config import check_science_and_standard
+
 skip_science_or_standard_bool = check_science_and_standard()

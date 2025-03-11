@@ -2,12 +2,13 @@ import matplotlib.pyplot as plt
 import argparse
 import numpy as np
 
+
 def run_background_subtraction():
     """
     Subtract the background from the reduced files using A - B image pairs.
     The pairs are given in the config file.
 
-    This method loads the files, checks if they have been reduced, 
+    This method loads the files, checks if they have been reduced,
     and subtracts the background. The frames are altered in place.
     """
 
@@ -45,7 +46,9 @@ def run_background_subtraction():
     for file in reduced_files:
         with PyLongslit_frame.read_from_disc(file) as frame:
             if frame.header["BCGSUBBED"] == True:
-                logger.warning(f"File {file} already had background subtracted. Skipping...")
+                logger.warning(
+                    f"File {file} already had background subtracted. Skipping..."
+                )
                 continue
             # strp prefix to match original file names
             new_filename = file.replace("reduced_science_", "").replace(
@@ -72,8 +75,12 @@ def run_background_subtraction():
                 f"Image dimensions do not match for {pair['A']} and {pair['B']}."
             )
             logger.error("Please check the images.")
-            logger.error("Don't run the crop procedure before the background subtraction.")
-            logger.error("If you have already run the crop procedure, please re-reduce the images.")
+            logger.error(
+                "Don't run the crop procedure before the background subtraction."
+            )
+            logger.error(
+                "If you have already run the crop procedure, please re-reduce the images."
+            )
             exit()
 
         # simple handling for skip-cases TODO: make this more robust
@@ -81,10 +88,10 @@ def run_background_subtraction():
             subtracted_image = images[pair["A"]] - images[pair["B"]]
         except KeyError:
             continue
-        
+
         subtracted_images[pair["A"]] = subtracted_image
         # propagating the errors
-        new_sigmas[pair["A"]] = np.sqrt(sigmas[pair["A"]]**2 + sigmas[pair["B"]]**2)
+        new_sigmas[pair["A"]] = np.sqrt(sigmas[pair["A"]] ** 2 + sigmas[pair["B"]] ** 2)
 
         # for visualization purposes
         normalized = False
@@ -100,7 +107,7 @@ def run_background_subtraction():
 
         def on_key(event):
             nonlocal normalized
-            if event.key == 'h':
+            if event.key == "h":
                 normalized = not normalized
                 update(event)
 
@@ -122,15 +129,17 @@ def run_background_subtraction():
             f"If they do, it might be best to depend on polynomial background estimation only."
         )
 
-        fig.canvas.mpl_connect('key_press_event', on_key)
-        
+        fig.canvas.mpl_connect("key_press_event", on_key)
+
         plt.show()
 
     # save the subtracted images
     for filename in reduced_files:
 
         # crop the prefix to find the original file name
-        new_filename = filename.replace("reduced_science_", "").replace("reduced_std_", "")
+        new_filename = filename.replace("reduced_science_", "").replace(
+            "reduced_std_", ""
+        )
 
         # use the original file name to create the subtracted frame.
         if new_filename in subtracted_images:
@@ -143,28 +152,30 @@ def run_background_subtraction():
             frame = PyLongslit_frame(image, sigma, header, save_filename)
             # this header prevents double subtraction
             frame.header["BCGSUBBED"] = True
-            
+
             frame.show_frame()
 
             logger.info(f"Saving subtracted image {save_filename} to disc.")
             frame.write_to_disc()
 
-
     logger.info("Subtracted images saved to disc.")
 
 
-
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit background-subtraction procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit background-subtraction procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_background_subtraction()
+
 
 if __name__ == "__main__":
     main()

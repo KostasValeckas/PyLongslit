@@ -39,32 +39,43 @@ def estimate_initial_error(data, exptime, master_bias):
     dark_frame = estimate_dark(data, exptime, supress_warning=True)
 
     use_overscan = detector_params["overscan"]["use_overscan"]
-    
+
     if use_overscan:
         overscan_frame = estimate_frame_overscan_bias(data)
-
 
     read_noise_error = read_noise / gain
 
     # Poisson noise
     if use_overscan:
-        poisson_noise = np.sqrt(data - dark_frame.data - overscan_frame.data - master_bias.data)  
-    
+        poisson_noise = np.sqrt(
+            data - dark_frame.data - overscan_frame.data - master_bias.data
+        )
+
     else:
         poisson_noise = np.sqrt(data - dark_frame.data - master_bias.data)
 
     # total error (see docs for calculations)
     if use_overscan:
-        error = np.sqrt(poisson_noise**2 + dark_frame.sigma**2 + overscan_frame.sigma**2 + master_bias.sigma**2 +  read_noise_error**2)
+        error = np.sqrt(
+            poisson_noise**2
+            + dark_frame.sigma**2
+            + overscan_frame.sigma**2
+            + master_bias.sigma**2
+            + read_noise_error**2
+        )
 
     else:
-        error = np.sqrt(poisson_noise**2 + dark_frame.sigma**2 + master_bias.sigma**2 +  read_noise_error**2)
+        error = np.sqrt(
+            poisson_noise**2
+            + dark_frame.sigma**2
+            + master_bias.sigma**2
+            + read_noise_error**2
+        )
 
     return error
 
 
 def read_raw_object_files():
-
     """
     Reads the raw object (science and standard star) files from the input
     directories and returns the science and standard star file lists.
@@ -89,11 +100,15 @@ def read_raw_object_files():
 
     elif skip_science_or_standard_bool == 1:
         star_file_list = None
-        logger.warning("Skipping standard star reduction as requested... (check config. file)")
+        logger.warning(
+            "Skipping standard star reduction as requested... (check config. file)"
+        )
         science_file_list = FileList(science_params["science_dir"])
 
     elif skip_science_or_standard_bool == 2:
-        logger.warning("Skipping science reduction as requested... (check config. file)")
+        logger.warning(
+            "Skipping science reduction as requested... (check config. file)"
+        )
         star_file_list = FileList(standard_params["standard_dir"])
         science_file_list = None
 
@@ -110,27 +125,19 @@ def read_raw_object_files():
 
             exit()
 
-        logger.info(
-            f"Found {star_file_list.num_files} "
-            "standard star frames:"
-        )
+        logger.info(f"Found {star_file_list.num_files} " "standard star frames:")
 
         star_file_list.print_files()
 
     if science_file_list is not None:
 
         if science_file_list.num_files == 0:
-            logger.critical(
-                "No science frames found in the science directory."
-            )
+            logger.critical("No science frames found in the science directory.")
             logger.error("Please check the config file and the directory.")
 
             exit()
 
-        logger.info(
-            f"Found {science_file_list.num_files} "
-            "science frames:"
-        )
+        logger.info(f"Found {science_file_list.num_files} " "science frames:")
 
         science_file_list.print_files()
 
@@ -181,7 +188,6 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, exptime):
 
     frame = frame - dark_frame.data
 
-
     # subtract the overscan if requested
     if use_overscan:
 
@@ -205,28 +211,31 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, exptime):
             + dark_frame.sigma**2
             + overscan.sigma**2
             + master_bias.sigma**2
-            + ((
-                (initial_frame - dark_frame.data - overscan.data - master_bias.data)
-                * master_flat.sigma
-                / master_flat.data
+            + (
+                (
+                    (initial_frame - dark_frame.data - overscan.data - master_bias.data)
+                    * master_flat.sigma
+                    / master_flat.data
+                )
+                ** 2
             )
-            ** 2)
         )
 
     else:
-        
+
         error = (1 / master_flat.data) * np.sqrt(
             initial_error**2
             + dark_frame.sigma**2
             + master_bias.sigma**2
-            + ((
-                (initial_frame - dark_frame.sigma - master_bias.data)
-                * master_flat.sigma
-                / master_flat.data
+            + (
+                (
+                    (initial_frame - dark_frame.sigma - master_bias.data)
+                    * master_flat.sigma
+                    / master_flat.data
+                )
+                ** 2
             )
-            ** 2)
         )
-
 
     # Handle NaNs and Infs
     if np.isnan(frame).any() or np.isinf(frame).any():
@@ -235,9 +244,15 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, exptime):
 
     # for error, nans and infs are replaced with the mean of the error frame
     if np.isnan(error).any() or np.isinf(error).any():
-        logger.warning("NaNs or Infs detected in the error-frame. Replacing with mean error.")
-        error = np.nan_to_num(error, nan=np.nanmean(error), posinf=np.nanmean(error), neginf=np.nanmean(error))
-
+        logger.warning(
+            "NaNs or Infs detected in the error-frame. Replacing with mean error."
+        )
+        error = np.nan_to_num(
+            error,
+            nan=np.nanmean(error),
+            posinf=np.nanmean(error),
+            neginf=np.nanmean(error),
+        )
 
     return frame, error
 
@@ -280,17 +295,19 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime, type):
         exit()
 
     for file in file_list:
-        
+
         print("---------------------------------")
         logger.info(f"Reducing frame {file} ...")
 
-        hdu = open_fits(science_params["science_dir"], file) if type == "science" else open_fits(standard_params["standard_dir"], file)
+        hdu = (
+            open_fits(science_params["science_dir"], file)
+            if type == "science"
+            else open_fits(standard_params["standard_dir"], file)
+        )
 
         data = hdu[data_params["raw_data_hdu_index"]].data
 
-        data, error = reduce_frame(
-            data, BIAS, FLAT, use_overscan, exptime
-        )
+        data, error = reduce_frame(data, BIAS, FLAT, use_overscan, exptime)
 
         # check if the frame needs to be rotated or flipped -
         # later steps rely on x being the dispersion axis
@@ -307,9 +324,13 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime, type):
 
         logger.info("Frame reduced, writing to disc...")
 
-        write_name = "reduced_science_" + file if type == "science" else "reduced_standard_" + file
+        write_name = (
+            "reduced_science_" + file
+            if type == "science"
+            else "reduced_standard_" + file
+        )
         # the .fits extension is added in the write_to_disc method, so we remove it here
-        write_name = write_name.replace(".fits", "") 
+        write_name = write_name.replace(".fits", "")
 
         header = hdu[0].header
 
@@ -328,6 +349,7 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime, type):
 
         print("---------------------------------")
 
+
 def reduce_all():
     """
     Driver for the reduction of all observations (standard star, science, arc lamp)
@@ -340,12 +362,12 @@ def reduce_all():
         skip_science_or_standard_bool,
     )
     from pylongslit.parser import science_params, standard_params
-    from pylongslit.utils import  PyLongslit_frame
+    from pylongslit.utils import PyLongslit_frame
     from pylongslit.logger import logger
-    
+
     # prepare some parameters and load master frames
 
-    use_overscan = detector_params["overscan"]["use_overscan"]    
+    use_overscan = detector_params["overscan"]["use_overscan"]
     BIAS = PyLongslit_frame.read_from_disc("master_bias.fits")
     FLAT = PyLongslit_frame.read_from_disc("master_flat.fits")
 

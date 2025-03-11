@@ -8,7 +8,7 @@ PyLongslit module for handling overscan bias.
 """
 
 
-def show_overscan(figsize = (16,16)):
+def show_overscan(figsize=(16, 16)):
     """
     Show the user defined ovsercan region.
 
@@ -38,7 +38,7 @@ def show_overscan(figsize = (16,16)):
     if len(file_list.files) == 0:
         logger.error("No files found in the flat directory.")
         logger.error("Please check the configuration file.")
-        logger.error("Can't show overscan region without a flat frame. Skipping...")   
+        logger.error("Can't show overscan region without a flat frame. Skipping...")
         return
 
     # open the first file in the directory
@@ -160,7 +160,7 @@ def check_overscan():
     return True
 
 
-def estimate_frame_overscan_bias(image_data, plot = False):
+def estimate_frame_overscan_bias(image_data, plot=False):
     """
     Estimate the overscan bias of a frame.
 
@@ -190,29 +190,35 @@ def estimate_frame_overscan_bias(image_data, plot = False):
     overscan_y_start = detector_params["overscan"]["overscan_y_start"]
     overscan_y_end = detector_params["overscan"]["overscan_y_end"]
 
-    # create a frame with same shape as the input frame, and fill up the 
+    # create a frame with same shape as the input frame, and fill up the
     # mean of the overscan region. As error, take the error of the mean
     # for a Gaussian distribution.
     overscan_image = numpy.zeros_like(image_data)
     error_image = numpy.zeros_like(image_data)
 
-    overscan = image_data[overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end]
-    mean = numpy.mean(overscan) 
-    overscan_image= numpy.full(image_data.shape, mean)
-    error = numpy.std(overscan)/numpy.sqrt(len(overscan))
+    overscan = image_data[
+        overscan_y_start:overscan_y_end, overscan_x_start:overscan_x_end
+    ]
+    mean = numpy.mean(overscan)
+    overscan_image = numpy.full(image_data.shape, mean)
+    error = numpy.std(overscan) / numpy.sqrt(len(overscan))
     error_image = numpy.full(image_data.shape, error)
-        
-    # construct the overscan frame and return it
-    overscan_frame = PyLongslit_frame(overscan_image, error_image, None, "overscan_bias")
 
-    if plot: overscan_frame.show_frame()
+    # construct the overscan frame and return it
+    overscan_frame = PyLongslit_frame(
+        overscan_image, error_image, None, "overscan_bias"
+    )
+
+    if plot:
+        overscan_frame.show_frame()
 
     return overscan_frame
+
 
 def subtract_overscan(data):
     """
     Subtract the overscan bias from the frame.
-    
+
     Uses 'estimate_frame_overscan_bias' to estimate the overscan bias
     and subtracts it from the frame.
 
@@ -229,7 +235,7 @@ def subtract_overscan(data):
 
     from pylongslit.logger import logger
 
-    overscan_bias = estimate_frame_overscan_bias(data, plot = False)
+    overscan_bias = estimate_frame_overscan_bias(data, plot=False)
     logger.info("Subtracting overscan bias from the frame.")
     data = data - overscan_bias.data
 

@@ -6,6 +6,7 @@ The file name is derived from the configuration file name and is saved in the sa
 This script is designed only to be read by other scripts in the PyLongslit package, 
 executing it by itself does not make much sense.
 """
+
 import logging
 from colorama import Fore, Style, init
 from pylongslit import CONFIG_FILE_PATH
@@ -55,7 +56,7 @@ class CustomFormatter(logging.Formatter):
 # For filelogging we add the dates, for console logging we don't
 formatter = logging.Formatter(
     "%(asctime)s - %(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 color_formatter = CustomFormatter(
     "%(name)s - %(levelname)s - %(filename)s:%(lineno)d - %(message)s"

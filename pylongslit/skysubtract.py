@@ -66,7 +66,7 @@ def fit_sky_one_column(
         The FWHM guess of the object.
 
     fwhm_thresh : int
-        The threshold for the object FWHM.  
+        The threshold for the object FWHM.
 
     sigma_cut : float
         The sigma value for sigma-clipping in the sky fitting.
@@ -182,7 +182,13 @@ def fit_sky_QA(
 
     # fit the sky
     sky_fit, clip_mask, x_sky, sky_val, reasiduals = fit_sky_one_column(
-        slice_spec, refined_center, fwhm_guess, fwhm_thresh, sigma_cut, sigma_iters, sky_order
+        slice_spec,
+        refined_center,
+        fwhm_guess,
+        fwhm_thresh,
+        sigma_cut,
+        sigma_iters,
+        sky_order,
     )
 
     # plot the results
@@ -217,7 +223,14 @@ def fit_sky_QA(
 
 
 def make_sky_map(
-    filename, data, spatial_center_guess, fwhm_guess, fwhm_thresh, sigma_cut, sigma_iters, sky_order
+    filename,
+    data,
+    spatial_center_guess,
+    fwhm_guess,
+    fwhm_thresh,
+    sigma_cut,
+    sigma_iters,
+    sky_order,
 ):
     """
     Loops through the detector columns, and fits the sky background for each one.
@@ -345,17 +358,13 @@ def remove_sky_background(center_dict):
             logger.warning(
                 f"Sky-subtraction was already performed by A-B image subtraction for {file}."
             )
-            logger.warning(
-                f"Using this routine might not be neccesery."
-            )
-            logger.warning(
-                f"Inspect whether further sky-subtraction is needed."
-            )
+            logger.warning(f"Using this routine might not be neccesery.")
+            logger.warning(f"Inspect whether further sky-subtraction is needed.")
             logger.warning(
                 f"This routine introduces noise - and should not be used if not neeeded."
             )
 
-        # get the data and the center    
+        # get the data and the center
         data = frame.data.copy()
         error = frame.sigma.copy()
         clicked_point = center_dict[file]
@@ -395,7 +404,7 @@ def remove_sky_background(center_dict):
         skysub_data = data - sky_map.data
         skysub_error = np.sqrt(error**2 + sky_map.sigma**2)
 
-        # plot the difference for QA 
+        # plot the difference for QA
         fig, ax = plt.subplots(2, 1, figsize=(12, 18))
         ax[0].imshow(hist_normalize(data), cmap="gray")
         ax[0].set_title("Original data (histogram normalized)")
@@ -407,7 +416,7 @@ def remove_sky_background(center_dict):
             f"If not, revise the sky subtraction parameters in the configuration file."
         )
         plt.show()
-    
+
         # Swap the data and sigma in the frame, show and write to disc
         frame.data = skysub_data
         frame.sigma = skysub_error
@@ -460,7 +469,9 @@ def run_sky_subtraction():
     logger.info("Fetching the reduced frames...")
     reduced_files = get_reduced_frames()
     if len(reduced_files) == 0:
-        logger.error("No reduced frames found. Please run the reduction procedure first.")
+        logger.error(
+            "No reduced frames found. Please run the reduction procedure first."
+        )
         exit()
 
     # get the center estimations

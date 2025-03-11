@@ -51,8 +51,7 @@ def create_pixel_array():
         An array of pixel coordinates.
     """
 
-    from pylongslit.parser import detector_params 
-
+    from pylongslit.parser import detector_params
 
     if detector_params["dispersion"]["spectral_dir"] == "x":
         pix_array = np.arange(0, detector_params["xsize"])
@@ -140,6 +139,7 @@ class GraphicInterface(QMainWindow):
     ):
         from pylongslit.parser import detector_params, output_dir
         from pylongslit.logger import logger
+
         QMainWindow.__init__(self, parent)
         self.setWindowTitle("PyLongslit: Identify Arc Lines")
         self._main = QWidget()
@@ -183,7 +183,7 @@ class GraphicInterface(QMainWindow):
             load_file_action.setEnabled(False)
         # For PyLongslit, we don't need to load the spectrum from the GUI
         # , do it automatically for more robust appraoch
-        #toolbar.addAction(load_file_action)
+        # toolbar.addAction(load_file_action)
 
         save_pixtab_action = QAction("Save PixTable", self)
         save_pixtab_action.setShortcut("ctrl+S")
@@ -238,7 +238,7 @@ class GraphicInterface(QMainWindow):
         file_menu = main_menu.addMenu("File")
         # For PyLongslit, we don't need to load the spectrum from the GUI
         # , do it automatically for more robust appraoch
-        #file_menu.addAction(load_file_action)
+        # file_menu.addAction(load_file_action)
         file_menu.addAction(load_ref_action)
         file_menu.addSeparator()
         file_menu.addAction(save_pixtab_action)
@@ -423,6 +423,7 @@ class GraphicInterface(QMainWindow):
 
     def load_spectrum(self, arc_fname=None):
         from pylongslit.parser import wavecalib_params
+
         if arc_fname is False:
             current_dir = "./"
             filters = "FITS files (*.fits | *.fit)"
@@ -436,13 +437,13 @@ class GraphicInterface(QMainWindow):
         if arc_fname:
             self.arc_fname = arc_fname
             raw_data = fits.getdata(arc_fname)
-            #the offset is used if the middle of detector is not a good
+            # the offset is used if the middle of detector is not a good
             # place to take a sample of the arc lines
             middle_cut_offset = wavecalib_params["offset_middle_cut"]
             pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
-            ilow = (raw_data.shape[0] // 2) - pixel_cut_extension + middle_cut_offset 
+            ilow = (raw_data.shape[0] // 2) - pixel_cut_extension + middle_cut_offset
             ihigh = (raw_data.shape[0] // 2) + pixel_cut_extension + middle_cut_offset
-            self.arc1d = np.mean(raw_data[ilow:ihigh + 1, :], axis=0)
+            self.arc1d = np.mean(raw_data[ilow : ihigh + 1, :], axis=0)
             self.pix = create_pixel_array()
             self.ax.lines[0].set_data(self.pix, self.arc1d)
             self.ax.set_ylim(0, np.nanmax(self.arc1d) * 1.1)
@@ -486,6 +487,7 @@ class GraphicInterface(QMainWindow):
     def save_pixtable(self, fname=None):
         from pylongslit.parser import instrument_params
         from pylongslit.logger import logger
+
         if fname is False:
             current_dir = "./"
             filters = "All files (*)"
@@ -526,6 +528,7 @@ class GraphicInterface(QMainWindow):
 
     def save_wave(self, fname=None):
         from pylongslit.parser import instrument_params
+
         if self.cheb_fit is None:
             return
         if fname is None:
@@ -903,18 +906,21 @@ class GraphicInterface(QMainWindow):
             self.clear_fit()
         self.set_dataview()
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit identify procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit identify procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     from pylongslit.logger import logger
-
 
     # Launch App:
     qapp = QApplication([])
@@ -927,6 +933,6 @@ def main():
     app.show()
     qapp.exec_()
 
+
 if __name__ == "__main__":
     main()
-

@@ -5,7 +5,9 @@ from scipy.interpolate import interp1d
 import argparse
 
 
-def calibrate_spectrum(wavelength, counts, var, fit, error, exptime, wavelength_ext, data_ext, airmass):
+def calibrate_spectrum(
+    wavelength, counts, var, fit, error, exptime, wavelength_ext, data_ext, airmass
+):
     """
     Flux calibrates the spectrum using the sensitivity function.
 
@@ -52,34 +54,42 @@ def calibrate_spectrum(wavelength, counts, var, fit, error, exptime, wavelength_
         Variance in the calibrated flux.
     """
 
-    from pylongslit.sensitivity_function import eval_sensfunc, estimate_transmission_factor
+    from pylongslit.sensitivity_function import (
+        eval_sensfunc,
+        estimate_transmission_factor,
+    )
     from pylongslit.logger import logger
-
 
     # convert to counds/sec
     counts_pr_sec = counts / exptime
 
     # interpolate the extinction data to the wavelength grid of the spectrum
-    ext_interp = interp1d(wavelength_ext, data_ext, kind="linear", fill_value="extrapolate")
+    ext_interp = interp1d(
+        wavelength_ext, data_ext, kind="linear", fill_value="extrapolate"
+    )
     data_ext = ext_interp(wavelength)
 
     logger.info("Correcting for atmospheric extinction...")
-    transmission_factor = estimate_transmission_factor(wavelength, airmass, data_ext, show_QA=True)
+    transmission_factor = estimate_transmission_factor(
+        wavelength, airmass, data_ext, show_QA=True
+    )
 
-    counts_corr = counts_pr_sec * transmission_factor   
+    counts_corr = counts_pr_sec * transmission_factor
 
-    
     # evaluate the sensitivity at the wavelength points
-    
+
     conv_factors, conv_error = eval_sensfunc(fit, error, wavelength)
 
     logger.info("Calibrating the spectrum and errors...")
     calibrated_flux = counts_corr * conv_factors
-    
+
     # error propagation - see the documentation for detailss
     error_counts = np.sqrt(var)
 
-    error_flux = np.sqrt(((counts/exptime)*conv_error)**2 + ((conv_factors/exptime)*error_counts)**2)
+    error_flux = np.sqrt(
+        ((counts / exptime) * conv_error) ** 2
+        + ((conv_factors / exptime) * error_counts) ** 2
+    )
 
     calibrated_var = error_flux**2
 
@@ -88,7 +98,7 @@ def calibrate_spectrum(wavelength, counts, var, fit, error, exptime, wavelength_
 
 def calibrate_flux(spectra, fit, error, good_wavelength_start, good_wavelength_end):
     """
-    Driver function to calibrate the flux of the extracted spectra. 
+    Driver function to calibrate the flux of the extracted spectra.
     Loops and calls the calibrate_spectrum function for each spectrum.
 
     Parameters
@@ -130,28 +140,35 @@ def calibrate_flux(spectra, fit, error, good_wavelength_start, good_wavelength_e
     for filename, (wavelength, counts, var) in spectra.items():
         # calibrate the spectrum
 
-        logger.info(f"Calibrating the spectrum for {filename}...") 
+        logger.info(f"Calibrating the spectrum for {filename}...")
 
         calibrated_flux, calibrated_var = calibrate_spectrum(
-            wavelength, counts, var, fit, error, exptime, wavelength_ext, data_ext, airmass
+            wavelength,
+            counts,
+            var,
+            fit,
+            error,
+            exptime,
+            wavelength_ext,
+            data_ext,
+            airmass,
         )
         # save the calibrated spectrum
         calibrated_spectra[filename] = (wavelength, calibrated_flux, calibrated_var)
 
         # for QA we don't want to plot the very noisy parts where the sensitivity function is not reliable
         mask = (wavelength > good_wavelength_start) & (wavelength < good_wavelength_end)
-        
+
         # plot for QA
         plot_1d_spec_interactive_limits(
             wavelength[mask],
             calibrated_flux[mask],
-            y_error = np.sqrt(calibrated_var)[mask],
+            y_error=np.sqrt(calibrated_var)[mask],
             x_label="Wavelength [Å]",
             y_label="Flux [erg/s/cm2/Å]",
-            label = "Calibrated flux",
-            title=
-                f"Calibrated spectrum for {filename}\n"
-                f"Only showing the wavelength range where the sensitivity function is well-behaved (from {good_wavelength_start} to {good_wavelength_end} Å).",
+            label="Calibrated flux",
+            title=f"Calibrated spectrum for {filename}\n"
+            f"Only showing the wavelength range where the sensitivity function is well-behaved (from {good_wavelength_start} to {good_wavelength_end} Å).",
         )
 
         logger.info(f"Spectrum for {filename} calibrated.")
@@ -161,7 +178,6 @@ def calibrate_flux(spectra, fit, error, good_wavelength_start, good_wavelength_e
 
 
 def write_calibrated_spectra_to_disc(calibrated_spectra):
-
     """
     Writes the calibrated spectra to disk.
 
@@ -186,7 +202,9 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
 
         new_filename = filename.replace("1d_science", "1d_fluxed_science")
 
-        logger.info(f"Writing the calibrated spectrum for {filename} to {new_filename}...")
+        logger.info(
+            f"Writing the calibrated spectrum for {filename} to {new_filename}..."
+        )
 
         # change to output directory
         os.chdir(output_dir)
@@ -213,7 +231,6 @@ def run_flux_calib():
     from pylongslit.utils import load_spec_data
     from pylongslit.sensitivity_function import load_sensfunc_from_disc
 
-
     logger.info("Running flux calibration procedure...")
 
     logger.info("Loading the extracted spectra...")
@@ -225,20 +242,26 @@ def run_flux_calib():
 
     fit, error, good_wavelength_start, good_wavelength_end = load_sensfunc_from_disc()
 
-    calibrated_spectra = calibrate_flux(spectra, fit, error, good_wavelength_start, good_wavelength_end) 
+    calibrated_spectra = calibrate_flux(
+        spectra, fit, error, good_wavelength_start, good_wavelength_end
+    )
 
     write_calibrated_spectra_to_disc(calibrated_spectra)
 
     logger.info("Flux calibration procedure completed.")
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit flux-calibration procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit flux-calibration procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_flux_calib()

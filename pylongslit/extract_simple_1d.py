@@ -4,6 +4,7 @@ from photutils.aperture import RectangularAperture
 import matplotlib.pyplot as plt
 import argparse
 
+
 def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(18, 18)):
     """
     A plotting method that shows the rectangular aperture around the object trace
@@ -33,7 +34,7 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(18,
         The figure size. Default is (10, 18).
     """
     fig, axes = plt.subplots(num_plots, 1, figsize=figsize)
-    
+
     # chop the image into segments for easier viewing
     segment_length = image.shape[1] // num_plots
 
@@ -47,13 +48,29 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(18,
         segment_fwhm = fwhm[start:end]
 
         ax.imshow(segment, origin="lower", cmap="gray", aspect="auto")
-        ax.plot(segment_pixel - start, segment_trace - segment_fwhm, "-", color="red", alpha=0.5, linewidth=0.5)
-        ax.plot(segment_pixel - start, segment_trace + segment_fwhm, "-", color="red", alpha=0.5, linewidth=0.5)
+        ax.plot(
+            segment_pixel - start,
+            segment_trace - segment_fwhm,
+            "-",
+            color="red",
+            alpha=0.5,
+            linewidth=0.5,
+        )
+        ax.plot(
+            segment_pixel - start,
+            segment_trace + segment_fwhm,
+            "-",
+            color="red",
+            alpha=0.5,
+            linewidth=0.5,
+        )
 
         # set the x-ticks so the user can trace where on the spectral
         # this segment is located - 5 ticks per segment
-        x_tick_array = np.arange(segment_pixel[0], segment_pixel[-1], segment_length//5, dtype=int)
-        ax.set_xticks(np.arange(0, len(segment_pixel), segment_length//5))
+        x_tick_array = np.arange(
+            segment_pixel[0], segment_pixel[-1], segment_length // 5, dtype=int
+        )
+        ax.set_xticks(np.arange(0, len(segment_pixel), segment_length // 5))
         ax.set_xticklabels(x_tick_array)
 
     fig.suptitle(
@@ -74,10 +91,11 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(18,
 
     plt.show()
 
+
 def extract_object_simple(trace_data, trace_params, filename):
-    """ 
+    """
     A simple 1D extraction method that sums the counts in a rectangular aperture
-    around the object trace. The rectangle had has a height of +/- FWHM 
+    around the object trace. The rectangle had has a height of +/- FWHM
     around the center of the object trace. This is useful when the object is
     close to other objects or detector artifacts.
 
@@ -115,7 +133,7 @@ def extract_object_simple(trace_data, trace_params, filename):
     """
 
     from pylongslit.utils import PyLongslit_frame, check_crr_and_sky
-    
+
     # unpack the trace data
     pixel, center, FWHM = trace_data
 
@@ -126,11 +144,11 @@ def extract_object_simple(trace_data, trace_params, filename):
     reduced_data = frame.data.copy()
     data_error = frame.sigma.copy()
     header = frame.header.copy()
-    
+
     # the y-offset from the cropping procedure. This is used in wavelength calibration
     # to match the global pixel coordinates with the wavelength solution. We
-    # extract it here as we do not want to handle header data in the wavelength calibration. 
-    y_offset = header["CROPY1"]  
+    # extract it here as we do not want to handle header data in the wavelength calibration.
+    y_offset = header["CROPY1"]
 
     # these are the containers that will be filled for every value
     spec = []
@@ -159,7 +177,7 @@ def extract_object_simple(trace_data, trace_params, filename):
 
         spec.append(spec_sum_counts)
         spec_var.append(spec_err_counts**2)
-        
+
     # convert to numpy arrays for further processing
     spec = np.array(spec)
     spec_var = np.array(spec_var)
@@ -171,11 +189,21 @@ def run_extract_1d_simple():
 
     from pylongslit.utils import get_reduced_frames
     from pylongslit.logger import logger
-    from pylongslit.extract_1d import load_object_traces, extract_objects, write_extracted_1d_to_disc
+    from pylongslit.extract_1d import (
+        load_object_traces,
+        extract_objects,
+        write_extracted_1d_to_disc,
+    )
 
-    logger.warning("This is the simple 1D extraction procedure, it extracts a rectangular aperture +/- fwhm around the center of the object trace.")
-    logger.warning("This is useful when the object is close to other objects or detector artifacts, but is not the most accurate method.")
-    logger.warning("For more accurate extraction, use the regular 1D extraction procedure.")
+    logger.warning(
+        "This is the simple 1D extraction procedure, it extracts a rectangular aperture +/- fwhm around the center of the object trace."
+    )
+    logger.warning(
+        "This is useful when the object is close to other objects or detector artifacts, but is not the most accurate method."
+    )
+    logger.warning(
+        "For more accurate extraction, use the regular 1D extraction procedure."
+    )
 
     logger.info("Starting 1d simple extraction procedure...")
 
@@ -196,14 +224,18 @@ def run_extract_1d_simple():
     logger.info("Extraction procedure complete.")
     print("-------------------------\n")
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit simple extract-1d procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit simple extract-1d procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_extract_1d_simple()

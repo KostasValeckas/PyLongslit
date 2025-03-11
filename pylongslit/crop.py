@@ -7,7 +7,7 @@ from matplotlib.widgets import Slider
 import argparse
 
 
-def crop_image(frame, figsize = (16, 16)):
+def crop_image(frame, figsize=(16, 16)):
     """
     Interactive cropping of the image.
 
@@ -39,7 +39,7 @@ def crop_image(frame, figsize = (16, 16)):
     header = frame.header.copy()
 
     # if this is a re-crop, this will be needed for bookkeeping
-    old_crop_bottom  = header.get("CROPY1", 0)
+    old_crop_bottom = header.get("CROPY1", 0)
 
     # this is used to toggle between normalized and non-normalized images
     normalized = False
@@ -55,9 +55,7 @@ def crop_image(frame, figsize = (16, 16)):
     axtop = plt.axes([0.25, 0.25, 0.65, 0.03], facecolor=axcolor)
 
     stop = Slider(axtop, "Top", 0, image.shape[0], valinit=image.shape[0], valstep=1)
-    sbottom = Slider(
-        axbottom, "Bottom", 0, image.shape[0], valinit=0, valstep=1
-    )
+    sbottom = Slider(axbottom, "Bottom", 0, image.shape[0], valinit=0, valstep=1)
 
     # interactive update function
     def update(val):
@@ -74,15 +72,15 @@ def crop_image(frame, figsize = (16, 16)):
 
     stop.on_changed(update)
     sbottom.on_changed(update)
-    
+
     # toggle between normalized and non-normalized images
     def toggle_hist_normalization(event):
-        if event.key == 'h':
+        if event.key == "h":
             nonlocal normalized
             normalized = not normalized
             update(None)
 
-    fig.canvas.mpl_connect('key_press_event', toggle_hist_normalization)
+    fig.canvas.mpl_connect("key_press_event", toggle_hist_normalization)
 
     fig.suptitle(
         "Use the sliders to crop the image. Press 'h' to histagram normalize.\n"
@@ -92,9 +90,9 @@ def crop_image(frame, figsize = (16, 16)):
 
     ax.set_xticks([])
     ax.set_yticks([])
-    
+
     plt.show()
-    
+
     # extract the user set limits and crop the images
     top = int(stop.val)
     bottom = int(sbottom.val)
@@ -120,7 +118,9 @@ def run_crop():
     logger.info("Fetching the reduced frames.")
     reduced_files = get_reduced_frames()
     if len(reduced_files) == 0:
-        logger.error("No reduced frames found. Please run the reduction procedure first.")
+        logger.error(
+            "No reduced frames found. Please run the reduction procedure first."
+        )
         exit()
 
     for i, file in enumerate(reduced_files):
@@ -140,15 +140,17 @@ def run_crop():
         frame.write_to_disc()
 
     logger.info("Cropping routine done.")
-        
+
+
 def main():
     parser = argparse.ArgumentParser(description="Run the pylongslit crop procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_crop()

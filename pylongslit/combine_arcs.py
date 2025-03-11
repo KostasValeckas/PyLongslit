@@ -6,9 +6,7 @@ import numpy as np
 import argparse
 
 
-
 def combine_arcs():
-
     """
     Simple procedure to combine arc frames into a single master arc frame.
     Only preprocessing steps are bias subtraction and overscan correction,
@@ -75,11 +73,11 @@ def combine_arcs():
         data = hdu[data_params["raw_data_hdu_index"]].data.astype(np.float32)
 
         if use_overscan:
-            overscan = estimate_frame_overscan_bias(data, plot = False)
+            overscan = estimate_frame_overscan_bias(data, plot=False)
             data = data - overscan.data
             logger.info("Overscan subtracted.")
 
-        if not skip_bias: 
+        if not skip_bias:
             data = data - BIAS
             logger.info("Master bias subtracted.")
 
@@ -117,13 +115,16 @@ def combine_arcs():
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit combine-arc procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit combine-arc procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     combine_arcs()

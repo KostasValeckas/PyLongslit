@@ -7,6 +7,7 @@ from numpy.polynomial.chebyshev import chebfit, chebval
 import pickle
 from scipy.interpolate import make_lsq_spline, BSpline
 
+
 def eval_sensfunc(fit, RMS_residuals_log, wavelength):
     """
     Takes the Chebyshev sensitivity taken in log space
@@ -43,16 +44,19 @@ def eval_sensfunc(fit, RMS_residuals_log, wavelength):
     # It is determined from the configuration file.
     if sens_params["use_bspline"]:
         fit_eval = 10 ** fit(wavelength)
-        error = np.abs((10 ** fit(wavelength))*np.log(10)*RMS_residuals_log)
+        error = np.abs((10 ** fit(wavelength)) * np.log(10) * RMS_residuals_log)
     else:
         fit_eval = 10 ** (chebval(wavelength, fit))
-        error = np.abs((10 ** chebval(wavelength, fit))*np.log(10)*RMS_residuals_log)
+        error = np.abs(
+            (10 ** chebval(wavelength, fit)) * np.log(10) * RMS_residuals_log
+        )
 
     return fit_eval, error
 
+
 def read_sensfunc_params():
     """
-    Reads the star parameters needed to run the sensitivity function procedure, 
+    Reads the star parameters needed to run the sensitivity function procedure,
     taken from the configuration file.
 
     Returns:
@@ -79,7 +83,7 @@ def read_sensfunc_params():
 def load_standard_star_spec():
     """
     Loads the extracted 1D spectrum of the standard star (counts/Å).
-    
+
     If multiple standard star spectra are found in the output directory,
     the first one is used.
 
@@ -102,7 +106,9 @@ def load_standard_star_spec():
 
     if len(spectra) == 0:
         logger.error("No standard star spectrum found.")
-        logger.error("Run the extraction procedure first to extract the standard star spectrum.")
+        logger.error(
+            "Run the extraction procedure first to extract the standard star spectrum."
+        )
         exit()
 
     if len(spectra) > 1:
@@ -113,7 +119,7 @@ def load_standard_star_spec():
 
     os.chdir(output_dir)
 
-    # the spectra dictionary has the filename as the key and the spectrum and 
+    # the spectra dictionary has the filename as the key and the spectrum and
     # wavelength as the values.
     wavelength = spectra[list(spectra.keys())[0]][0]
     counts = spectra[list(spectra.keys())[0]][1]
@@ -161,7 +167,6 @@ def load_ref_spec(file_path):
 
 
 def load_extinction_data():
-
     """
     Loads the atmospheric extintion data from the path provided in the configuration file.
     This file should contain the extinction curve of the observatory.
@@ -195,7 +200,6 @@ def load_extinction_data():
 
 
 def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
-
     """
     Crops all data used in the sensitivity function procedure to the same wavelength range,
     i.e. the intersection of the wavelength ranges of the observed spectrum, reference spectrum,
@@ -240,7 +244,9 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
     from pylongslit.logger import logger
     from pylongslit.parser import developer_params
 
-    logger.info("Cropping all sensitivity calibration data to the same wavelength range...")
+    logger.info(
+        "Cropping all sensitivity calibration data to the same wavelength range..."
+    )
 
     # find the smallest and largest wavelengths values and crop all data to this range
     min_array = [np.min(obs_wave), np.min(ref_wave), np.min(ext_wave)]
@@ -263,32 +269,59 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
 
     logger.info("Extrapolating to the same wavelength range...")
 
-    f = interp1d(obs_wave_cropped, obs_count_cropped, kind="cubic", fill_value="extrapolate")
+    f = interp1d(
+        obs_wave_cropped, obs_count_cropped, kind="cubic", fill_value="extrapolate"
+    )
     obs_count_cropped = f(global_wavelength)
 
-    f = interp1d(ref_wave_cropped, ref_spec_cropped, kind="cubic", fill_value="extrapolate")
+    f = interp1d(
+        ref_wave_cropped, ref_spec_cropped, kind="cubic", fill_value="extrapolate"
+    )
     ref_spec_cropped = f(global_wavelength)
 
-    f = interp1d(ext_wave_cropped, ext_data_cropped, kind="cubic", fill_value="extrapolate")
+    f = interp1d(
+        ext_wave_cropped, ext_data_cropped, kind="cubic", fill_value="extrapolate"
+    )
     ext_data_cropped = f(global_wavelength)
 
     logger.info("All data cropped and extrapolated to the same wavelength range.")
 
-
-
     if developer_params["debug_plots"]:
         plt.figure(figsize=(18, 12))
-        plt.plot(global_wavelength, obs_count_cropped, "o", color="black", label="Observed Spectrum")
-        plt.plot(global_wavelength, ref_spec_cropped, "o", color="red", label="Reference Spectrum")
-        plt.plot(global_wavelength, ext_data_cropped, "o", color="blue", label="Extinction Curve")
-        plt.axvline(min_global, color='black', linestyle='--', linewidth=0.5, label = "Cropped Range")
-        plt.axvline(max_global, color='black', linestyle='--', linewidth=0.5)
+        plt.plot(
+            global_wavelength,
+            obs_count_cropped,
+            "o",
+            color="black",
+            label="Observed Spectrum",
+        )
+        plt.plot(
+            global_wavelength,
+            ref_spec_cropped,
+            "o",
+            color="red",
+            label="Reference Spectrum",
+        )
+        plt.plot(
+            global_wavelength,
+            ext_data_cropped,
+            "o",
+            color="blue",
+            label="Extinction Curve",
+        )
+        plt.axvline(
+            min_global,
+            color="black",
+            linestyle="--",
+            linewidth=0.5,
+            label="Cropped Range",
+        )
+        plt.axvline(max_global, color="black", linestyle="--", linewidth=0.5)
         plt.legend()
         plt.title("Cropped spectra for sensitivity function procedure.")
         plt.xlabel("Wavelength (Å)")
         plt.ylabel("Counts / Flux")
         plt.show()
-    
 
     return global_wavelength, obs_count_cropped, ref_spec_cropped, ext_data_cropped
 
@@ -303,7 +336,7 @@ def estimate_transmission_factor(
     at this point.
 
     Uses the extinction curve of the observatory, and
-    F_true / F_obs = 10 ** (0.4 * A * X) "from Ryden, B. and Peterson, B.M. (2020) 
+    F_true / F_obs = 10 ** (0.4 * A * X) "from Ryden, B. and Peterson, B.M. (2020)
     Foundations of Astrophysics. Cambridge: Cambridge University Press",
     where A is the extinction AB mag / airmass
     and X is the airmass. I.e. the transmission factor is 10 ** (0.4 * A * X).
@@ -435,13 +468,13 @@ def prep_senspoints(wavelength, sens_points, figsize=(18, 18)):
     valid_indices = sens_points > 0
     wavelength = wavelength[valid_indices]
     sens_points = sens_points[valid_indices]
-    
+
     # convert to logspace
     sens_points_log = np.log10(sens_points)
 
     # Interactively crop the spectrum edges
     smin, smax = interactively_crop_spec(
-        wavelength, 
+        wavelength,
         sens_points_log,
         x_label="Wavelength (Å)",
         y_label="Log Sensitivity Points ((erg/cm^2/Å) / counts)",
@@ -458,7 +491,7 @@ def prep_senspoints(wavelength, sens_points, figsize=(18, 18)):
 
     # the next plot is for masking any strong emission/ansorption lines
 
-    fig,_ = plt.subplots(figsize=figsize)
+    fig, _ = plt.subplots(figsize=figsize)
     plt.subplots_adjust(bottom=0.25)
     (l,) = plt.plot(wavelength, sens_points_log, "o")
     plt.xlabel("Wavelength (Å)")
@@ -487,7 +520,7 @@ def prep_senspoints(wavelength, sens_points, figsize=(18, 18)):
             l.set_ydata(sens_points_log[~masked_indices])
             fig.canvas.draw_idle()
 
-    fig.canvas.mpl_connect('button_press_event', onclick)
+    fig.canvas.mpl_connect("button_press_event", onclick)
 
     plt.show()
 
@@ -497,10 +530,10 @@ def prep_senspoints(wavelength, sens_points, figsize=(18, 18)):
 
     return wavelength, sens_points_log
 
-    
+
 def fit_sensfunc(wavelength, sens_points_log):
     """
-    Fits the sensitivity function to the estimated conversion factors 
+    Fits the sensitivity function to the estimated conversion factors
     (sensitivity points) in log space. The fit is either
     a Chebyshev polynomial or a B-spline, depending on the configuration file.
 
@@ -510,13 +543,13 @@ def fit_sensfunc(wavelength, sens_points_log):
         Wavelengths in Ångström.
 
     sens_points : numpy.ndarray
-        Conversion factors ((erg/s/cm^2/Å)/(counts/s)) across the spectrum 
+        Conversion factors ((erg/s/cm^2/Å)/(counts/s)) across the spectrum
         in log space.
 
     Returns:
     --------
     fit : astropy.modeling.polynomial.Chebyshev1D or scipy.interpolate.BSpline
-        The fitted sensitivity function in log space. 
+        The fitted sensitivity function in log space.
         The type depends on the configuration file.
 
     RMS_residuals_log : float
@@ -527,28 +560,30 @@ def fit_sensfunc(wavelength, sens_points_log):
     from pylongslit.logger import logger
 
     logger.info("Fitting the sensitivity function...")
-    
+
     # load needed parameters from the configuration file
     fit_degree = sens_params["fit_order"]
     use_bspline = sens_params["use_bspline"]
-    
+
     # B-spline option
     if use_bspline:
         logger.warning("Fitting the sensitivity function with a B-spline...")
         logger.warning("This is set in the configuration file.")
-        logger.warning("This option should only be used if the regular polynomial fit does not work well.")
-        logger.warning("Watch out for over-fitting.")    
-        logger.warning("The sensitivity function will not be well-behaved in the edges.")
+        logger.warning(
+            "This option should only be used if the regular polynomial fit does not work well."
+        )
+        logger.warning("Watch out for over-fitting.")
+        logger.warning(
+            "The sensitivity function will not be well-behaved in the edges."
+        )
         n_knots = sens_params["knots_bspline"]
-                
+
         # Create the knots array
 
         t = np.concatenate(
             (
                 np.repeat(wavelength[0], fit_degree + 1),  # k+1 knots at the beginning
-                np.linspace(
-                    wavelength[1], wavelength[-2], n_knots
-                ),  # interior knots
+                np.linspace(wavelength[1], wavelength[-2], n_knots),  # interior knots
                 np.repeat(wavelength[-1], fit_degree + 1),  # k+1 knots at the end
             )
         )
@@ -561,28 +596,32 @@ def fit_sensfunc(wavelength, sens_points_log):
 
         residuals_log = sens_points_log - fit(wavelength)
 
-        RMS_residuals_log = np.sqrt(np.mean(residuals_log ** 2))
+        RMS_residuals_log = np.sqrt(np.mean(residuals_log**2))
 
     # regular Chebyshev polynomial fit
-    else:    
+    else:
         fit = chebfit(wavelength, sens_points_log, deg=fit_degree)
 
         fit_eval = chebval(wavelength, fit)
 
         residuals_log = sens_points_log - chebval(wavelength, fit)
 
-        RMS_residuals_log = np.sqrt(np.mean(residuals_log ** 2))
+        RMS_residuals_log = np.sqrt(np.mean(residuals_log**2))
 
     # different titles depending on fitting method
     if use_bspline:
-        title = f"B-spline sensitivity function fit for with {n_knots} interior knots, degree {fit_degree} (this is set in the configuration file).\n" \
-                "Residuals should be random, but might show some structure due to spectral lines in star spectrum.\n" \
-                "Aim to fit with the lowest amount of knots possible."
-        
+        title = (
+            f"B-spline sensitivity function fit for with {n_knots} interior knots, degree {fit_degree} (this is set in the configuration file).\n"
+            "Residuals should be random, but might show some structure due to spectral lines in star spectrum.\n"
+            "Aim to fit with the lowest amount of knots possible."
+        )
+
     else:
-        title = f"Chebyshev sensitivity function fit of order {fit_degree} (this is set in the configuration file).\n" \
-                "Residuals should be random, but might show some structure due to spectral lines in star spectrum.\n" \
-                "Deviations around the edges are hard to avoid and should be okay."
+        title = (
+            f"Chebyshev sensitivity function fit of order {fit_degree} (this is set in the configuration file).\n"
+            "Residuals should be random, but might show some structure due to spectral lines in star spectrum.\n"
+            "Deviations around the edges are hard to avoid and should be okay."
+        )
 
     # show the QA plot
     show_1d_fit_QA(
@@ -594,7 +633,7 @@ def fit_sensfunc(wavelength, sens_points_log):
         x_label="Wavelength (Å)",
         y_label="Sensitivity points log ((erg/cm^2/Å) / counts)",
         legend_label="Fit",
-        title=title
+        title=title,
     )
 
     logger.info("Sensitivity function fitted.")
@@ -603,20 +642,20 @@ def fit_sensfunc(wavelength, sens_points_log):
 
 
 def flux_standard_QA(
-        fit,
-        transmision_factor,
-        wavelength,
-        obs_count_cropped,
-        ref_spec_cropped,
-        good_wavelength_start,
-        good_wavelength_end,
-        figsize=(18, 18)
-    ):
+    fit,
+    transmision_factor,
+    wavelength,
+    obs_count_cropped,
+    ref_spec_cropped,
+    good_wavelength_start,
+    good_wavelength_end,
+    figsize=(18, 18),
+):
     """
     Flux calibrates the standard star spectrum and compares it to the reference spectrum.
     This is done for QA purposes in order to check the validity of the sensitivity function.
 
-    The observed and refrence spectra are assumed to be cropped and extrapolated 
+    The observed and refrence spectra are assumed to be cropped and extrapolated
     to the same wavelength grid.
 
     Parameters:
@@ -638,7 +677,7 @@ def flux_standard_QA(
 
     good_wavelength_start, good_wavelength_end : float
         Start and end of the wavelength range used in the sensitivity function procedure.
-        Anything outside this range is not considered in the QA plot, as it 
+        Anything outside this range is not considered in the QA plot, as it
         is almost certainly extremely noisy.
 
     figsize : tuple, optional
@@ -647,7 +686,9 @@ def flux_standard_QA(
 
     from pylongslit.parser import standard_params, sens_params
 
-    good_wavelength_indices = (wavelength >= good_wavelength_start) & (wavelength <= good_wavelength_end)
+    good_wavelength_indices = (wavelength >= good_wavelength_start) & (
+        wavelength <= good_wavelength_end
+    )
 
     wavelength = wavelength[good_wavelength_indices].copy()
     obs_count_cropped = obs_count_cropped[good_wavelength_indices].copy()
@@ -660,12 +701,10 @@ def flux_standard_QA(
     else:
         conv_factors = 10 ** chebval(wavelength, fit)
 
-
     # Flux the standard star spectrum
     fluxed_counts = (
         obs_count_cropped * transmision_factor / standard_params["exptime"]
     ) * conv_factors
-
 
     # Convert the reference spectrum to flux units
     converted_ref_spec = convert_from_AB_mag_to_flux(ref_spec_cropped, wavelength)
@@ -675,9 +714,7 @@ def flux_standard_QA(
     plt.plot(
         wavelength, fluxed_counts, color="green", label="Fluxed standard star spec"
     )
-    plt.plot(
-        wavelength, converted_ref_spec, color="black", label="Reference spectrum"
-    )
+    plt.plot(wavelength, converted_ref_spec, color="black", label="Reference spectrum")
     plt.legend()
     plt.title(
         "Fluxed standard star spectrum vs reference spectrum.\n"
@@ -689,13 +726,15 @@ def flux_standard_QA(
     plt.xlabel("Wavelength (Å)")
     plt.ylabel("Flux (erg/s/cm^2/Å)")
     plt.xlim(good_wavelength_start, good_wavelength_end)
-    
+
     plt.show()
 
 
-def write_sensfunc_to_disc(fit, RMS_residuals, good_wavelength_start, good_wavelength_end):
+def write_sensfunc_to_disc(
+    fit, RMS_residuals, good_wavelength_start, good_wavelength_end
+):
     """
-    Writes the results of the sensitivity function procedure to disk, 
+    Writes the results of the sensitivity function procedure to disk,
     in machine-readable format.
 
     Parameters:
@@ -708,7 +747,7 @@ def write_sensfunc_to_disc(fit, RMS_residuals, good_wavelength_start, good_wavel
 
     good_wavelength_start, good_wavelength_end : float
         Start and end of the wavelength range used in the sensitivity function procedure.
-        Anything outside this range is not considered in the QA plot, as it 
+        Anything outside this range is not considered in the QA plot, as it
         is almost certainly extremely noisy.
     """
 
@@ -743,7 +782,7 @@ def load_sensfunc_from_disc():
 
     good_wavelength_start, good_wavelength_end : float
         Start and end of the wavelength range used in the sensitivity function procedure.
-        Anything outside this range is not considered in the QA plot, as it 
+        Anything outside this range is not considered in the QA plot, as it
         is almost certainly extremely noisy.
     """
 
@@ -784,8 +823,15 @@ def run_sensitivity_function():
 
     wavelength_ext, data_ext = load_extinction_data()
 
-    global_wavelength, obs_count_cropped, ref_spec_cropped, ext_data_cropped = crop_all_spec(
-        obs_wavelength, obs_counts, ref_wavelength, ref_flux, wavelength_ext, data_ext
+    global_wavelength, obs_count_cropped, ref_spec_cropped, ext_data_cropped = (
+        crop_all_spec(
+            obs_wavelength,
+            obs_counts,
+            ref_wavelength,
+            ref_flux,
+            wavelength_ext,
+            data_ext,
+        )
     )
 
     transmision_factor = estimate_transmission_factor(
@@ -810,8 +856,8 @@ def run_sensitivity_function():
     # convert to log space and crop / remove line artifacts before fitting
     wavelength_sens, sens_points_log = prep_senspoints(global_wavelength, sens_points)
 
-    # these are the good wavelength ranges for the sensitivity function, 
-    # anything outside this range is almost certainly extremely noisy. 
+    # these are the good wavelength ranges for the sensitivity function,
+    # anything outside this range is almost certainly extremely noisy.
     good_wavelength_start = wavelength_sens[0]
     good_wavelength_end = wavelength_sens[-1]
 
@@ -827,20 +873,25 @@ def run_sensitivity_function():
         good_wavelength_end,
     )
 
-
-    write_sensfunc_to_disc(fit, RMS_residuals, good_wavelength_start, good_wavelength_end)
+    write_sensfunc_to_disc(
+        fit, RMS_residuals, good_wavelength_start, good_wavelength_end
+    )
 
     logger.info("Sensitivity function procedure done.")
     print("----------------------------\n")
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit sensitivity function procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit sensitivity function procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_sensitivity_function()

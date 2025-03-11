@@ -77,7 +77,6 @@ def check_dirs(any_errors):
     from pylongslit.parser import science_params, standard_params, arc_params
     from pylongslit.logger import logger
 
-
     any_errors = check_directory(
         bias_params["bias_dir"],
         "bias",
@@ -243,7 +242,12 @@ def check_for_negative_params(any_errors):
 
     from pylongslit.parser import detector_params, bias_params, flat_params
     from pylongslit.parser import science_params, standard_params, arc_params
-    from pylongslit.parser import data_params, crr_params, wavecalib_params, extract_params
+    from pylongslit.parser import (
+        data_params,
+        crr_params,
+        wavecalib_params,
+        extract_params,
+    )
     from pylongslit.parser import obj_trace_clone_params, sens_params
     from pylongslit.logger import logger
 
@@ -380,16 +384,21 @@ def run_config_checks():
         logger.info("NO ERRORS FOUND.")
         logger.info("CONFIGURATION FILE IS READY FOR PIPELINE EXECUTION.")
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit config-file checker.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit config-file checker."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_config_checks()
+
 
 if __name__ == "__main__":
 

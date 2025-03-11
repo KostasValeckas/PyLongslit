@@ -6,10 +6,11 @@ import argparse
 PyLongslit module for combinning fluxed spectra.
 """
 
+
 def check_combine_params(fluxed_spectra):
     """
     Checks if the files set to be combined in the configuration file
-    exist and can be loaded. Prepares a dictionary with object 
+    exist and can be loaded. Prepares a dictionary with object
     names as keys and the fluxed data as values.
 
     Parameters
@@ -22,11 +23,12 @@ def check_combine_params(fluxed_spectra):
     -------
     fluxed_data_dict : dict
         Dictionary containing the fluxed data for the objects to be combined.
-        Format: {object: [(wavelength, flux, var)]} 
+        Format: {object: [(wavelength, flux, var)]}
     """
 
     from pylongslit.logger import logger
     from pylongslit.parser import combine_params, developer_params
+
     logger.info("Reading combination parameters...")
 
     if len(combine_params) == 0:
@@ -54,7 +56,9 @@ def check_combine_params(fluxed_spectra):
         for file in file_list:
             if file not in fluxed_spectra_names:
                 logger.error(f"{file} not found in fluxed spectra.")
-                logger.error("Run the flux calibration procedure first, or check the configuration file.")
+                logger.error(
+                    "Run the flux calibration procedure first, or check the configuration file."
+                )
                 logger.error("Aborting the combine procedure.")
                 exit()
             else:
@@ -73,7 +77,7 @@ def check_combine_params(fluxed_spectra):
 
 def combine_spectra(fluxed_data_dict, good_wavelength_start, good_wavelength_end):
     """
-    Loops over the fluxed data dictionary and combines the spectra that are 
+    Loops over the fluxed data dictionary and combines the spectra that are
     placed under the same object name in the dictionary. The combined spectra
     are saved to disk.
 
@@ -125,17 +129,21 @@ def combine_spectra(fluxed_data_dict, good_wavelength_start, good_wavelength_end
         # crop the spec to a wavelength range where the sensitivity function is well behaved
         # this is done for prettier plotting
 
-        mask = (combined_spectrum[:, 0] > good_wavelength_start) & (combined_spectrum[:, 0] < good_wavelength_end)
+        mask = (combined_spectrum[:, 0] > good_wavelength_start) & (
+            combined_spectrum[:, 0] < good_wavelength_end
+        )
 
         plt.figure(figsize=(10, 6))
 
         for i, (lambda_, flux, var) in enumerate(data_list):
             plt.plot(lambda_[mask], flux[mask], label=f"Spectrum {i+1}")
             plt.plot(lambda_[mask], np.sqrt(var)[mask], label=f"Sigma {i+1}")
-           
 
         plt.plot(
-            combined_spectrum[:, 0][mask], combined_spectrum[:, 1][mask], color="black", label="Combined spectrum"
+            combined_spectrum[:, 0][mask],
+            combined_spectrum[:, 1][mask],
+            color="black",
+            label="Combined spectrum",
         )
         plt.plot(
             combined_spectrum[:, 0][mask],
@@ -155,7 +163,10 @@ def combine_spectra(fluxed_data_dict, good_wavelength_start, good_wavelength_end
 
         plt.figure(figsize=(10, 6))
         plt.plot(
-            combined_spectrum[:, 0][mask], combined_spectrum[:, 1][mask], color="black", label="Combined spectrum"
+            combined_spectrum[:, 0][mask],
+            combined_spectrum[:, 1][mask],
+            color="black",
+            label="Combined spectrum",
         )
         plt.plot(
             combined_spectrum[:, 0][mask],
@@ -173,7 +184,6 @@ def combine_spectra(fluxed_data_dict, good_wavelength_start, good_wavelength_end
         plt.savefig(f"{output_dir}/{obj_name}_combined.png")
         plt.show()
 
-
         logger.info(f"Saving combined spectrum for {obj_name}...")
 
         with open(f"{output_dir}/{obj_name}_combined.dat", "w") as f:
@@ -183,9 +193,10 @@ def combine_spectra(fluxed_data_dict, good_wavelength_start, good_wavelength_end
                     f"{combined_spectrum[i, 0]} {combined_spectrum[i, 1]} {combined_spectrum[i, 2]}\n"
                 )
 
-        logger.info(f"Combined spectrum for {obj_name} saved to {output_dir}/{obj_name}_combined.dat")
+        logger.info(
+            f"Combined spectrum for {obj_name} saved to {output_dir}/{obj_name}_combined.dat"
+        )
         print("\n------------------------\n")
-
 
 
 def run_combine_spec():
@@ -195,7 +206,7 @@ def run_combine_spec():
     from pylongslit.logger import logger
     from pylongslit.utils import load_fluxed_spec
     from pylongslit.sensitivity_function import load_sensfunc_from_disc
-    
+
     logger.info("Running combination rutine...")
 
     fluxed_spectra = load_fluxed_spec()
@@ -213,13 +224,17 @@ def run_combine_spec():
 
     combine_spectra(fluxed_data_dict, good_wavelength_start, good_wavelength_end)
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit combine fluxed spectrum procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit combine fluxed spectrum procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_combine_spec()

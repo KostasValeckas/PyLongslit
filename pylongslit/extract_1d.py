@@ -33,7 +33,8 @@ def load_object_traces():
 
     else:
         logger.info(f"Found {len(filenames)} object traces:")
-        for filename in filenames: print(filename)
+        for filename in filenames:
+            print(filename)
 
     # sort as this is needed when cross referencing with reduced files
     filenames.sort()
@@ -54,8 +55,12 @@ def load_object_traces():
             if pixel is None or obj_center is None or obj_fwhm is None:
                 logger.error(f"Error reading {filename}.")
                 logger.error("Check the file for errors.")
-                logger.error("The file should contain three columns: pixel, center, FWHM.")
-                logger.error("Re-run the object tracing procedure, contact developers if error persists.")
+                logger.error(
+                    "The file should contain three columns: pixel, center, FWHM."
+                )
+                logger.error(
+                    "Re-run the object tracing procedure, contact developers if error persists."
+                )
                 exit()
 
             trace_dict[filename] = (pixel, obj_center, obj_fwhm)
@@ -109,6 +114,7 @@ def gaussweight(x, mu, sig):
 
     return P
 
+
 def cauchyweight(x, mu, gamma):
     """
     This method calculates the probability that a photon is detected at a certain
@@ -119,7 +125,7 @@ def cauchyweight(x, mu, gamma):
     ----------
     x : array-like
         The pixel values.
-    
+
     mu : float
         The center of the Cauchy object profile.
 
@@ -236,12 +242,12 @@ def extract_object_optimal(trace_data, trace_params, filename):
     # the y-offset from the cropping procedure. This is used in wavelength calibration
     # to match the global pixel coordinates with the wavelength solution. We
     # extract it here as we do not want to handle header data in the wavelength calibration.
-    y_offset = header["CROPY1"]  
+    y_offset = header["CROPY1"]
 
     # the spatial pixel array
     x_row_array = np.arange(reduced_data.shape[0])
 
-    variance = frame.sigma.copy()**2
+    variance = frame.sigma.copy() ** 2
 
     if developer_params["debug_plots"]:
         plt.imshow(variance, origin="lower", aspect="auto")
@@ -258,17 +264,18 @@ def extract_object_optimal(trace_data, trace_params, filename):
         obj_center = center[i]
         obj_fwhm = FWHM[i]
         if trace_params["model"] == "Gaussian":
-            weight = gaussweight(x_row_array, obj_center, obj_fwhm * gaussian_fwhm_to_sigma)  
+            weight = gaussweight(
+                x_row_array, obj_center, obj_fwhm * gaussian_fwhm_to_sigma
+            )
         elif trace_params["model"] == "Cauchy":
             # gamma for cauchy is FWHM/2
-            weight = cauchyweight(x_row_array, obj_center, obj_fwhm/2)
+            weight = cauchyweight(x_row_array, obj_center, obj_fwhm / 2)
         else:
             logger.error("Trace model not recognized.")
             logger.error("Check the configuration file.")
             logger.error("Re-run the object tracing procedure.")
             logger.error("Allowed models are: Gaussian, Cauchy.")
             exit()
-
 
         reduced_data_slice = reduced_data[:, i].copy()
 
@@ -389,13 +396,14 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
     plot_1d_spec_interactive_limits(
         wavelengths,
         spec_calib,
-        y_error = np.sqrt(var_calib),
+        y_error=np.sqrt(var_calib),
         x_label="Wavelength [Å]",
         y_label="Counts [ADU]",
         label="Extracted 1D spectrum",
         title=f"Extracted 1D spectrum from {filename}. Use the sliders to crop out noisy edges if needed.",
-        figsize=figsize
+        figsize=figsize,
     )
+
 
 def extract_objects(reduced_files, trace_dict, method=extract_object_optimal):
     """
@@ -416,7 +424,7 @@ def extract_objects(reduced_files, trace_dict, method=extract_object_optimal):
 
     method : function
         The extraction method to use. Default is `extract_object_optimal`.
-        
+
         The method should take the following input vector:
         (trace_data, trace_params, filename), with:
         - trace_data : tuple
@@ -439,7 +447,7 @@ def extract_objects(reduced_files, trace_dict, method=extract_object_optimal):
         - y_offset : float
             The y-offset from the cropping procedure. This is used in wavelength calibration
             to match the global pixel coordinates with the wavelength solution.
-        
+
 
     Returns
     -------
@@ -465,9 +473,7 @@ def extract_objects(reduced_files, trace_dict, method=extract_object_optimal):
 
         trace_data = trace_dict[filename_obj]
 
-        pixel, spec, spec_var, y_offset = method(
-            trace_data, trace_params, filename
-        )
+        pixel, spec, spec_var, y_offset = method(trace_data, trace_params, filename)
 
         logger.info("Spectrum extracted.")
         logger.info("Wavelength calibrating the extracted 1D spectrum...")
@@ -492,7 +498,7 @@ def extract_objects(reduced_files, trace_dict, method=extract_object_optimal):
 
 def write_extracted_1d_to_disc(results):
     """
-    Writes the extracted 1D spectra to disc, in the output directory 
+    Writes the extracted 1D spectra to disc, in the output directory
     specified in the configuration file.
 
     Parameters
@@ -552,19 +558,23 @@ def run_extract_1d():
     logger.info("Extraction procedure complete.")
     print("-------------------------\n")
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit extract-1d procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit extract-1d procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_extract_1d()
 
+
 if __name__ == "__main__":
 
     main()
-    

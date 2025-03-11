@@ -23,7 +23,7 @@ def read_obj_trace_results():
     """
     from pylongslit.parser import obj_trace_clone_params
     from pylongslit.logger import logger
-    
+
     file_path = obj_trace_clone_params["archived_spec_root"]
 
     logger.info(f"Loading the archived object trace from {file_path}...")
@@ -49,7 +49,7 @@ def read_obj_trace_results():
 def load_frame():
     """
     Wrapper method for 'pylongslit.utils.PyLongslit_frame.read_from_disc'
-    to load the user defined frame for object trace cloning. The 
+    to load the user defined frame for object trace cloning. The
     path to the file is fetched from the configuration file.
 
     Returns
@@ -62,7 +62,9 @@ def load_frame():
     from pylongslit.parser import obj_trace_clone_params
     from pylongslit.logger import logger
 
-    logger.info(f"Loading the frame for object trace cloning from {obj_trace_clone_params['frame_root']}...")
+    logger.info(
+        f"Loading the frame for object trace cloning from {obj_trace_clone_params['frame_root']}..."
+    )
 
     file_path = obj_trace_clone_params["frame_root"]
 
@@ -72,8 +74,8 @@ def load_frame():
 
     return frame
 
-def construct_obj_model(frame_data, params, center, fwhm):
 
+def construct_obj_model(frame_data, params, center, fwhm):
     """
     Method for constructing the object model based on the fitting model
     defined in the configuration file.
@@ -91,14 +93,13 @@ def construct_obj_model(frame_data, params, center, fwhm):
 
     center : numpy.ndarray
         The center values of the object trace.
-    
+
     fwhm : numpy.ndarray
         The FWHM values of the object trace.
     """
 
     from pylongslit.logger import logger
     from pylongslit.obj_trace import Cauchy1D
-
 
     obj_model = np.zeros_like(frame_data)
 
@@ -115,18 +116,23 @@ def construct_obj_model(frame_data, params, center, fwhm):
     for i in range(len(center)):
         # set amplitude to 1 for simplicity
         if fitting_model == "Gaussian":
-            obj_model[:,i] = Gaussian1D.evaluate(spatial_array, 1, center[i], fwhm[i] * gaussian_fwhm_to_sigma)
+            obj_model[:, i] = Gaussian1D.evaluate(
+                spatial_array, 1, center[i], fwhm[i] * gaussian_fwhm_to_sigma
+            )
         elif fitting_model == "Cauchy":
             # Cauchy FWHM is defined as 2 * gamma
-            obj_model[:,i] = Cauchy1D.evaluate(spatial_array, 1, center[i], fwhm[i] / 2.0)
-        
+            obj_model[:, i] = Cauchy1D.evaluate(
+                spatial_array, 1, center[i], fwhm[i] / 2.0
+            )
+
     return obj_model
 
-def overlay_trace(pixel, center, fwhm, frame, figsize = (16, 16)):
-    """"
+
+def overlay_trace(pixel, center, fwhm, frame, figsize=(16, 16)):
+    """ "
     Method for overlaying the object trace on the frame data and adjusting
     the center and FWHM interactively."
-    
+
     Parameters
     ----------
     pixel : numpy.ndarray
@@ -170,13 +176,13 @@ def overlay_trace(pixel, center, fwhm, frame, figsize = (16, 16)):
     fig, ax = plt.subplots(figsize=figsize)
     ax.imshow(data, origin="lower")
     (line,) = ax.plot(pixel, center, label="Object Trace", color="red")
-    
+
     plt.title(
         "Use arrow keys (up/down for 1 pixel, left/right for 0.1 pixel) to move the center trace.\n"
-        "Close the plot \"q\" when done."
+        'Close the plot "q" when done.'
     )
     plt.legend()
-    
+
     # disable the default key bindings, so we can use the arrow keys
     fig.canvas.mpl_disconnect(fig.canvas.manager.key_press_handler_id)
 
@@ -209,7 +215,7 @@ def overlay_trace(pixel, center, fwhm, frame, figsize = (16, 16)):
     obj_model = construct_obj_model(data, params, center, fwhm)
 
     # create the interactive plot
-    fig, (ax1, ax2, ax3) = plt.subplots(3,1, figsize=figsize)
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=figsize)
 
     ax1.imshow(data, cmap="cool", label="Detector image")
     ax1.set_title("Detector image.")
@@ -226,7 +232,7 @@ def overlay_trace(pixel, center, fwhm, frame, figsize = (16, 16)):
 
     fig.suptitle(
         "Use arrow keys (up/down for 1 pixel, left/right for 0.1 pixel) to adjust the FWHM of the object model.\n"
-        "Close the plot \"q\" when done."
+        'Close the plot "q" when done.'
     )
 
     fig.text(0.5, 0.04, "Spectral pixels", ha="center", va="center", fontsize=12)
@@ -239,7 +245,6 @@ def overlay_trace(pixel, center, fwhm, frame, figsize = (16, 16)):
         rotation="vertical",
         fontsize=12,
     )
-
 
     # Event handler function - reacts on every key press
     def on_key(event):
@@ -273,7 +278,7 @@ def overlay_trace(pixel, center, fwhm, frame, figsize = (16, 16)):
     plt.show()
 
     logger.info("Cloned object model created")
-    
+
     return center, fwhm
 
 
@@ -300,7 +305,7 @@ def write_cloned_trace_to_file(pixel, center, fwhm):
 
 
 def run_obj_trace_clone():
-    """"
+    """ "
     Driver method for the object trace cloning procedure. This allows using
     an archived object trace to clone the object trace in a new frame and
     adjust the center and FWHM interactively.
@@ -314,22 +319,24 @@ def run_obj_trace_clone():
     frame = load_frame()
 
     # for initial fwhm guess, just use the mean of the fwhm archived trace
-    corrected_centers, fwhm = overlay_trace(
-        pixel, center, fwhm, frame
-    )
+    corrected_centers, fwhm = overlay_trace(pixel, center, fwhm, frame)
 
     write_cloned_trace_to_file(pixel, corrected_centers, fwhm)
 
     logger.info("Object trace cloning procedure finished.")
 
+
 def main():
-    parser = argparse.ArgumentParser(description="Run the pylongslit cloned object trace procedure.")
-    parser.add_argument('config', type=str, help='Configuration file path')
+    parser = argparse.ArgumentParser(
+        description="Run the pylongslit cloned object trace procedure."
+    )
+    parser.add_argument("config", type=str, help="Configuration file path")
     # Add more arguments as needed
 
     args = parser.parse_args()
 
     from pylongslit import set_config_file_path
+
     set_config_file_path(args.config)
 
     run_obj_trace_clone()
@@ -337,4 +344,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
