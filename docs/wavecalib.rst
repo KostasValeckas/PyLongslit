@@ -242,5 +242,5 @@ is an attempt to clarify this.
 For the spacial pixel :math:`y_{0}` at which the 1d wavelength solution :math:`f` is known, the 
 wavelength :math:`\lambda` can be decided with the 1d polynomial fit 
 :math:`\lambda = f(x)`, where :math:`x` is the spectral coordinate. For any other spacial pixel :math:`y`, we know
-the tilt :math:`\Delta x_{y}` that transforms the spectral pixel to its corresponding value at :math:`y_{0}`. 
+the tilt :math:`\Delta x_{y}` that transforms the spectral pixel at :math:`y` to its corresponding value at :math:`y_{0}`. 
 We evaluate the wavelength at that pixel by :math:`\lambda = f(x - \Delta x_{y})`.
