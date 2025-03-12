@@ -927,7 +927,7 @@ def main():
     app = GraphicInterface()
     logger.info(
         "See the docs at "
-        "https://kostasvaleckas.github.io/PyLongslit/identify.html. "
+        "https://kostasvaleckas.github.io/PyLongslit/ "
         "on how to manually identify the lines."
     )
     app.show()

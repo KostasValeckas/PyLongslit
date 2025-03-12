@@ -80,5 +80,7 @@ contents table below.
 
    configuration_file
    bias
-
+   combine_arcs
+   identify
+   wavecalib
 
