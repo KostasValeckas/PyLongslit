@@ -131,3 +131,30 @@ Press `File` -> `Save PixTable` and save the file.
    , we have already identified the lines, so you have a starting point to work with. You can inspect the files by pressing 
    `File` -> `Load PixTable`. To proceed in the tutorial, 
    you can either try to improve our fit, or move on directly using it. 
+
+Parameter options
+------------------
+
+The relevant parameters for the identify procedure are (with example values):
+
+.. code:: 
+
+   "wavecalib" : {
+      "offset_middle_cut": 0,
+      "pixel_cut_extension": 2,
+      "center_guess_pixtable": "/home/kostas/Documents/PyLongslit/database/alfosc_grating4_hene_pixtable.dat", 
+   },
+
+The GUI takes a 1d-spectrum spectrum from the ``master_arc.fits`` file. It takes the 
+spectrum from the middle of the image. Sometimes, the middle of the image is not the best 
+place, so the ``offset_middle_cut`` parameter can be used to offset the cut from the middle 
+by a certain amount of pixels. 
+
+The ``pixel_cut_extension`` parameter is used to decide how many detector rows to use for the
+1d-spectrum cut. If ``pixel_cut_extension`` is set to 0, only one row will be used. If it is set to 2,
+the middle row +/- 2 rows will be used and then averaged and so forth. This is useful if the arc line spectrum 
+is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessery, as the line centers change gradually 
+in the spatial direction (see description of :ref:`line tilts <wavecalib>`).
+
+When you are done, you have to link the path to the pixel table to the
+``center_guess_pixtable`` parameter, as the :ref:`wavelength calibration routine <wavecalib>` will need it.
