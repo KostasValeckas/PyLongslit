@@ -55,7 +55,7 @@ then have to manually load the above described line list by clicking on the
 example dataset SDSS_J213510+2728, the window should look like this:
 
 .. image:: pictures/id_post_loading.png
-   :width: 600
+   :width: 100%
    :align: center
 
 **Identifying the lines**
@@ -68,11 +68,11 @@ example for a small Helium portion of the spectrum, with a zoom in of the corres
 reference spectrum, taken from `<https://www.not.iac.es/instruments/alfosc/lamps/map-g04-he-1.pdf>`_:
 
  .. image:: pictures/id_post_first.png
-    :width: 600
+    :width: 100%
     :align: center
 
  .. image:: pictures/id_post_first_ref.png
-    :width: 600
+    :width: 100%
     :align: center
 
 Here there is a small offset in wavelentghs between the reference spectrum 
@@ -86,10 +86,10 @@ fit curve and the residuals of the fit in order to evaluate the fit quality.
 For the small amount of lines shown above, this looks like this:
 
    .. image:: pictures/id_fit_first.png
-      :width: 600
+      :width: 100%
       :align: center
    .. image:: pictures/id_res_first.png
-      :width: 600
+      :width: 100%
       :align: center
 
 When you have obtained a fit, and try to `Add Line` again, the program will now 
