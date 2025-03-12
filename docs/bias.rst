@@ -89,4 +89,8 @@ The ``"bootstrap_errors"`` parameter can be set to true in order to estimate the
 master bias frame using bootstrap resampling. This is useful if you have 
 a small number of bias frames, and want to estimate the error with a higher
 precission. However, the bootstrap resampling is computationally expensive,
-and takes a while - specially for larger detectors.
+and takes a while - specially for larger detectors. Whether bootstrap resampling is
+necessary depends on the detector and your science case - if you do not 
+need very high precission on the error, or if you know your detector has a 
+stable bias level, you can mostly set ``"bootstrap_errors"`` to false. You can
+read more about how the software estimates in the :ref:`chapter on uncertainties <uncertainties>`.
