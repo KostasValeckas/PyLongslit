@@ -246,7 +246,7 @@ def check_for_negative_params(any_errors):
         data_params,
         crr_params,
         wavecalib_params,
-        extract_params,
+        trace_params,
     )
     from pylongslit.parser import obj_trace_clone_params, sens_params
     from pylongslit.logger import logger
@@ -262,7 +262,7 @@ def check_for_negative_params(any_errors):
         data_params,
         crr_params,
         wavecalib_params,
-        extract_params,
+        trace_params,
         obj_trace_clone_params,
         sens_params,
     ]

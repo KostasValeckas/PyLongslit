@@ -1,7 +1,7 @@
 Configuration file
 ==================
 
-The configuration file is a YAML file that contains all the parameters
+The configuration file is a ``.json`` file that contains all the parameters
 that are needed to run the software. The file is divided into sections, 
 each corresponding to a different step in the pipeline.
 
@@ -30,7 +30,7 @@ try to **reuse the configuration file from the tutorials**, and change out
 only the parameters that are corrupting the run.
 
 The software has a method for checking the configuration file for errors 
-(it checks if the provided file paths exist, some sanity-checks 
+(it checks if the provided file paths exist, the raw data directories have files in them, some sanity-checks 
 on the parameters, etc.). The method can be called by:
 
 .. code:: bash
