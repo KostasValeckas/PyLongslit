@@ -160,7 +160,7 @@ def check_overscan():
     return True
 
 
-def estimate_frame_overscan_bias(image_data, plot=False):
+def estimate_frame_overscan_bias(image_data, plot=False, print=True):
     """
     Estimate the overscan bias of a frame.
 
@@ -172,6 +172,9 @@ def estimate_frame_overscan_bias(image_data, plot=False):
     plot : bool, optional
         Whether to plot the estimated overscan bias. Default is False.
 
+    print : bool, optional
+        Whether to print logger messages. Default is True.
+
     Returns
     -------
     overscan_frame : pylongslit.utils.PyLongslit_frame
@@ -182,7 +185,7 @@ def estimate_frame_overscan_bias(image_data, plot=False):
     from pylongslit.parser import detector_params
     from pylongslit.utils import PyLongslit_frame
 
-    logger.info("Estimating the overscan bias...")
+    if print: logger.info("Estimating the overscan bias...")
 
     # Extract the overscan region
     overscan_x_start = detector_params["overscan"]["overscan_x_start"]
@@ -215,7 +218,7 @@ def estimate_frame_overscan_bias(image_data, plot=False):
     return overscan_frame
 
 
-def subtract_overscan(data):
+def subtract_overscan(data, print = True):
     """
     Subtract the overscan bias from the frame.
 
@@ -227,6 +230,9 @@ def subtract_overscan(data):
     data : numpy array
         The data to subtract the overscan bias from.
 
+    print : bool, optional
+        Whether to print logger messages. Default is True. 
+
     Returns
     -------
     data : numpy array
@@ -235,8 +241,8 @@ def subtract_overscan(data):
 
     from pylongslit.logger import logger
 
-    overscan_bias = estimate_frame_overscan_bias(data, plot=False)
-    logger.info("Subtracting overscan bias from the frame.")
+    overscan_bias = estimate_frame_overscan_bias(data, plot=False, print=print)
+    if print: logger.info("Subtracting overscan bias from the frame.")
     data = data - overscan_bias.data
 
     return data

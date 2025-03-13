@@ -7,7 +7,7 @@ PyLongslit module for reducing frames (bias subtraction and flat-fielding).
 """
 
 
-def estimate_initial_error(data, exptime, master_bias):
+def estimate_initial_error(data, master_bias, dark_frame):
     """
     Estimates the initial error in the data frame, assuming that the
     only sources of error are the read noise, the dark current, the bias
@@ -22,21 +22,21 @@ def estimate_initial_error(data, exptime, master_bias):
     data : numpy.ndarray
         The data frame.
 
-    exptime : float
-        The exposure time of the frame in seconds.
-
     master_bias : numpy.ndarray
         The master bias frame.
+
+    dark_frame : PyLongslit_frame
+        The dark frame.
     """
 
-    from pylongslit.dark import estimate_dark
     from pylongslit.parser import detector_params
     from pylongslit.overscan import estimate_frame_overscan_bias
+    from pylongslit.utils import PyLongslit_frame
+
 
     gain = detector_params["gain"]  # e/ADU
     read_noise = detector_params["read_out_noise"]  # e
 
-    dark_frame = estimate_dark(data, exptime, supress_warning=True)
 
     use_overscan = detector_params["overscan"]["use_overscan"]
 
@@ -144,7 +144,7 @@ def read_raw_object_files():
     return science_file_list, star_file_list
 
 
-def reduce_frame(frame, master_bias, master_flat, use_overscan, exptime):
+def reduce_frame(frame, master_bias, master_flat, use_overscan, type):
     """
     Performs bias subtraction
     and flat fielding for a single frame, and handles the error propagation.
@@ -163,8 +163,8 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, exptime):
     use_overscan : bool
         Whether to use the overscan subtraction or not.
 
-    exptime : float
-        The exposure time of the frame (in seconds).
+    type : str
+        The type of frame to be reduced. Can be either 'science' or 'standard'.
 
     Returns
     -------
@@ -177,14 +177,26 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, exptime):
 
     from pylongslit.logger import logger
     from pylongslit.overscan import estimate_frame_overscan_bias
-    from pylongslit.dark import estimate_dark
+    from pylongslit.dark import estimate_dark, check_dark_directory
+    from pylongslit.parser import science_params, standard_params
+    from pylongslit.utils import PyLongslit_frame
 
     initial_frame = frame.copy()
-    initial_error = estimate_initial_error(frame, exptime, master_bias)
 
-    # subtract the dark current
+    # estimate dark current, if dark frames are provided
+    # get directory to look for darks:
+    directory =  science_params["science_dir"] if type == "science" else standard_params["standard_dir"]
 
-    dark_frame = estimate_dark(frame, exptime)
+    use_darks = check_dark_directory(directory)
+
+    if use_darks:
+        dark_frame = estimate_dark(directory, group = type)
+    else :
+        # a dummy dark frame that wont do anything. Helps keep the code cleaner for if/else
+        dark_frame = PyLongslit_frame(np.zeros_like(frame), np.zeros_like(frame), None, None)
+
+    initial_error = estimate_initial_error(frame, master_bias, dark_frame)
+
 
     frame = frame - dark_frame.data
 
@@ -307,7 +319,7 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime, type):
 
         data = hdu[data_params["raw_data_hdu_index"]].data
 
-        data, error = reduce_frame(data, BIAS, FLAT, use_overscan, exptime)
+        data, error = reduce_frame(data, BIAS, FLAT, use_overscan, type)
 
         # check if the frame needs to be rotated or flipped -
         # later steps rely on x being the dispersion axis
