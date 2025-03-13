@@ -662,6 +662,7 @@ def run_flats():
     from pylongslit.utils import FileList, check_dimensions, open_fits, PyLongslit_frame
     from pylongslit.overscan import estimate_frame_overscan_bias
     from pylongslit.stats import bootstrap_median_errors_framestack, safe_mean
+    from pylongslit.dark import check_dark_directory, estimate_dark
 
     # Extract the detector parameters
     xsize = detector_params["xsize"]
@@ -695,6 +696,18 @@ def run_flats():
     BIAS = np.array(BIASframe.data)
     logger.info("Master bias frame found and loaded.")
 
+    # check if dark frames are provided, skip dark subtraction if not
+
+    if check_dark_directory(flat_params["flat_dir"]):
+        logger.info("Dark frames found. Estimating dark current for flats...")
+        DARKframe = estimate_dark(flat_params["flat_dir"], "flats")
+        logger.info("Dark current estimated.")
+    else:
+        logger.info(
+            "No dark frames found. Dark current subtraction will be skipped for flats."
+        )
+        DARKframe = None
+
     print("\n------------------------------------------------------------\n")
 
     # loop over all the falt files, subtract bias and stack them in the bigflat array
@@ -715,6 +728,11 @@ def run_flats():
 
         data = data - BIAS
         logger.info("Subtracted the bias.")
+
+        # Subtract the dark if provided
+        if DARKframe is not None:
+            data = data - DARKframe.data
+            logger.info("Subtracted the dark.")
 
         bigflat[i] = data
 

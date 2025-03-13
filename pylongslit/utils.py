@@ -292,6 +292,9 @@ class FileList:
 
         self.files = os.listdir(self.path)
 
+        # remove the "dark" directory from the list
+        self.files = [file for file in self.files if file != "dark"]
+
         # sort alphabetically for consistency in naming
         self.files.sort()
 
