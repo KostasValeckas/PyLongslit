@@ -80,6 +80,7 @@ contents table below.
 
    configuration_file
    bias
+   dark_current
    combine_arcs
    identify
    wavecalib
