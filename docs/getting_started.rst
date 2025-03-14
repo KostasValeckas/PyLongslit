@@ -84,4 +84,5 @@ contents table below.
    combine_arcs
    identify
    wavecalib
+   flat
 
