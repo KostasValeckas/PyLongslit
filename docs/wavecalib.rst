@@ -240,7 +240,11 @@ detector pixels with the abstract procedure described above. The below explanati
 is an attempt to clarify this.
 
 For the spacial pixel :math:`y_{0}` at which the 1d wavelength solution :math:`f` is known, the 
-wavelength :math:`\lambda` can be decided with the 1d polynomial fit 
-:math:`\lambda = f(x)`, where :math:`x` is the spectral coordinate. For any other spacial pixel :math:`y`, we know
-the tilt :math:`\Delta x_{y}` that transforms the spectral pixel at :math:`y` to its corresponding value at :math:`y_{0}`. 
-We evaluate the wavelength at that pixel by :math:`\lambda = f(x - \Delta x_{y})`.
+wavelength :math:`\lambda` can be decided by 
+:math:`\lambda = f(x_{0})`, where :math:`x_{0}` is the spectral pixel. For any other pixel :math:`(x,y)`, we 
+know the tilt :math:`\Delta x` that transforms :math:`x` to :math:`x_{0}` while keeping the wavelength constant. 
+We evaluate the wavelength at pixel :math:`(x,y)` by :math:`\lambda = f(x - \Delta x)`:
+
+.. image:: pictures/wave_solution.png
+    :width: 100%
+    :align: center

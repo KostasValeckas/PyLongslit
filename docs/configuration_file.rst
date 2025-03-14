@@ -61,7 +61,6 @@ detailed explanation of the parameters is given.
             },
             "gain": 0.16,
             "read_out_noise": 4.3,
-            "dark_current": 0,
             "overscan" : {
                 "use_overscan": true,
                 "overscan_x_start": 0,
@@ -259,7 +258,6 @@ for every step):
             },
             "gain": # detector gain in electrons per count (ADU)
             "read_out_noise": # read-out noise in electrons
-            "dark_current": # dark current in electrons per second
             "overscan" : {
                 "use_overscan": # true if overscan is to be used, false otherwise (then the bias is estimated only from bias frames)
                 "overscan_x_start": # The starting pixel of the overscan region along the x axis
