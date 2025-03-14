@@ -75,7 +75,7 @@ contents table below.
 
 
 .. toctree:: 
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    configuration_file
@@ -85,4 +85,10 @@ contents table below.
    identify
    wavecalib
    flat
+   reduce
+   crr
+   AB
+   crop
+   sky
+   
 
