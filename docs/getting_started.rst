@@ -78,6 +78,7 @@ contents table below.
    :maxdepth: 1
    :caption: Contents:
 
+   general_notes
    configuration_file
    bias
    dark_current
