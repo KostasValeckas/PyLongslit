@@ -23,7 +23,8 @@ The products are written to the ouput directory specified in the configuration f
 with the names ``"reduced_science_ORIGINAL_NAME"`` or ``"reduced_standard_ORIGINAL_NAME"``,
 depending on the frame type. All further operations up to :ref:`1d spectrum extraction <extract_1d>` 
 will from now on be performed on these frames, and the raw frames will not be used anymore.
-The reduced frames will be altered in place. 
+The reduced frames will be altered in place. This also means that **if you in further steps do 
+any operations on the reduced frames that you regret, you can always reset by running the reduction procedure again.**
 
 5 fits headers are added to the reduced frames. These are non-standard headers,
 and can be used only in the context of the PyLongslit software. The headers are:

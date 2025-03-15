@@ -101,3 +101,12 @@ in the spatial position of the object. Example: if for frame A the object is
 at spatial pixel 100, the object can be moved to spatial pixel 110 for the frame B, and 
 now frame B has the sky background recorded at spatial pixel 100. Subtracting frame B from frame A
 will remove the sky-background from the object signal. The procedure is called A-B subtraction.
+
+For users new to data reduction - short introduction to sky background
+------------------------------------------------------------------------------------------
+
+Sky background is the light from the sky and the atmosphere that is recorded by the detector together
+with the object spectrum. This background light covers
+the whole slit, and the bacground therefore shows itself as lines through the whole spatial direction
+(see above figures). The sky background consists both of strong sky lines (emission lines from the sky) and 
+a continuum background. These sky lines/background are mixed into the object signal, and must be removed.
