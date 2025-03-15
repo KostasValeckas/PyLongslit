@@ -43,9 +43,14 @@ def run_background_subtraction():
     sigmas = {}
     headers = {}
 
+    # count how many files have already been background subtracted - 
+    # a bit of a hack to prevent double subtraction
+    already_subtracted = 0
+
     for file in reduced_files:
         with PyLongslit_frame.read_from_disc(file) as frame:
             if frame.header["BCGSUBBED"] == True:
+                already_subtracted += 1
                 logger.warning(
                     f"File {file} already had background subtracted. Skipping..."
                 )
@@ -57,6 +62,11 @@ def run_background_subtraction():
             images[new_filename] = frame.data
             sigmas[new_filename] = frame.sigma
             headers[new_filename] = frame.header
+
+    if already_subtracted == len(file_pairs):
+        logger.warning("All files have already been background subtracted.")
+        logger.warning("Exiting...")
+        exit()
 
     logger.info("Images loaded.")
 
@@ -126,12 +136,29 @@ def run_background_subtraction():
         fig.suptitle(
             f"Background Subtraction for {pair['A']}. Press \"h\" to histogram normalize. \n"
             f"Ensure that the traces of the objects do not overlay each other.\n"
-            f"If they do, it might be best to depend on polynomial background estimation only."
+            f"If they do, reduce the images again and skip this procedure."
         )
 
         fig.canvas.mpl_connect("key_press_event", on_key)
 
         plt.show()
+
+        # show 5 slices in spectral direction to check if the traces are separated
+        fig, axes = plt.subplots(5, 1, figsize=(18, 18))
+        # plot indices - 5 slices. Do not start at detector edges 
+        indices = np.linspace(10, subtracted_image.shape[1] - 10, 7, dtype=int)[1:-1]
+        for plot_index, spectral_index in enumerate(indices):
+            axes[plot_index].plot(subtracted_image[:, spectral_index], label = f"Slice at pixel {spectral_index}")
+            axes[plot_index].legend()
+            axes[plot_index].set_xlabel("Spatial Pixel")
+            axes[plot_index].set_ylabel("Counts")
+        fig.suptitle(
+            f"A sample of 5 spatial detector slices for {pair['A']}.\n"
+            "Make sure the traces are separated completely - no overlap.\n"
+            "If not, reduce the images again and skip this procedure."
+        )
+        plt.show()
+
 
     # save the subtracted images
     for filename in reduced_files:

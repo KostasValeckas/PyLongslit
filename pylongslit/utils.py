@@ -1171,7 +1171,7 @@ def get_reduced_frames(only_science=False):
 
     if len(reduced_files) == 0:
         logger.error("No reduced files found.")
-        logger.error("Run the extraction procedure first.")
+        logger.error("Run the reduction procedure first.")
         exit()
 
     # sort as this is needed when cross referencing with traces

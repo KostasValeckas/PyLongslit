@@ -112,7 +112,6 @@ detailed explanation of the parameters is given.
         },
 
         "background_sub" : {
-            "subtract_background": true,
             "pairs": {
                 "1": {
                     "A": "ALHh080251.fits",
@@ -312,7 +311,6 @@ for every step):
         },
 
         "background_sub" : {
-            "subtract_background": # true if A-B background subtraction should be used, false otherwise
             "pairs": {
                 # The pairs of frames to use for the background subtraction (B is subtracted from A)
                 "1": { # The pair number (start with 1 and increment by 1 for every pair)
