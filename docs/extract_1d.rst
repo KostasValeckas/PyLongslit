@@ -1,162 +1,97 @@
 .. _extract_1d:
 
+Extracting 1D spectrum
+======================
 
-Extract 1d science/standard star spectrum
-=========================================
+This procedure extracts the 1D spectrum from the 2D spectrum (counts vs. spectral pixel).
 
-The procedure for extracting the 1d spectrum of the science observation and the
-standard star is almost the same, and therefore they will be described together. The 
-scripts used for this step are `extract_science_1d.py` and `extract_std_1d.py`.
-Both scripts need `extract_1d.py` in order to work. The input to these scripts
-is the :ref:`setup.py <setup>` file, as well as the `ìdarc.dat` file from the
-:ref:`identify <identify>` step. The relevant files and their structure is therefore:
+There are 2 ways in the software to extract the 1D spectrum:
 
-.. code-block::  bash
+1. **Optimal extraction**: This is the default method.
+2. **Summing the counts**: This is done by summing the counts along the spatial axis.
 
-    ├── arcsub.fits
-    ├── arcsub_std.fits
-    ├── database
-    │   ├── idarc.dat
-    ├── extract_1d.py
-    ├── extract_science_1d.py
-    ├── extract_std_1d.py
-    ├── obj.fits
-    ├── setup.py
-    └── std.fits
+Both of these are described below.
+For details on error estimation, please see the :ref:`note on uncertainties <uncertainties>`.
 
-To extract the 1d spectrum of the science observation and standard star, follow these steps:
+.. _optimal:
 
-1. **Run the script**: 
-   In the same directory as the `extract_science_1d.py` and `extract_std_1d.py` scripts, run:
+Optimal extraction
+-------------------
 
-    .. code-block:: bash
-    
-        python3 extract_science_1d.py
-
-    for the science observation, and:
-
-    .. code-block:: bash
-    
-        python3 extract_std_1d.py
-
-    for the standard star.
-
-2. **Evaluate wavelength calibration**
-
-    Firstly, the script will do a refinement of the wavelength solution, 
-    and produce some quality assurance plots. These look something like this:
-
-    .. image:: pictures/wave_qa.png
-       :width: 600
-       :align: center
-
-    The image on the top left is the detector image with a wavelength colormapped
-    to every pixel. The red lines are the identified lines used in production
-    of the wavelentgh solution. Here we are looking for a smooth and continuous
-    colormap. The dashed black lines are the lines that are plotted in the
-    curve plots (these are `the cuts`). `hcut` are the horizontal lines, and `vcut` are the vertical lines.
-    For horizontal lines, we are looking for a smooth, somewhat constantly growing curve.
-    For the vertical lines, some wavelength change is okay 
-    in vertical direction, as it can be caused by optical effects. However, these
-    should be smooth and continuous. We can assume that the object spectrum will 
-    roughly be placed along one `hcut`, and it therefore has the most importance 
-    to us. 
-
-    If the results of the wavelength calibration are showing flaws,
-    you need to find relevant parameters and adjust them in :ref:`setup.py <setup>`.
-
-3. **Select the sky and object**
-
-    In the next step, you will need to help the software to identify the sky and object.
-    An interactive plot window will open, where you will have to use 5 mouse left-clicks 
-    to identify (approximetly):
-
-    1. The sky background on the left side of the object - start.
-    2. The sky background on the left side of the object - end.
-    3. The object center
-    4. The sky background on the right side of the object - start.
-    5. The sky background on the right side of the object - end.
-    6. Press "q" when you are done.
-   
-    The plot prior and after clicking should look something like this:
-
-    .. image:: pictures/object_prior_click.png
-       :width: 600
-       :align: center
-
-    .. image:: pictures/object_post_click.png
-       :width: 600
-       :align: center
-
-    The rest of the script is automatic.
-
-    In the following we provide an array of quality assesment plots with
-    comments of the expected results. If the results are not as expected,
-    you need to find relevant parameters and adjust them in :ref:`setup.py <setup>`.      
-
-
-4. **Evaluate results for the remainder of the extraction**
-
-    The software will now perform a fit to the sky background,
-    where we are looking for a line that goes through the sky background only:
-
-    .. image:: pictures/object_sky_fit.png
-       :width: 600
-       :align: center    
-
-    , and also a fit to the object trace, where we are looking for (somewhat)
-    constant FWHM and a clean fit to object trace with a random residual spread:
-
-    .. image:: pictures/object_trace_fit.png
-       :width: 600
-       :align: center
-
-    The sky is then subtracted from the object, where we want to see the object
-    trace with a uniform background after the subtraction:
-
-    .. image:: pictures/skysub.png
-       :width: 600
-       :align: center
-
-    Finally, the software will extract the 1d spectrum, and plot the result:
-
-    .. image:: pictures/spec_1d_adu.png
-       :width: 600
-       :align: center
-
-A series of files are produced, and when both scripts are excecuted, 
-the relevant file structure should now look like this:
+The routine is called by the command:
 
 .. code-block:: bash
 
-    ├── arcsub.fits
-    ├── arcsub_std.fits
-    ├── database
-    │   ├── idarc.dat
-    ├── extract_1d.py
-    ├── extract_science_1d.py
-    ├── extract_std_1d.py
-    ├── obj.fits
-    ├── obj.ms_1d.fits
-    ├── obj.ms_1dw.dat
-    ├── obj.sky.fits
-    ├── obj.skysub.fits
-    ├── obj.variance.fits
-    ├── setup.py
-    ├── std.fits
-    ├── std.ms_1d.dat
-    ├── std.ms_1d.fits
-    ├── std.sky.fits
-    ├── std.skysub.fits
-    └── std.variance.fits
+    pylongslit_extract_1d PATH_TO_CONFIG_FILE
 
-.. note:: 
-    In the tutorial data, the standard star object trace exhibits a wave-like pattern
-    in the residuals. This is an unwanted effect, and is caused by a finer
-    structure in the object trace. Some of this can be resolved by setting 
-    the `ORDER_APTRACE` parameter in :ref:`setup.py <setup>` to a higher value,
-    and lowering the `SIGMA_APTRACE` parameter.
-    However, inspecting the curve plot itself, the fit seems to be 
-    sufficiently correct.
+The routine will extract the 1D spectrum from the 2D spectrum using the optimal extraction method 
+described in `Horne (1986) <https://ui.adsabs.harvard.edu/abs/1986PASP...98..609H/abstract>`_.
 
+The optimal extraction algorithm uses the profiles fitted from the :ref:`object tracing <objtrace>` routine 
+to estimate the profile of the object in the spatial direction. The algorithm then weights the counts in the
+2D spectrum according to the profile and sums the counts to get the 1D spectrum: 
 
+.. math::
+
+    S(p_{\lambda}) = \frac{\sum_{i} P_i(p_{\lambda}) \cdot D_i(p_{\lambda}) / \sigma_i(p_{\lambda})^2}
+                {\sum_{i} P_i^2(p_{\lambda}) / \sigma_i(p_{\lambda})^2}
+
+Where:
+
+- :math:`S(p_{\lambda})` is the extracted 1D spectrum as a function of spectral pixel :math:`p_{\lambda}`.
+- :math:`P_i(p_{\lambda})` is the spatial profile of the object at spatial pixel :math:`i` for spectral pixel :math:`p_{\lambda}`.
+- :math:`D_i(p_{\lambda})` is the observed data (counts) at spatial pixel :math:`i` for spectral pixel :math:`p_{\lambda}`.
+- :math:`\sigma_i(p_{\lambda})` is the uncertainty (noise) at spatial pixel :math:`i` for spectral pixel :math:`p_{\lambda}`.
+
+The spectrum is then wavelength calibrated using the wavelength solution obtained from the :ref:`wavelength calibration <wavecalib>` routine.
+
+Upon exiting, the routine will display the extracted 1D spectrum 
+(taken from the SDSS_J213510+2728 example dataset):
+
+.. image:: pictures/1dhorne.png
+    :width: 100%
+    :align: center
+
+You can use the sliders to crop out any noise at the edges for better visualization.
+
+The extracted 1D spectrum is saved in the output directory specified in the configuration file, 
+with the filename ``"1d_science_FILENAME.dat"`` or ``"1d_standard_FILENAME.dat"``.
+The files have three columns: wavelength, counts, and variance.
+
+.. _sum:
+
+Summing the counts
+------------------
+
+This extraction method is more simple than the optimal extraction method. 
+Generally, you will get the more precise results with less noise using the optimal extraction method.
+This method is however useful for edge cases where the object profile needs to be 
+tightly constrained.
+
+The routine is called by the command:
+
+.. code-block:: bash
+
+    pylongslit_extract_simple_1d PATH_TO_CONFIG_FILE
+
+This procedure counts the number of counts in the region defined by the object 
+center +/- the FWHM of the object.
+
+Firstly, a QA is shown to display this region (from the SDSS_J213510+2728 example dataset):
+
+.. image:: pictures/simple_region.png
+    :width: 100%
+    :align: center
+
+Zoomed in:
+
+.. image:: pictures/simple_zoom.png
+    :width: 100%
+    :align: center
+
+If the region is not correct, you should revise the :ref:`object tracing <objtrace>` routine.
+
+Then, the software will use ``"photutils.aperture.RectangularAperture"`` to sum the counts in the region.
+You can read the docs for the method at `photutils <https://photutils.readthedocs.io/en/2.0.2/api/photutils.aperture.RectangularAperture.html#photutils.aperture.RectangularAperture.do_photometry>`_.
+
+The spectra are then plotted and saved the same way as in the :ref:`optimal extraction <optimal>` routine.

@@ -93,3 +93,4 @@ contents table below.
    sky
    show_2dspec
    objtrace
+   extract_1d
