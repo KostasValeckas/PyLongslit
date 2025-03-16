@@ -94,3 +94,4 @@ contents table below.
    show_2dspec
    objtrace
    extract_1d
+   sensfunction
