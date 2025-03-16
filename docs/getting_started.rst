@@ -95,3 +95,5 @@ contents table below.
    objtrace
    extract_1d
    sensfunction
+   calibrate
+   combine_spec
