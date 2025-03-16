@@ -92,3 +92,4 @@ contents table below.
    crop
    sky
    show_2dspec
+   objtrace
