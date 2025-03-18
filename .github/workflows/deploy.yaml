@@ -11,7 +11,7 @@ permissions:
   id-token: write
   pages: write
   contents: read
-  actions: read  # Ensure the actions have read permissions
+  actions: read
 
 jobs:
   build:
@@ -39,15 +39,26 @@ jobs:
 
     - name: List the build output directory
       run: |
-        ls -R docs/_build/html  # List files to ensure the build directory is created
+        ls -R docs/_build/html  # List files to ensure that the build directory is created
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4 
+      with:
+        name: documentation
+        path: docs/_build/html  # Upload the build output as an artifact
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     if: github.event_name != 'pull_request'
     steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v3  # Corrected to v3
+      with:
+        name: documentation  # Ensure artifact is downloaded
+
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        folder: docs/_build/html  # Directly specify the folder to deploy
+        artifact_name: documentation  # Specify the artifact name to deploy
