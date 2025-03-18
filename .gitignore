@@ -1,1 +1,12 @@
-build/
+/build/
+/dist/
+*.egg-info/
+.tox/
+.nox/
+.coverage
+*.log
+.pytest_cache/
+/pylongslit/__pycache__/
+/pylongslit/tests/*.log
+/pylongslit/tests/PyLongslit_dev-main
+/pylongslit/tests/__pycache__/
