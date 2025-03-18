@@ -1,0 +1,195 @@
+{
+    "instrument": {
+        "name": "OSIRIS",
+        "disperser": "R1000B"
+    },
+
+    "detector": {
+        "xsize": 2073,
+        "ysize": 2056,
+        "dispersion": { 
+            "spectral_dir": "x",
+            "wavelength_grows_with_pixel": false
+        },
+        "gain": 1.9,
+        "read_out_noise": 4.3,
+        "overscan" : {
+            "use_overscan": false,
+            "overscan_x_start": 0,
+            "overscan_x_end": 499,
+            "overscan_y_start": 2066,
+            "overscan_y_end": 2099
+        }
+    },
+
+    "data": {
+        "raw_data_hdu_index": 0 
+    },
+
+    "bias": {
+        "bias_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/bias",
+        "bootstrap_errors": true
+    },
+
+    "flat": {
+        "flat_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/flat",
+        "bootstrap_errors": false,
+        "skip_spacial": false,
+        "knots_spectral_bspline": 70,
+        "degree_spectral_bspline": 3,
+        "knots_spacial_bspline": 20,
+        "degree_spacial_bspline": 3,
+        "R2_spacial_bspline": 0.5
+    },
+
+    "output": {
+        "out_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/output"
+
+    },
+
+    "crr_removal" : {
+        "science":{
+            "frac": 0.3,
+            "objlim": 5,
+            "sigclip": 16.0,
+            "niter": 2
+        },
+        "standard":{
+            "frac": 0.3,
+            "objlim": 1,
+            "sigclip": 27.0,
+            "niter": 5
+        }
+    },
+
+    "background_sub" : {
+        "subtract_background": true,
+        "pairs": {
+            "1": {
+                "A": "0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits"
+            },
+            "2": {
+                "A": "0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+                "B": "0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits"
+            }
+        }
+    },
+
+    "science" : {
+        "skip_science": false,
+        "science_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/object",
+        "exptime": 1000,
+        "airmass": 1.8
+    },
+
+    "standard" : {
+        "skip_standard": false,
+        "standard_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/stds",
+        "exptime": 25,
+        "airmass": 1.20609883319018,
+        "starname": "SPSTD_Feige110",
+        "flux_file_path": "/home/kostas/Documents/PyLongslit_dev/database/mfeige110.dat"
+
+    },
+
+    "arc" : {
+        "arc_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/arc"
+    },
+
+    "combine_arcs" : {
+        "skip_bias": true
+    },
+
+    "wavecalib" : {
+        "offset_middle_cut": 0,
+        "pixel_cut_extension": 3,
+        "arcline_start": 100,
+        "arcline_end": 1980,
+        "jump_tolerance": 0.3,
+        "center_guess_pixtable": "/home/kostas/Documents/PyLongslit_dev/database/osiris_r1000b_hgar_ne_pixtable.dat",
+        "FWHM": 6,
+        "TOL_MEAN": 35,
+        "TOL_FWHM": 2,
+        "REIDENTIFY_R2_TOL": 0.96,
+        "ORDER_WAVELEN_1D": 6,
+        "ORDER_SPECTRAL_TILT": 4,  
+        "ORDER_SPATIAL_TILT": 6,
+        "TILT_TRACE_R2_TOL": 0.96,
+        "TILT_REJECT_LINE_FRACTION": 0.2,      
+        "SPACIAL_R2_TOL": 0.98,
+        "reuse_reided_lines": false,
+        "reuse_1d_sol": false,
+        "reuse_line_traces": false,
+        "reuse_2d_tilt_fit": false
+    },
+
+    "sky" : {
+        "sigma_cut": 3,
+        "sigma_clip_iters": 5,
+        "fit_order": 2
+    },
+
+    "trace" : {
+        "object": {
+            "spectral_pixel_extension": 10,
+            "fwhm_guess": 4,
+            "fwhm_thresh": 2,
+            "center_thresh": 3,
+            "SNR": 12,
+            "fit_order_trace": 3,
+            "fit_order_fwhm": 4,
+            "fit_R2": 0.98,
+            "use_bspline_obj": false,
+            "use_bspline_fwhm": false,
+            "knots_bspline": 4,
+            "model": "Gaussian"
+        },
+        "standard": {
+            "spectral_pixel_extension": 2,
+            "fwhm_guess": 4,
+            "fwhm_thresh": 3,
+            "center_thresh": 3,
+            "SNR": 70,
+            "fit_order_trace": 6,
+            "fit_order_fwhm": 3,
+            "fit_R2": 0.95,
+            "use_bspline_obj": true,
+            "use_bspline_fwhm": true,
+            "knots_bspline": 10,
+            "model": "Gaussian"
+        }
+    },
+    
+    "extract_simple" : {
+        "FWHM": 2
+    },
+    
+    "obj_trace_clone" : {
+        "archived_spec_root": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/out/manual_traces/obj_manual_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy.dat",
+        "skysubbed_frame_root": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/out/skysub_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy_B.fits"
+    },
+
+    "sensfunc": {
+        "fit_order": 3,
+        "use_bspline": true,
+        "knots_bspline": 15
+    },
+
+    "flux_calib": {
+        "path_extinction_curve": "/home/kostas/Documents/PyLongslit_dev/database/lapalma.dat"
+    },
+
+    "combine": {
+        "GQ1218+0832": 
+            ["0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits",
+             "0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits"]
+    },
+
+    "developer": {
+        "debug_plots": false,
+        "verbose_print": false  
+
+    }
+}
+

@@ -1,0 +1,14 @@
+NEED-TO-HAVE before release
+
+* IMPLEMENT A 2D SPEC
+
+NICE-TO-HAVE for the future:
+* dark frame support
+* Fit initiation should be moved to utils - for now too much repeated code.
+* for flats, make the fitted models 2d instead
+* sky estimation for now assumes no tilt - combine somehow with the fitted 2D tilt solution
+* Interpolation function used now is being depricated - look into swapping it out.
+* Animated plots in the fitting processes
+* When utils get too inflated, chop up into several models (fitting, plotting, utils) or alike.
+* the filelist object in utils could use a refactor - specially in combinning with open_fits method
+* it should be possible to implement automatic rotation curve detection with current tilt tracing

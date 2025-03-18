@@ -1,70 +1,50 @@
 Installation
 ~~~~~~~~~~~~~~
 
+
 .. note::
     The steps in this documentation have been tested on 
-    Linux Ubuntu 22.04.4 LTS (which should also cover MacOS functionality
+    Linux Ubuntu 24.04.2 LTS (which should also cover MacOS functionality
     in broad sense) and Windows 10 Pro.
 
-The software is run by executing a series of 
-Python scripts. Therefore, the installation consists of these steps:
+The software is run by executing a series of commands in a terminal.
+When the software is installed with the steps below, the command
+line tools will be available in the terminal.
 
+The installation process consists of the following steps:
 
-.. _Download the source code:
+1. :ref:`Create a clean Python environment <venv>` (**optional - but strongly recommended**).
+2. :ref:`Install the software using pip <install>`.
 
-1. :ref:`Download the source code <download>`.
-2. :ref:`Create a clean Python environment <venv>` (**optional - but strongly recommended**).
-3. :ref:`Install the required Python packages <packages>`.
-
-.. _download:
 
 We provide both a quickgide for experienced python users and a more detailed guide for users who are new to Python environments.
+
+Lastly, we also describe how to download and  :ref:`install an editable
+version of the software <dev_install>` if you wish to contribute to the development of the software.
 
 Quick guide for experienced python users
 ----------------------------------------
 
-1. `Download the source code. <https://github.com/KostasValeckas/PyLongslit/>`_
-2. Create a new Python 3.10 environment.
-3. Install the requirments from `requirments.txt` using ``pip``. 
+1. Create a new Python 3.10 environment.
+2. Install using ``pip``:
+
+.. code-block:: bash
+
+    pip install pylongslit
+
 
 Detailed guide for users new to Python environments
 ----------------------------------------------------
 
-1. Download the source code
-===========================
-
-The software can be downloaded from the `GitHub repository website <https://github.com/KostasValeckas/PyLongslit/>`_ or 
-cloned by using git.
-
-**Direct link to download from the repository website:**
-
-`Download Source Code (ZIP) <https://github.com/KostasValeckas/PyLongslit/archive/refs/heads/main.zip>`_
-
-**Using git: (if you don't know what git is just download the ZIP from link above)** 
-
-SSH (recommended if you plan on developing)...
-
-.. code-block:: bash
-
-    git clone git@github.com:KostasValeckas/PyLongslit.git
-
-... or HTTPS (works too, but you will need to enter your username and password on every pull/push):
-
-.. code-block:: bash
-
-    git clone https://github.com/KostasValeckas/PyLongslit.git
-
-
 .. _venv:
 
-2. Create a clean Python environment
+1. Create a clean Python environment
 ====================================
 
 To ensure best possible stability of the software and to avoid version conflicts with other Python packages on your system,  
 it is **strongly recommended** to create a clean Python environment for running the software.
 If you are unfamiliar with Python environments, see :ref:`our quick introduction to
-Python environments <envs_quick_into>`. You can skip directly to :ref:`installing the required Python packages <packages>`
-if you prefer to not use a clean environment - in that case you might experience
+Python environments <envs_quick_into>`. You can skip directly to :ref:`installing the software <install>` if you prefer to not use a clean environment - in that case you might experience
 software bugs due to version conflicts that are not accounted for in this documentation.
 
 **Using Anaconda (conda) (recommeded):**
@@ -112,7 +92,7 @@ You can replace ``PyLongslit`` with any name you like. This will create a new en
 
     If the Python version printed is not 3.10, you have several options:
 
-    1. If your version is > 3.10, you most likely will be fine. Otherwise, try one of the following steps.
+    1. If your version is not 3.10, you most likely will be fine. Otherwise, try one of the following steps.
     2. Install Anaconda and create the environment using the conda command as described above.
     3. You can set the Python version to be used by the terminal by adding the Python installation directory to the PATH environment variable. See the following link for more information: `How to set the path and environment variables in Windows <https://realpython.com/add-python-to-path/>`_.
 
@@ -146,7 +126,7 @@ Quick introduction to Python environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 *The following is a quick introduction to Python environments for users who would like one.
-Feel free to* :ref:`skip to next section <packages>`.
+Feel free to* :ref:`skip to next section <install>`.
 
 Python applications often depend on a specific version of Python and a specific set of Python packages.
 These packages can have dependencies on other packages, and these dependencies can have dependencies on other packages, and so on.
@@ -156,12 +136,8 @@ packages that you need for a specific application. This helps ensure that only t
 conflict with other applications on your system. Furtermore, this ensures that 
 updates to any packages do not break the application, as the environment will not be updated unless you explicitly update it.
 
-Python environments as created with the commands shown above will be empty, and you will need to install the required packages,
-as described in :ref:`installing the required Python packages <packages>`.
-
 **Note:** The envirornment will need to be activated every time you open a new terminal.
-You can configure your terminal to automatically activate the environment - 
-this will not be covered in this documentation - see documentation for your terminal for more information.
+You can configure your terminal to automatically activate the environment upon startup. This will not be covered in this documentation - see documentation for your terminal for more information.
 
 **Example:**
 
@@ -178,17 +154,77 @@ After activating the environment, the name of the environment will be shown in t
 
     (PyLongslit) user@computer:~$
 
-.. _packages:
+.. _install:
 
-3. Install the required Python packages
+2. Install the software using pip
 =======================================
 
-To install the required Python packages, open your terminal and navigate to the directory 
-where you downloaded the source code. Then run the following command:
+To install the software and the required dependencies, 
+run the following command in your terminal:
 
-(If you are using a clean Python environment, make sure you activate it first.)
+(if you are using a clean Python environment, make sure you activate it first.)
 
 .. code-block:: bash
 
-    pip install -r requirements.txt
+    pip install pylongslit
+
+After the installation is complete, you can perform a quick check
+to see if the software was installed by running the following command:
+
+.. code-block:: bash
+
+    pylongslit_check_config --help
+
+If the software was installed correctly, you should see a message 
+like this in the terminal:
+
+.. code-block:: bash
+
+    usage: pylongslit_check_config [-h] config
+
+    Run the pylongslit config-file checker.
+
+    positional arguments:
+      config      Configuration file path
+
+    options:
+      -h, --help  show this help message and exit
+
+.. _dev_install:
+
+Developer installation
+===========================
+
+An editable version of the software can be installed if you plan on developing the code.
+This allows you to make changes to the software and see the changes reflected in the command line tools without having to reinstall the software.
+
+The software can be downloaded from the `GitHub repository website <https://github.com/KostasValeckas/PyLongslit/>`_ or 
+cloned by using git.
+
+**Direct link to download from the repository website:**
+
+`Download Source Code (ZIP) <https://github.com/KostasValeckas/PyLongslit/archive/refs/heads/main.zip>`_
+
+**Using git: (if you don't know what git is just download the ZIP from link above)** 
+
+SSH (recommended if you plan on developing)...
+
+.. code-block:: bash
+
+    git clone git@github.com:KostasValeckas/PyLongslit.git
+
+... or HTTPS (works too, but you will need to enter your username and password on every pull/push):
+
+.. code-block:: bash
+
+    git clone https://github.com/KostasValeckas/PyLongslit.git
+
+Then, when in :ref:`clean python 3.10 environment <venv>`, 
+navigate to the directory where the software was downloaded (this is the directory with the file `setup.py` in it) and run the following command:
+
+.. code-block:: bash
+
+    pip install -e .
+
+
 

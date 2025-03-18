@@ -1,0 +1,84 @@
+<GTCMULTIPLE2J-23A_0022> Quality Control
+=================================
+
+Summary
+-------
+observing conditions:    Ok
+instrument setup:        Ok 
+coordinates:             Ok
+image quality:           Ok
+calibrations:            Ok 
+                         
+
+Notes:                 good conditions seeing 0.8 arcsec . Main target A placed at x=1051 and y=750.
+
+GRANTECAN would appreciate your feedback on the observations and on the observing process.
+For this, a feedback form is available at http://gtc-phase2.gtc.iac.es/science/feedback/feedback.php 
+
+
+Requirements
+------------
+
+req. seeing  actual seeing      req. cloud    actual cloud    req. moon  actual moon 
+        1.5          0.8        Clear/Spec     Photometric     Any,Grey         Dark 
+
+
+-----
+
+Requested
+---------
+
+OB                       insMODE              RA                   DEC                  SlitW        PA           Templ        GRISM                ORDERSEP             EXPTIME              BINNING              NEXP                 READOUT              REPEATER             OFFSET              
+                                                                                                                                                                                                                                                                                                      
+GTCMULTIPLE2J-23A_0022   osiris_LSS           12:18:30.10          08:32:15.5           1.2          25.19        1            R1000B               -                    1000                 2X2                  2                    Fast                 1                    0                   
+
+
+
+<GTCMULTIPLE2J-23A_0022> 
+-------------------
+
+    IMAGE                                                           GTCPROGID                  GTCOBID     OBJECT                      RA              DEC        EXPTIME  AIRMASS  HBIN VBIN FILTERW1 FILTERW2 FILTERW3   IPA      ROTANG GRISMW  Z_ekw6 Z_ekw7 OS-FILTER    SLITW TIME-START   OUTMODE              GAIN    RSPEED    INSMODE  			TFWAVEL TFBANDW  MASKNAME
+
+0003881269-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits    GTCMULTIPLE2J-23A                    0022  GQ1218+0832                  12:18:27.466    08:30:57.047      20.00   1.684     T     T     OPEN  Sloan_r     OPEN  151.490   -88.82    OPEN     NULL     NULL  NULL         0. 22:00:41.010 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 NOMASK                   
+0003881270-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits    GTCMULTIPLE2J-23A                    0022  GQ1218+0832                  12:18:27.547    08:30:54.157      20.00   1.729     T     T     OPEN  Sloan_r     OPEN  151.490   -89.09    OPEN     NULL     NULL  NULL         0. 22:05:47.010 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 NOMASK                   
+0003881271-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits    GTCMULTIPLE2J-23A                    0022  GQ1218+0832                  12:18:27.547    08:30:54.156      40.00   1.779     T     T     OPEN  Sloan_r     OPEN  151.490   -89.34    OPEN     NULL     NULL  NULL       1.23 22:11:01.010 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits1.23Arcsec      
+0003881272-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits    GTCMULTIPLE2J-23A                    0022  GQ1218+0832                  12:18:27.547    08:30:54.156    1000.00   1.798     T     T     OPEN     OPEN     OPEN  151.490   -89.42  R1000B     NULL     NULL  NULL       1.23 22:12:56.011 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits1.23Arcsec      
+0003881273-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits    GTCMULTIPLE2J-23A                    0022  GQ1218+0832                  12:18:27.614    08:30:56.476    1000.00   1.997     T     T     OPEN     OPEN     OPEN  151.490   -90.07  R1000B     NULL     NULL  NULL       1.23 22:30:12.011 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits1.23Arcsec      
+
+Flat
+----
+0003881853-20230707-OSIRIS-OsirisSpectralFlat.fits                        CALIB                   CALIB  SpectralFlat                 23:19:58.582    -05:11:25.381      0.80   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:30:09.010 SINGLE_0x0             1.9   233 OsirisSpectralFlat                0.00     0.00 LongSlits1.23Arcsec      
+0003881854-20230707-OSIRIS-OsirisSpectralFlat.fits                        CALIB                   CALIB  SpectralFlat                 23:19:58.582    -05:11:25.381      0.80   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:30:34.245 SINGLE_0x0             1.9   233 OsirisSpectralFlat                0.00     0.00 LongSlits1.23Arcsec      
+0003881855-20230707-OSIRIS-OsirisSpectralFlat.fits                        CALIB                   CALIB  SpectralFlat                 23:19:58.582    -05:11:25.381      0.80   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:30:59.481 SINGLE_0x0             1.9   233 OsirisSpectralFlat                0.00     0.00 LongSlits1.23Arcsec      
+0003881856-20230707-OSIRIS-OsirisSpectralFlat.fits                        CALIB                   CALIB  SpectralFlat                 23:19:58.581    -05:11:25.381      0.80   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:31:24.717 SINGLE_0x0             1.9   233 OsirisSpectralFlat                0.00     0.00 LongSlits1.23Arcsec      
+0003881857-20230707-OSIRIS-OsirisSpectralFlat.fits                        CALIB                   CALIB  SpectralFlat                 23:19:58.581    -05:11:25.381      0.80   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:31:49.950 SINGLE_0x0             1.9   233 OsirisSpectralFlat                0.00     0.00 LongSlits1.23Arcsec      
+
+Bias
+----
+0003881201-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:06:39.010 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881202-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:07:03.465 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881203-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:07:27.897 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881204-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:07:52.338 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881205-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:08:16.780 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881206-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:08:41.222 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881207-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:09:05.660 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881208-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:09:30.092 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881209-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:09:54.533 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881210-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:10:18.972 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+0003881211-20230707-OSIRIS-OsirisBias.fits                                calib                   calib  bias                         14:34:59.025    49:02:52.952       0.00   1.213     T     T     OPEN     OPEN     OPEN  126.300    58.29    OPEN     NULL     NULL  NULL         0. 20:10:43.481 SINGLE_0x0             1.9   233 OsirisBias                        0.00     0.00 NOMASK                   
+
+Arcs
+----
+0003881851-20230707-OSIRIS-OsirisCalibrationLamp.fits                     CALIB                   CALIB  ArcLamp_HgAr                 23:19:58.582    -05:11:25.381      0.15   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:28:34.246 SINGLE_0x0              4.   233 OsirisCalibrationLamp             0.00     0.00 LongSlits1.23Arcsec      
+0003881852-20230707-OSIRIS-OsirisCalibrationLamp.fits                     CALIB                   CALIB  ArcLamp_Ne                   23:19:58.582    -05:11:25.381      0.10   1.205     T     T     OPEN     OPEN     OPEN  123.077    89.99  R1000B     NULL     NULL  NULL       1.23 05:29:20.011 SINGLE_0x0              4.   233 OsirisCalibrationLamp             0.00     0.00 LongSlits1.23Arcsec      
+
+Spectrophotometric standard
+----------------------------
+0003881261-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits                CALIB                   CALIB  SPSTD_Ross640                16:28:30.096    36:47:20.471       0.50   1.040     T     T     OPEN  Sloan_r     OPEN    4.357   -60.47    OPEN     NULL     NULL  NULL         0. 21:32:49.010 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 NOMASK                   
+0003881262-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits                CALIB                   CALIB  SPSTD_Ross640                16:28:30.108    36:47:20.424       0.50   1.038     T     T     OPEN  Sloan_r     OPEN    4.357   -59.52    OPEN     NULL     NULL  NULL       2.52 21:34:52.011 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits2.52Arcsec      
+0003881263-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits                CALIB                   CALIB  SPSTD_Ross640                16:28:30.108    36:47:20.424     135.00   1.037     T     T     OPEN     OPEN     OPEN    4.357   -58.84  R1000B     NULL     NULL  NULL       2.52 21:36:18.011 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits2.52Arcsec      
+0003881847-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits                CALIB                   CALIB  SPSTD_Feige110               23:19:58.582    -05:11:25.381      0.50   1.207     T     T     OPEN  Sloan_r     OPEN  123.077   -49.88    OPEN     NULL     NULL  NULL         0. 05:11:09.010 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 NOMASK                   
+0003881848-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits                CALIB                   CALIB  SPSTD_Feige110               23:19:58.582    -05:11:25.381      0.50   1.206     T     T     OPEN  Sloan_r     OPEN  123.077   -50.45    OPEN     NULL     NULL  NULL       2.52 05:12:36.010 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits2.52Arcsec      
+0003881849-20230707-OSIRIS-OsirisLongSlitSpectroscopy.fits                CALIB                   CALIB  SPSTD_Feige110               23:19:58.582    -05:11:25.381     25.00   1.206     T     T     OPEN     OPEN     OPEN  123.077   -50.74  R1000B     NULL     NULL  NULL       2.52 05:13:21.011 SINGLE_0x0             1.9   233 OsirisLongSlitSpectroscopy        0.00     0.00 LongSlits2.52Arcsec      
+
+...
