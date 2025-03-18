@@ -1,10 +1,9 @@
-
 name: Deploy Documentation
  
 on:
- push:
-   branches:
-     - main
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
  
 jobs:
   build:
@@ -24,12 +23,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install sphinx
         pip install sphinx_rtd_theme  # Add any other Sphinx extensions you use
+
     - name: Build documentation
       run: |
         cd docs
-        make html
+        make html  # This generates the HTML files in docs/_build/html
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./docs/build/html
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
+        publish_dir: ./docs/_build/html  # Directory containing the generated HTML files
+        target_branch: gh-pages  # The branch where the files will be deployed
