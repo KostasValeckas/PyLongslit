@@ -58,6 +58,7 @@ jobs:
 
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v4
+      id: deployment
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         artifact_name: documentation  # Specify the artifact name to deploy
