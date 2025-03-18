@@ -37,7 +37,7 @@ jobs:
         make html
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3  # Updated to v3 if used for uploading docs
+      uses: actions/upload-artifact@v2  # Explicitly using v2 of the artifact action
       with:
         name: documentation
         path: docs/_build/html
