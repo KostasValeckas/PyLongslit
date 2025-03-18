@@ -53,7 +53,7 @@ jobs:
         name: documentation  # Ensure artifact is downloaded
 
     - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v2
+      uses: actions/deploy-pages@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         artifact_name: documentation  # Ensure we are referencing the correct artifact name
