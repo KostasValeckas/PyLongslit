@@ -1,3 +1,4 @@
 # PyLongslit
 
-* DEVELOPING GROUNDS - FEEL FREE TO LOOK AROUND - BUT DO NOT RUN THIS CODE
+All information is provided at:
+https://kostasvaleckas.github.io/PyLongslit/index.html
