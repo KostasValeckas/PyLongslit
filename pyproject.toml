@@ -1,6 +1,6 @@
 [project]
 name = "pylongslit"
-version = "0.0.1"
+version = "0.0.1.test"
 authors = [
   { name="Kostas Valeckas", email="kostas.valeckas@nbi.ku.dk" },
 ]
