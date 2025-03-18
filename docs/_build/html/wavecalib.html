@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Wavelength Calibration &#8212; PyLongslit  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Flat-field" href="flat.html" />
+    <link rel="prev" title="Identify arc lines" href="identify.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="wavelength-calibration">
+<span id="wavecalib"></span><h1>Wavelength Calibration<a class="headerlink" href="#wavelength-calibration" title="Link to this heading">¶</a></h1>
+<p>The wacecalibration procedure in the software is by far the most complex
+and abstract part of the pipeline. In order to utilize the spacial information
+obtained by a long-slit spectrograph, the software needs to account for both
+spectral and spacial features in the wavelength calibration. This complicates the
+code and the user interface, but it is deemed necessary in order to achieve the
+needed precision for a long-slit observation.</p>
+<section id="quick-start">
+<h2>Quick start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h2>
+<p>The wavelength calibration routine is executed by the following call:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylongslit_wavecalib<span class="w"> </span>PATH_TO_CONFIG_FILE
+</pre></div>
+</div>
+<p>The routine will produce a large amount of quality assesment plots, and will
+write 4 files to the output directory:
+<code class="docutils literal notranslate"><span class="pre">good_lines.pkl,</span> <span class="pre">reidentified_lines.pkl,</span> <span class="pre">wavelen_fit.pkl,</span> <span class="pre">wavelength_map.fits</span></code>.
+The meaning of the plots and the files will be explained in the following sections.</p>
+<p>Since the wavelength calibration is a complex process, the quality assesment plots
+and the parameters will be explained together in the following sections, as
+this might help to unsertand how the parameters effect the quality of the calibration.</p>
+<p>There are 2 major steps in te routine: <strong>line reidentification</strong> and
+<strong>tilt tracing</strong>.</p>
+</section>
+<section id="line-reidentification">
+<span id="id1"></span><h2>Line reidentification<a class="headerlink" href="#line-reidentification" title="Link to this heading">¶</a></h2>
+<p>In this step, the centers of the <a class="reference internal" href="identify.html#identify"><span class="std std-ref">manually identified lines from the previous step</span></a>
+are refined using generalized Gaussian fits. The refined line centers are then used to
+fit a polynomial to the pixel vs. wavelength relation - this polynomial is
+called the <strong>1d wavelength solution</strong>. It will later, together with the <a class="reference internal" href="#tilts"><span class="std std-ref">tilt estimation</span></a>,
+be used to map every pixel in the detector to a wavelength.</p>
+<p>Firstly, the reidentification step will plot the gaussian fits of the lines,
+as shown in the following figure from the SDSS_J213510+2728 tutorial dataset:</p>
+<a class="reference internal image-reference" href="_images/reid_gauss.png"><img alt="_images/reid_gauss.png" class="align-center" src="_images/reid_gauss.png" style="width: 100%;" />
+</a>
+<p>Zoomed in on one line:</p>
+<a class="reference internal image-reference" href="_images/reid_zoom.png"><img alt="_images/reid_zoom.png" class="align-center" src="_images/reid_zoom.png" style="width: 100%;" />
+</a>
+<p>If you see good fits being rejected, bad fits being accepted, or the fits
+simply failing (some are expected to fail, but not the majority), you can
+try tweaking these <code class="docutils literal notranslate"><span class="pre">&quot;wavecalib&quot;</span></code> parameters:</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;offset_middle_cut&quot;</span></code>: The 1d line spectrum is taken from the middle of the image.
+Sometimes, the middle of the image is not the best place,
+so the <code class="docutils literal notranslate"><span class="pre">offset_middle_cut</span></code> parameter can be used to offset the cut from the middle
+by a certain amount of pixels</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;pixel_cut_extension&quot;</span></code>: this parameter is used to decide how many detector rows to use for the
+1d-spectrum cut. If <code class="docutils literal notranslate"><span class="pre">pixel_cut_extension</span></code> is set to 0, only one row will be used. If it is set to 2,
+the middle row +/- 2 rows will be used and then averaged and so forth. This is useful if the arc line spectrum
+is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessery, as the line centers change gradually
+in the spatial direction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;FWHM&quot;</span></code>: the initial guess for the FWHM of the lines.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;TOL_FWHM&quot;</span></code>: the tolerence for deviation the fitted FWHM may have from
+the initial guess.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;TOL_MEAN&quot;</span></code>: the tolerence for deviation the fitted center may have from
+the <a class="reference internal" href="identify.html#identify"><span class="std std-ref">manually identified center</span></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;REIDENTIFY_R2_TOL&quot;</span></code>: the tolerance for the <span class="math notranslate nohighlight">\(R^2\)</span> value of the fit. If the <span class="math notranslate nohighlight">\(R^2\)</span> value is below this value, the fit is rejected.</p>
+<p>After the lines has been reidentified, the 1d wavelength solution is fitted to the
+reidentified lines. An example of the 1d wavelength solution is shown in the following figure:</p>
+<a class="reference internal image-reference" href="_images/1d_wavelen_sol.png"><img alt="_images/1d_wavelen_sol.png" class="align-center" src="_images/1d_wavelen_sol.png" style="width: 100%;" />
+</a>
+<p>You should try to get a good fit with random residuals with the lowest possible degree of the polynomial.
+The parameter that sets the degree is <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_WAVELEN_1D&quot;</span></code>. Be aware that if the lines have been reidentified
+with errors (e.g. too relaxed <span class="math notranslate nohighlight">\(R^2\)</span> tolerance), that it might also affect the 1d wavelength solution.</p>
+</section>
+<section id="tilt-tracing">
+<span id="tilts"></span><h2>Tilt tracing<a class="headerlink" href="#tilt-tracing" title="Link to this heading">¶</a></h2>
+<p>The arc lines can have a tilt in the spatial direction. This is very prominent
+when inspecting the master arc from the GQ1218+5709 tutorial dataset:</p>
+<a class="reference internal image-reference" href="_images/master_arc_normalized.png"><img alt="_images/master_arc_normalized.png" class="align-center" src="_images/master_arc_normalized.png" style="width: 100%;" />
+</a>
+<p>As the wavelengt is constant along every arc line, we need to estimate the tilt
+through whole of the detector in order to map the 1d wavelength solution to the
+2d detector.</p>
+<p>Firstly, the tilt tracing algorithm esttimates the position of every line on the
+detector. This is done the same way as in the <a class="reference internal" href="#line-reidentification"><span class="std std-ref">line reidentification</span></a>,
+but now the fit is not done for one center, but through the whole spacial direction, as
+shown below:</p>
+<a class="reference internal image-reference" href="_images/line_trace_zoom.png"><img alt="_images/line_trace_zoom.png" class="align-center" src="_images/line_trace_zoom.png" style="width: 100%;" />
+</a>
+<p>When the tracing is done, the spacial coordinate at where the 1d wavelength solution
+was evaluated is set to have tilt = 0. The tilt of every line is estimated based on how much a given spacial pixel
+deviates from the tilt = 0 spacial coordinate. The tilt is
+then fitted with a polynomial for every line. The tilt fit for every line is
+plotted together with residuals for quality assesment, as shown here from the
+GQ1218+5709 tutorial dataset:</p>
+<a class="reference internal image-reference" href="_images/tilt_all_gtc.png"><img alt="_images/tilt_all_gtc.png" class="align-center" src="_images/tilt_all_gtc.png" style="width: 100%;" />
+</a>
+<p>Zoom in on one line:</p>
+<a class="reference internal image-reference" href="_images/tilt_zoom_gtc.png"><img alt="_images/tilt_zoom_gtc.png" class="align-center" src="_images/tilt_zoom_gtc.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="_images/tilt_resid_zoom.png"><img alt="_images/tilt_resid_zoom.png" class="align-center" src="_images/tilt_resid_zoom.png" style="width: 100%;" />
+</a>
+<p>The tilt in this example is estimated with tilt = 0 set at the spacial pixel
+1028. The residuals show structure in the magnitude of 0.01 pixel. From experience,
+this is hard to avoid, and should not have a large impact on the final wavelength
+when the magnitude is this low.</p>
+<p>Several parameters can be set if the individual line tilt estimation is accepting
+bad fits, rejectng good fits, identifying lines in the wrong place or alike.</p>
+<p>For the individual center tracing through the spacial direction, the same parameters
+apply as in <a class="reference internal" href="#line-reidentification"><span class="std std-ref">line reidentification</span></a>. The only difference
+is that the <span class="math notranslate nohighlight">\(R^2\)</span> threshold for the individual Gaussian fits is set by the
+<code class="docutils literal notranslate"><span class="pre">&quot;TILT_TRACE_R2_TOL&quot;</span></code> parameter. In experience, the <span class="math notranslate nohighlight">\(R^2\)</span> value can be
+set lower than in the <code class="docutils literal notranslate"><span class="pre">&quot;REIDENTIFY_R2_TOL&quot;</span></code> parameter, as the tilt tracing is
+lastly estimated by a polynomial fit, so a few outliers are okay.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">&quot;TILT_REJECT_LINE_FRACTION&quot;</span></code> is used to abort a line trace if the
+fraction of rejected fits is above this value. This optimizes the computational time
+and assures that badly identified lines do not get accepted as false postives.</p>
+<p>The parameter <code class="docutils literal notranslate"><span class="pre">&quot;jump_tolerance&quot;</span></code> is used to set the maximum jump in pixels a line can
+have from one estimated center to another. This can help identify lines that are close
+to each other.</p>
+<p>The order of the polynomial tilt for individual line tilts is set by the
+<code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPATIAL_TILT&quot;</span></code> parameter. The <span class="math notranslate nohighlight">\(R^2\)</span> threshold for fit rejection
+is set by the <code class="docutils literal notranslate"><span class="pre">&quot;SPACIAL_R2_TOL&quot;</span></code> parameter.</p>
+<p>When the individual lines are identified, the line traces are plotted for
+quality assesment:</p>
+<a class="reference internal image-reference" href="_images/all_line_trace.png"><img alt="_images/all_line_trace.png" class="align-center" src="_images/all_line_trace.png" style="width: 100%;" />
+</a>
+<p>Inspect if the lines are traced correctly, specially that traces do not
+jump between neighboring lines.</p>
+<p>Lastly, the estimated tilts throughout the detector are used to perform
+a 2d tilt polynomial fit with the spacial order <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPATIAL_TILT&quot;</span></code> and the
+spectral order <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPECTRAL_TILT&quot;</span></code>. The residuals are plottet along both
+the spacial and spectral direction for quality assesment:</p>
+<a class="reference internal image-reference" href="_images/tilt_2d_fit_residual.png"><img alt="_images/tilt_2d_fit_residual.png" class="align-center" src="_images/tilt_2d_fit_residual.png" style="width: 100%;" />
+</a>
+<p>In spacial direction the residuals should be random, but very small scale structure
+(order of 0.01 pixel) is hard to avoid. In the spectral direction, the residuals will be
+collected in columns where the arc lines are placed. The residuals here should also be
+dispersed around 0.</p>
+<p>The individual lines are then plotted next to the 2d fit evaluated at the same
+pixels as the individual lines:</p>
+<a class="reference internal image-reference" href="_images/tilt_individual_vs_2_d.png"><img alt="_images/tilt_individual_vs_2_d.png" class="align-center" src="_images/tilt_individual_vs_2_d.png" style="width: 100%;" />
+</a>
+<p>The plots should resemble each other greatly, with the lines at the plot
+to the right showing smoother structure. If this is not the case, you
+will need to revise the whole tilt fitting procedure.</p>
+<p><strong>At this point, all the fitting and calculations are done.</strong></p>
+<p>The tilt detector map and the wavelength map is produced as a last
+sanity-check. You should see a smooth continuum in both. Also, check
+that the wavelength range is as expected for your instrument, filter and disperser
+combination:</p>
+<a class="reference internal image-reference" href="_images/tilt_map.png"><img alt="_images/tilt_map.png" class="align-center" src="_images/tilt_map.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="_images/wavelength_map.png"><img alt="_images/wavelength_map.png" class="align-center" src="_images/wavelength_map.png" style="width: 100%;" />
+</a>
+</section>
+<section id="reusing-past-products-in-the-wavelength-calibration">
+<h2>Reusing past products in the wavelength calibration<a class="headerlink" href="#reusing-past-products-in-the-wavelength-calibration" title="Link to this heading">¶</a></h2>
+<p>When adjusting the many parameters in this procedure, it is sometimes useful to
+reuse some of the products and for example jump straight to the tilt tracing
+if the line reidentification is already working correctly.</p>
+<p>The parameters fir this are (all can be set to either true or false):abbr:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;wavecalib&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">&quot;reuse_reided_lines&quot;</span><span class="p">:</span> <span class="c1"># loads the file reidentified_lines.pkl from the output directory, this file holds the reidentified line centers</span>
+    <span class="s2">&quot;reuse_1d_sol&quot;</span><span class="p">:</span> <span class="c1"># loads the file wavelen_fit.pkl from the output directory, this file holds the 1d wavelength solution</span>
+    <span class="s2">&quot;reuse_line_traces&quot;</span><span class="p">:</span> <span class="c1"># loads the file good_lines.pkl from the output directory, this file holds the individual line traces</span>
+    <span class="s2">&quot;reuse_2d_tilt_fit&quot;</span><span class="p">:</span> <span class="c1"># loads the file tilt_fit.pkl from the output directory, this file holds the 2d tilt fit</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="how-the-wavelength-solution-gets-evaluated">
+<h2>How the wavelength solution gets evaluated<a class="headerlink" href="#how-the-wavelength-solution-gets-evaluated" title="Link to this heading">¶</a></h2>
+<p>It can be conceptually hard to understand how the wavelengths get mapped to the
+detector pixels with the abstract procedure described above. The below explanation
+is an attempt to clarify this.</p>
+<p>For the spacial pixel <span class="math notranslate nohighlight">\(y_{0}\)</span> at which the 1d wavelength solution <span class="math notranslate nohighlight">\(f\)</span> is known, the
+wavelength <span class="math notranslate nohighlight">\(\lambda\)</span> can be decided by
+<span class="math notranslate nohighlight">\(\lambda = f(x_{0})\)</span>, where <span class="math notranslate nohighlight">\(x_{0}\)</span> is the spectral pixel. For any other pixel <span class="math notranslate nohighlight">\((x,y)\)</span>, we
+know the tilt <span class="math notranslate nohighlight">\(\Delta x\)</span> that transforms <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(x_{0}\)</span> while keeping the wavelength constant.
+We evaluate the wavelength at pixel <span class="math notranslate nohighlight">\((x,y)\)</span> by <span class="math notranslate nohighlight">\(\lambda = f(x - \Delta x)\)</span>:</p>
+<a class="reference internal image-reference" href="_images/wave_solution.png"><img alt="_images/wave_solution.png" class="align-center" src="_images/wave_solution.png" style="width: 100%;" />
+</a>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyLongslit</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="getting_started.html">Getting started</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#downloading-the-tutorial-data">Downloading the tutorial data</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="getting_started.html#tutorial">Tutorial</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="general_notes.html">General Notes on using the pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration_file.html">Configuration file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bias.html">Bias</a></li>
+<li class="toctree-l3"><a class="reference internal" href="dark_current.html">Dark current subtraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combine_arcs.html">Combinning arc frames</a></li>
+<li class="toctree-l3"><a class="reference internal" href="identify.html">Identify arc lines</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Wavelength Calibration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#quick-start">Quick start</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#line-reidentification">Line reidentification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilt-tracing">Tilt tracing</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reusing-past-products-in-the-wavelength-calibration">Reusing past products in the wavelength calibration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#how-the-wavelength-solution-gets-evaluated">How the wavelength solution gets evaluated</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="flat.html">Flat-field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reduce.html">Reduction of observations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crr.html">Cosmic ray removal</a></li>
+<li class="toctree-l3"><a class="reference internal" href="AB.html">A-B Background subtraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="crop.html">Cropping of images</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sky.html">Modelled sky subtraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="show_2dspec.html">2D Spectrum Viewer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="objtrace.html">Object Tracing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="extract_1d.html">Extracting 1D spectrum</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sensfunction.html">Sensitivity function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="calibrate.html">Flux calibration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combine_spec.html">Combining the spectra</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties.html">Note on how the software estimates uncertainties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="getting_started.html">Getting started</a><ul>
+      <li>Previous: <a href="identify.html" title="previous chapter">Identify arc lines</a></li>
+      <li>Next: <a href="flat.html" title="next chapter">Flat-field</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/wavecalib.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
