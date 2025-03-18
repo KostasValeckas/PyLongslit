@@ -43,7 +43,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
-        name: documentation
+        name: documentation  # This is the artifact name you're uploading
         path: docs/_build/html  # Upload the build output as an artifact
 
   deploy:
@@ -54,11 +54,10 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-        name: documentation  # Ensure artifact is downloaded
+        name: documentation  # Download the artifact with this name
 
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authenticate the action
-        folder: docs/_build/html  # The folder where the built documentation is located
-        branch: gh-pages  # The branch to deploy to (usually 'gh-pages')
+        artifact_name: documentation  # Ensure the artifact name matches the uploaded artifact
