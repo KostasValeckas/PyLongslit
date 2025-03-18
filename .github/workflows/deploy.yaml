@@ -34,4 +34,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}  # GitHub token for authentication
         publish_dir: ./docs/_build/html  # Directory containing the generated HTML files
-        target_branch: gh-pages  # The branch where the files will be deployed
+        publish_branch: gh-pages  # The branch where the files will be deployed
