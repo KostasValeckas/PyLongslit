@@ -1,5 +1,0 @@
-2025-03-18 12:02:46 - PyLongslit - [32mINFO[0m - logger.py:73 - Logger initialized. Log will be saved in /home/kostas/Documents/PyLongslit/pylongslit/tests/config.log.
-2025-03-18 12:02:46 - PyLongslit - [31mERROR[0m - parser.py:18 - Config file not found.
-2025-03-18 12:02:46 - PyLongslit - [31mERROR[0m - parser.py:19 - Make sure a config file exists. 
-See the docs at:
-https://kostasvaleckas.github.io/PyLongslit/
