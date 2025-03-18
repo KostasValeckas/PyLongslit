@@ -30,6 +30,8 @@ def test_data_GQ(
         if key.startswith("pylongslit"):
             del sys.modules[key]
 
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
     CONFIG_FILE = "GQ1218+0832.json"
     from pylongslit import set_config_file_path 
     set_config_file_path(CONFIG_FILE)
@@ -105,6 +107,8 @@ def test_data_SDSS(
     for key in list(sys.modules.keys()):
         if key.startswith("pylongslit"):
             del sys.modules[key]
+
+    os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
     CONFIG_FILE = "SDSS_J213510+2728.json"
     from pylongslit import set_config_file_path 
