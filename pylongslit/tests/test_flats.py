@@ -3,8 +3,8 @@ import matplotlib
 import sys
 import pytest
 
-@pytest.mark.order(3)
-def test_bias_GQ():
+@pytest.mark.order(5)
+def test_flats_GQ():
     """
     Test the bias function.
     """
@@ -19,19 +19,21 @@ def test_bias_GQ():
     CONFIG_FILE = "GQ1218+0832.json"
     from pylongslit import set_config_file_path 
     set_config_file_path(CONFIG_FILE)
-    from pylongslit.mkspecbias import run_bias
+    from pylongslit.mkspecflat import run_flats
     from pylongslit.parser import output_dir
 
     matplotlib.use('Agg')  # Use non-interactive backend
+
     
-    # Run the bias function
-    run_bias()
+    
+    # Run the flat
+    run_flats()
 
         
-    assert os.path.exists(os.path.join(output_dir, "master_bias.fits"))
+    assert os.path.exists(os.path.join(output_dir, "master_flats.fits"))
 
-@pytest.mark.order(4)
-def test_bias_SDSS():
+@pytest.mark.order(6)
+def test_flats_SDSS():
     """
     Test the bias function.
     """
@@ -43,20 +45,16 @@ def test_bias_SDSS():
             del sys.modules[key]
 
 
-    CONFIG_FILE_1 = "SDSS_J213510+2728.json"
+    CONFIG_FILE = "SDSS_J213510+2728.json"
     from pylongslit import set_config_file_path 
-    set_config_file_path(CONFIG_FILE_1)
-    from pylongslit.mkspecbias import run_bias
+    set_config_file_path(CONFIG_FILE)
+    from pylongslit.mkspecflat import run_flats
     from pylongslit.parser import output_dir
 
     matplotlib.use('Agg')  # Use non-interactive backend
-    
+
     # Run the bias function
-    run_bias()
+    run_flats()
 
         
-    assert os.path.exists(os.path.join(output_dir, "master_bias.fits"))
-
-
-
-
+    assert os.path.exists(os.path.join(output_dir, "master_flats.fits"))

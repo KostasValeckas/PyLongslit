@@ -7,3 +7,5 @@
 *.log
 .pytest_cache/
 /pylongslit/__pycache__/
+/pylongslit/tests/*.log
+/pylongslit/tests/PyLongslit_dev-main
