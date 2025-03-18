@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pylongslit',
-    version='0.0.1.test',
+    version='0.0.0',
     packages=find_packages(),  # Automatically find and include all your modules
     install_requires=[          # External dependencies
         'alabaster==1.0.0',
