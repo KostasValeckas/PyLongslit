@@ -4,8 +4,7 @@ version = "0.0.1"
 authors = [
   { name="Kostas Valeckas", email="kostas.valeckas@nbi.ku.dk" },
 ]
-description = "PyLongslit is simple manual Python pipeline for processing of astronomical long-slit spectra,
-recorded with CCD detectors"
+description = "PyLongslit is simple manual Python pipeline for processing of astronomical long-slit spectra, recorded with CCD detectors"
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [
