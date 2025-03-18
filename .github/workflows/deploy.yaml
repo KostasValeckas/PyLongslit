@@ -62,3 +62,6 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         artifact_name: documentation  # Specify the artifact name to deploy
+      env:
+        ACTIONS_RUNNER_DEBUG: true
+        ACTIONS_STEP_DEBUG: true
