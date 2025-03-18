@@ -47,8 +47,13 @@ jobs:
     needs: build
     if: github.event_name != 'pull_request'
     steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: documentation  # Ensure artifact is downloaded
+
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        artifact_name: documentation  # Referencing the artifact correctly
+        artifact_name: documentation  # Ensure we are referencing the correct artifact name
