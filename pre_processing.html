@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pre-processing &#8212; PyLongslit  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pre-processing">
+<span id="id1"></span><h1>Pre-processing<a class="headerlink" href="#pre-processing" title="Link to this heading">¶</a></h1>
+<p>The steps of the pre-processing are well known
+universal procedures in astronomical data reduction. We will
+therefore not explain the steps in detail, but encourage
+to search for their meaning online and in litterature, should
+they be not known to the user.</p>
+<p>The main objective of the pre-processing is subtraction
+of detector bias and flat-fielding of all observation frames
+(science, standard star and arc-lamp).</p>
+<section id="bias">
+<h2>Bias<a class="headerlink" href="#bias" title="Link to this heading">¶</a></h2>
+<p>The <cite>mkspecbias.py</cite> is to be called from the <cite>rawbias</cite> directory.
+In the directory, a list of all paths to the bias frames needs
+to be provided, and it should be called <cite>specbias.list</cite> . Inside
+the <cite>mkspecbias.py</cite> script, the <cite>ysize</cite> anx <cite>xsize</cite> parameters
+need to be set manually.</p>
+<p>Before excecuting, the contents of the <cite>rawbias</cite> directory
+should look like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>rawbias
+│<span class="w">   </span>├──<span class="w"> </span>mkspecbias.py
+│<span class="w">   </span>└──<span class="w"> </span>specbias.list
+</pre></div>
+</div>
+<p>Now, while in the <cite>rawbias</cite> directory, excecute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>mkspecbias.py
+</pre></div>
+</div>
+<p>This should produce a master bias frame, and the result will be
+saved in the <cite>rawbias</cite> directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>rawbias
+│<span class="w">   </span>├──<span class="w"> </span>BIAS.fits
+│<span class="w">   </span>├──<span class="w"> </span>mkspecbias.py
+│<span class="w">   </span>└──<span class="w"> </span>specbias.list
+</pre></div>
+</div>
+</section>
+<section id="flats">
+<h2>Flats<a class="headerlink" href="#flats" title="Link to this heading">¶</a></h2>
+<p>The <cite>mkspecflat.py</cite> is to be called from the <cite>rawflats</cite> directory.
+In the directory, a list of all paths to the flat frames needs
+to be provided, and it should be called <cite>specflat.list</cite> . Inside
+the <cite>mkspecflat.py</cite> script, the <cite>ysize</cite> anx <cite>xsize</cite> parameters
+need to be set manually. The script also uses the previously
+produced master bias frame (do <strong>not</strong> move it from the  <cite>rawbias</cite> directory).</p>
+<p>Before excecuting, the contents of the <cite>rawflats</cite>
+directory should look like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>rawflats
+│<span class="w">   </span>├──<span class="w"> </span>mkspecflat.py
+│<span class="w">   </span>└──<span class="w"> </span>specflat.list
+</pre></div>
+</div>
+<p>Now, while in the <cite>rawflats</cite> directory, excecute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>mkspecflat.py
+</pre></div>
+</div>
+<p>This should produce a master flat frame, and the result will be
+saved in the <cite>rawflats</cite> directory.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>rawflats
+│<span class="w">   </span>├──<span class="w"> </span>Flat.fits
+│<span class="w">   </span>├──<span class="w"> </span>mkspecflat.py
+│<span class="w">   </span>└──<span class="w"> </span>specflat.list
+</pre></div>
+</div>
+</section>
+<section id="cosmic-ray-removal-and-reduction-of-science-and-standard-star-frames">
+<h2>Cosmic ray removal and reduction of science and standard star frames<a class="headerlink" href="#cosmic-ray-removal-and-reduction-of-science-and-standard-star-frames" title="Link to this heading">¶</a></h2>
+<p>The pre-processing of the science and standard star frames is done almost
+identically for both, and will therefore be described together. This procedure
+also pre-processes the arc-lamp frames, which are used for wavelength calibration.</p>
+<p>The following is to be done after the bias and flat steps have been excecuted.</p>
+<p>Two directories are used for this step, <cite>rawscience</cite> and <cite>rawstd</cite>.
+In both directories, a list of all paths to the science/standard star frames needs
+to be provided, and it should be called <cite>raw_science.list</cite> and <cite>raw_std.list</cite> respectively.
+Also, in both directories, a list of all paths to the arc frames needs
+to be provided. This is the same for both directories, and it should be called <cite>raw_arcs.list</cite> .
+The <cite>crremoval.py</cite> script is used to remove cosmic rays from the frames,
+and the <cite>reducescience.py</cite> and <cite>reducestd.py</cite> scripts are used to reduce the data.
+The <cite>reducescience.py</cite> and <cite>reducestd.py</cite> rely on the <cite>reduceobs.py</cite> script,
+which is to be placed in the parenting directory. The whole structure should
+look like this:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>rawscience
+│<span class="w">   </span>├──<span class="w"> </span>crremoval.py
+│<span class="w">   </span>├──<span class="w"> </span>raw_arcs.list
+│<span class="w">   </span>├──<span class="w"> </span>raw_science.list
+│<span class="w">   </span>└──<span class="w"> </span>reducescience.py
+├──<span class="w"> </span>rawstd
+│<span class="w">   </span>├──<span class="w"> </span>crremoval.py
+│<span class="w">   </span>├──<span class="w"> </span>raw_arcs.list
+│<span class="w">   </span>├──<span class="w"> </span>raw_std.list
+│<span class="w">   </span>└──<span class="w"> </span>reducestd.py
+├──<span class="w"> </span>reduceobs.py
+</pre></div>
+</div>
+<p>In the <cite>crremoval.py</cite> scripts, you will need to set the
+<cite>gain</cite> and <cite>ron (RDNOISE)</cite> parameters - these can be aquired
+from the fits headers of the frames. Several paramters can also
+be set for guiding the <a class="reference external" href="https://astroscrappy.readthedocs.io/en/latest/api/astroscrappy.detect_cosmics.html">astroscrappy.detect_cosmics</a>
+method.</p>
+<p>In the <cite>reducescience.py</cite> and <cite>reducestd.py</cite> scripts, you will need to set the
+<cite>ysize</cite> and <cite>xsize</cite> parameters, and also provide a list of the x-coordinate
+centers of the objects. If there are several frames, make sure the centers
+are provided to match the frames in alphabetical order. In order to find the centers,
+open the observations with your preferred <cite>.fits</cite> image viewer, and read of the x-coordinates
+of the object centers manually.</p>
+<p>Now, while in the <cite>rawscience</cite> directory, excecute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>crremoval.py
+</pre></div>
+</div>
+<p>, and then:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>reducescience.py
+</pre></div>
+</div>
+<p>Similary, while in the <cite>rawstd</cite> directory, excecute:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>crremoval.py
+</pre></div>
+</div>
+<p>, and then:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python3<span class="w"> </span>reducestd.py
+</pre></div>
+</div>
+<p>Several files should be produced:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>arcsub.fits
+├──<span class="w"> </span>arcsub_std.fits
+├──<span class="w"> </span>obj.fits
+├──<span class="w"> </span>rawscience
+│<span class="w">   </span>├──<span class="w"> </span>crrALDh120177.fits
+│<span class="w">   </span>├──<span class="w"> </span>crrALDh120178.fits
+│<span class="w">   </span>├──<span class="w"> </span>crremoval.py
+│<span class="w">   </span>├──<span class="w"> </span>raw_arcs.list
+│<span class="w">   </span>├──<span class="w"> </span>raw_science.list
+│<span class="w">   </span>├──<span class="w"> </span>reducescience.py
+│<span class="w">   </span>├──<span class="w"> </span>sub1.fits
+│<span class="w">   </span>└──<span class="w"> </span>sub2.fits
+├──<span class="w"> </span>rawstd
+│<span class="w">   </span>├──<span class="w"> </span>crrALDh120217.fits
+│<span class="w">   </span>├──<span class="w"> </span>crremoval.py
+│<span class="w">   </span>├──<span class="w"> </span>raw_arcs.list
+│<span class="w">   </span>├──<span class="w"> </span>raw_std.list
+│<span class="w">   </span>├──<span class="w"> </span>reducestd.py
+│<span class="w">   </span>└──<span class="w"> </span>sub1.fits
+├──<span class="w"> </span>reduceobs.py
+└──<span class="w"> </span>std.fits
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You might see a directory <cite>__pycache__</cite> being created in the
+different directories at this point and in further steps.
+Simply ignore these.</p>
+</div>
+<p>The files starting with <cite>crr</cite> and <cite>sub</cite> are in-between products and have
+no importance for further processing. The <cite>arcsub.fits</cite> and <cite>arcsub_std.fits</cite>
+are reduced arc-lamp frames, and the <cite>obj.fits</cite> and <cite>std.fits</cite> are the reduced
+science and standard star frames respectively. <strong>These 4
+are the files that will be used for further processing.</strong> If you have aquired
+the files <cite>arcsub.fits</cite>, <cite>arcsub_std.fits</cite>, <cite>obj.fits</cite> and <cite>std.fits</cite>, you can
+continue to the <a class="reference internal" href="pipeline.html#pipeline"><span class="std std-ref">pipeline</span></a> section.</p>
+</section>
+<section id="schematic-overview-of-the-pre-processing-steps">
+<h2>Schematic overview of the pre-processing steps<a class="headerlink" href="#schematic-overview-of-the-pre-processing-steps" title="Link to this heading">¶</a></h2>
+<p>We provide a schematic overview of the pre-processing steps.
+Users are not expected to study or understand this,
+but it is provided for those who are interested or might consider
+developing the software.</p>
+<a class="reference internal image-reference" href="_images/pre_processing.png"><img alt="_images/pre_processing.png" class="align-center" src="_images/pre_processing.png" style="width: 80%;" />
+</a>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyLongslit</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties.html">Note on how the software estimates uncertainties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/pre_processing.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

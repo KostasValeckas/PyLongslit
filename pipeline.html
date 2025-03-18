@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Pipeline &#8212; PyLongslit  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="pipeline">
+<span id="id1"></span><h1>Pipeline<a class="headerlink" href="#pipeline" title="Link to this heading">¶</a></h1>
+<p>This section describes the stepts needed to obtain a
+calibrated and reduced science spectrum, after the
+<a class="reference internal" href="pre_processing.html#pre-processing"><span class="std std-ref">pre-processing</span></a> steps have been completed.
+This means that at this point, you should have aquired the files
+<cite>arcsub.fits</cite>, <cite>arcsub_std.fits</cite>, <cite>obj.fits</cite> and <cite>std.fits</cite>, and your
+overall file and directory structure should look like this (irrelevant files
+from <a class="reference internal" href="pre_processing.html#pre-processing"><span class="std std-ref">pre-processing</span></a> have been omitted):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>arcsub.fits
+├──<span class="w"> </span>arcsub_std.fits
+├──<span class="w"> </span>calibrate.py
+├──<span class="w"> </span>database
+│<span class="w">   </span>├──<span class="w"> </span>lapalma.dat
+│<span class="w">   </span>├──<span class="w"> </span>map-g04-he-1.pdf
+│<span class="w">   </span>├──<span class="w"> </span>map-g04-he-2.pdf
+│<span class="w">   </span>├──<span class="w"> </span>map-g04-ne-1.pdf
+│<span class="w">   </span>├──<span class="w"> </span>map-g04-ne-2.pdf
+│<span class="w">   </span>└──<span class="w"> </span>mylines_vac.dat
+├──<span class="w"> </span>extract_1d.py
+├──<span class="w"> </span>extract_science_1d.py
+├──<span class="w"> </span>extract_std_1d.py
+├──<span class="w"> </span>identify.py
+├──<span class="w"> </span>mfeige110.dat
+├──<span class="w"> </span>obj.fits
+├──<span class="w"> </span>sensfunction.py
+├──<span class="w"> </span>setup.py
+├──<span class="w"> </span>standard.py
+└──<span class="w"> </span>std.fits
+</pre></div>
+</div>
+<p>To obtain a
+calibrated and reduced science spectrum, follow these steps (in the order they are listed)
+by clicking on the links below:</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="setup.html">Setup file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="identify.html">Identify arc lines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="identify.html#parameter-options">Parameter options</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="extract_1d.html">Extracting 1D spectrum</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="extract_1d.html#optimal-extraction">Optimal extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="extract_1d.html#summing-the-counts">Summing the counts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="standard.html">Standard</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensfunction.html">Sensitivity function</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sensfunction.html#quickstart">Quickstart</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensfunction.html#the-reference-spectrum">The reference spectrum</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensfunction.html#extinction-curve-and-the-transmission-factor">Extinction curve and the transmission factor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensfunction.html#math-behind-the-sensitivity-function">Math behind the sensitivity function</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="calibrate.html">Flux calibration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="calibrate.html#quick-start">Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calibrate.html#parameter-options">Parameter options</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pipeline_diagram.html">Schematic overview of the pipeline steps</a></li>
+</ul>
+</div>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyLongslit</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties.html">Note on how the software estimates uncertainties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/pipeline.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

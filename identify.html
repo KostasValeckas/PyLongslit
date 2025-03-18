@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Identify arc lines &#8212; PyLongslit  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Wavelength Calibration" href="wavecalib.html" />
+    <link rel="prev" title="Combinning arc frames" href="combine_arcs.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="identify">
+<span id="identify-arc-lines"></span><h1>Identify arc lines<a class="headerlink" href="#identify" title="Link to this heading">¶</a></h1>
+<p>In this step, we manually identify the lines in the arc-lamp spectrum, by
+cross-referencing with a known calibrated line spectrum.</p>
+<p>For this step we use a application originally developed by
+Jens-Kristian Krogager for the <a class="reference external" href="https://github.com/jkrogager/PyNOT/tree/master">PyNOT software</a>.</p>
+<p><strong>This step is by far the most time-consuming for the user, as
+a fair amount of user work is needed. Expect this to be challenging
+at first, if you have not tried this type of routine before.</strong></p>
+<p>For this procedure, you will need to acquire a calbrated arc lamp spectrum for
+your instrument (these will also differ for every different disperser used for
+the same instrument). For this tutorial, we are using NOT Alfosc disperser grating #4,
+and an arc spectrum composed of helium and neon lines, taken from:
+<a class="reference external" href="https://www.not.iac.es/instruments/alfosc/lamps/">https://www.not.iac.es/instruments/alfosc/lamps/</a>. Futhermore, you will need a
+line-list with two columns, the first being the wavelentgh of the line in Angstroms,
+and the second being the element of the line. For the HeNe lamp used in the tutorial,
+the beginning of the list looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">3614.671653955192</span> <span class="n">HeI</span>
+<span class="mf">3706.05727477696</span> <span class="n">HeI</span>
+<span class="mf">3889.7479741029447</span> <span class="n">HeI</span>
+<span class="mf">3965.8488118806977</span> <span class="n">HeI</span>
+<span class="mf">4027.32686731872</span> <span class="n">HeI</span>
+<span class="mf">4121.974633218378</span> <span class="n">HeI</span>
+</pre></div>
+</div>
+<p>You can see the full list at <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_he_ne_vac.dat">https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_he_ne_vac.dat</a>.</p>
+<p>This line list is taken from the same link as the arc lamp maps, and converted
+from air to vacuum wavelentghs. As user you can decide yourself whether to use
+the air or vacuum line wavelengths, just know that your end product will also
+be in the same system.</p>
+<p>The application is called by:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylongslit_identify_arcs<span class="w"> </span>PATH_TO_CONFIG_FILE
+</pre></div>
+</div>
+<p>When the command is excecuted, a GUI/interactive plot window will open.
+A 1d-spectrum cut will be taken from the <code class="docutils literal notranslate"><span class="pre">master_arc.fits</span></code> file produced
+in <a class="reference internal" href="combine_arcs.html#combine-arcs"><span class="std std-ref">the previous step</span></a>, and displayed in the window. You
+then have to manually load the above described line list by clicking on the
+<code class="docutils literal notranslate"><span class="pre">Load</span> <span class="pre">LineList</span></code> button in upper left corner. When this is done, for the
+example dataset SDSS_J213510+2728, the window should look like this:</p>
+<a class="reference internal image-reference" href="_images/id_post_loading.png"><img alt="_images/id_post_loading.png" class="align-center" src="_images/id_post_loading.png" style="width: 100%;" />
+</a>
+<p><strong>Identifying the lines</strong></p>
+<p>Now, you have to use the reference spectra (also called the arc maps) to identify the
+wavelentghs of the lines in the arc spectrum. This is done by clicking on the
+<cite>Add Line</cite> button, and then clicking on the arc spectrum where you think a line
+is, and then manually typing in the wavelength of the line. Below is an
+example for a small Helium portion of the spectrum, with a zoom in of the corresponding
+reference spectrum, taken from <a class="reference external" href="https://www.not.iac.es/instruments/alfosc/lamps/map-g04-he-1.pdf">https://www.not.iac.es/instruments/alfosc/lamps/map-g04-he-1.pdf</a>:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/id_post_first.png"><img alt="_images/id_post_first.png" class="align-center" src="_images/id_post_first.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="_images/id_post_first_ref.png"><img alt="_images/id_post_first_ref.png" class="align-center" src="_images/id_post_first_ref.png" style="width: 100%;" />
+</a>
+</div></blockquote>
+<p>Here there is a small offset in wavelentghs between the reference spectrum
+(lowest picture) and the line list (upper left corner) - this is beacause we
+use vacuum wavelengths, while the reference spectrum is in air wavelengths.</p>
+<p>After you have found a handfull of lines, you can click on the <cite>Fit</cite> button to
+make a polynomial fit for a function that describes wavelength as a function of
+pixel. You can use the <cite>Residual/Data</cite> button to change displays between the
+fit curve and the residuals of the fit in order to evaluate the fit quality.
+For the small amount of lines shown above, this looks like this:</p>
+<blockquote>
+<div><a class="reference internal image-reference" href="_images/id_fit_first.png"><img alt="_images/id_fit_first.png" class="align-center" src="_images/id_fit_first.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="_images/id_res_first.png"><img alt="_images/id_res_first.png" class="align-center" src="_images/id_res_first.png" style="width: 100%;" />
+</a>
+</div></blockquote>
+<p>When you have obtained a fit, and try to <cite>Add Line</cite> again, the program will now
+use the fit to extrapolate the wavelength of the line you are trying to add,
+and look for it in the linelist. If it finds a match, it will automatically
+add it. If it does not find a match, it will show a message indicating so,
+but it will still add the line - you will then have to correct it manually.
+If your fit does not seem to be good, you can click on the <cite>Clear fit</cite> button
+to remove it, and then add more lines manually, or change the polynomial order. You can also selectively remove
+one or all lines.</p>
+<p>From here on, you have to (correctly) identify as many lines as possible by iterating through this process:</p>
+<ol class="arabic simple">
+<li><p>Add lines manually</p></li>
+<li><p>Fit</p></li>
+<li><p>Use the fit to add more lines</p></li>
+<li><p>Refit - correct outliers - come back to 1. or 2. and repeat until you are satisfied with the results.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The end products of the pipeline will depend highly on the quality of the line identification.
+The <a class="reference internal" href="wavecalib.html#wavecalib"><span class="std std-ref">wavelength calibration routine</span></a> will use the identified lines to refine the
+line centers and trace the lines through the whole detector - but it can not find new lines if they have not been manually identified. The line identification puts
+an upper boudanry on how well the <a class="reference internal" href="wavecalib.html#wavecalib"><span class="std std-ref">wavelength calibration routine</span></a> can perform.
+Even though this step is by far the most time-consuming, it
+should not be rushed. However, you will very likely be unable to identify
+all lines, and the ones that causes uncertainty should be left out. Try to identify lines in all parts of the spectrum.</p>
+</div>
+<p><strong>Saving the line list</strong>:
+When you are satisfied with the identification, you need to save the pixel table (the pixel vs. wavelength table).
+Press <cite>File</cite> -&gt; <cite>Save PixTable</cite> and save the file.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For the tutorials of <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_grating4_hene_pixtable.dat">SDSS_J213510+2728</a>
+and <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/osiris_r1000b_hgar_ne_pixtable.dat">GQ1218+0832</a>
+, we have already identified the lines, so you have a starting point to work with. You can inspect the files by pressing
+<cite>File</cite> -&gt; <cite>Load PixTable</cite>. To proceed in the tutorial,
+you can either try to improve our fit, or move on directly using it.</p>
+</div>
+<section id="parameter-options">
+<h2>Parameter options<a class="headerlink" href="#parameter-options" title="Link to this heading">¶</a></h2>
+<p>The relevant parameters for the identify procedure are (with example values):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;wavecalib&quot;</span> <span class="p">:</span> <span class="p">{</span>
+   <span class="s2">&quot;offset_middle_cut&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+   <span class="s2">&quot;pixel_cut_extension&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+   <span class="s2">&quot;center_guess_pixtable&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit/database/alfosc_grating4_hene_pixtable.dat&quot;</span><span class="p">,</span>
+<span class="p">},</span>
+</pre></div>
+</div>
+<p>The GUI takes a 1d-spectrum spectrum from the <code class="docutils literal notranslate"><span class="pre">master_arc.fits</span></code> file. It takes the
+spectrum from the middle of the image. Sometimes, the middle of the image is not the best
+place, so the <code class="docutils literal notranslate"><span class="pre">offset_middle_cut</span></code> parameter can be used to offset the cut from the middle
+by a certain amount of pixels.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">pixel_cut_extension</span></code> parameter is used to decide how many detector rows to use for the
+1d-spectrum cut. If <code class="docutils literal notranslate"><span class="pre">pixel_cut_extension</span></code> is set to 0, only one row will be used. If it is set to 2,
+the middle row +/- 2 rows will be used and then averaged and so forth. This is useful if the arc line spectrum
+is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessery, as the line centers change gradually
+in the spatial direction (see description of <a class="reference internal" href="wavecalib.html#wavecalib"><span class="std std-ref">line tilts</span></a>).</p>
+<p>When you are done, you have to link the path to the pixel table to the
+<code class="docutils literal notranslate"><span class="pre">center_guess_pixtable</span></code> parameter, as the <a class="reference internal" href="wavecalib.html#wavecalib"><span class="std std-ref">wavelength calibration routine</span></a> will need it.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">PyLongslit</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uncertainties.html">Note on how the software estimates uncertainties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="getting_started.html">Getting started</a><ul>
+      <li>Previous: <a href="combine_arcs.html" title="previous chapter">Combinning arc frames</a></li>
+      <li>Next: <a href="wavecalib.html" title="next chapter">Wavelength Calibration</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/identify.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
