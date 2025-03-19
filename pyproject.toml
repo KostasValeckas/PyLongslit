@@ -1,24 +1,13 @@
-[project]
-name = "pylongslit"
-version = "0.1.0"
-authors = [
-  { name="Kostas Valeckas", email="kostas.valeckas@nbi.ku.dk" },
-]
-description = "PyLongslit is simple manual Python pipeline for processing of astronomical long-slit spectra, recorded with CCD detectors"
-readme = "README.md"
-requires-python = ">=3.10"
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-    "License :: OSI Approved :: MIT License",
+[build-system]
+
+requires = [
+    "setuptools",
+    "setuptools_scm",
+    "wheel"
 ]
 
-[project.urls]
-Homepage = "https://kostasvaleckas.github.io/PyLongslit/"
-Issues = "https://github.com/KostasValeckas/PyLongslit/issues"
-[build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+build-backend = 'setuptools.build_meta'
+
 [tool.pytest.ini_options]
 filterwarnings = [
     "ignore::UserWarning",
