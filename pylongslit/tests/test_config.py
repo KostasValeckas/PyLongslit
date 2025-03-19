@@ -1,5 +1,5 @@
 """
-PyLongslit test module for checking the bias module.
+PyLongslit test module for the configuration file checker.
 """
 
 import os
@@ -8,10 +8,10 @@ import sys
 import pytest
 
 
-@pytest.mark.order(5)
-def test_bias_GQ():
+@pytest.mark.order(3)
+def test_cofig_GQ():
     """
-    Test the bias function on the GQ1218+0832 dataset.
+    Test the config checker on the GQ1218+0832 dataset.
     """
 
     # this resets the memory - needs to be called explicitly by every test
@@ -27,21 +27,18 @@ def test_bias_GQ():
     from pylongslit import set_config_file_path
 
     set_config_file_path(CONFIG_FILE)
-    from pylongslit.mkspecbias import run_bias
-    from pylongslit.parser import output_dir
+    from pylongslit.check_config import run_config_checks
 
     matplotlib.use("Agg")  # Use non-interactive backend
 
-    # Run the bias function
-    run_bias()
-
-    assert os.path.exists(os.path.join(output_dir, "master_bias.fits"))
+    # Run the config_file_checker
+    run_config_checks()
 
 
-@pytest.mark.order(6)
-def test_bias_SDSS():
+@pytest.mark.order(4)
+def test_config_SDSS():
     """
-    Test the bias function on the SDSS_J213510+2728 dataset.
+    Test the config checker on the SDSSJ213510+2728 dataset.
     """
 
     # this resets the memory - needs to be called explicitly by every test
@@ -57,12 +54,9 @@ def test_bias_SDSS():
     from pylongslit import set_config_file_path
 
     set_config_file_path(CONFIG_FILE)
-    from pylongslit.mkspecbias import run_bias
-    from pylongslit.parser import output_dir
+    from pylongslit.check_config import run_config_checks
 
     matplotlib.use("Agg")  # Use non-interactive backend
 
-    # Run the bias function
-    run_bias()
-
-    assert os.path.exists(os.path.join(output_dir, "master_bias.fits"))
+    # Run the config_file_checker
+    run_config_checks()

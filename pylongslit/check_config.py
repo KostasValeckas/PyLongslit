@@ -347,8 +347,6 @@ def run_config_checks():
 
     logger.info("Doing a test read of the configuration file...")
 
-    import pylongslit.parser
-
     any_errors = False
 
     print("\n------------------------------------")

@@ -996,6 +996,9 @@ def load_spec_data(group="science"):
     # container for the spectra
     spectra = {}
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # make sure we are in the output directory
     os.chdir(output_dir)
 
@@ -1006,6 +1009,10 @@ def load_spec_data(group="science"):
         var = data[:, 2]
 
         spectra[filename] = (wavelength, counts, var)
+
+    # change back to the original directory
+    # this is useful when the user uses relative pathes in the configuration file
+    os.chdir(cwd)
 
     return spectra
 
@@ -1039,6 +1046,9 @@ def load_fluxed_spec():
     # container for the spectra
     spectra = {}
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # make sure we are in the output directory
     os.chdir(output_dir)
 
@@ -1049,6 +1059,10 @@ def load_fluxed_spec():
         var = data[:, 2]
 
         spectra[filename] = (wavelength, counts, var)
+
+    # change back to the original directory
+    # this is useful when the user uses relative pathes in the configuration file
+    os.chdir(cwd)
 
     return spectra
 

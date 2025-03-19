@@ -1945,12 +1945,19 @@ def write_reided_lines_to_disc(lines):
 
     logger.info("Writing reidentified lines to disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
     # Write lines to disk
     with open("reidentified_lines.pkl", "wb") as file:
         pickle.dump(lines, file)
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     logger.info("Reidentified lines written to disc.")
 
@@ -1973,12 +1980,20 @@ def write_wavelen_fit_to_disc(fit1d):
 
     logger.info("Writing wavelen fit results to disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
     # Write fit1d to disk
     with open("wavelen_fit.pkl", "wb") as file:
         pickle.dump(fit1d, file)
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
+
 
     logger.info(
         f"2D tilt fit results written to disc in {output_dir}, filename wavelen_fit.pkl."
@@ -2002,12 +2017,19 @@ def write_tilt_fit_to_disc(fit2D_REID):
 
     logger.info("Writing tilt fit results to disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
     # Write fit2D_REID to disk
     with open("tilt_fit.pkl", "wb") as file:
         pickle.dump(fit2D_REID, file)
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     logger.info(
         f"2D tilt fit results written to disc in {output_dir}, filename tilt_fit.pkl."
@@ -2039,12 +2061,19 @@ def write_good_tilt_lines_to_disc(good_lines):
 
     logger.info("Writing Traced tilt lines to disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
     # Write good_lines to disk
     with open("good_lines.pkl", "wb") as file:
         pickle.dump(good_lines, file)
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     logger.info("Traced tilt lines written to disc.")
 
@@ -2069,6 +2098,9 @@ def get_reided_lines_from_disc():
 
     logger.info("Loading reidentified lines from disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
@@ -2083,6 +2115,10 @@ def get_reided_lines_from_disc():
         exit()
 
     logger.info("Reidentified lines loaded.")
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     return lines
 
@@ -2101,6 +2137,9 @@ def get_wavelen_fit_from_disc():
 
     logger.info("Loading 1D wavelength solution from disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
@@ -2115,6 +2154,10 @@ def get_wavelen_fit_from_disc():
         exit()
 
     logger.info("Wavelength solution loaded.")
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     return fit1d
 
@@ -2133,6 +2176,9 @@ def get_tilt_fit_from_disc():
 
     logger.info("Loading 2D tilt solution from disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
@@ -2147,6 +2193,10 @@ def get_tilt_fit_from_disc():
         exit()
 
     logger.info("Tilt solution loaded.")
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     return fit2D_REID
 
@@ -2172,6 +2222,9 @@ def get_good_tilt_lines_from_disc():
 
     logger.info("Loading Traced tilt lines from disc...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     # change to output directory dir
     os.chdir(output_dir)
 
@@ -2186,6 +2239,10 @@ def get_good_tilt_lines_from_disc():
         exit()
 
     logger.info("Traced tilt lines loaded.")
+
+    # change back to the original working directory
+    # this helps if user uses relative paths
+    os.chdir(cwd)
 
     return good_lines
 
@@ -2288,15 +2345,6 @@ def run_wavecalib():
         logger.info("2D tilt solution fit done.")
     print("\n-----------------------------\n")
 
-    """
-
-    # TODO: while developing just read the products from disc
-
-    
-    fit_2d_tilt_results = get_tilt_fit_from_disc()
-    wave_sol = get_wavelen_fit_from_disc()
-
-    """
 
     print("\n-----------------------------\n")
 

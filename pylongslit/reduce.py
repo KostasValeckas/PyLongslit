@@ -31,7 +31,6 @@ def estimate_initial_error(data, master_bias, dark_frame):
 
     from pylongslit.parser import detector_params
     from pylongslit.overscan import estimate_frame_overscan_bias
-    from pylongslit.utils import PyLongslit_frame
 
 
     gain = detector_params["gain"]  # e/ADU

@@ -28,12 +28,12 @@
 
     "bias": {
         "bias_dir": "./PyLongslit_dev-main/GQ1218+0832/bias",
-        "bootstrap_errors": false
+        "bootstrap_errors": true
     },
 
     "flat": {
         "flat_dir": "./PyLongslit_dev-main/GQ1218+0832/flat",
-        "bootstrap_errors": false,
+        "bootstrap_errors": true,
         "skip_spacial": false,
         "knots_spectral_bspline": 70,
         "degree_spectral_bspline": 3,

@@ -97,7 +97,6 @@ def load_standard_star_spec():
     """
 
     from pylongslit.logger import logger
-    from pylongslit.parser import output_dir
     from pylongslit.utils import load_spec_data
 
     logger.info("Loading standard star 1d spectrum...")
@@ -117,7 +116,6 @@ def load_standard_star_spec():
         )
         logger.warning(f"Using the first one - {list(spectra.keys())[0]}.")
 
-    os.chdir(output_dir)
 
     # the spectra dictionary has the filename as the key and the spectrum and
     # wavelength as the values.
@@ -182,9 +180,6 @@ def load_extinction_data():
     logger.info(f"Loading the extinction curve from {extinction_file_name}...")
 
     # open the file
-
-    # make sure we are in the output_dir
-    os.chdir(output_dir)
 
     try:
         data = np.loadtxt(extinction_file_name)
@@ -756,6 +751,9 @@ def write_sensfunc_to_disc(
 
     logger.info("Writing sensitivity function to disk...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     os.chdir(output_dir)
 
     output = (fit, RMS_residuals, good_wavelength_start, good_wavelength_end)
@@ -766,6 +764,10 @@ def write_sensfunc_to_disc(
     logger.info(
         f"Sensitivity function fitting results written to {output_dir}, filename : sensfunc.dat."
     )
+
+    # change back to the original working directory
+    # this is useful when the user uses relative pathes in the configuration file
+    os.chdir(cwd)
 
 
 def load_sensfunc_from_disc():
@@ -791,6 +793,9 @@ def load_sensfunc_from_disc():
 
     logger.info("Loading sensitivity function from disk...")
 
+    # get current working directory
+    cwd = os.getcwd()
+
     os.chdir(output_dir)
 
     try:
@@ -804,6 +809,10 @@ def load_sensfunc_from_disc():
     fit, error, good_wavelength_start, good_wavelength_end = out
 
     logger.info("Sensitivity function loaded.")
+
+    # change back to the original working directory
+    # this is useful when the user uses relative pathes in the configuration file
+    os.chdir(cwd)
 
     return fit, error, good_wavelength_start, good_wavelength_end
 

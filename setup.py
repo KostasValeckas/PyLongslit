@@ -92,7 +92,7 @@ setup(
             'pylongslit_subtract_background = pylongslit.subtract_background:main',
             'pylongslit_crop = pylongslit.crop:main',
             'pylongslit_sky_subtract = pylongslit.skysubtract:main',
-            'pylongslit_2dspec = pylongslit.2dspec:main',
+            'pylongslit_2dspec = pylongslit.spec_viewer:main',
             'pylongslit_objtrace = pylongslit.obj_trace:main',
             'pylongslit_objtrace_cloned = pylongslit.obj_trace_clone:main',
             'pylongslit_objtrace_manual = pylongslit.obj_trace_manual:main',

@@ -194,6 +194,9 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
     logger.info("Writing the calibrated spectra to disk...")
     # change to output directory
 
+    # get the current working directory
+    cwd = os.getcwd()
+
     for filename, (
         wavelength,
         calibrated_flux,
@@ -216,6 +219,11 @@ def write_calibrated_spectra_to_disc(calibrated_spectra):
                 f.write(f"{wavelength[i]} {calibrated_flux[i]} {calibrated_var[i]}\n")
 
         f.close()
+
+        # change back to the original directory
+        # this is useful when the user is using relative pathes in the configuration file
+        os.chdir(cwd)
+
 
         logger.info(f"Calibrated spectrum for {filename} written to {new_filename}.")
 

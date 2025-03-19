@@ -96,6 +96,7 @@ jobs:
 
   publish-to-testpypi:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
+    if: github.event.inputs.manual == 'true'
     needs:
     - build
     runs-on: ubuntu-latest

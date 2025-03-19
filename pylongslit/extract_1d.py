@@ -42,6 +42,9 @@ def load_object_traces():
     # this is the container that will be returned from this method
     trace_dict = {}
 
+    # save the current directory
+    cwd = os.getcwd()
+
     # change to output_dir
     os.chdir(output_dir)
 
@@ -68,7 +71,7 @@ def load_object_traces():
         file.close()
 
     # reading done, change back to original directory
-    os.chdir("..")
+    os.chdir(cwd)
 
     # Process the filenames as needed
 
@@ -513,6 +516,9 @@ def write_extracted_1d_to_disc(results):
 
     logger.info("Writing extracted 1D spectra to disc...")
 
+    # get the current directory
+    cwd = os.getcwd()
+
     os.chdir(output_dir)
 
     for filename, data in results.items():
@@ -526,7 +532,7 @@ def write_extracted_1d_to_disc(results):
 
     file.close()
 
-    os.chdir("..")
+    os.chdir(cwd)
 
     logger.info("All extracted 1D spectra written to disc.")
 

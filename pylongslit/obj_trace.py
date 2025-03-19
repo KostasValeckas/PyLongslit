@@ -1078,6 +1078,9 @@ def write_obj_trace_results(obj_dict):
 
         logger.info(f"Writing object trace results to {filename}...")
 
+        # get current working directory
+        cwd = os.getcwd()
+
         # change to output directory
         os.chdir(output_dir)
 
@@ -1088,6 +1091,10 @@ def write_obj_trace_results(obj_dict):
 
         # close the file
         f.close()
+
+        # change back to the original directory
+        # useful if the user is using relative paths in the config file
+        os.chdir(cwd)
 
         logger.info(
             f"Object trace results written to directory {output_dir}, filename: {filename}."
