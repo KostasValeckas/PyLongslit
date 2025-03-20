@@ -128,7 +128,7 @@ def construct_obj_model(frame_data, params, center, fwhm):
     return obj_model
 
 
-def overlay_trace(pixel, center, fwhm, frame, figsize=(16, 16)):
+def overlay_trace(pixel, center, fwhm, frame, figsize=(10, 6)):
     """ "
     Method for overlaying the object trace on the frame data and adjusting
     the center and FWHM interactively."

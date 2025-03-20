@@ -259,7 +259,7 @@ def estimate_spacial_response(medianflat):
     )
 
     # 5 rows will be plotted for QA
-    fig, ax = plt.subplots(5, 2, figsize=(18, 32))
+    fig, ax = plt.subplots(5, 2, figsize=(10, 6))
 
     indices_to_plot = np.linspace(
         5, x_size if spectral_axis == 0 else y_size, 5, endpoint=False, dtype=int
@@ -505,7 +505,7 @@ def estimate_spacial_response(medianflat):
         mask_int[bad_spectral_indices.astype(int), :] = False
 
     plt.close("all")
-    plt.figure(figsize=(16, 16))
+    plt.figure(figsize=(10, 6))
     plt.imshow(~mask_int, cmap="grey")
     plt.title(
         "The marked lines (value 1) have not beed fitted succesfully, and will be interpolated.\n"
@@ -881,7 +881,7 @@ def run_flats():
         plt.show()
 
     fig, ax = plt.subplots(
-        5 if not flat_params["skip_spacial"] else 3, 2, figsize=(18, 32)
+        5 if not flat_params["skip_spacial"] else 3, 2, figsize=(10, 6)
     )
 
     # only show positive values to avoid outliers that disorts the color map

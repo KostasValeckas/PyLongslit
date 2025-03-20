@@ -131,7 +131,7 @@ def fit_sky_QA(
     sigma_cut,
     sigma_iters,
     sky_order,
-    figsize=(18, 12),
+    figsize=(10, 6),
 ):
     """
     A QA method for the sky fitting. Performs the sky-fitting routine
@@ -168,7 +168,7 @@ def fit_sky_QA(
 
     figsize : tuple
         The size of the figure to be displayed.
-        Default is (18, 12).
+        Default is (10, 6).
     """
 
     from pylongslit.utils import estimate_sky_regions
@@ -405,7 +405,7 @@ def remove_sky_background(center_dict):
         skysub_error = np.sqrt(error**2 + sky_map.sigma**2)
 
         # plot the difference for QA
-        fig, ax = plt.subplots(2, 1, figsize=(12, 18))
+        fig, ax = plt.subplots(2, 1, figsize=(10, 6))
         ax[0].imshow(hist_normalize(data), cmap="gray")
         ax[0].set_title("Original data (histogram normalized)")
         ax[1].imshow(hist_normalize(skysub_data), cmap="gray")

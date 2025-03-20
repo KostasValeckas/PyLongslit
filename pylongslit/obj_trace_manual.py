@@ -5,7 +5,7 @@ import os
 import argparse
 
 
-def find_obj_frame_manual(filename, params, figsize=(16, 16)):
+def find_obj_frame_manual(filename, params, figsize=(10, 6)):
     """
     Manual object finding routine for a single frame.
 
@@ -20,7 +20,7 @@ def find_obj_frame_manual(filename, params, figsize=(16, 16)):
         or ['trace']['standard'].
 
     figsize : tuple, optional
-        The size of the figure to display the image in. Default is (16, 16).
+        The size of the figure to display the image in. Default is (10, 6).
     """
 
     from pylongslit.logger import logger
@@ -45,7 +45,7 @@ def find_obj_frame_manual(filename, params, figsize=(16, 16)):
     # plot the image and let the user hover over the object centers and press
     # '+' to add, '-' to delete, 'h' to toggle histogram normalization,
     # 'c' to change colormap
-    fig, ax = plt.subplots(figsize=(10, 8))
+    fig, ax = plt.subplots(figsize=(10, 6))
     hist_norm = True
     colormap = "gray"
     ax.imshow(hist_normalize(data) if hist_norm else data, cmap=colormap)

@@ -296,7 +296,7 @@ def extract_object_optimal(trace_data, trace_params, filename):
     spec_var = np.array(spec_var)
 
     if developer_params["debug_plots"]:
-        plt.figure(figsize=(18, 12))
+        plt.figure(figsize=(10, 6))
         plt.plot(spec, label="Extracted 1D spectrum")
         plt.plot(spec_var, label="Variance")
         plt.xlabel("Spectral pixel")
@@ -371,7 +371,7 @@ def wavelength_calibrate(pixels, centers, spec, var, y_offset):
     return wavelen_homogenous, spec_calibrated, var_calibrated
 
 
-def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18, 18)):
+def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(10, 6)):
     """
     Plot of the extracted 1D spectrum (counts [ADU] vs. wavelength [Å]).
     Wrapper for `pylongslit.utils.plot_1d_spec_interactive_limits`.
@@ -391,7 +391,7 @@ def plot_extracted_1d(filename, wavelengths, spec_calib, var_calib, figsize=(18,
         The variance of the calibrated 1D spectrum. (in ADU/Å)
 
     figsize : tuple
-        The figure size. Default is (18, 12).
+        The figure size. Default is (10, 6).
     """
 
     from pylongslit.utils import plot_1d_spec_interactive_limits

@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import argparse
 
 
-def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(18, 18)):
+def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(10, 6)):
     """
     A plotting method that shows the rectangular aperture around the object trace
     that will be used for the extraction.
@@ -31,7 +31,7 @@ def plot_trace_QA(image, pixel, trace, fwhm, filename, num_plots=6, figsize=(18,
         The number of plots to show. Default is 6.
 
     figsize : tuple
-        The figure size. Default is (10, 18).
+        The figure size. Default is (10, 6).
     """
     fig, axes = plt.subplots(num_plots, 1, figsize=figsize)
 

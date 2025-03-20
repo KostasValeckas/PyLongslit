@@ -709,7 +709,7 @@ def show_cyclic_QA_plot(
         plt.show(block=True)
 
 
-def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(24, 20)):
+def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(10, 6)):
     """
     The main driver method for tracing the tilts of the lines in the arc spectrum.
 
@@ -735,7 +735,7 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(24, 20)
         Number of columns in the cyclic QA plot. Default is 2.
 
     figsize : tuple
-        Figure size. Default is (24, 20).
+        Figure size. Default is (10, 6).
 
     Returns
     -------
@@ -1038,7 +1038,7 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(24, 20)
 
 
 def reidentify(
-    pixnumber, wavelength, master_arc, plot_height=4, plot_width=3, figsize=(24, 20)
+    pixnumber, wavelength, master_arc, plot_height=4, plot_width=3, figsize=(10, 6)
 ):
     """
     Takes the manually identified lines from the arc identification procedure
@@ -1063,7 +1063,7 @@ def reidentify(
         Number of columns in the cyclic QA plot. Default is 3.
 
     figsize : tuple
-        Figure size of the cyclic QA plot. Default is (24, 20).
+        Figure size of the cyclic QA plot. Default is (10, 6).
 
     Returns
     -------
@@ -1373,7 +1373,7 @@ def fit_1d_solution(line_REID, master_arc):
     return fit
 
 
-def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
+def fit_2d_tilts(good_lines: dict, figsize=(10, 6)):
     """
     Fits the 2d tilt to the traced tilts.
 
@@ -1390,7 +1390,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(18, 12)):
         - center_pixel : The lines' spectral pixel at the center row.
 
     figsize : tuple
-        Figure size. Default is (18, 12).
+        Figure size. Default is (10, 6).
 
     Returns
     -------
@@ -1532,7 +1532,7 @@ def construct_detector_map(fit2D_REID):
     return map
 
 
-def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
+def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(10, 6)):
     """
     Plots a QA of the 2D tilt fit. This is done by plotting the individual
     line fits and the 2D fit at the same pixels as the individual fits.
@@ -1553,7 +1553,7 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(18, 12)):
         - center_pixel : The lines' spectral pixel at the center row.
 
     figsize : tuple
-        Figure size. Default is (18, 12).
+        Figure size. Default is (10, 6).
     """
     # extract the needed parameters from the good lines dictionary
     centers_1d = [good_lines[key][1] for key in good_lines.keys()]
@@ -1641,7 +1641,7 @@ def construct_wavelen_map(wavelen_fit, tilt_fit):
     return map
 
 
-def plot_tiltmap(tilt_map, figsize=(18, 12)):
+def plot_tiltmap(tilt_map, figsize=(10, 6)):
     """
     Plots the tilt map.
 
@@ -1651,7 +1651,7 @@ def plot_tiltmap(tilt_map, figsize=(18, 12)):
         Tilt map (detector array with the tilt evaluated at every pixel).
 
     figsize : tuple
-        Figure size. Default is (18, 12).
+        Figure size. Default is (10, 6).
     """
 
     plt.figure(figsize=figsize)
@@ -1666,7 +1666,7 @@ def plot_tiltmap(tilt_map, figsize=(18, 12)):
     plt.show()
 
 
-def plot_wavemap(wavelength_map, figsize=(18, 12)):
+def plot_wavemap(wavelength_map, figsize=(10, 6)):
     """
     Plots the wavelength map.
 
@@ -1676,7 +1676,7 @@ def plot_wavemap(wavelength_map, figsize=(18, 12)):
         Wavelength map (detector array with the wavelength solution evaluated at every pixel).
 
     figsize : tuple
-        Figure size. Default is (18, 12).
+        Figure size. Default is (10, 6).
     """
 
     plt.figure(figsize=figsize)

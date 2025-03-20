@@ -7,7 +7,7 @@ from matplotlib.widgets import Slider
 import argparse
 
 
-def crop_image(frame, figsize=(16, 16)):
+def crop_image(frame, figsize=(10, 6)):
     """
     Interactive cropping of the image.
 

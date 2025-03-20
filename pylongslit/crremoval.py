@@ -10,7 +10,7 @@ PyLongslit module for removing cosmic rays from raw science and standard star fr
 """
 
 
-def run_crremoval(figsize=(14, 14)):
+def run_crremoval(figsize=(10, 6)):
     """
     This whole method is a wrapper for the astroscrappy.detect_cosmics method.
     It reads the reduced files from the disc,
@@ -21,7 +21,7 @@ def run_crremoval(figsize=(14, 14)):
     Parameters
     ----------
     figsize : tuple, optional
-        Size of the figure to display the QA plot. The default is (14, 14).
+        Size of the figure to display the QA plot. The default is (10, 6).
     """
 
     from pylongslit.logger import logger

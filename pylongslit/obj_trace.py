@@ -292,7 +292,7 @@ def interactive_adjust_obj_limits(
     center_data,
     good_fit_array,
     params,
-    figsize=(18, 12),
+    figsize=(10, 6),
 ):
     """
     A interactive method that allows the user to adjust the object limits.
@@ -321,7 +321,7 @@ def interactive_adjust_obj_limits(
         or ['trace']['standard'].
 
     figsize : tuple
-        The figure size. Default is (18, 12).
+        The figure size. Default is (10, 6).
 
     Returns
     -------
@@ -639,7 +639,7 @@ def fit_distribution_parameter(
 
 
 def objmodel_QA(
-    data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=(18, 18)
+    data, params, centers_fit_pix, fwhm_fit_pix, filename, figsize=(10, 6)
 ):
     """
     Construct the object model and overlay the raw data for QA purposes.
@@ -664,7 +664,7 @@ def objmodel_QA(
         The filename of the observation.
 
     figsize : tuple
-        The figure size. Default is (18, 18).
+        The figure size. Default is (10, 6).
     """
 
     from pylongslit.parser import developer_params
@@ -723,7 +723,7 @@ def objmodel_QA(
     plt.show()
 
 
-def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
+def find_obj_frame(filename, spacial_center, params, figsize=(10, 6)):
     """
     Driver method for finding an object in a single frame.
 
@@ -749,7 +749,7 @@ def find_obj_frame(filename, spacial_center, params, figsize=(18, 18)):
         or ['trace']['standard'].
 
     figsize : tuple
-        The QA figure size. Default is (18, 18).
+        The QA figure size. Default is (10, 6).
 
     Returns
     -------

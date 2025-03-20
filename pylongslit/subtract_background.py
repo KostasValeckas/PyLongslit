@@ -122,7 +122,7 @@ def run_background_subtraction():
                 update(event)
 
         # Create a plot with 2 subplots
-        fig, axes = plt.subplots(2, 1, figsize=(16, 16))
+        fig, axes = plt.subplots(2, 1, figsize=(10, 6))
 
         # Show the image before and after subtraction
         axes[0].imshow(images[pair["A"]], cmap="gray")
@@ -144,7 +144,7 @@ def run_background_subtraction():
         plt.show()
 
         # show 5 slices in spectral direction to check if the traces are separated
-        fig, axes = plt.subplots(5, 1, figsize=(18, 18))
+        fig, axes = plt.subplots(5, 1, figsize=(10, 6))
         # plot indices - 5 slices. Do not start at detector edges 
         indices = np.linspace(10, subtracted_image.shape[1] - 10, 7, dtype=int)[1:-1]
         for plot_index, spectral_index in enumerate(indices):

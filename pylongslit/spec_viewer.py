@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import argparse
 
 
-def make_2dspec(frame, wavelength_map, figsize=(14, 14)):
+def make_2dspec(frame, wavelength_map, figsize=(10, 6)):
     """ "
     Display the 2D spectrum with interactive wavelength display and histogram normalization toggle.
 
@@ -19,7 +19,7 @@ def make_2dspec(frame, wavelength_map, figsize=(14, 14)):
         The wavelength map constructed from the wavelength solution.
 
     figsize : tuple, optional
-        The size of the figure. Default is (14, 14).
+        The size of the figure. Default is (10, 6).
     """
     from pylongslit.utils import hist_normalize
     from pylongslit.parser import developer_params

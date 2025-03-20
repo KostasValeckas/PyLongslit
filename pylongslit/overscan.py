@@ -8,7 +8,7 @@ PyLongslit module for handling overscan bias.
 """
 
 
-def show_overscan(figsize=(16, 16)):
+def show_overscan(figsize=(10, 6)):
     """
     Show the user defined ovsercan region.
 
@@ -21,7 +21,7 @@ def show_overscan(figsize=(16, 16)):
     Parameters
     ----------
     figsize : tuple, optional
-        The size of the figure to display. Default is (16, 16).
+        The size of the figure to display. Default is (10, 6).
     """
     from pylongslit.logger import logger
     from pylongslit.parser import data_params, flat_params, detector_params

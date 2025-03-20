@@ -185,9 +185,9 @@ class PyLongslit_frame:
         # Orient the plot based on the shape of the data so most of the
         # figure is utilized
         if data.shape[0] > data.shape[1]:
-            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 12))
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10, 6))
         else:
-            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 18))
+            fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 6))
 
         fig.suptitle(f'{self.name} - Press "h" to normalize.\n {title_addition}')
         update_plot(normalize=False)
@@ -233,10 +233,10 @@ class PyLongslit_frame:
             # Open the FITS file
             with fits.open(filepath) as hdulist:
                 # Read the primary HDU (data)
-                data = hdulist[0].data
-                header = hdulist[0].header
+                data = hdulist[0].data.copy()
+                header = hdulist[0].header.copy()
                 # Read the image HDU (sigma)
-                sigma = hdulist[1].data
+                sigma = hdulist[1].data.copy()
                 # ensure that the file is released:
                 hdulist.close()
         except FileNotFoundError:
@@ -515,7 +515,7 @@ def hist_normalize(data, z_thresh=3):
 
 
 def show_frame(
-    inp_data, title=None, figsize=(18, 12), normalize=True, new_figure=True, show=True
+    inp_data, title=None, figsize=(10, 6), normalize=True, new_figure=True, show=True
 ):
     """
     A wrapper for plt.imshow to avoid repeating code.
@@ -726,7 +726,7 @@ def get_skysub_files(only_science=False):
     return filenames
 
 
-def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
+def choose_obj_centrum(file_list, titles, figsize=(10, 6)):
     # TODO: titles list is a bit hacky, should be refactored
     """
     An interactive method to choose the center of the object on the frame.
@@ -741,7 +741,7 @@ def choose_obj_centrum(file_list, titles, figsize=(18, 12)):
 
     figsize : tuple
         The size of the figure to be displayed.
-        Default is (18, 12).
+        Default is (10, 6).
 
     Returns
     -------
@@ -887,7 +887,7 @@ def show_1d_fit_QA(
     y_label=None,
     legend_label=None,
     title=None,
-    figsize=(18, 12),
+    figsize=(10, 6),
 ):
     """
     A method to plot a 1D fit and residuals for QA purposes.
@@ -1235,7 +1235,7 @@ def interactively_crop_spec(
     y_label: str = "",
     label: str = "",
     title: str = "",
-    figsize=(16, 16),
+    figsize=(10, 6),
 ):
     """
     A method for interactively cropping spectrum edges for noise.
@@ -1326,7 +1326,7 @@ def plot_1d_spec_interactive_limits(
     y_label: str = "",
     label: str = "",
     title: str = "",
-    figsize=(16, 16),
+    figsize=(10, 6),
 ):
     """
     Plot a 1D spectrum with interactive sliders to adjust the x and y-axis limits.

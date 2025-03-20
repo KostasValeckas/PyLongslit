@@ -282,7 +282,7 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
     logger.info("All data cropped and extrapolated to the same wavelength range.")
 
     if developer_params["debug_plots"]:
-        plt.figure(figsize=(18, 12))
+        plt.figure(figsize=(10, 6))
         plt.plot(
             global_wavelength,
             obs_count_cropped,
@@ -322,7 +322,7 @@ def crop_all_spec(obs_wave, obs_count, ref_wave, ref_spec, ext_wave, ext_data):
 
 
 def estimate_transmission_factor(
-    wavelength, airmass, ext_data, figsize=(18, 12), show_QA=False
+    wavelength, airmass, ext_data, figsize=(10, 6), show_QA=False
 ):
     """
     Estimates the transmission factor of the atmosphere at the given wavelength.
@@ -426,7 +426,7 @@ def convert_from_AB_mag_to_flux(mag, ref_wavelength):
     return flux
 
 
-def prep_senspoints(wavelength, sens_points, figsize=(18, 18)):
+def prep_senspoints(wavelength, sens_points, figsize=(10, 6)):
     """
     A method to crop the sensitivity points of the standard star spectrum,
     and convert to logspace.
@@ -443,7 +443,7 @@ def prep_senspoints(wavelength, sens_points, figsize=(18, 18)):
         Sensitivity points of the standard star spectrum.
 
     figsize : tuple, optional
-        Size of the plot. Default is (18, 18).
+        Size of the plot. Default is (10, 6).
 
     Returns:
     --------
@@ -644,7 +644,7 @@ def flux_standard_QA(
     ref_spec_cropped,
     good_wavelength_start,
     good_wavelength_end,
-    figsize=(18, 18),
+    figsize=(10, 6),
 ):
     """
     Flux calibrates the standard star spectrum and compares it to the reference spectrum.
@@ -676,7 +676,7 @@ def flux_standard_QA(
         is almost certainly extremely noisy.
 
     figsize : tuple, optional
-        Size of the plot. Default is (18, 18).
+        Size of the plot. Default is (10, 6).
     """
 
     from pylongslit.parser import standard_params, sens_params
