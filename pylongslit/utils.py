@@ -236,7 +236,10 @@ class PyLongslit_frame:
                 data = hdulist[0].data.copy()
                 header = hdulist[0].header.copy()
                 # Read the image HDU (sigma)
-                sigma = hdulist[1].data.copy() if len(hdulist) > 1 else None
+                if hdulist[1].data is not None:
+                    sigma = hdulist[1].data.copy()
+                else:
+                    sigma = None
                 # ensure that the file is released:
                 hdulist.close()
         except FileNotFoundError:
