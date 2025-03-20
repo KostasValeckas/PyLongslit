@@ -10,7 +10,7 @@ kostas.valeckas@nbi.ku.dk
 
 The format of collaboration is flexible, but few things are pre-determined:
 
-1. We use `GitHub <www.github.com>`_ for version control.
+1. We use `GitHub <https://github.com/>`_ for version control.
 2. We do not compromise on the principles of simplicity, manual execution, transparency and robustness.
 3. We aim to provide a welcoming and inclusive environment for all contributors.
 
