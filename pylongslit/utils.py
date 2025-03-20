@@ -235,9 +235,10 @@ class PyLongslit_frame:
                 # Read the primary HDU (data)
                 data = hdulist[0].data
                 header = hdulist[0].header
-
                 # Read the image HDU (sigma)
                 sigma = hdulist[1].data
+                # ensure that the file is released:
+                hdulist.close()
         except FileNotFoundError:
             logger.error(f"File {filename} not found in {output_dir}.")
             logger.error(
@@ -247,6 +248,8 @@ class PyLongslit_frame:
 
         # Remove the file extension, as the class expects it to be without it
         filename = filename.split(".")[0]
+
+
 
         return cls(data, sigma, header, filename)
 
