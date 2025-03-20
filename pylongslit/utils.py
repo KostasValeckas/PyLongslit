@@ -934,28 +934,28 @@ def show_1d_fit_QA(
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=figsize)
 
     # fit plot
-    ax1.plot(x_data, y_data, ".", color="black", label=legend_label, markersize=12)
+    ax1.plot(x_data, y_data, ".", color="black", label=legend_label, markersize=8)
 
-    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=14)
-    ax1.set_ylabel(y_label, fontsize=14)
-    ax1.legend(fontsize=14)
+    ax1.plot(x_fit_values, y_fit_values, label="Fit", color="red", markersize=10)
+    ax1.set_ylabel(y_label, fontsize=10)
+    ax1.legend(fontsize=10)
 
     # residuals plot
     ax2.plot(x_data, residuals, "x", color="red", label="Residuals")
-    ax2.set_xlabel(x_label, fontsize=14)
-    ax2.set_ylabel(y_label, fontsize=14)
+    ax2.set_xlabel(x_label, fontsize=10)
+    ax2.set_ylabel(y_label, fontsize=10)
     ax2.axhline(0, color="black", linestyle="--")
-    ax2.legend(fontsize=14)
+    ax2.legend(fontsize=10)
 
     # setting the x-axis to be shared between the two plots
     ax2.set_xlim(ax1.get_xlim())
     ax1.set_xticks([])
 
-    fig.suptitle(title + f"\n RMS of residuals: {RMS_residuals}", fontsize=16)
+    fig.suptitle(title + f"\n RMS of residuals: {RMS_residuals}", fontsize=12)
 
     # Enhance tick font size
-    ax1.tick_params(axis="both", which="major", labelsize=12)
-    ax2.tick_params(axis="both", which="major", labelsize=12)
+    ax1.tick_params(axis="both", which="major", labelsize=8)
+    ax2.tick_params(axis="both", which="major", labelsize=8)
 
     plt.show()
 

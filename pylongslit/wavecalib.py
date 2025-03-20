@@ -686,14 +686,14 @@ def show_cyclic_QA_plot(
             if not ax_col.lines:
                 ax_col.axis("off")
             else:
-                ax_col.legend()
+                ax_col.legend(fontsize=8)
                 ax_col.grid(True)
 
-    fig.suptitle(title_text, fontsize=11, va="top", ha="center")
+    fig.suptitle(title_text, fontsize=10, va="top", ha="center")
 
     # Add a single x-label and y-label for the entire figure
     if x_label is not None:
-        fig.text(0.5, 0.04, x_label, ha="center", va="center", fontsize=12)
+        fig.text(0.5, 0.04, x_label, ha="center", va="center", fontsize=10)
 
     if y_label is not None:
         fig.text(
@@ -703,7 +703,7 @@ def show_cyclic_QA_plot(
             ha="center",
             va="center",
             rotation="vertical",
-            fontsize=12,
+            fontsize=10,
         )
     if show:
         plt.show(block=True)
@@ -981,7 +981,7 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(10, 6))
             good_spacial_coords, residuals, "x", color="black", label="Residuals"
         )
         ax[j][1].axhline(0, color="red", linestyle="--")
-        ax[j][1].legend()
+        ax[j][1].legend(fontsize=8)
 
         if (
             # this condition checks if the plot has been filled up.
@@ -1472,7 +1472,8 @@ def fit_2d_tilts(good_lines: dict, figsize=(10, 6)):
         "2D tilt fit residuals. Ensure the residuals are randomly distributed around 0, otherwise consider changing the order of the fit in the configuration file.\n"
         f"Small scale residual structure (≈ 0.01 pixels) is hard to avoid, and should be okay.\n"
         f"Current 2d polynomial fit order: spectral: {ORDER_SPECTRAL}, spatial: {ORDER_SPATIAL}.\n"
-        f"RMS of the residuals: {RMS}."
+        f"RMS of the residuals: {RMS}.",
+        fontsize = 10
     )
 
     axs[0].plot(spacial_pixels, residuals, "x")
@@ -1587,7 +1588,7 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(10, 6)):
         "2D tilt fit evaluated at the same pixels as the individual traced lines."
     )
     axs[1].set_xlabel("Spatial Pixels")
-    axs[1].legend()
+    axs[1].legend(fontsize = 8)
 
     fig.suptitle(
         "2D tilt fit QA. Left: individually traced line tilts. Right: 2D tilt fit evaluated at the same pixels as the individual traced lines.\n"

@@ -446,9 +446,10 @@ def estimate_spacial_response(medianflat):
                     "o",
                     color="red",
                     label="Masked outliers",
+                    markersize=2,  # Make datapoints smaller
                 )
 
-                ax[plot_num, 0].legend()
+                ax[plot_num, 0].legend(fontsize=8)  # Make legend font smaller
 
                 ax[plot_num, 1].plot(
                     spacial_array_masked,
@@ -456,10 +457,11 @@ def estimate_spacial_response(medianflat):
                     "o",
                     color="black",
                     label=f"Residuals at spectral pixel: {spectral_pixel}",
+                    markersize=2,  # Make datapoints smaller
                 )
-                ax[plot_num, 1].axhline(0, color="red", linestyle="--")
+                ax[plot_num, 1].axhline(0, color="red", linestyle="--", linewidth=0.5)  # Thinner line
 
-                ax[plot_num, 1].legend()
+                ax[plot_num, 1].legend(fontsize=8)  # Make legend font smaller
 
                 plot_num += 1
 
@@ -467,16 +469,16 @@ def estimate_spacial_response(medianflat):
         f"Slit illumination B-spline fits at different spectral pixels. Rejection set in the configuration file is R2 < {R2_thresh}. \n"
         f"Number of interior knots: {num_interior_knots}, fit degree {degree} (this is set in the configuration file).\n"
         "You should aim for very little to no large-scale structure in the residuals, with the lowest amount of knots possible.",
-        fontsize=16,
+        fontsize=12,
     )
-    fig.text(0.5, 0.04, "Spacial pixel", ha="center", fontsize=16)
+    fig.text(0.5, 0.04, "Spacial pixel", ha="center", fontsize=12)
     fig.text(
         0.04,
         0.5,
         "Normalized Counts (ADU)",
         va="center",
         rotation="vertical",
-        fontsize=16,
+        fontsize=12,
     )
     plt.show()
 
@@ -933,7 +935,7 @@ def run_flats():
     fig.suptitle(
         "Make sure the models match the data, and that final flat field pixel "
         "sensitivity distribution is somewhat Gaussian.",
-        fontsize=16,
+        fontsize=12,
         y=1,
     )
 

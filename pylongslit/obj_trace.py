@@ -867,8 +867,8 @@ def find_obj_frame(filename, spacial_center, params, figsize=(10, 6)):
         # checks if the column is within the interval of +/- cut extension from the QA indices
         if (
             any(
-                (i - qa_index) in np.arange(0, cut_extension + 1)
-                for qa_index in qa_indices
+            (i - qa_index) in np.arange(0, cut_extension + 1)
+            for qa_index in qa_indices
             )
             and plot_nr < 9
         ):
@@ -881,21 +881,24 @@ def find_obj_frame(filename, spacial_center, params, figsize=(10, 6)):
             # plot the fit
             row = plot_nr // 3
             col = plot_nr % 3
-            ax[row, col].plot(obj_x, obj_val, ".-", label=f"Data at column {i}")
+            ax[row, col].plot(obj_x, obj_val, ".-", label=f"Data at column {i}", markersize=4)
             ax[row, col].plot(
-                obj_x_linspace,
-                g_fit(obj_x_linspace),
-                label=f"Fit with R2:{R2:.2f}\n FWHM {FWHM:.2f}",
-                c="red" if not good_fit else "green",
+            obj_x_linspace,
+            g_fit(obj_x_linspace),
+            label=f"Fit with R2:{R2:.2f}\n FWHM {FWHM:.2f}",
+            c="red" if not good_fit else "green",
+            linewidth=0.8,
             )
             ax[row, col].axvline(
-                center,
-                color="green",
-                linestyle="--",
-                label=f"Fitted center {center:.2f}",
+            center,
+            color="green",
+            linestyle="--",
+            label=f"Fitted center {center:.2f}",
+            linewidth=0.8,
             )
-            ax[row, col].legend()
-            ax[row, col].grid(True)
+            ax[row, col].legend(fontsize=8)
+            ax[row, col].grid(True, linewidth=0.5)
+            ax[row, col].tick_params(axis="both", which="major", labelsize=8)
             plot_nr += 1
 
         # append the results to the containers
@@ -908,7 +911,8 @@ def find_obj_frame(filename, spacial_center, params, figsize=(10, 6)):
         f"QA for a sample of object center fits in {filename}. Green - accepted, red - rejected. Model\n"
         f"Fit model chosen: {params['model']}. Current rejection threshold is R2 > {params['fit_R2']},\n"
         f"with allowed center deviation of {params['center_thresh']} pixels away from max data value,\n"
-        f"and {params['fwhm_thresh']} pixels from FWHM guess. Initial FWHM guess is {params['fwhm_guess']}. All of these can be changed in the configuration file."
+        f"and {params['fwhm_thresh']} pixels from FWHM guess. Initial FWHM guess is {params['fwhm_guess']}. All of these can be changed in the configuration file.",
+        fontsize=12,
     )
     fig.text(0.5, 0.04, "Spacial Pixels", ha="center", va="center", fontsize=12)
     fig.text(
