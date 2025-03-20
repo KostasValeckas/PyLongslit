@@ -1571,13 +1571,13 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(10, 6)):
             spatials_1d[i],
             chebval(spatials_1d[i], coeffs),
             ".",
-            label=f"Central spec: {central_spec}",
+            label=f"Central spec: {int(central_spec)}",
         )
 
     axs[0].set_title("Individually traced line tilts.")
     axs[0].set_xlabel("Spatial Pixels")
     axs[0].set_ylabel("Line titls in pixels.")
-    axs[0].legend()
+    axs[0].legend(fontsize = 8)
 
     for i, spectral_array in enumerate(centers_1d):
         # evaluate the 2d fit at the same pixels as the individual fits
@@ -1588,7 +1588,7 @@ def plot_tilt_2D_QA(fit2D_REID, good_lines: dict, figsize=(10, 6)):
         "2D tilt fit evaluated at the same pixels as the individual traced lines."
     )
     axs[1].set_xlabel("Spatial Pixels")
-    axs[1].legend(fontsize = 8)
+    axs[1].legend()
 
     fig.suptitle(
         "2D tilt fit QA. Left: individually traced line tilts. Right: 2D tilt fit evaluated at the same pixels as the individual traced lines.\n"
