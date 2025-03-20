@@ -7,7 +7,7 @@ PyLongslit's documentation page
 ======================================
 
 
-PyLongslit is simple manual Python pipeline for processing of astronomical long-slit spectra,
+PyLongslit is a simple manual Python pipeline for processing of astronomical long-slit spectra 
 recorded with CCD detectors. At the current version, the software can produce following products:
 
 #. A calibrated 2D spectrum in counts/wavelength.
