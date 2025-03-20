@@ -60,11 +60,12 @@ In this documentation, we provide guidance on installation and usage of the soft
 
 
 .. toctree:: 
-   :maxdepth: 4
+   :maxdepth: 2
    :caption: Contents:
 
    installation
    getting_started
+   develop
    uncertainties
    contact
 
