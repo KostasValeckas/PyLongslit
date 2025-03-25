@@ -45,6 +45,7 @@ please see the [Statement of need](#statement-of-need).
 
 From raw data, the
 pipeline can produce the following output:
+
 - A calibrated 2D spectrum in counts and wavelength for every detector pixel.
 - A 1D spectrum extracted from the 2D spectrum in counts per wavelength (for point-like objects).
 - A flux-calibrated 1D spectrum in $\frac{\text{erg}}{\text{s} \cdot \text{cm}^2 \cdot \text{Å}}$ (for point-like objects).
