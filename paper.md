@@ -34,7 +34,7 @@ bibliography: paper.bib
 
 # Summary
 
-We present a new manual Python pipeline for processing data from  astronomical 
+We present a new Python pipeline for processing data from astronomical 
 long-slit spectroscopy observations with CCD detectors.
 
 The pipeine is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The inspiration for the pipeline is to provide a manual counterpart to the 
@@ -55,10 +55,14 @@ The products are obtained by performing standard procedures for
 detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction [@cr_1] [@cr_2]
 , and 1D spectrum extraction [@Horne_1986] [@photutils].   
 
-
-
 # Statement of need
 
+The need for a simple manual Python pipeline for long-slit spectroscopy data processing
+became was established when conducting a summer-course at the Nordic Optical Telescope[^1].
+
+[^1]:  https://www.not.iac.es/
+
+...
 # Pipeline
 
 Test of references: 
