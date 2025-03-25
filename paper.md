@@ -57,12 +57,32 @@ detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction [@cr_1]
 
 # Statement of need
 
-The need for a simple manual Python pipeline for long-slit spectroscopy data processing
-became was established when conducting a summer-course at the Nordic Optical Telescope[^1].
+The need for a simple manual Python pipeline for long-slit spectroscopy data processing was established when conducting a summer-course at the Nordic Optical Telescope[^1], where
+students with very little to none observational experience get to try to perform a full observation 
+run, where data processing is an active part of the course curriculum. 
+
+Well-established pipelines (understandably) seek for precision and automation. The trade-off for this 
+is code complexity and "black-box" solutions, where the process of the pipeline is often masked, and 
+the quality-assesment output is made under the assumtpiton that the user knows how to interpret it. 
+In research, this is a reasonable trade-off, as a certain level of user-skill can be assumed. However, 
+in a teaching paradigm, simplicity and transparency are more favorable, even when this means loss of 
+precision and automation. The PyLongslit pipeline is made to cater for teaching needs, as it forces the 
+user to perform a series of manual interventions - including manual parameter adjustments and doing work
+on interactive plots. This is designed to expose the user to the whole process in detail. The manual execution is supported by carefully designed quality-assesment plots and extensive documentaion.
+
+An early beta-version of the software was user-tested during the Nordic Optical Telescope summer-course 
+2024, where all student groups where able to follow the documentation and succesfully process data 
+without any significant assistance. 
+
+During the developtment of software it became apparent that the manual nature of the pipeline is 
+also useful for observations where automated pipelines might fail. This is specially the case for objects
+that have low signal-to-noise ratio, or where several objects are very close to each onther on the detector (SPØRG JOHAN HER OM VI MÅ DELE GTC DATA).  
+
 
 [^1]:  https://www.not.iac.es/
 
-...
+
+
 # Pipeline
 
 Test of references: 
