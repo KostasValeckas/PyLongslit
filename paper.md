@@ -35,9 +35,24 @@ bibliography: paper.bib
 # Summary
 
 We present a new manual Python pipeline for processing data from  astronomical 
-long-slit spectroscopy observations with CCD detectors. The pipeline performs 
-detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction
-[@cr_1] [@cr_2], and 1-d (calibrated) spectrum extraction [@Horne_1986].    
+long-slit spectroscopy observations with CCD detectors.
+
+The pipeine is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The inspiration for the pipeline is to provide a manual counterpart to the 
+well-established semi-automated and aumated pipelines. The intented use-cases are **teaching** and **edge-case observations**, where 
+automated pipelines fail due to very low signal-to-noise ratio, several objects being very close 
+on the detector and alike. For further elaboration,
+please see the [Statement of need](#statement-of-need). 
+
+From raw data, the
+pipeline can produce the following output:
+- A calibrated 2D spectrum in counts and wavelength for every detector pixel.
+- A 1D spectrum extracted from the 2D spectrum in counts per wavelength (for point-like objects).
+- A flux-calibrated 1D spectrum in $\frac{\text{erg}}{\text{s} \cdot \text{cm}^2 \cdot \text{Å}}$ (for point-like objects).
+
+
+The products are obtained by performing standard procedures for
+detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction [@cr_1] [@cr_2]
+, and 1D spectrum extraction [@Horne_1986] [@photutils].   
 
 
 
@@ -48,6 +63,8 @@ detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction
 Test of references: 
 
 [@pypeit:joss_pub]
+
+# Limitations
 
 
 # Acknowledgements
