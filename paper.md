@@ -34,6 +34,11 @@ bibliography: paper.bib
 
 # Summary
 
+We present a new manual Python pipeline for processing data from  astronomical 
+long-slit spectroscopy observations with CCD detectors. The pipeline performs 
+detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction
+[@cr_1] [@cr_2], and 1-d (calibrated) spectrum extraction [@Horne_1986].    
+
 
 
 # Statement of need
