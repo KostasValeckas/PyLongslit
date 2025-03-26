@@ -105,7 +105,11 @@ file are descriped in the documentation.
 
 To test the pipeline for correctness, we compare PyLongslit results for data from 2 
 instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4] with the results from a well-established, 
-semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:zenodo].
+semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo].
+
+![Overview of the pipeline structure.\label{fig:example}](gtc_comp.png)
+
+![Overview of the pipeline structure.\label{fig:example}](alfosc_comp.png)
 
 As mentioned in the [Statement of need](#statement-of-need), the pipeline favors
 simplicity over high precission. Furthermore, the pipeline is designed to be 
