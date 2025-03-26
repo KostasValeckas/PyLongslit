@@ -103,24 +103,31 @@ file are descriped in the documentation.
 
 # Evaluation and Limitations
 
-To test the pipeline for correctness, we compare PyLongslit results for data from 2 
-instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4] with the results from a well-established, 
+To test the pipeline for correctness, we run the pipeline on data from 2 
+instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4], and compare the results with the results from a well-established, 
 semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo].
 
-![Overview of the pipeline structure.\label{fig:example}](gtc_comp.png)
+![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
 
-![Overview of the pipeline structure.\label{fig:example}](alfosc_comp.png)
+![NOT ALFOSC observation of SDSS_J213510+2728.\label{fig:alfosc}](alfosc_comp.png)
+
+We see good agreement between results from PyLongslit and PypeIt, indicating 
+evidence for correctness.
 
 As mentioned in the [Statement of need](#statement-of-need), the pipeline favors
 simplicity over high precission. Furthermore, the pipeline is designed to be 
-**instrument independent**. Therefore, the pipeline accounts only for the most prominent 
-aspect of spectroscopic data reduction. Any
+**instrument independent**. Due to these design choices, the pipeline might be 
+less precise than pipelines that are instrument-dependent.
 
 [^3]: https://www.not.iac.es/instruments/alfosc/
 [^4]: https://www.gtc.iac.es/instruments/osiris/
 
 
 # Acknowledgements
+
+We thank Jens-Kristian Krogager for sharing his code for arc line-idetification 
+procedure. We also thank the participants of the Nordic Optical Telescope IDA summer-course 
+2024 for very useful feedback on the software.
 
 
 # References
