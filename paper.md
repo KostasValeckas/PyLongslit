@@ -38,9 +38,8 @@ We present a new Python pipeline for processing data from astronomical
 long-slit spectroscopy observations with CCD detectors.
 
 The pipeine is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The inspiration for the pipeline is to provide a manual and simple counterpart to the 
-well-established semi-automated and automated pipelines. The intented use-cases are **teaching** and **edge-case observations**, where 
-automated pipelines fail due to very low signal-to-noise ratio, several objects being very close 
-on the detector and alike. For further elaboration,
+well-established semi-automated and automated pipelines. The intented use-cases are **teaching** and **cases where 
+automated pipelines fail**. For further elaboration,
 please see the [Statement of need](#statement-of-need). 
 
 From raw data, the
@@ -69,7 +68,7 @@ are new to spectroscopic data processing. Furthermore, we hope that
 the simple coding style will invite users of all skill-levels to contribute to the code.
 
 An early beta-version of the software was user-tested during the Nordic Optical Telescope[^1] IDA summer-course 
-2024[^2], where all student groups where able to follow the documentation and succesfully process data 
+2024[^2], where all student groups were able to follow the documentation and succesfully process data 
 without any significant assistance. 
 
 During the developtment of software it became apparent that the manual nature of the pipeline is 
@@ -104,7 +103,7 @@ file are descriped in the documentation.
 # Evaluation and Limitations
 
 To test the pipeline for correctness, we run the pipeline on data from 2 
-instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4], and compare the results with the results from a well-established, 
+instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4], and compare the results with the results from the well-established, 
 semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo].
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
