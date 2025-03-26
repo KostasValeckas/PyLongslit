@@ -85,9 +85,35 @@ that have low signal-to-noise ratio, or where several objects are very close to 
 
 # Pipeline
 
-![Caption for example figure.\label{fig:example}](pipeline.png)
+The figure below shows an overview of the pipeline structure. In a broad sense, there
+are three stages of the data processing. The first stage is to process all raw data 
+to obtain calibrated 2d spectra. Then, the calibrated spectra can be processed further 
+by employing cosmic-ray removal, cropping of spectrum and sky-background subtraction.
+The third stage is extracting the 1d spectra from the 2d spectra, flux calibrating the 
+extracted products and combinning the spectra (if several observations of same object are present).
 
-# Limitations
+![Overview of the pipeline structure.\label{fig:example}](pipeline.png)
+
+All the diamond shapes in the figure represent different pipeline routines that 
+are called directly from the command line.
+
+The pipeline is controlled by a configuration file that has to be passed as an 
+argument to every pipeline procedure. The different parameters of the configuration 
+file are descriped in the documentation.
+
+# Evaluation and Limitations
+
+To test the pipeline for correctness, we compare PyLongslit results for data from 2 
+instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4] with the results from a well-established, 
+semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:zenodo].
+
+As mentioned in the [Statement of need](#statement-of-need), the pipeline favors
+simplicity over high precission. Furthermore, the pipeline is designed to be 
+**instrument independent**. Therefore, the pipeline accounts only for the most prominent 
+aspect of spectroscopic data reduction. Any
+
+[^3]: https://www.not.iac.es/instruments/alfosc/
+[^4]: https://www.gtc.iac.es/instruments/osiris/
 
 
 # Acknowledgements
