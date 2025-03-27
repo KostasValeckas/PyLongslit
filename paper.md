@@ -85,7 +85,9 @@ without any significant assistance.
 During the development of software it became apparent that the manual nature of the pipeline is 
 also useful for observations where automated pipelines might fail. The PyLongslit pipeline can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
 detector. This is especially useful for objects
-that have low signal-to-noise ratio, or where several objects are very close to each other on the detector.   
+that have low signal-to-noise ratio, or where several objects are very close to each other on the detector. Futhermore, extraction can be performed with either optimal extraction methods [@Horne_1986], 
+or by summing detector counts for a box-like object shape [@photutils] (this can be useful 
+for emission-line dominated objects).    
 
 
 [^1]:  https://www.not.iac.es/
@@ -95,7 +97,8 @@ that have low signal-to-noise ratio, or where several objects are very close to 
 
 # Pipeline
 
-The figure below shows an overview of the pipeline structure. In a broad sense, there
+The figure below shows an overview of the pipeline structure. The inspiration for pipeline 
+architecture is taken from the very popular (but no longer maintained) IRAF [@IRAF]. In a broad sense, there
 are three stages of the data processing. The first stage is to process all raw data 
 to obtain calibrated 2d spectra. Then, the calibrated spectra can be processed further 
 by employing cosmic-ray removal, cropping of spectrum and sky-background subtraction.
@@ -136,7 +139,9 @@ PypeIt: https://sid.erda.dk/share_redirect/efiQfMWqqe
 
 As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
 simplicity over high precision. Furthermore, the pipeline is designed to be 
-**instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter).
+**instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
+is written with focus on **loose-coupling**, and therefore the pipeline code can also be used 
+as a starting-point for a instrument-specific pipeline.
 
 [^4]: https://www.not.iac.es/instruments/alfosc/
 [^5]: https://www.gtc.iac.es/instruments/osiris/

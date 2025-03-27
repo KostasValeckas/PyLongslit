@@ -204,7 +204,7 @@ def estimate_frame_overscan_bias(image_data, plot=False, print=True):
     ]
     mean = numpy.mean(overscan)
     overscan_image = numpy.full(image_data.shape, mean)
-    error = numpy.std(overscan) / numpy.sqrt(len(overscan))
+    error = numpy.std(overscan) / numpy.sqrt(overscan.size)
     error_image = numpy.full(image_data.shape, error)
 
     # construct the overscan frame and return it
