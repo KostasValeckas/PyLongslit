@@ -8,22 +8,33 @@ tags:
 authors:
   - name: Kostas Valeckas
     orcid: 0009-0007-7275-0619
-    affiliation: "1, 2"
+    affiliation: 1
   - name: Johan Peter Uldall Fynbo
     orcid: 0000-0002-8149-8298
+    affiliation: 2
+  - name: Jens-Kristian Krogager
+    orcid: 0000-0002-4912-9388
     affiliation: 3
+  - name: Kasper Elm Heintz
+    orcid: 0000-0002-9389-7413
+    affiliation: 2
+
+
 
 affiliations:
  - name: Niels Bohr Institute, Copenhagen University
    index: 1
   
- - name: Nordic Optical Telescope
-   index: 2
+# - name: Nordic Optical Telescope
+#   index: 2
 
  - name: Cosmic Dawn Center, Niels Bohr Institute, Copenhagen University
+   index: 2
+
+ - name: Centre de Recherche Astrophysique de Lyon, 
    index: 3
 
-date: 24 March 2025
+date: 27 March 2025
 bibliography: paper.bib
 
 # Optional fields if submitting to a AAS journal too, see this blog post:
@@ -35,7 +46,7 @@ bibliography: paper.bib
 # Summary
 
 We present a new Python pipeline for processing data from astronomical 
-long-slit spectroscopy observations with CCD detectors.
+long-slit spectroscopy observations recorded with CCD detectors.
 
 The pipeine is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The inspiration for the pipeline is to provide a manual and simple counterpart to the 
 well-established semi-automated and automated pipelines. The intented use-cases are **teaching** and **cases where 
@@ -73,8 +84,8 @@ without any significant assistance.
 
 During the developtment of software it became apparent that the manual nature of the pipeline is 
 also useful for observations where automated pipelines might fail. The PyLongslit pipeline can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
-detector. This is specially useful for objects
-that have low signal-to-noise ratio, or where several objects are very close to each onther on the detector.   
+detector. This is especially useful for objects
+that have low signal-to-noise ratio, or where several objects are very close to each other on the detector.   
 
 
 [^1]:  https://www.not.iac.es/
@@ -98,34 +109,37 @@ are called directly from the command line.
 
 The pipeline is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
-file are descriped in the documentation.
+file are descriped in the documentation [^3].
 
-# Evaluation and Limitations
+[^3]: https://kostasvaleckas.github.io/PyLongslit/index.html
 
-To test the pipeline for correctness, we run the pipeline on data from 2 
-instruments: NOT ALFOSC[^3] and GTC OSIRIS[^4], and compare the results with the results from the well-established, 
-semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo].
+
+# Evaluation
+
+To test the pipeline for correctness, we run the pipeline on data[^4] from 2 long-slit instruments: NOT ALFOSC[^5] and GTC OSIRIS[^6], and compare the results with the results from the well-established, 
+semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo]:
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
 
 ![NOT ALFOSC observation of SDSS_J213510+2728.\label{fig:alfosc}](alfosc_comp.png)
 
-We see good agreement between results from PyLongslit and PypeIt, indicating 
-evidence for correctness.
+We see good agreement between the two pipelines on both axis, 
+for both the extracted spectrum and the noise estimation.
 
-As mentioned in the [Statement of need](#statement-of-need), the pipeline favors
+# Limitations
+
+As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
 simplicity over high precission. Furthermore, the pipeline is designed to be 
-**instrument independent**. Due to these design choices, the pipeline might be 
-less precise than pipelines that are instrument-dependent.
+**instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter).
 
-[^3]: https://www.not.iac.es/instruments/alfosc/
-[^4]: https://www.gtc.iac.es/instruments/osiris/
+[^4]: https://github.com/KostasValeckas/PyLongslit_dev
+[^5]: https://www.not.iac.es/instruments/alfosc/
+[^6]: https://www.gtc.iac.es/instruments/osiris/
 
 
 # Acknowledgements
 
-We thank Jens-Kristian Krogager for sharing his code for arc line-idetification 
-procedure. We also thank the participants of the Nordic Optical Telescope IDA summer-course 
+We thank the participants of the Nordic Optical Telescope IDA summer-course 
 2024 for very useful feedback on the software.
 
 
