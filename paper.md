@@ -31,7 +31,7 @@ affiliations:
  - name: Cosmic Dawn Center, Niels Bohr Institute, Copenhagen University
    index: 2
 
- - name: Centre de Recherche Astrophysique de Lyon, 
+ - name: Centre de Recherche Astrophysique de Lyon
    index: 3
 
 date: 27 March 2025
@@ -48,8 +48,8 @@ bibliography: paper.bib
 We present a new Python pipeline for processing data from astronomical 
 long-slit spectroscopy observations recorded with CCD detectors.
 
-The pipeine is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The inspiration for the pipeline is to provide a manual and simple counterpart to the 
-well-established semi-automated and automated pipelines. The intented use-cases are **teaching** and **cases where 
+The pipeline is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The goal for the pipeline is to provide a manual and simple counterpart to the 
+well-established semi-automated and automated pipelines. The intended use-cases are **teaching** and **cases where 
 automated pipelines fail**. For further elaboration,
 please see the [Statement of need](#statement-of-need). 
 
@@ -62,18 +62,18 @@ pipeline can produce the following output:
 
 
 The products are obtained by performing standard procedures for
-detector calibrations [@handbook] [@Howell_2006], comsic-ray subtraction [@cr_1] [@cr_2]
+detector calibrations [@handbook] [@Howell_2006], cosmic-ray subtraction [@cr_1] [@cr_2]
 , and 1D spectrum extraction [@Horne_1986] [@photutils].   
 
 # Statement of need
 
 A natural approach when developing data-precessing pipelines is to seek for precision and automation. The trade-off for this 
 is code complexity and "black-box" solutions, where the process of the pipeline is often masked, and 
-the quality-assesment output is made under the assumtpiton that the user knows how to interpret it. 
+the quality-assessment output is made under the assumption that the user knows how to interpret it. 
 In research, this is a reasonable trade-off, as a certain level of user-skill and experience can be assumed. However, 
 in a teaching paradigm, simplicity and transparency are often more favorable, even when this means loss of 
 precision and automation. The PyLongslit pipeline is designed to rely on simple code and manual execution,
-supported by a large array of quality-assesment plots and extensive documentation. The algortihms are designed to produce research-quality results, yet while prioritizing simplicity over high precission. The reason for this is 
+supported by a large array of quality-assessment plots and extensive documentation. The algorithms are designed to produce research-quality results, yet while prioritizing simplicity over high precision. The reason for this is 
 to create a robust and transparent pipeline, where every step of the execution is visualized and explained. We see this as being specially valuable in teaching scenarios and for users that 
 are new to spectroscopic data processing. Furthermore, we hope that 
 the simple coding style will invite users of all skill-levels to contribute to the code.
@@ -82,7 +82,7 @@ An early beta-version of the software was user-tested during the Nordic Optical 
 2024[^2], where all student groups were able to follow the documentation and succesfully process data 
 without any significant assistance. 
 
-During the developtment of software it became apparent that the manual nature of the pipeline is 
+During the development of software it became apparent that the manual nature of the pipeline is 
 also useful for observations where automated pipelines might fail. The PyLongslit pipeline can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
 detector. This is especially useful for objects
 that have low signal-to-noise ratio, or where several objects are very close to each other on the detector.   
@@ -100,41 +100,46 @@ are three stages of the data processing. The first stage is to process all raw d
 to obtain calibrated 2d spectra. Then, the calibrated spectra can be processed further 
 by employing cosmic-ray removal, cropping of spectrum and sky-background subtraction.
 The third stage is extracting the 1d spectra from the 2d spectra, flux calibrating the 
-extracted products and combinning the spectra (if several observations of same object are present).
+extracted products and combining the spectra (if several observations of same object are present).
 
 ![Overview of the pipeline structure.\label{fig:example}](pipeline.png)
 
-All the diamond shapes in the figure represent different pipeline routines that 
+The diamond shapes in the figure represent different pipeline routines that 
 are called directly from the command line.
 
 The pipeline is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
-file are descriped in the documentation [^3].
+file are described in the documentation [^3].
 
 [^3]: https://kostasvaleckas.github.io/PyLongslit/index.html
 
 
 # Evaluation
 
-To test the pipeline for correctness, we run the pipeline on data[^4] from 2 long-slit instruments: NOT ALFOSC[^5] and GTC OSIRIS[^6], and compare the results with the results from the well-established, 
+To test the pipeline for correctness, we run the pipeline on data from 2 long-slit instruments: NOT ALFOSC[^4] and GTC OSIRIS[^5], and compare the results with the results from the well-established, 
 semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo]:
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
 
 ![NOT ALFOSC observation of SDSS_J213510+2728.\label{fig:alfosc}](alfosc_comp.png)
 
-We see good agreement between the two pipelines on both axis, 
+We see good agreement between the two pipelines on both axes, 
 for both the extracted spectrum and the noise estimation.
+
+We disclose the data and parameters used for both pipeline executions. 
+
+PyLongslit: https://github.com/KostasValeckas/PyLongslit_dev.
+
+PypeIt: https://sid.erda.dk/share_redirect/efiQfMWqqe
 
 # Limitations
 
 As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
-simplicity over high precission. Furthermore, the pipeline is designed to be 
+simplicity over high precision. Furthermore, the pipeline is designed to be 
 **instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter).
 
-[^4]: https://github.com/KostasValeckas/PyLongslit_dev
-[^5]: https://www.not.iac.es/instruments/alfosc/
-[^6]: https://www.gtc.iac.es/instruments/osiris/
+[^4]: https://www.not.iac.es/instruments/alfosc/
+[^5]: https://www.gtc.iac.es/instruments/osiris/
 
 
 # Acknowledgements
