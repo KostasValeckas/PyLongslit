@@ -97,7 +97,7 @@ for emission-line dominated objects).
 
 # Pipeline
 
-The figure below shows an overview of the pipeline structure. The inspiration for pipeline 
+The figure below shows an overview of the pipeline structure. The inspiration for the pipeline 
 architecture is taken from the very popular (but no longer maintained) IRAF [@IRAF]. In a broad sense, there
 are three stages of the data processing. The first stage is to process all raw data 
 to obtain calibrated 2d spectra. Then, the calibrated spectra can be processed further 
@@ -141,7 +141,7 @@ As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
 simplicity over high precision. Furthermore, the pipeline is designed to be 
 **instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
 is written with focus on **loose-coupling**, and therefore the pipeline code can also be used 
-as a starting-point for a instrument-specific pipeline.
+as a starting-point for an instrument-specific pipeline.
 
 [^4]: https://www.not.iac.es/instruments/alfosc/
 [^5]: https://www.gtc.iac.es/instruments/osiris/
