@@ -116,7 +116,7 @@ file are described in the documentation [^3].
 
 # Evaluation
 
-To test the pipeline for correctness, we run the pipeline on data from 2 long-slit instruments: NOT ALFOSC[^4] and GTC OSIRIS[^5], and compare the results with the results from the well-established, 
+To test the pipeline for correctness, we run the pipeline on data from two long-slit instruments: NOT ALFOSC[^4] and GTC OSIRIS[^5], and compare the results with the results from the well-established, 
 semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo]:
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
