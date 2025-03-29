@@ -101,9 +101,9 @@ The figures below describe the pipeline structure. The inspiration for the pipel
 architecture is taken from the very popular (but no longer maintained) IRAF [@IRAF]. In a broad sense, there
 are three stages of the data processing, all explained in seperate figures.
 
-![Step 1: Processing raw data.\label{fig:raw_processing}](raw_processing.png)
+![Step 1: Processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra.\label{fig:raw_processing}](raw_processing.png)
 
-In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra.
+
 
 ![Step 2: Further processing of the calibrated 2D spectra.\label{fig:further_processing}](further_processing.png)
 
