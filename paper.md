@@ -99,25 +99,18 @@ for emission-line dominated objects).
 
 The figures below describe the pipeline structure. The inspiration for the pipeline 
 architecture is taken from the very popular (but no longer maintained) IRAF [@IRAF]. In a broad sense, there
-are three stages of the data processing, all explained in seperate figures.
+are three stages of the data processing, all explained in seperate figures. The diamond shapes in the figures represent different pipeline routines that 
+are called directly from the command line, solid arrows are hard-dependencies, dashed arrows are soft-dependencies and the rectangles represent input files 
+and pipeline products.
 
-![Step 1: Processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra.\label{fig:raw_processing}](raw_processing.png)
-
-
-
-![Step 2: Further processing of the calibrated 2D spectra.\label{fig:further_processing}](further_processing.png)
-
-In this step, the user can deploy cosmic-ray removal, sky-background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some level of dependencies—these are described in the figure.
-
-![Step 3: Flux calibration.\label{fig:1d_extraction}](1d_extraction.png)
-
-In this step, 1D spectra are extracted from the calibrated 2D spectra, flux calibrated, and combined (if several spectra of the same object exist).
+![Step 1: Processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra, and the raw frames are no longer used.\label{fig:raw_processing}](raw_processing.png)
 
 
 
+![Step 2: Further processing of the calibrated 2D spectra. In this step, the user can deploy cosmic-ray removal, sky-background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some level of dependencies—these are described in the figure.\label{fig:further_processing}](further_processing.png)
 
-The diamond shapes in the figure represent different pipeline routines that 
-are called directly from the command line.
+
+![Step 3: Flux calibration. In this step, 1D spectra are extracted from the calibrated 2D spectra, flux calibrated, and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
 
 The pipeline is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
