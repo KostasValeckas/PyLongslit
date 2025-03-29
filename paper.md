@@ -105,7 +105,13 @@ by employing cosmic-ray removal, cropping of spectrum and sky-background subtrac
 The third stage is extracting the 1d spectra from the 2d spectra, flux calibrating the 
 extracted products and combining the spectra (if several observations of same object are present).
 
-![Overview of the pipeline structure.\label{fig:example}](pipeline.png)
+![\label{fig:raw_processing}](raw_processing.png)
+![\label{fig:further_processing}](further_processing.png)
+![\label{fig:1d_extraction}](1d_extraction.png)
+![\label{fig:legend}](legend.png)
+
+
+
 
 The diamond shapes in the figure represent different pipeline routines that 
 are called directly from the command line.

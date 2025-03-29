@@ -1,0 +1,47 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLSpecialState</id><coordinates><x>940</x><y>370</y><w>80</w><h>80</h></coordinates><panel_attributes>
+Cropping
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLSpecialState</id><coordinates><x>250</x><y>360</y><w>120</w><h>100</h></coordinates><panel_attributes>
+Cosmic-ray
+Removal
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLSpecialState</id><coordinates><x>1190</x><y>360</y><w>120</w><h>100</h></coordinates><panel_attributes>
+Modelled sky
+subtraction
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLState</id><coordinates><x>250</x><y>280</y><w>120</w><h>40</h></coordinates><panel_attributes>
+Calibrated 2d 
+Spectra
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLSpecialState</id><coordinates><x>610</x><y>360</y><w>120</w><h>100</h></coordinates><panel_attributes>
+A-B sky
+background
+subtraction
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>720</x><y>390</y><w>240</w><h>90</h></coordinates><panel_attributes>lt=-
+
+
+A-B subtraction won't work 
+if frames as cropped before
+subtraction</panel_attributes><additional_attributes>10;20;220;20</additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>390</y><w>270</w><h>90</h></coordinates><panel_attributes>lt=.
+
+
+Cosmic-ray removal 
+is unstable if performed 
+after A-B subtraction</panel_attributes><additional_attributes>10;20;250;20</additional_attributes></element><element><id>Relation</id><coordinates><x>1010</x><y>390</y><w>200</w><h>80</h></coordinates><panel_attributes>lt=.
+
+
+
+</panel_attributes><additional_attributes>10;20;180;20</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>450</y><w>750</w><h>120</h></coordinates><panel_attributes>lt=.
+
+
+
+</panel_attributes><additional_attributes>10;10;10;60;730;60</additional_attributes></element><element><id>Relation</id><coordinates><x>1020</x><y>400</y><w>250</w><h>130</h></coordinates><panel_attributes>lt=.
+
+Modelled sky subtraction can 
+be improved by removing cosmic-rays 
+and cropping the spectra beforehand</panel_attributes><additional_attributes>10;10;10;110</additional_attributes></element><element><id>Relation</id><coordinates><x>300</x><y>310</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLState</id><coordinates><x>610</x><y>280</y><w>120</w><h>40</h></coordinates><panel_attributes>
+Calibrated 2d 
+Spectra
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>660</x><y>310</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLState</id><coordinates><x>920</x><y>280</y><w>120</w><h>40</h></coordinates><panel_attributes>
+Calibrated 2d 
+Spectra
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>970</x><y>310</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1240</x><y>310</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;-&gt;</panel_attributes><additional_attributes>10;50;10;10</additional_attributes></element><element><id>UMLState</id><coordinates><x>1190</x><y>280</y><w>120</w><h>40</h></coordinates><panel_attributes>
+Calibrated 2d 
+Spectra
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
