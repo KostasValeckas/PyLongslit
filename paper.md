@@ -97,17 +97,13 @@ for emission-line dominated objects).
 
 # Pipeline
 
-The figure below shows an overview of the pipeline structure. The inspiration for the pipeline 
+The figures below describe the pipeline structure. The inspiration for the pipeline 
 architecture is taken from the very popular (but no longer maintained) IRAF [@IRAF]. In a broad sense, there
-are three stages of the data processing. The first stage is to process all raw data 
-to obtain calibrated 2d spectra. Then, the calibrated spectra can be processed further 
-by employing cosmic-ray removal, cropping of spectrum and sky-background subtraction.
-The third stage is extracting the 1d spectra from the 2d spectra, flux calibrating the 
-extracted products and combining the spectra (if several observations of same object are present).
+are three stages of the data processing, all explained in seperate figures.
 
-![\label{fig:raw_processing}](raw_processing.png)
-![\label{fig:further_processing}](further_processing.png)
-![\label{fig:1d_extraction}](1d_extraction.png)
+![Step 1: processing raw data. In this step all the raw observation and calibration frames are used to consruct calibrated 2d spectra. After this step, all procedures are performed directly on the calibrated 2d spectra.\label{fig:raw_processing}](raw_processing.png)
+![Step 2: further processing of the calibrated 2d spectra. In this step the user can deploy cosmic-ray removal, sky-background subtraction and crop the spectra. All procedures alter the 2d spectra in place. All of the steps are optional, but there are some level of dependencies - these are described in the figure. \label{fig:further_processing}](further_processing.png)
+![Step 3: Flux calibration. In this step, 1d spectra are extracted from the calibrated 2d spectra, flux calibrated, and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
 ![\label{fig:legend}](legend.png)
 
 
