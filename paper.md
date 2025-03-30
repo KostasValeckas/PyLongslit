@@ -145,7 +145,7 @@ PypeIt: https://sid.erda.dk/share_redirect/efiQfMWqqe
 As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
 simplicity over high precision. Furthermore, the pipeline is designed to be 
 **instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
-is written with focus on **loose-coupling**, and therefore the pipeline code can also be used 
+is written with focus on **loose-coupling**, and therefore the pipeline code can be used 
 as a starting-point for an instrument-specific pipeline.
 
 [^4]: https://www.not.iac.es/instruments/alfosc/
