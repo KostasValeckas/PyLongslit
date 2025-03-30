@@ -133,7 +133,8 @@ for both the extracted spectrum and the noise estimation. For NOT ALFOSC data,
 we see some deviation in the error magnitude and error related to strong sky-lines.
 This is due to skipping modelled sky subtraction in the PyLongslit run,  as the
 A-B sky background subtraction was sufficient by itself. We calculate the noise
-numerically for a cut of the spectrum where the flux is somewhat constant to confirm:
+numerically for a cut of the spectrum where the flux is somewhat constant to confirm that
+the PyLongslit noise indeed is smaller in magnitude:
 
 ![Numerical noise comparison for NOT ALFOSC observation of SDSS_J213510+2728.\label{fig:alfosc_zoom}](not_zoom.png)
 
