@@ -67,7 +67,7 @@ detector calibrations [@handbook] [@Howell_2006], cosmic-ray subtraction [@cr_1]
 
 # Statement of need
 
-A natural approach when developing data-precessing pipelines is to seek for precision and automation. The trade-off for this 
+A natural approach when developing data-processing pipelines is to seek for precision and automation. The trade-off for this 
 is code complexity and "black-box" solutions, where the process of the pipeline is often masked, and 
 the quality-assessment output is made under the assumption that the user knows how to interpret it. 
 In research, this is a reasonable trade-off, as a certain level of user-skill and experience can be assumed. However, 
@@ -79,13 +79,13 @@ are new to spectroscopic data processing. Furthermore, we hope that
 the simple coding style will invite users of all skill-levels to contribute to the code.
 
 An early beta-version of the software was user-tested during the Nordic Optical Telescope[^1] IDA summer-course 
-2024[^2], where all student groups were able to follow the documentation and succesfully process data 
+2024[^2], where all student groups were able to follow the documentation and successfully process data 
 without any significant assistance. 
 
 During the development of software it became apparent that the manual nature of the pipeline is 
 also useful for observations where automated pipelines might fail. The PyLongslit pipeline can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
 detector. This is especially useful for objects
-that have low signal-to-noise ratio, or where several objects are very close to each other on the detector. Futhermore, extraction can be performed with either optimal extraction methods [@Horne_1986], 
+that have low signal-to-noise ratio, or where several objects are very close to each other on the detector. Furthermore, extraction can be performed with either optimal extraction methods [@Horne_1986], 
 or by summing detector counts for a box-like object shape [@photutils] (this can be useful 
 for emission-line dominated objects).    
 
@@ -99,18 +99,18 @@ for emission-line dominated objects).
 
 The figures below describe the pipeline structure. The inspiration for the pipeline 
 architecture is taken from the very popular (but no longer maintained) IRAF [@IRAF]. In a broad sense, there
-are three stages of the data processing, all explained in seperate figures. The diamond shapes in the figures represent different pipeline routines that 
-are called directly from the command line, solid arrows are hard-dependencies, dashed arrows are soft-dependencies and the rectangles represent input files 
+are three stages of the data processing, all explained in separate figures. The diamond shapes in the figures represent different pipeline routines that 
+are called directly from the command line, solid arrows are hard-dependencies (must-have), dashed arrows are soft-dependencies (can use) and the rectangles represent input files 
 and pipeline products.
 
-![Step 1: Processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra, and the raw frames are no longer used.\label{fig:raw_processing}](raw_processing.png)
+![Step 1 - processing raw data. In this step, all the raw observation and calibration frames are used to construct calibrated 2D spectra. After this step, all procedures are performed directly on the calibrated 2D spectra, and the raw frames are no longer used.\label{fig:raw_processing}](raw_processing.png)
 
 
 
-![Step 2: Further processing of the calibrated 2D spectra. In this step, the user can deploy cosmic-ray removal, sky-background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some level of dependencies—these are described in the figure.\label{fig:further_processing}](further_processing.png)
+![Step 2 - further processing of the calibrated 2D spectra. In this step, the user can deploy cosmic-ray removal, sky-background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some dependencies — these are described in the figure.\label{fig:further_processing}](further_processing.png)
 
 
-![Step 3: Flux calibration. In this step, 1D spectra are extracted from the calibrated 2D spectra, flux calibrated, and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
+![Step 3 - 1d spectrum extraction. In this step, objects are traced, extracted, flux calibrated and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
 
 The pipeline is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
@@ -129,7 +129,10 @@ semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [
 ![NOT ALFOSC observation of SDSS_J213510+2728.\label{fig:alfosc}](alfosc_comp.png)
 
 We see good agreement between the two pipelines on both axes, 
-for both the extracted spectrum and the noise estimation.
+for both the extracted spectrum and the noise estimation. For NOT ALFOSC data, 
+we see some deviation in the error magnitude and error related to strong sky-lines.
+This is due to skipping modelled sky subtraction in the PyLongslit run,  as the
+A-B sky background subtraction was sufficient by itself.
 
 We disclose the data and parameters used for both pipeline executions. 
 
