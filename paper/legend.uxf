@@ -1,0 +1,7 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>Relation</id><coordinates><x>310</x><y>740</y><w>130</w><h>40</h></coordinates><panel_attributes>lt=&lt;-
+Dependency</panel_attributes><additional_attributes>110;20;10;20</additional_attributes></element><element><id>UMLSpecialState</id><coordinates><x>130</x><y>700</y><w>150</w><h>100</h></coordinates><panel_attributes>
+Pipeline procedure
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>740</y><w>170</w><h>40</h></coordinates><panel_attributes>lt=&lt;.
+Optional step</panel_attributes><additional_attributes>150;20;10;20</additional_attributes></element><element><id>UMLState</id><coordinates><x>640</x><y>740</y><w>190</w><h>40</h></coordinates><panel_attributes>
+Input files / pipeline products
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
