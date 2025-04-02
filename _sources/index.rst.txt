@@ -6,6 +6,15 @@
 PyLongslit's documentation page
 ======================================
 
+.. image:: https://joss.theoj.org/papers/81b63ae8448434cef0857dd835f1dcc1/status.svg
+   :target: https://joss.theoj.org/papers/81b63ae8448434cef0857dd835f1dcc1
+
+.. image:: https://zenodo.org/badge/DOI/10.5281/zenodo.15091603.svg
+   :target: https://doi.org/10.5281/zenodo.15091603
+
+.. image:: https://img.shields.io/badge/arXiv-astro--ph-blue
+   :target: https://arxiv.org/abs/2504.00973
+
 
 PyLongslit is a simple manual Python pipeline for processing of astronomical long-slit spectra 
 recorded with CCD detectors. At the current version, the software can produce following products:
@@ -55,6 +64,27 @@ please know that the software is not designed/tested for data does not meet the 
    support to users who are struggling with the software to our best ability.*
 
 
+**Citing the software**
+
+If you use PyLongslit in your research, please cite the software using the following:
+
+*Valeckas, K., Fynbo, J., Krogager, J.-K., & Elm Heintz, K. (2025). PyLongslit. Zenodo. https://doi.org/10.5281/zenodo.15091602*
+
+Bibtex:
+
+
+.. code:: 
+
+   @misc{valeckas2025pylongslit,
+      author    = {Valeckas, K. and Fynbo, J. and Krogager, J.-K. and Elm Heintz, K.},
+      title     = {PyLongslit},
+      year      = {2025},
+      publisher = {Zenodo},
+      doi       = {10.5281/zenodo.15091602},
+      url       = {https://doi.org/10.5281/zenodo.15091602}
+   }
+
+-----------------------------------------------
 
 In this documentation, we provide guidance on installation and usage of the software.
 
