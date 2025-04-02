@@ -22,16 +22,16 @@ authors:
 
 
 affiliations:
- - name: Niels Bohr Institute, Copenhagen University
+ - name: Niels Bohr Institute, Copenhagen University, Denmark
    index: 1
   
 # - name: Nordic Optical Telescope
 #   index: 2
 
- - name: Cosmic Dawn Center, Niels Bohr Institute, Copenhagen University
+ - name: Cosmic Dawn Center, Niels Bohr Institute, Copenhagen University, Denmark
    index: 2
 
- - name: Centre de Recherche Astrophysique de Lyon
+ - name: Centre de Recherche Astrophysique de Lyon, France
    index: 3
 
 date: 27 March 2025
@@ -62,8 +62,8 @@ pipeline can produce the following output:
 
 
 The products are obtained by performing standard procedures for
-detector calibrations [@handbook] [@Howell_2006], cosmic-ray subtraction [@cr_1] [@cr_2]
-, and 1D spectrum extraction [@Horne_1986] [@photutils].   
+detector calibrations [@handbook ; @Howell_2006], cosmic-ray subtraction [@cr_1 ; @cr_2]
+, and 1D spectrum extraction [@Horne_1986 ; @photutils].   
 
 # Statement of need
 
@@ -78,8 +78,8 @@ to create a robust and transparent pipeline, where every step of the execution i
 are new to spectroscopic data processing. Furthermore, we hope that 
 the simple coding style will invite users of all skill-levels to contribute to the code.
 
-An early beta-version of the software was user-tested during the Nordic Optical Telescope[^1] IDA summer-course 
-2024[^2], where all student groups were able to follow the documentation and successfully process data 
+An early beta-version of the software was user-tested during the [Nordic Optical Telescope](https://www.not.iac.es/) [IDA summer-course 
+2024](https://phys.au.dk/ida/events/not-summer-school-2024), where all student groups were able to follow the documentation and successfully process data 
 without any significant assistance. 
 
 During the development of software it became apparent that the manual nature of the pipeline is 
@@ -88,11 +88,6 @@ detector. This is especially useful for objects
 that have low signal-to-noise ratio, or where several objects are very close to each other on the detector. Furthermore, extraction can be performed with either optimal extraction methods [@Horne_1986], 
 or by summing detector counts for a box-like object shape [@photutils] (this can be useful 
 for emission-line dominated objects).    
-
-
-[^1]:  https://www.not.iac.es/
-[^2]: https://phys.au.dk/ida/events/not-summer-school-2024
-
 
 
 # Pipeline
@@ -114,15 +109,13 @@ and pipeline products.
 
 The pipeline is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
-file are described in the documentation [^3].
-
-[^3]: https://kostasvaleckas.github.io/PyLongslit/index.html
+file are described in the [documentation](https://kostasvaleckas.github.io/PyLongslit/index.html).
 
 
 # Evaluation
 
-To test the pipeline for correctness, we run the pipeline on data from two long-slit instruments: NOT ALFOSC[^4] and GTC OSIRIS[^5], and compare the results with the results from the well-established, 
-semi-automated PypeIt Python pipeline  [@pypeit:joss_pub] [@pypeit:joss_arXiv] [@pypeit:zenodo]:
+To test the pipeline for correctness, we run the pipeline on data from two long-slit instruments: [NOT ALFOSC](https://www.not.iac.es/instruments/alfosc/) and [GTC OSIRIS](https://www.gtc.iac.es/instruments/osiris/), and compare the results with the results from the well-established, 
+semi-automated PypeIt Python pipeline  [@pypeit:joss_pub ; @pypeit:joss_arXiv ; @pypeit:zenodo]:
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
 
@@ -151,9 +144,6 @@ simplicity over high precision. Furthermore, the pipeline is designed to be
 **instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
 is written with focus on **loose-coupling**, and therefore the pipeline code can be used 
 as a starting-point for an instrument-specific pipeline.
-
-[^4]: https://www.not.iac.es/instruments/alfosc/
-[^5]: https://www.gtc.iac.es/instruments/osiris/
 
 
 # Acknowledgements
