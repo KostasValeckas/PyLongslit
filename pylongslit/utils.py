@@ -76,7 +76,7 @@ class PyLongslit_frame:
 
         # Write the HDUList to a FITS file
 
-        hdulist.writeto(self.path() + ".fits", overwrite=True)
+        hdulist.writeto(self.path() + ".fits", output_verify="silentfix+ignore", overwrite=True)
 
         logger.info(f"File written to {self.path()}.fits")
 
@@ -1183,14 +1183,14 @@ def get_reduced_frames(only_science=False):
         logger.warning("Science extraction is set to be skipped in the config file.")
         logger.warning("Will only extract standard star spectra.")
 
-        reduced_files = get_file_group("reduced_std")
+        reduced_files = get_file_group("reduced_standard")
 
     else:
 
         reduced_files = get_file_group("reduced_science", "reduced_standard")
 
     if len(reduced_files) == 0:
-        logger.error("No reduced files found.")
+        logger.warning("No reduced files found.")
         logger.error("Run the reduction procedure first.")
         exit()
 
