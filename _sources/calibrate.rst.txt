@@ -14,7 +14,7 @@ The routine is called by the command:
 
 .. code-block:: bash
 
-    pylongslit_flux_calibrate PATH_TO_CONFIG_FILE
+    pylongslit_flux PATH_TO_CONFIG_FILE
 
 
 The algorithm for fluxing is as follows:
