@@ -23,7 +23,7 @@ The routine is called by the command:
 
 .. code-block:: bash
 
-    pypeit_objtrace PATH_TO_CONFIG_FILE
+    pylongslit_objtrace PATH_TO_CONFIG_FILE
 
 The routine will fit a user chosen profile to the object in the 2D spectrum.
 There are a few interactive steps in the routine. 
@@ -195,7 +195,7 @@ The manual tracing is called by the command:
 
 .. code-block:: bash
 
-     pylongslit_objtrace_manual PATH_TO_CONFIG_FILE
+    pylongslit_objtrace_manual PATH_TO_CONFIG_FILE
 
 This will open an interactive plot where you can either skip the object by 
 closing the plot, or trace by hoovering the cursor over the object and clicking
