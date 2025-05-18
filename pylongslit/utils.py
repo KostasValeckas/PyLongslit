@@ -801,6 +801,8 @@ def refine_obj_center(x, slice, clicked_center):
     Try a simple numerical estimation of the object center, and check
     if it is not a nan value. If it is, return the clicked center.
 
+    Also checls if the estimated center is withing +/- 3 FWHM of the user-clicked center.
+
     Used it in the `trace_sky` method and object tracing procedure in general.
 
     Parameters
@@ -820,6 +822,10 @@ def refine_obj_center(x, slice, clicked_center):
         The refined object center.
     """
 
+    from pylongslit.parser import trace_params
+
+    fwhm_guess = trace_params["object"]["fwhm_guess"]
+
     # assume center is at the maximum of the slice
     center = x[np.argmax(slice)]
 
@@ -830,6 +836,10 @@ def refine_obj_center(x, slice, clicked_center):
     # if it is an inf value, return the clicked center
     if np.isinf(center):
         return
+    
+    # check if it is within +/- 3 FWHM of the clicked center
+    if abs(center - clicked_center) > 3 * fwhm_guess:
+        return clicked_center
 
     return center
 
