@@ -436,7 +436,8 @@ def estimate_spacial_response(medianflat):
                     label="Fit with R2: {:.3f}".format(R2),
                     c="red" if R2 < R2_thresh else "black",
                 )
-                error[spectral_pixel, :] = RMS
+                #TODO is the error addition here needed?
+                #error[spectral_pixel, :] = RMS
 
         if spectral_pixel in indices_to_plot:
             if plot_num <= 4:
