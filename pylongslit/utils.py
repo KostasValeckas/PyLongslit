@@ -250,7 +250,7 @@ class PyLongslit_frame:
             exit()
 
         # Remove the file extension, as the class expects it to be without it
-        filename = filename.split(".")[0]
+        filename = filename.split(".fits")[0]
 
 
 
