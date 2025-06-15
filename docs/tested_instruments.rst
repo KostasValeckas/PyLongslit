@@ -1,7 +1,7 @@
 .. _tested_instruments:
 
-Tested Instruments
-==================
+Tested Instruments and Configurations
+=====================================
 
 As described in the :ref:`pipeline overview <index>`, the pipeline is designed 
 to be instrument-independent, as long as some primary assumptions are met 
@@ -18,25 +18,68 @@ in hope that these will be useful for users of the software.
 
 .. list-table::
     :header-rows: 1
-    :widths: 25 15 25 20 15
+    :widths: 25 25 25 25 25 25
 
     * - Instrument
+      - Telescope
       - Disperser
       - Pixtable (Initial Lines)
       - Extinction Curve
       - Configuration File
-    * - ALFOSC (Nordic Optical Telescope)
-      - SX-Grism1
-      - pixtable_sx1000.fits
-      - extcurve_sx1000.dat
-      - `config_alfosc.yaml <configs/config_alfosc.yaml>`__
-    * - AstroCam
-      - AC-Prism2
-      - pixtable_ac200.fits
-      - extcurve_ac200.dat
-      - `config_astrocam.yaml <configs/config_astrocam.yaml>`__
-    * - OptiScope
-      - OS-Grating3
-      - pixtable_os500.fits
-      - extcurve_os500.dat
-      - `config_optiscope.yaml <configs/config_optiscope.yaml>`__
+
+    * - ALFOSC
+      - Nordic Optical Telescope
+      - Grism #4
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - ALFOSC
+      - Nordic Optical Telescope
+      - Grism #18
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - ALFOSC
+      - Nordic Optical Telescope
+      - Grism #19
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - ALFOSC
+      - Nordic Optical Telescope
+      - Grism #20
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - OSIRIS
+      - Gran Telescopio Canarias
+      - R1000B
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - OSIRIS
+      - Gran Telescopio Canarias
+      - R1000R
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - OSIRIS
+      - Gran Telescopio Canarias
+      - R1000I
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
+    * - FORS2
+      - Very Large Telescope
+      - 300I
+      - Link TBD
+      - LINK TBD
+      - LINK TBD
+
