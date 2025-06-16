@@ -37,7 +37,7 @@
 <span id="conf"></span><h1>Configuration file<a class="headerlink" href="#configuration-file" title="Link to this heading">¶</a></h1>
 <p>The configuration file is a <code class="docutils literal notranslate"><span class="pre">.json</span></code> file that contains all the parameters
 that are needed to run the software. The file is divided into sections,
-each corresponding to a different step in the pipeline.</p>
+each corresponding to a diffeConfigurationrent step in the pipeline.</p>
 <p>Every pipeline-command takes the confguration file as input. From the
 configuration file the software knows where to look for the data, what to do with it,
 and where to save the results. Every call has the following format:</p>
@@ -53,9 +53,11 @@ the command would be:</p>
 <p>When first seeing the configuration file, the many parameters can be overwhelming, but most of them are
 constant for a given instrument. This means that once you have set them up
 for a single successful run for your instrument, you can reuse most of the configuration file
-for future runs. Furthermore, most of parameters should be somewhat constant
-between different instruments. This means that for a new instrument, you can
-try to <strong>reuse the configuration file from the tutorials</strong>, and change out
+for future runs.</p>
+<p><strong>See the page on</strong> <a class="reference internal" href="tested_instruments.html#tested-instruments"><span class="std std-ref">already tested instruments</span></a>
+<strong>for configuration files that have been tested</strong> .</p>
+<p>For a new instrument, you can
+try to <strong>reuse a configuration file from another instrument</strong>, and change out
 only the parameters that are corrupting the run.</p>
 <p>The software has a method for checking the configuration file for errors
 (it checks if the provided file paths exist, the raw data directories have files in them, some sanity-checks
@@ -499,6 +501,7 @@ for every step):</p>
 <li class="toctree-l2 current"><a class="reference internal" href="getting_started.html#tutorial">Tutorial</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tested_instruments.html">Tested Instruments and Configurations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="special_use_cases.html">Special Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Interested in developing?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uncertainties.html">Note on how the software estimates uncertainties</a></li>
