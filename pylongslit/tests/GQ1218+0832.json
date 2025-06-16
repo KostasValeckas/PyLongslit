@@ -27,12 +27,12 @@
     },
 
     "bias": {
-        "bias_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/bias",
+        "bias_dir": "./PyLongslit_dev-main/GQ1218+0832/bias",
         "bootstrap_errors": true
     },
 
     "flat": {
-        "flat_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/flat",
+        "flat_dir": "./PyLongslit_dev-main/GQ1218+0832/flat",
         "bootstrap_errors": false,
         "skip_spacial": false,
         "knots_spectral_bspline": 70,
@@ -43,7 +43,7 @@
     },
 
     "output": {
-        "out_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/output"
+        "out_dir": "./PyLongslit_dev-main/GQ1218+0832/output"
 
     },
 
@@ -77,23 +77,23 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/object",
+        "science_dir": "./PyLongslit_dev-main/GQ1218+0832/object",
         "exptime": 1000,
         "airmass": 1.8
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/stds",
+        "standard_dir": "./PyLongslit_dev-main/GQ1218+0832/stds",
         "exptime": 25,
         "airmass": 1.20609883319018,
         "starname": "SPSTD_Feige110",
-        "flux_file_path": "/home/kostas/Documents/PyLongslit_dev/database/standard_stars/mfeige110.dat"
+        "flux_file_path": "./PyLongslit_dev-main/database/standard_stars/mfeige110.dat"
 
     },
 
     "arc" : {
-        "arc_dir": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/arc"
+        "arc_dir": "./PyLongslit_dev-main/GQ1218+0832/arc"
     },
 
     "combine_arcs" : {
@@ -106,7 +106,7 @@
         "arcline_start": 100,
         "arcline_end": 1980,
         "jump_tolerance": 0.3,
-        "center_guess_pixtable": "/home/kostas/Documents/PyLongslit_dev/database/pixtables/osiris_r1000b_hgar_ne_pixtable.dat",
+        "center_guess_pixtable": "./PyLongslit_dev-main/database/pixtables/osiris_r1000b_hgar_ne_pixtable.dat",
         "FWHM": 6,
         "TOL_MEAN": 35,
         "TOL_FWHM": 2,
@@ -165,8 +165,8 @@
     },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/out/manual_traces/obj_manual_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy.dat",
-        "skysubbed_frame_root": "/home/kostas/Documents/PyLongslit_dev/GQ1218+0832/out/skysub_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy_B.fits"
+        "archived_spec_root": "./PyLongslit_dev-main/GQ1218+0832/out/manual_traces/obj_manual_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy.dat",
+        "skysubbed_frame_root": "./PyLongslit_dev-main/GQ1218+0832/out/skysub_science_0004942528-20250102-OSIRIS-OsirisLongSlitSpectroscopy_B.fits"
     },
 
     "sensfunc": {
@@ -176,7 +176,7 @@
     },
 
     "flux_calib": {
-        "path_extinction_curve": "/home/kostas/Documents/PyLongslit_dev/database/extinction_curves/lapalma.dat"
+        "path_extinction_curve": "./PyLongslit_dev-main/database/extinction_curves/lapalma.dat"
     },
 
     "combine": {
