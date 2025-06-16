@@ -71,7 +71,7 @@ in hope that these will be useful for users of the software.
 
     * - OSIRIS
       - Gran Telescopio Canarias
-      - R1000I
+      - R2500I
       - Link TBD
       - LINK TBD
       - LINK TBD
