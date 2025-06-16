@@ -185,6 +185,8 @@ The file saving format is the same as in the :ref:`profile fitting procedure <pr
     the whole object. Smaller FWHM will result in less noise, but it will miss
     some of the object.
 
+.. _man_trace :
+
 Manual tracing
 --------------
 
