@@ -5,7 +5,7 @@ Configuration file
 
 The configuration file is a ``.json`` file that contains all the parameters
 that are needed to run the software. The file is divided into sections, 
-each corresponding to a diffeConfigurationrent step in the pipeline.
+each corresponding to a different step in the pipeline.
 
 Every pipeline-command takes the confguration file as input. From the 
 configuration file the software knows where to look for the data, what to do with it,

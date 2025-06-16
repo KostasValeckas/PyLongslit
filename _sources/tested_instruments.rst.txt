@@ -7,9 +7,9 @@ As described in the :ref:`pipeline overview <index>`, the pipeline is designed
 to be instrument-independent, as long as some primary assumptions are met 
 (see the :ref:`pipeline overview <index>` for details).
 
-However, the :ref:`configuration files <configuration_file>` for an instrument 
+However, the :ref:`configuration files <conf>` for an instrument 
 setup can be viewed as an instrument-implementation, as for a fixed 
-instrument setup, most of the parameters in the :ref:`configuration file <configuration_file>`
+instrument setup, most of the parameters in the :ref:`configuration file <conf>`
 will be constant and very little will need to be changed between different datasets.
 Furthermore, resources like the products of :ref:`initial arc line identification <identify>` and 
 :ref:`extinction curves <sensfunction>` can be re-used. We therefore provide an 
