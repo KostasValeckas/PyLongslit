@@ -1,4 +1,4 @@
-.. _configuration_file:
+.. _conf:
 
 Configuration file
 ==================
