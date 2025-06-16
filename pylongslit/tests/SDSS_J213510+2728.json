@@ -28,12 +28,12 @@
 
 
     "bias": {
-        "bias_dir": "./PyLongslit_dev-main/SDSS_J213510+2728/bias",
+        "bias_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/bias",
         "bootstrap_errors": false
     },
 
     "flat": {
-        "flat_dir": "./PyLongslit_dev-main/SDSS_J213510+2728/flats",
+        "flat_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/flats",
         "bootstrap_errors": false,
         "skip_spacial": false,
         "knots_spectral_bspline": 70,
@@ -45,7 +45,7 @@
     },
 
     "output": {
-        "out_dir": "./PyLongslit_dev-main/SDSS_J213510+2728/output"
+        "out_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output"
 
     },
 
@@ -58,9 +58,9 @@
         },
         "standard":{
             "frac": 0.3,
-            "objlim": 4,
-            "sigclip": 4.0,
-            "niter": 3
+            "objlim": 12,
+            "sigclip": 10.0,
+            "niter": 2
         }
     },
 
@@ -79,23 +79,23 @@
 
     "science" : {
         "skip_science": false,
-        "science_dir": "./PyLongslit_dev-main/SDSS_J213510+2728/science",
+        "science_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/science",
         "exptime": 400,
         "airmass": 1.20
     },
 
     "standard" : {
         "skip_standard": false,
-        "standard_dir": "./PyLongslit_dev-main/SDSS_J213510+2728/standard",
+        "standard_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/standard",
         "exptime": 30,
         "airmass": 1.0421315680187,
         "starname": "BD332642",
-        "flux_file_path": "./PyLongslit_dev-main/database/bd33a.oke"
+        "flux_file_path": "/home/kostas/Documents/PyLongslit_dev/database/standard_stars/bd33a.oke"
 
     },
 
     "arc" : {
-        "arc_dir": "./PyLongslit_dev-main/SDSS_J213510+2728/arcs"
+        "arc_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/arcs"
     },
 
     "combine_arcs" : {
@@ -108,7 +108,7 @@
         "arcline_start": 0,
         "arcline_end": 500,
         "jump_tolerance": 0.05,
-        "center_guess_pixtable": "./PyLongslit_dev-main/database/alfosc_grating4_hene_pixtable.dat",
+        "center_guess_pixtable": "/home/kostas/Documents/PyLongslit_dev/database/pixtables/alfosc_grating4_hene_pixtable.dat",
         "FWHM": 6,
         "TOL_MEAN": 2,
         "TOL_FWHM": 1,
@@ -161,8 +161,8 @@
     },
     
     "obj_trace_clone" : {
-        "archived_spec_root": "./PyLongslit_dev-main/SDSS_J213510+2728/output/obj_science_ALHh080251.dat",
-        "frame_root": "./PyLongslit_dev-main/SDSS_J213510+2728/output/reduced_science_ALHh080252.fits"
+        "archived_spec_root": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/obj_science_ALHh080251.dat",
+        "frame_root": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/reduced_science_ALHh080252.fits"
     },
 
     "sensfunc": {
@@ -172,7 +172,7 @@
     },
 
     "flux_calib": {
-        "path_extinction_curve": "./PyLongslit_dev-main/database/lapalma.dat"
+        "path_extinction_curve": "/home/kostas/Documents/PyLongslit_dev/database/extinction_curves/lapalma.dat"
     },
 
     "combine": {

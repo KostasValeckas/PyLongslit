@@ -23,63 +23,56 @@ in hope that these will be useful for users of the software.
     * - Instrument
       - Telescope
       - Disperser
-      - Pixtable (Initial Lines)
+      - Pixtable (Initial Arc Lines Guess)
       - Extinction Curve
-      - Configuration File
+      - Configuration File Example
 
     * - ALFOSC
       - Nordic Optical Telescope
       - Grism #4
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating4_hene_pixtable.dat>`__ 
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__ 
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/ALFOSC/grism4.json>`__
 
     * - ALFOSC
       - Nordic Optical Telescope
       - Grism #18
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating18_thar_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/ALFOSC/grism18.json>`__
 
     * - ALFOSC
       - Nordic Optical Telescope
       - Grism #19
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_thar_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/ALFOSC/grism19.json>`__
 
     * - ALFOSC
       - Nordic Optical Telescope
       - Grism #20
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating20_thar_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/ALFOSC/grism20.json>`__
 
     * - OSIRIS
       - Gran Telescopio Canarias
       - R1000B
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/osiris_r1000b_hgar_ne_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/OSIRIS/r1000b.json>`__
 
     * - OSIRIS
       - Gran Telescopio Canarias
       - R1000R
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
-
-    * - OSIRIS
-      - Gran Telescopio Canarias
-      - R2500I
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/OSIRIS_R1000R_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/OSIRIS/r1000r.json>`__
 
     * - FORS2
       - Very Large Telescope
       - 300I
-      - Link TBD
-      - LINK TBD
-      - LINK TBD
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/fors2_test_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/paranal.dat>`__ `Source <https://www.aanda.org/articles/aa/full_html/2011/03/aa15537-10/T4.html>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/FORS2/300i.json>`__
 
