@@ -5,7 +5,7 @@ Configuration file
 
 The configuration file is a ``.json`` file that contains all the parameters
 that are needed to run the software. The file is divided into sections, 
-each corresponding to a different step in the pipeline.
+each corresponding to a diffeConfigurationrent step in the pipeline.
 
 Every pipeline-command takes the confguration file as input. From the 
 configuration file the software knows where to look for the data, what to do with it,
@@ -26,9 +26,13 @@ the command would be:
 When first seeing the configuration file, the many parameters can be overwhelming, but most of them are 
 constant for a given instrument. This means that once you have set them up
 for a single successful run for your instrument, you can reuse most of the configuration file
-for future runs. Furthermore, most of parameters should be somewhat constant 
-between different instruments. This means that for a new instrument, you can
-try to **reuse the configuration file from the tutorials**, and change out
+for future runs.
+
+**See the page on** :ref:`already tested instruments <tested_instruments>`
+**for configuration files that have been tested** .
+
+For a new instrument, you can
+try to **reuse a configuration file from another instrument**, and change out
 only the parameters that are corrupting the run.
 
 The software has a method for checking the configuration file for errors 
