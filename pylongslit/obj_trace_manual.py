@@ -37,6 +37,7 @@ def find_obj_frame_manual(filename, params, figsize=(10, 6)):
 
     # plot title here fore more readable code
     title = (
+        f"Manual Object Tracing for {filename}\n"
         "Hover over the object centers and press '+' to add, '-' to delete last point,\n"
         "'h' to toggle histogram normalization, 'c' to change colormap, 'q' to skip.\n"
         'Close the plot when done ("q"). If no points are clicked, the frame will be skipped.'
