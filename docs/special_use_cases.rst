@@ -68,6 +68,7 @@ The folloing describes how to extract distinct 1d spectra of very closely spaced
 6. **Lastly** :ref:`combine the fluxed spectra <combine_spec>` **according to the distinct sources**.
 
     For the example above with distinct sources A and B, the relevant part of the :ref:`configuration file <conf>` would look like this:
+    
     .. code:: 
 
         "combine": {
