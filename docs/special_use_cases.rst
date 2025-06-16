@@ -12,7 +12,7 @@ Extracting closely spaced spectra
 With a longslit instrument, it is possible to obtain distinct spectra of closely 
 spaced sources within the same object, such as lenssed quasars. The spectra in such cases are placed so 
 closely that automatic modelling/fitting routines will sometimes fail. The software can deal with such cases, but a fair amount of manual work is required.
-The folloing describes how to extract distinct 1d spectra of very closely spaced sources. 
+The following describes how to extract distinct 1d spectra of very closely spaced sources. 
 
 .. note::
     Before you execute the following steps, make sure you have tried to use the software
@@ -68,7 +68,7 @@ The folloing describes how to extract distinct 1d spectra of very closely spaced
 6. **Lastly** :ref:`combine the fluxed spectra <combine_spec>` **according to the distinct sources**.
 
     For the example above with distinct sources A and B, the relevant part of the :ref:`configuration file <conf>` would look like this:
-    
+
     .. code:: 
 
         "combine": {
