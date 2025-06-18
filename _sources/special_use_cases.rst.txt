@@ -72,6 +72,6 @@ The following describes how to extract distinct 1d spectra of very closely space
     .. code:: 
 
         "combine": {
-            "object_A": ["reduced_science_exposure_1_A.fits", "reduced_science_exposure_2_A.fits", "reduced_science_exposure_3_A.fits"],
-            "object_B": ["reduced_science_exposure_1_B.fits", "reduced_science_exposure_2_B.fits", "reduced_science_exposure_3_B.fits"]
+            "object_A": ["exposure_1_A.fits", "exposure_2_A.fits", "exposure_3_A.fits"],
+            "object_B": ["exposure_1_B.fits", "exposure_2_B.fits", "exposure_3_B.fits"]
         }
