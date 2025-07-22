@@ -91,6 +91,17 @@ starting from 1 and increasing by 1 for each pair (1,2,3...). This helps the sof
 to keep track of the pairs. The A and B files should be the filenames of the reduced files 
 (their raw filenames).
 
+.. note:: 
+    If the frames are taken with the telescope pointing far down from zenith, the
+    airmass (and thereby instensity of the sky background) can change significantly
+    between even subsequent frames. In this case, one of the subtracted frames will have a non-negligible
+    negative sky background, and the other a non-negligible positive sky background. In principle, 
+    this effect will even out when :ref:`combinning the fluxed spectra <combine_spec>`, but
+    this might still cause issues in the pipeline steps in-between the A-B subtraction
+    and the combination. If you have frames with high airmass, you might 
+    want to consider deploying the :ref:`modelled sky background subtraction <sky>`
+    only. What is best to do can always be determined by trial and error.
+
 For users new to data reduction - short introduction to A-B background subtraction
 ------------------------------------------------------------------------------------------
 
