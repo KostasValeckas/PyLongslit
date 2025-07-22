@@ -13,7 +13,7 @@ import warnings
 import astropy.modeling.fitting
 from scipy.interpolate import make_lsq_spline, BSpline
 from astropy.modeling import Fittable1DModel, Parameter
-
+from astropy.modeling.models import Const1D
 
 class Cauchy1D(Fittable1DModel):
     """
@@ -92,7 +92,7 @@ def estimate_signal_to_noise(data, fitted_amplitude, sky_left, sky_right):
     return fitted_amplitude / noise
 
 
-def find_obj_one_column(obj_x, obj_val, refined_center, params):
+def find_obj_one_column(obj_x, obj_val, refined_center, params, background_subtracted=False):
     """
     Performs a Gaussian fit to a single column of the detector image to
     estimate the object center and FWHM.
@@ -112,6 +112,11 @@ def find_obj_one_column(obj_x, obj_val, refined_center, params):
         A dictionary containing the fit parameters - this is the dictionary
         that is fetched directly from the configuration file (['trace']['object']
         or ['trace']['standard'].
+
+    background_subtracted : bool, optional
+        A boolean indicating whether the data is background subtracted.
+        This matters for what model is used for fitting, as A-B subtraction
+        allows for negative values in the data.
 
     Returns
     -------
@@ -159,6 +164,11 @@ def find_obj_one_column(obj_x, obj_val, refined_center, params):
             },
         )
 
+        if background_subtracted:
+            # if the data is A-B subtracted, we add a constant offset to the model
+            constant_offset = Const1D(amplitude=0)  # Start with 0, let fitter determine
+            fit_model = fit_model + constant_offset 
+
     elif params["model"] == "Cauchy":
         # for Cauchy, the gamma is the FWHM/2
         gamma_interval = (
@@ -178,6 +188,11 @@ def find_obj_one_column(obj_x, obj_val, refined_center, params):
                 "gamma": gamma_interval,
             },
         )
+
+        if background_subtracted:
+            # if the data is A-B subtracted, we add a constant offset to the model
+            constant_offset = Const1D(amplitude=0)  # Start with 0, let fitter determine
+            fit_model = fit_model + constant_offset
 
     else:
 
@@ -773,6 +788,14 @@ def find_obj_frame(filename, spacial_center, params, figsize=(10, 6)):
     # get the frame data
     frame = PyLongslit_frame.read_from_disc(filename)
 
+    # check if A-B background subtraction was used (matters for fitting model)
+
+    if frame.header["BCGSUBBED"]:
+        background_subtracted = True
+    
+    else:
+        background_subtracted = False
+
     check_crr_and_sky(frame.header, filename)
 
     data = frame.data
@@ -848,20 +871,36 @@ def find_obj_frame(filename, spacial_center, params, figsize=(10, 6)):
         # perform the Gaussian fit
         try:
             g_fit, good_fit, R2 = find_obj_one_column(
-                obj_x, obj_val, refined_center, params
+                obj_x, obj_val, refined_center, params, background_subtracted
             )
         # TODO: make this more robust
         except TypeError:
             continue
 
         # extract the fit values used from the fitter:
-        center = g_fit.mean.value
-        # FWHM depends on the model used
-        FWHM = (
-            g_fit.gamma.value * 2
-            if params["model"] == "Cauchy"
-            else g_fit.stddev.value * gaussian_sigma_to_fwhm
-        )
+
+        # TODO using the constant offset changes the parameter names, so 
+        # the below is a bit hacky. Consider finding another solutio.
+
+        if background_subtracted:
+
+            center = g_fit.mean_0.value
+            # FWHM depends on the model used
+            FWHM = (
+                g_fit.gamma_0.value * 2
+                if params["model"] == "Cauchy"
+                else g_fit.stddev_0.value * gaussian_sigma_to_fwhm
+            )
+
+        else:
+            
+            center = g_fit.mean.value
+            # FWHM depends on the model used
+            FWHM = (
+                g_fit.gamma.value * 2
+                if params["model"] == "Cauchy"
+                else g_fit.stddev.value * gaussian_sigma_to_fwhm
+            )
 
         # check if the column is one of the QA columns. The complicated if statement
         # checks if the column is within the interval of +/- cut extension from the QA indices
