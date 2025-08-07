@@ -644,7 +644,7 @@ def fit_distribution_parameter(
             y_fit_values=param_fit_val,
             residuals=resid,
             x_label="Spectral Pixel",
-            y_label="Counts (ADU)",
+            y_label="Spatial Pixel",
             legend_label=f"Individually fitted {parameter}'s",
             title=f"{parameter} fitting QA for {filename}.\n Ensure that the residuals are random and the fit is generally correct."
             f"\nIf not, adjust the fit parameters in the config file. Current fit order is {fit_degree}.",
