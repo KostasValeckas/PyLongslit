@@ -13,7 +13,8 @@ Jens-Kristian Krogager for the `PyNOT software <https://github.com/jkrogager/PyN
 
 **This step is by far the most time-consuming for the user, as 
 a fair amount of user work is needed. Expect this to be challenging
-at first, if you have not tried this type of routine before.**
+at first, if you have not tried this type of routine before. Feel free to re-use 
+the** :ref:`already made tables <tested_instruments>`.
 
 For this procedure, you will need to acquire a calbrated arc lamp spectrum for
 your instrument (these will also differ for every different disperser used for
