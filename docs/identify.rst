@@ -36,7 +36,7 @@ the beginning of the list looks like this:
 You can see the full list at `<https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_he_ne_vac.dat>`_.
 
 This line list is taken from the same link as the arc lamp maps, and converted
-from air to vacuum wavelentghs. As user you can decide yourself whether to use
+from air to vacuumwavelengths. As user you can decide yourself whether to use
 the air or vacuum line wavelengths, just know that your end product will also
 be in the same system.
 
@@ -75,7 +75,7 @@ reference spectrum, taken from `<https://www.not.iac.es/instruments/alfosc/lamps
     :width: 100%
     :align: center
 
-Here there is a small offset in wavelentghs between the reference spectrum 
+Here there is a small offset inwavelengths between the reference spectrum 
 (lowest picture) and the line list (upper left corner) - this is beacause we
 use vacuum wavelengths, while the reference spectrum is in air wavelengths.
 
