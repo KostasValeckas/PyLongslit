@@ -36,8 +36,8 @@ the beginning of the list looks like this:
 You can see the full list at `<https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_he_ne_vac.dat>`_.
 
 This line list is taken from the same link as the arc lamp maps, and converted
-from air to vacuumwavelengths. As user you can decide yourself whether to use
-the air or vacuum line wavelengths, just know that your end product will also
+from air to vacuum . As user you can decide yourself whether to use
+the air or vacuum line , just know that your end product will also
 be in the same system.
 
 The application is called by:
@@ -75,9 +75,9 @@ reference spectrum, taken from `<https://www.not.iac.es/instruments/alfosc/lamps
     :width: 100%
     :align: center
 
-Here there is a small offset inwavelengths between the reference spectrum 
+Here there is a small offset in between the reference spectrum 
 (lowest picture) and the line list (upper left corner) - this is beacause we
-use vacuum wavelengths, while the reference spectrum is in air wavelengths.
+use vacuum , while the reference spectrum is in air .
 
 After you have found a handfull of lines, you can click on the `Fit` button to
 make a polynomial fit for a function that describes wavelength as a function of
