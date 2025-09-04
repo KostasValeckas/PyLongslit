@@ -11,3 +11,27 @@
 /pylongslit/tests/PyLongslit_dev-main
 /pylongslit/tests/__pycache__/
 docs/_build/
+/pylongslit/tools/__pycache__/
+depricated
+
+# not used now, but just in case
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.swp
+*.swo
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.env
+.venv/
+*.sqlite3
+*.db
+*.orig
+*.rej
+*.out
+*.ipynb_checkpoints
