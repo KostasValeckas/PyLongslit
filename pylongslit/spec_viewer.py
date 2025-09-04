@@ -133,7 +133,6 @@ def main():
         description="Run the pylongslit 2 d spectrum construction."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
-    # Add more arguments as needed
 
     args = parser.parse_args()
 
