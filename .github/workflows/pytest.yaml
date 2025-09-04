@@ -23,6 +23,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt  # Install dependencies from requirements.txt
         pip install pytest  # Ensure pytest is installed
+        pip install pytest-order  # Ensure pytest-order is installed
+        pip install requests  # Ensure requests is installed
 
     - name: Run tests
       run: |
