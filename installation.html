@@ -194,9 +194,10 @@ cloned by using git.</p>
 </div>
 <p>Then, when in <a class="reference internal" href="#venv"><span class="std std-ref">clean python 3.10 environment</span></a>,
 navigate to the directory where the software was downloaded (this is the directory with the file <cite>setup.py</cite> in it) and run the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>all<span class="o">]</span>
 </pre></div>
 </div>
+<p>This will install the software in “editable” mode. The flag <code class="docutils literal notranslate"><span class="pre">.[all]</span></code> ensures that all optional dependencies are also installed. These will allow you to update/build the documentation and run the test suite.</p>
 </section>
 </section>
 </section>
