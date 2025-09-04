@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.polynomial.chebyshev import chebfit, chebval
 import os
 import argparse
 
@@ -208,6 +209,7 @@ def main():
         description="Run the pylongslit manual object tracing procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
+    # Add more arguments as needed
 
     args = parser.parse_args()
 

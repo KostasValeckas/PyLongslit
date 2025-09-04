@@ -224,9 +224,7 @@ navigate to the directory where the software was downloaded (this is the directo
 
 .. code-block:: bash
 
-    pip install -e .[all]
+    pip install -e .
 
-
-This will install the software in "editable" mode. The flag ``.[all]`` ensures that all optional dependencies are also installed. These will allow you to update/build the documentation and run the test suite.
 
 
