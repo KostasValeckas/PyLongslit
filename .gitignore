@@ -10,3 +10,4 @@
 /pylongslit/tests/*.log
 /pylongslit/tests/PyLongslit_dev-main
 /pylongslit/tests/__pycache__/
+docs/_build/
