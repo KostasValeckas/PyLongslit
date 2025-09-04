@@ -489,7 +489,6 @@ def main():
         description="Run the pylongslit sky-subtraction procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
-    # Add more arguments as needed
 
     args = parser.parse_args()
 
