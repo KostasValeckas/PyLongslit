@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.interpolate import interp1d
 import argparse
 
@@ -264,7 +263,6 @@ def main():
         description="Run the pylongslit flux-calibration procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
-    # Add more arguments as needed
 
     args = parser.parse_args()
 
