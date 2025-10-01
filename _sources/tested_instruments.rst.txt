@@ -23,6 +23,7 @@ in hope that these will be useful for users of the software.
     * - Instrument
       - Telescope
       - Disperser
+
       - Pixtable (Initial Arc Lines Guess)
       - Extinction Curve
       - Configuration File Example
@@ -44,8 +45,9 @@ in hope that these will be useful for users of the software.
     * - ALFOSC
       - Nordic Optical Telescope
       - Grism #19
-      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_thar_pixtable.dat>`__
-      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link (ThAr) <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_thar_pixtable.dat>`_ `Link (HeNe) <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_hene_pixtable.dat>`_
+       
+      - `Link  <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
       - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/ALFOSC/grism19.json>`__
 
     * - ALFOSC
