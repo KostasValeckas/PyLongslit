@@ -86,8 +86,7 @@ During the development of software it became apparent that the manual nature of 
 also useful for observations where automated pipelines might fail. The PyLongslit pipeline can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
 detector. This is especially useful for objects
 that have low signal-to-noise ratio, or where several objects are very close to each other on the detector. Furthermore, extraction can be performed with either optimal extraction methods [@Horne_1986], 
-or by summing detector counts for a box-like object shape [@photutils] (this can be useful 
-for emission-line dominated objects).    
+or by summing detector counts for a box-like object shape [@photutils] (this can be useful for emission-line dominated objects).
 
 
 # Pipeline

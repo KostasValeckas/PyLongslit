@@ -15,10 +15,21 @@ for how it works.
 Downloading the tutorial data
 ----------------------------------------------------
 
+There are two tutorial datasets available. **Execution of either one is enough 
+to get familiar with the software.** The two datasets are:
 
-`Download As a File (ZIP) <https://github.com/KostasValeckas/PyLongslit_dev/archive/refs/heads/main.zip>`_
+`SDSS_J213510+2728 (from ALFOSC - Nordic Optical Telescope) (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/SDSS_J213510%2B2728>`_
 
-**Using git: (if you don't know what git is just download the ZIP from link above)** 
+
+`GQ1218+0832 (from OSIRIS - Gran Telescopio Canarias) (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/GQ1218%2B0832>`_
+
+To complete the tutorial, you will also need to use some complimentary files that 
+can be `downloaded here (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database>`_.
+
+
+**Using git (if you are not familiar with git, just download the ZIP from link above):** 
+
+You can download the entire tutorial and developtment repository using git.
 
 SSH (recommended if you plan on developing)...
 
@@ -39,19 +50,19 @@ Changing the file pathes in the configuration files
 As stated above, the configuration files for the tutorials have the parameters pre-set.
 **However**, you will need to change all the file pathes
 in the configuration file to match the location of the tutorial data on your
-computer. Everything in the pathes from ``PyLonsglit_dev/..`` will be correct,
-but you will need to change the path to the ``PyLongslit_dev`` folder to match
+computer. Everything in the pathes from ``SDSS_J213510+2728/..`` or ``GQ1218+0832/..`` will be correct,
+but you will need to change the path up to that point to match
 the location of the folder on your computer, i.e. the part marked
 with bold in the example below:
 
-   **/home/kostas/Documents/** PyLongslit_dev/SDSS_J213510+2728/arcs
+   **/home/kostas/Documents/PyLongslit_dev/** SDSS_J213510+2728/arcs
 
 For some systems, you will need 
 to change the forward slash ``/`` to a backslash ``\`` in the pathes.
 
 The above described changes can be made easily by using *find and replace* functionality in a text editor.
 
-The configuration files are placed as shown below:
+The configuration files in the tutorial and developer repository are placed as shown below:
 
 .. code-block:: bash
    :emphasize-lines: 3,5
