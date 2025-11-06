@@ -44,8 +44,14 @@ you can run the software without having to change anything to get a feel
 for how it works.</p>
 <section id="downloading-the-tutorial-data">
 <span id="tutorial-data"></span><h2>Downloading the tutorial data<a class="headerlink" href="#downloading-the-tutorial-data" title="Link to this heading">¶</a></h2>
-<p><a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/archive/refs/heads/main.zip">Download As a File (ZIP)</a></p>
-<p><strong>Using git: (if you don’t know what git is just download the ZIP from link above)</strong></p>
+<p>There are two tutorial datasets available. <strong>Execution of either one is enough
+to get familiar with the software.</strong> The two datasets are:</p>
+<p><a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/SDSS_J213510%2B2728">SDSS_J213510+2728 (from ALFOSC - Nordic Optical Telescope) (ZIP)</a></p>
+<p><a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/GQ1218%2B0832">GQ1218+0832 (from OSIRIS - Gran Telescopio Canarias) (ZIP)</a></p>
+<p>To complete the tutorial, you will also need to use some complimentary files that
+can be <a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database">downloaded here (ZIP)</a>.</p>
+<p><strong>Using git (if you are not familiar with git, just download the ZIP from link above):</strong></p>
+<p>You can download the entire tutorial and developtment repository using git.</p>
 <p>SSH (recommended if you plan on developing)…</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:KostasValeckas/PyLongslit_dev.git
 </pre></div>
@@ -59,17 +65,17 @@ for how it works.</p>
 <p>As stated above, the configuration files for the tutorials have the parameters pre-set.
 <strong>However</strong>, you will need to change all the file pathes
 in the configuration file to match the location of the tutorial data on your
-computer. Everything in the pathes from <code class="docutils literal notranslate"><span class="pre">PyLonsglit_dev/..</span></code> will be correct,
-but you will need to change the path to the <code class="docutils literal notranslate"><span class="pre">PyLongslit_dev</span></code> folder to match
+computer. Everything in the pathes from <code class="docutils literal notranslate"><span class="pre">SDSS_J213510+2728/..</span></code> or <code class="docutils literal notranslate"><span class="pre">GQ1218+0832/..</span></code> will be correct,
+but you will need to change the path up to that point to match
 the location of the folder on your computer, i.e. the part marked
 with bold in the example below:</p>
 <blockquote>
-<div><p><strong>/home/kostas/Documents/</strong> PyLongslit_dev/SDSS_J213510+2728/arcs</p>
+<div><p><strong>/home/kostas/Documents/PyLongslit_dev/</strong> SDSS_J213510+2728/arcs</p>
 </div></blockquote>
 <p>For some systems, you will need
 to change the forward slash <code class="docutils literal notranslate"><span class="pre">/</span></code> to a backslash <code class="docutils literal notranslate"><span class="pre">\</span></code> in the pathes.</p>
 <p>The above described changes can be made easily by using <em>find and replace</em> functionality in a text editor.</p>
-<p>The configuration files are placed as shown below:</p>
+<p>The configuration files in the tutorial and developer repository are placed as shown below:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>PyLongslit_dev
 ├──<span class="w"> </span>GQ1218+0832
 <span class="hll">│<span class="w">   </span>├──<span class="w"> </span>GQ1218+0832.json
