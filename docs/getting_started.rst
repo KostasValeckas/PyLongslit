@@ -44,13 +44,13 @@ SSH (recommended if you plan on developing)...
     git clone https://github.com/KostasValeckas/PyLongslit_dev.git
 
 
-Changing the file pathes in the configuration files
+Changing the file paths in the configuration files
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 As stated above, the configuration files for the tutorials have the parameters pre-set.
-**However**, you will need to change all the file pathes
+**However**, you will need to change all the file paths
 in the configuration file to match the location of the tutorial data on your
-computer. Everything in the pathes from ``SDSS_J213510+2728/..`` or ``GQ1218+0832/..`` will be correct,
+computer. Everything in the paths from ``SDSS_J213510+2728/..`` or ``GQ1218+0832/..`` will be correct,
 but you will need to change the path up to that point to match
 the location of the folder on your computer, i.e. the part marked
 with bold in the example below:
@@ -58,7 +58,7 @@ with bold in the example below:
    **/home/kostas/Documents/PyLongslit_dev/** SDSS_J213510+2728/arcs
 
 For some systems, you will need 
-to change the forward slash ``/`` to a backslash ``\`` in the pathes.
+to change the forward slash ``/`` to a backslash ``\`` in the paths.
 
 The above described changes can be made easily by using *find and replace* functionality in a text editor.
 
@@ -81,7 +81,7 @@ Tutorial
 
 You can now follow the steps described below to run the software on the tutorial data.
 
-You have to excecute the steps exactly in the order they are presented in the
+You have to execute the steps exactly in the order they are presented in the
 contents table below.
 
 
