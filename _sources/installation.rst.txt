@@ -17,7 +17,7 @@ The installation process consists of the following steps:
 2. :ref:`Install the software using pip <install>`.
 
 
-We provide both a quickgide for experienced python users and a more detailed guide for users who are new to Python environments.
+We provide both a quick guide for experienced python users and a more detailed guide for users who are new to Python environments.
 
 Lastly, we also describe how to download and  :ref:`install an editable
 version of the software <dev_install>` if you wish to contribute to the development of the software.
@@ -47,7 +47,7 @@ If you are unfamiliar with Python environments, see :ref:`our quick introduction
 Python environments <envs_quick_into>`. You can skip directly to :ref:`installing the software <install>` if you prefer to not use a clean environment - in that case you might experience
 software bugs due to version conflicts that are not accounted for in this documentation.
 
-**Using Anaconda (conda) (recommeded):**
+**Using Anaconda (conda) ( recommended):**
 
 To create a new virtual environment using Anaconda, run the following command in your terminal 
 (if you are using Windows, do this and all following from the Anaconda Prompt):
@@ -136,7 +136,7 @@ packages that you need for a specific application. This helps ensure that only t
 conflict with other applications on your system. Furtermore, this ensures that 
 updates to any packages do not break the application, as the environment will not be updated unless you explicitly update it.
 
-**Note:** The envirornment will need to be activated every time you open a new terminal.
+**Note:** The environment will need to be activated every time you open a new terminal.
 You can configure your terminal to automatically activate the environment upon startup. This will not be covered in this documentation - see documentation for your terminal for more information.
 
 **Example:**
