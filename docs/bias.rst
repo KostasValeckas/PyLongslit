@@ -96,10 +96,6 @@ need very high precission on the error, or if you know your detector has a
 stable bias level, you can mostly set ``"bootstrap_errors"`` to false. You can
 read more about how the software estimates errors in the :ref:`note on uncertainties <uncertainties>`.
 
-After you have produced the master bias frame, you can move on to setting up 
-files for dark current subtraction (this is optional, depending on your detector), 
-and flat-fielding - read more in the :ref:`dark current <dark>` and :ref:`flat-field <flat>` sections.
-
 For users new to data reduction - short introduction to detector bias
 ----------------------------------------------------------------------------
 
