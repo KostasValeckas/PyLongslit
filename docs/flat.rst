@@ -223,3 +223,14 @@ can be used to evaluate the difference in pixel-to-pixel sensitivity. This kind 
 flat-field. In practise, the procedure for flat-fielding the detector while performing spectroscopy is more complicated.
 From personal experience, the flat-fielding procedure is the most contraversial step in spectroscopic data reduction, as
 the idealogical assummption of uniform illumination is practically impossible to achieve.
+
+
+-----------------------
+
+:ref:`Wavelength Calibration <wavecalib>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Raw frame reduction <reduce>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

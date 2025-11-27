@@ -95,3 +95,13 @@ Then, the software will use ``"photutils.aperture.RectangularAperture"`` to sum 
 You can read the docs for the method at `photutils <https://photutils.readthedocs.io/en/2.0.2/api/photutils.aperture.RectangularAperture.html#photutils.aperture.RectangularAperture.do_photometry>`_.
 
 The spectra are then plotted and saved the same way as in the :ref:`optimal extraction <optimal>` routine.
+
+-----------------------
+
+:ref:`Object tracing <objtrace>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Estimating the sensitivity function <sensfunction>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

@@ -65,3 +65,11 @@ wavelength, flux, variance.
 
 The ``"file1.fits"`` etc. are the names of the raw observation files from which
 the 1-d spectra were extracted.
+
+-----------------------
+
+:ref:`Flux calibration <flux_calibrate>` ← Previous pipeline step  
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

@@ -159,3 +159,13 @@ in the spatial direction (see description of :ref:`line tilts <wavecalib>`).
 
 When you are done, you have to link the path to the pixel table to the
 ``center_guess_pixtable`` parameter, as the :ref:`wavelength calibration routine <wavecalib>` will need it.
+
+-----------------------
+
+:ref:`Combinning arc frames <combine_arcs>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Wavelength Calibration <wavecalib>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

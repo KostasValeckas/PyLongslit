@@ -96,6 +96,10 @@ need very high precission on the error, or if you know your detector has a
 stable bias level, you can mostly set ``"bootstrap_errors"`` to false. You can
 read more about how the software estimates errors in the :ref:`note on uncertainties <uncertainties>`.
 
+After you have produced the master bias frame, you can move on to setting up 
+files for dark current subtraction (this is optional, depending on your detector), 
+and flat-fielding - read more in the :ref:`dark current <dark>` and :ref:`flat-field <flat>` sections.
+
 For users new to data reduction - short introduction to detector bias
 ----------------------------------------------------------------------------
 
@@ -122,3 +126,12 @@ overall estimate for the frame. Therefore, **a combination of both the overscan
 and the master bias is preffered**. However, only using the bias frames should
 also be sufficient for most detectors. Only using the overscan is not allowed
 in the software, as the mean overscan completely neglects the 2D structure of the bias.
+
+
+-----------------------
+
+Next pipeline step → :ref:`Setting up for dark current subtraction <dark>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

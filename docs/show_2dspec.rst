@@ -27,3 +27,13 @@ normalize the 2D spectrum to see the structure more clearly:
 .. image:: pictures/2dspec.png
     :width: 100%
     :align: center
+
+-----------------------
+
+:ref:`Inspecting of reduced 2d spectra <2dspec>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Object tracing <objtrace>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

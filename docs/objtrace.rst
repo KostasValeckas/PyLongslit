@@ -220,3 +220,13 @@ All the parameters are the same as in the :ref:`profile fitting procedure <profi
 set to control the fitting.
 
 The file saving format is the same as in the :ref:`profile fitting procedure <profile>`.
+
+-----------------------
+
+:ref:`Inspecting of reduced 2d spectra <2dspec>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Extracting 1d spectra <extract_1d>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

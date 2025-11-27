@@ -8,6 +8,8 @@ Dark current subtraction
     It is possible that the dark current is negligible for your detector,
     and you can skip this step. Check the documentation of your instrument.
 
+    **Dark current subtraction is not performed in any of the tutorial data-sets.**
+
 The dark current estimation is implemented differently than rest of the 
 calibration steps, and **does not need to be called explicitly**.
 
@@ -56,3 +58,14 @@ is called the dark current, and is caused by thermal excitation of the electrons
 in the detector. The dark current is usually very low, but can be significant
 for long exposure times, specially for not-cooled CCD detectors. The dark current is estimated by taking a series of dark frames - frames with no incoming light with same exposure time as the observations. The dark current is then subtracted
 from the observations.
+
+-----------------------
+
+
+:ref:`Bias subtraction <bias>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Combinning arc frames <combine_arcs>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

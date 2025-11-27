@@ -203,3 +203,13 @@ In the software, the fit for :math:`S(\lambda)` is performed in (10-base) log-sp
 This is because the observed 1d-standard star spectrum in counts will still have 
 some artifacts such as absorption lines from the sky, and these might corrupt the fit. 
 Fitting in logarithmic space scales these artifacts down.
+
+-----------------------
+
+:ref:`Extracting 1d spectra <extract_1d>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Flux calibration <flux_calibrate>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

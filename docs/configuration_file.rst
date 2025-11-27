@@ -447,3 +447,9 @@ for every step):
 
         }
     }
+
+-----------------------    
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+First pipeline step → :ref:`Bias subtraction <bias>`
