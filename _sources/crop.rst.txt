@@ -37,3 +37,13 @@ for the GQ1218+0832 dataset is shown below as an example:
 .. image:: pictures/gtc_crop.png
     :width: 100%
     :align: center
+
+-----------------------
+
+:ref:`A-B background subtraction <ab>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Modelled sky-subtraction <sky>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

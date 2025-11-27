@@ -60,3 +60,13 @@ Furthermore, these parameters have to be set in the configuration file:
 You can not flux calibrate several frames with different exposure times or airmasses
 with the same call to this routine - but for frames that have same exposure time and
 (nearly) same airmass, you can flux calibrate them all at once.
+
+-----------------------
+
+:ref:`Estimating the sensitivity function <sensfunction>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Combining the spectra <combine_spec>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

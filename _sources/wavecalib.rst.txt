@@ -248,3 +248,14 @@ We evaluate the wavelength at pixel :math:`(x,y)` by :math:`\lambda = f(x - \Del
 .. image:: pictures/wave_solution.png
     :width: 100%
     :align: center
+
+-----------------------
+
+
+:ref:`Identifying arc lines <identify>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Flat-fielding <flat>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

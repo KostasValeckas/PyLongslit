@@ -83,3 +83,13 @@ raw arc lamp frame has a emission spectrum of one or several ions with known wav
 In this step the arc frames are
 combined to create a single master arc frame, so the wavelength calibration can be done
 on a single frame, instead of on each individual arc frame.
+
+-----------------------
+
+:ref:`Setting up for dark current subtraction <dark>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Identifying arc lines <identify>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

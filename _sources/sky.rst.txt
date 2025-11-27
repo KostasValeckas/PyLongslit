@@ -127,3 +127,13 @@ with the object spectrum. This background light covers
 the whole slit, and the bacground therefore shows itself as lines through the whole spatial direction
 (see above figures). The sky background consists both of strong sky lines (emission lines from the sky) and 
 a continuum background. These sky lines/background are mixed into the object signal, and must be removed.
+
+-----------------------
+
+:ref:`Cropping of 2d spectra <crop>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Inspecting of reduced 2d spectra <2dspec>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

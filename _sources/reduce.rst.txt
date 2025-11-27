@@ -66,3 +66,12 @@ The only aprameters that can alter the reduction routine are
         "skip_standard": false, # true if you are only reducing science frames
     },
 
+-----------------------
+
+:ref:`Flat-fielding <flat>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`Cosmic-ray removal <crr>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 

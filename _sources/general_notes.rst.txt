@@ -64,3 +64,9 @@ and pipeline products.
     :alt: Step 3 - 1D spectrum extraction
 
     Step 3 - 1D spectrum extraction. In this step, objects are traced, extracted, flux calibrated and combined (if several spectra of the same object exist).
+
+-----------------------    
+
+:ref:`General info on the configuration file <conf>` 
+
+First pipeline step → :ref:`Bias subtraction <bias>`

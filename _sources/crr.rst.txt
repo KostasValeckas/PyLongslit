@@ -98,3 +98,13 @@ very strong outliers, and they can corrupt fits, modelling and any statiscial ca
 are best removed from the data. Exposure time is the key element in whether cosmic rays are a problem or not - the longer the exposure
 time, the more likely a cosmic ray will hit the detector. Therefore, you must pay special attention to cosmic rays when reducing
 long exposure time frames - for shorter exposure times, cosmic rays will usually be very few (but still best removed).
+
+-----------------------
+
+:ref:`Raw frame reduction <reduce>` ← Previous pipeline step  
+
+Next pipeline step → :ref:`A-B background subtraction <ab>`
+
+:ref:`General Notes on using the pipeline <general_notes>` 
+
+:ref:`General info on the configuration file <conf>` 
