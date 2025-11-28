@@ -34,7 +34,7 @@ the beginning of the list looks like this:
    4027.32686731872 HeI
    4121.974633218378 HeI
 
-You can see the full list at `<https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_he_ne_vac.dat>`_.
+You can see the full list at `<https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/line_lists/alfosc_he_ne_vac.dat>`_.
 
 This line list is taken from the same link as the arc lamp maps, and converted
 from air to vacuum line wavelengths. As user you can decide yourself whether to use
