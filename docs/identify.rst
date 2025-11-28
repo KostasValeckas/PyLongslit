@@ -127,11 +127,12 @@ Press `File` -> `Save PixTable` and save the file.
 
 .. note::
 
-   For the tutorials of `SDSS_J213510+2728 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/alfosc_grating4_hene_pixtable.dat>`_ 
-   and `GQ1218+0832 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/osiris_r1000b_hgar_ne_pixtable.dat>`_ 
+   For the tutorials of `SDSS_J213510+2728 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating4_hene_pixtable.dat>`_ 
+   and `GQ1218+0832 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/osiris_r1000b_hgar_ne_pixtable.dat>`_ 
    , we have already identified the lines, so you have a starting point to work with. You can inspect the files by pressing 
    `File` -> `Load PixTable`. To proceed in the tutorial, 
-   you can either try to improve our fit, or move on directly using it. 
+   you can either try to improve our fit, or move on directly using it. All current identified lines for different instruments and their configurations 
+   can be found `here <https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database/pixtables>`_.
 
 Parameter options
 ------------------
