@@ -1370,7 +1370,7 @@ def plot_1d_spec_interactive_limits(
     (l,) = ax.plot(x, y, label=label, color="black")
     if y_error is not None:
         (l_error,) = ax.plot(
-            x, y_error, label=f"{label} Noise - 1 $\sigma$", color="red"
+            x, y_error, label=fr"{label} Noise - 1 $\sigma$", color="red"
         )
     plt.xlabel(x_label)
     plt.ylabel(y_label)
