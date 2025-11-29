@@ -43,7 +43,7 @@ normalization:
     :align: center
 
 Inspecting the arc map from `OSIRIS webpage <https://www.gtc.iac.es/instruments/osiris/media/R1000B.jpg>`_ ,
-it is able to see that overall pattern of the arc-lines is as expected:
+it is possible to see that overall pattern of the arc-lines is as expected:
 
 .. image:: pictures/R1000B_arc.jpg
     :width: 100%
