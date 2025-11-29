@@ -33,8 +33,8 @@ the SDSS_J213510+2728 dataset is shown below:
     :align: center
 
 Besides a clear reduction of the sky-background, the most important thing to ensure is that the object from the B frame (the negative) is
-not lying too close to the object in the A frame (the positive), such that some of the 
-A object signal is subtracted by the B object signal. The software takes a 
+not placed too close to the object in the A frame (the positive), such that some of the
+A object signal is subtracted by the B object signal. The software takes a
 sample of 1d-slices to help investigate this:
 
 .. image:: pictures/whole_AB_slice.png
