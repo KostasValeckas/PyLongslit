@@ -3,7 +3,7 @@
 Combining the spectra
 =====================
 
-This routine combine the :ref:`flux calibrated 1-d spectra <flux_calibrate>` 
+This routine combines the :ref:`flux calibrated 1-d spectra <flux_calibrate>` 
 into a single spectrum for the files specified in the configuration file.
 
 Quick start
@@ -58,7 +58,7 @@ The template is:
         ... 
     }   
 
-Where the object names are the names that will be given the combined spectra. 
+Where the object names are the names that will be given to the combined spectra. 
 These will be saved in the output directory specified in the configuration file, 
 with the name ``OBJECTNAME_combined.dat``. The files have the following format:
 wavelength, flux, variance. 
@@ -72,4 +72,4 @@ the 1-d spectra were extracted.
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

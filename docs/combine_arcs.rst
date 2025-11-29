@@ -1,7 +1,7 @@
 .. _combine_arcs:
 
-Combinning arc frames
-=====================
+Combining arc frames
+====================
 
 Quickstart
 -----------
@@ -20,17 +20,17 @@ the wavelength increasing from left to right - this is the default
 orientation for the rest of the software, after the raw data has been
 processed.
 
-Quality Assesment
+Quality Assessment
 ------------------
 
-The arc combinning procedure will show the final master arc upon exiting. You can 
+The arc combining procedure will show the final master arc upon exiting. You can 
 press ``h`` to normalize the master arc to emphasize the contrast
-between the arc lines and the background - however, this might exagerate the 
+between the arc lines and the background - however, this might exaggerate the 
 very faint lines to be more visible than they actually are. The documentation for your instrument
 should have a map of the expected arc lines and their wavelengths - you can use it
 to check if the arc lines are visible and the expected range of the detector 
 is covered (a common error is if a lamp from one ion is forgotten to be
-included in the input directory, meaning to a certain wavelength range is not being covered by the arc lines).
+included in the input directory, meaning a certain wavelength range is not being covered by the arc lines).
 The example below is from the example data set GQ1218+0832 from GTC OSIRIS both before and after 
 normalization:
 
@@ -43,7 +43,7 @@ normalization:
     :align: center
 
 Inspecting the arc map from `OSIRIS webpage <https://www.gtc.iac.es/instruments/osiris/media/R1000B.jpg>`_ ,
-it is a able to see that overall pattern of the arc-lines is as expected:
+it is able to see that overall pattern of the arc-lines is as expected:
 
 .. image:: pictures/R1000B_arc.jpg
     :width: 100%
@@ -53,7 +53,7 @@ it is a able to see that overall pattern of the arc-lines is as expected:
 Parameter options
 ------------------
 
-The relevant parameters for the arc combinning procedure are (with example values):
+The relevant parameters for the arc combining procedure are (with example values):
 
 .. code:: 
 
@@ -78,8 +78,8 @@ For users new to data reduction - short introduction to arc lamp frames
 
 Arc lamp frames are used to wavelength calibrate the detector,
 i.e. to assign a wavelength to each pixel in the detector. This procedure is 
-described in detail in the `wavelength calibration section <wavecalib>`_. Every 
-raw arc lamp frame has a emission spectrum of one or several ions with known wavelengths. 
+described in detail in the :ref:`wavelength calibration section <wavecalib>`. Every 
+raw arc lamp frame has an emission spectrum of one or several ions with known wavelengths. 
 In this step the arc frames are
 combined to create a single master arc frame, so the wavelength calibration can be done
 on a single frame, instead of on each individual arc frame.
@@ -92,4 +92,4 @@ Next pipeline step → :ref:`Identifying arc lines <identify>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

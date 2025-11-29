@@ -10,8 +10,8 @@ Extracting closely spaced spectra
 ---------------------------------
 
 With a longslit instrument, it is possible to obtain distinct spectra of closely 
-spaced sources within the same object, such as lenssed quasars. The spectra in such cases are placed so 
-closely that automatic modelling/fitting routines will sometimes fail. The software can deal with such cases, but a fair amount of manual work is required.
+spaced sources within the same object, such as lensed quasars. The spectra in such cases are placed so 
+closely that automatic modeling/fitting routines will sometimes fail. The software can deal with such cases, but a fair amount of manual work is required.
 The following describes how to extract distinct 1d spectra of very closely spaced sources. 
 
 .. note::
@@ -21,7 +21,7 @@ The following describes how to extract distinct 1d spectra of very closely space
 
 
 1. **Follow the regular** :ref:`pipeline steps <tutorial>` **up to** :ref:`object tracing <objtrace>`. 
-2. **Create copies of the reduced files such that for every exposure, you have a copy corresponding to every spectra you want to extract.**
+2. **Create copies of the reduced files such that for every exposure, you have a copy corresponding to every spectrum you want to extract.**
     For example, if you have 3 reduced exposures of the same object:
 
     .. code-block:: bash
@@ -49,14 +49,14 @@ The following describes how to extract distinct 1d spectra of very closely space
         │   ├── reduced_science_exposure_3_A.fits
         │   ├── reduced_science_exposure_3_B.fits
 
-    **Notice** that the files witout the ``_A`` or ``_B`` suffix have been deleted. 
+    **Notice** that the files without the ``_A`` or ``_B`` suffix have been deleted. 
     In the later :ref:`object tracing <objtrace>`, the software will connect the object traces
     to the reduced files by the filename, so it is important that the filenames
-    are unique for every traced spectra.
+    are unique for every traced spectrum.
 
 3. **Run the** :ref:`manual object tracing <man_trace>` **routine on all of the copied files**. 
     (Run the regular :ref:`object tracing <objtrace>` for the standard star if you are using one - skip 
-    the science files in the regular :ref:`object tracing <objtrace>` by pressing ``q`` at every science spectra.)
+    the science files in the regular :ref:`object tracing <objtrace>` by pressing ``q`` at every science spectrum.)
 
 4. **Extract the distinct spectra by running the (important)** :ref:`simple extraction <sum>` **routine on the copied files**.
     The reason for running the simple extraction is that the simple extraction puts hard box-like boundaries on the extraction 

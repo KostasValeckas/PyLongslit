@@ -63,8 +63,8 @@ The files have three columns: wavelength, counts, and variance.
 Summing the counts
 ------------------
 
-This extraction method is more simple than the optimal extraction method. 
-Generally, you will get the more precise results with less noise using the optimal extraction method.
+This extraction method is simpler than the optimal extraction method. 
+Generally, you will get more precise results with less noise using the optimal extraction method.
 This method is however useful for edge cases where the object profile needs to be 
 tightly constrained.
 
@@ -77,7 +77,7 @@ The routine is called by the command:
 This procedure counts the number of counts in the region defined by the object 
 center +/- the FWHM of the object.
 
-Firstly, a QA is shown to display this region (from the SDSS_J213510+2728 example dataset):
+First, a QA is shown to display this region (from the SDSS_J213510+2728 example dataset):
 
 .. image:: pictures/simple_region.png
     :width: 100%
@@ -104,4 +104,4 @@ Next pipeline step → :ref:`Estimating the sensitivity function <sensfunction>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

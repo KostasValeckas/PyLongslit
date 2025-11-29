@@ -14,10 +14,10 @@ The command for running the flat-field procedure is called by:
     pylongslit_flat PATH_TO_CONFIG_FILE
 
 The flat-field procedure produces a master flat-field frame ``master_flat.fits``,
-and places it in the  output directory specified in the configuration file. The master
+and places it in the output directory specified in the configuration file. The master
 flat is a median-combined, spectrally, and (optionally) spatially normalized flat-field frame.
 It holds the information about the pixel-to-pixel sensitivity of the detector, where
-pixel value 1.0 is the mean pixel intensity for the detector
+pixel value 1.0 is the mean pixel intensity for the detector.
 
 The flat-field procedure has several stages - all described individually below
 in this documentation. The stages are:
@@ -36,18 +36,18 @@ Median combination of the raw flat frames
 
 The raw flat frames get median combined the same way as described in the 
 :ref:`bias procedure <bias>`. The difference is that the flat frames are
-firstly bias-subtracted and if the detector has a significant :ref:`dark current <dark>`,
+first bias-subtracted and if the detector has a significant :ref:`dark current <dark>`,
 the dark current can also be removed. Similar to the :ref:`bias procedure <bias>`,
 the user can decide whether bootstrapping is necessary for the error estimation
 of the median by setting the parameter ``"bootstrap_errors"`` to ``true`` 
-or ``false`` in the configuration file. To see full descrition of the
+or ``false`` in the configuration file. To see a full description of the
 error estimation in the software, please refer to the :ref:`description of uncertainty calculations <uncertainties>`.
 
 Spectral normalization of the master flat
 --------------------------------------------
 
 Before the light from the flat-field illumination source (such as a halogen lamp)
-reaches the detector, it has to pass an array of optical elements
+reaches the detector, it has to pass through an array of optical elements
 - such as dispersers and filters. These optical elements, and the detector itself,
 have wavelength-dependent efficiencies. Because of the disperser, 
 photons with different wavelengths will hit the detector in different places, 
@@ -61,13 +61,13 @@ non-uniform in the spectral direction, as sketched below:
 In this step, we want to normalize this spectral response, as we are only interested
 in the pixel-to-pixel sensitivity of the detector when flat-fielding. 
 
-Firstly, a slice-spectrum is taken from the median flat in the spectral direction.
-This is analogous as the arc lamp 1d spectrum extraction in the :ref:`wavelength calibration <wavecalib>`. The ``"offset_middle_cut"`` and ``"pixel_cut_extension"`` from the wacecalibration 
+First, a slice-spectrum is taken from the median flat in the spectral direction.
+This is analogous to the arc lamp 1d spectrum extraction in the :ref:`wavelength calibration <wavecalib>`. The ``"offset_middle_cut"`` and ``"pixel_cut_extension"`` from the wavelength calibration 
 parameters can be used to adjust the shape and position of the slice-spectrum 
 (see :ref:`the documentation for line reidentification <line_reidentification>`).
 Further, you will have the option to manually crop away any noisy edges that 
 would corrupt later fitting (in the example below from the SDSS_J213510+2728
-tutorial data, this would bbe the overscan region with zero counts):
+tutorial data, this would be the overscan region with zero counts):
 
 .. image:: pictures/flat_adjust.png
     :width: 100%
@@ -108,7 +108,7 @@ master flat in the spatial direction. This is done by setting the parameter
 to do is :ref:`discussed below <spacial_normalization>`.
 
 The spatial normalization procedure is very similar to the spectral normalization. 
-Firstly, a slice-spectrum is taken from the median flat in the spatial direction, 
+First, a slice-spectrum is taken from the median flat in the spatial direction, 
 and you can crop away any noisy edges. In the case for the tutorial data GQ1218+0832, 
 the edges with no signal should be cropped away:
 
@@ -120,8 +120,8 @@ The gap in the middle of the GTC Osiris detector mosaic is also unwanted, but
 the software does some sigma-clipping to remove outliers, so the fits should
 be fine if your own data has similar artifacts.
 
-A B-Spline is then fitted to every spacial column of the detector, and a
-sample is taken for quality assesment:
+A B-Spline is then fitted to every spatial column of the detector, and a
+sample is taken for quality assessment:
 
 .. image:: pictures/spacial_fit_example.png
     :width: 100%
@@ -144,14 +144,14 @@ The following parameters can be adjusted to control the fitting
         "R2_spacial_bspline": 0.4 # R^2 threshold for the fits
     }
 
-From experience, the :math:`R^2` threshold might be needed to set relatively low,
+From experience, the :math:`R^2` threshold might need to be set relatively low,
 as the fits can be quite noisy.
 
-The spacial model is constructed as a stack of the individual 1d fits. For the 
+The spatial model is constructed as a stack of the individual 1d fits. For the 
 fits that failed, the model is interpolated from the nearest successful fits. 
-The amount of failed fits is plotted on the detector for quality assesment.
+The number of failed fits is plotted on the detector for quality assessment.
 
-As  shown with the example dataset SDSS_J213510+2728, it is okay so see some failed fits
+As shown with the example dataset SDSS_J213510+2728, it is okay to see some failed fits
 scattered around the detector and in the edges, but you should revise the 
 parameters if large areas (that are not detector edges) fail:
 
@@ -159,7 +159,7 @@ parameters if large areas (that are not detector edges) fail:
     :width: 100%
     :align: center
 
-Final Quality Assesment Plot 
+Final Quality Assessment Plot 
 -------------------------------
 
 Upon exiting, the software will produce a plot that shows the master flat
@@ -169,8 +169,8 @@ and a histogram of the pixel values through each stage of the flat-fielding:
     :width: 100%
     :align: center
 
-The final master flat should be mostly uniform, with a approximetly 
-Gaussian distribution of pixel values. Non uniformities in the flat-field
+The final master flat should be mostly uniform, with an approximately 
+Gaussian distribution of pixel values. Non-uniformities in the flat-field
 are usually caused by dust on the optics, and not only is it okay if you see
 them in the master flat, it is exactly what you are looking for - as these 
 will now get normalized when dividing the observations with the master flat:
@@ -188,27 +188,27 @@ frames and are not caused by the flat-fielding procedure:
 
 There are ways to remove these stripes (fringing), but they are not implemented
 in the software in order to keep the pipeline simple. The pictures above are 
-agressively normalized to show the stripes - they are not as prominent as they
+aggressively normalized to show the stripes - they are not as prominent as they
 appear in the pictures.
 
 
 Considerations on spatial normalization
 -----------------------------------------
 
-The normalization in spacial direction is performed under the assumption that
-the uneven spacial illumination of the detector flat-field is caused by the flat-field 
+The normalization in spatial direction is performed under the assumption that
+the uneven spatial illumination of the detector flat-field is caused by the flat-field 
 source itself being uneven through the length of the slit. This infers another
 assumption that the uneven spatial illumination is not caused by the optical
 system itself - and that the light of the science object can be assumed
 to have the same intensity (on the large scale), regardless of where the object
-is placed on the slit. This assumption might be not valid for some instruments. 
-You can try to do a reduction run with spacial normalization, and if you start
+is placed on the slit. This assumption might not be valid for some instruments. 
+You can try to do a reduction run with spatial normalization, and if you start
 seeing strange artifacts in the reduced science frames, you can try to do the
-reduction without spacial normalization.
+reduction without spatial normalization.
 
 
 
-For users new to data reduction - short introduction to falt-fielding
+For users new to data reduction - short introduction to flat-fielding
 ----------------------------------------------------------------------------
 
 Since the number of pixels on a detector is in the order of millions, it is necessary to assume homogeneous pixel
@@ -220,9 +220,9 @@ through calibration.
 Theoretically, the flat-field calibration procedure requires exposing the detector with completely uniform light throughout
 the detector. Since every pixel receives the same amount of light, any differences in registered counts between pixels
 can be used to evaluate the difference in pixel-to-pixel sensitivity. This kind of exposure of uniform light is called a
-flat-field. In practise, the procedure for flat-fielding the detector while performing spectroscopy is more complicated.
-From personal experience, the flat-fielding procedure is the most contraversial step in spectroscopic data reduction, as
-the idealogical assummption of uniform illumination is practically impossible to achieve.
+flat-field. In practice, the procedure for flat-fielding the detector while performing spectroscopy is more complicated.
+From personal experience, the flat-fielding procedure is the most controversial step in spectroscopic data reduction, as
+the ideological assumption of uniform illumination is practically impossible to achieve.
 
 
 -----------------------
@@ -233,4 +233,4 @@ Next pipeline step → :ref:`Raw frame reduction <reduce>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

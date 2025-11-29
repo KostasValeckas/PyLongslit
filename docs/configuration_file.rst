@@ -7,7 +7,7 @@ The configuration file is a ``.json`` file that contains all the parameters
 that are needed to run the software. The file is divided into sections, 
 each corresponding to a different step in the pipeline.
 
-Every pipeline-command takes the confguration file as input. From the 
+Every pipeline command takes the configuration file as input. From the 
 configuration file the software knows where to look for the data, what to do with it,
 and where to save the results. Every call has the following format:
 
@@ -29,21 +29,21 @@ for a single successful run for your instrument, you can reuse most of the confi
 for future runs.
 
 **See the page on** :ref:`already tested instruments <tested_instruments>`
-**for configuration files that have been tested** .
+**for configuration files that have been tested**.
 
 For a new instrument, you can
-try to **reuse a configuration file from another instrument**, and change out
-only the parameters that are corrupting the run.
+try to **reuse a configuration file from another instrument**, and change only
+the parameters that are corrupting the run.
 
 The software has a method for checking the configuration file for errors 
-(it checks if the provided file paths exist, the raw data directories have files in them, some sanity-checks 
+(it checks if the provided file paths exist, the raw data directories have files in them, some sanity checks 
 on the parameters, etc.). The method can be called by:
 
 .. code:: bash
 
     pylongslit_check_config PATH_TO_CONFIG_FILE
 
-It is not mandatory to use this method, but highly recommended before 
+It is not mandatory to use this method, but it is highly recommended before 
 actually starting to process the data.
 
 An example of a configuration file is shown below, followed by an 
@@ -242,7 +242,7 @@ detailed explanation of the parameters is given.
     }
 
 A brief explanation of every parameter (see the :ref:`tutorial <tutorial>` for more detailed explanation 
-for every step):
+of every step):
 
 .. code:: 
 
@@ -356,7 +356,7 @@ for every step):
         },
 
         # the wavelength procedure is the most complex, and has the most parameters. 
-        # The descritions here won't make much sense without the tutorial, so please see the tutorial if you are new to the software.
+        # The descriptions here won't make much sense without the tutorial, so please see the tutorial if you are new to the software.
         "wavecalib" : {
             "offset_middle_cut": # Normally the software uses the middle of the arc-lamp frame to find the lines, but if the lines are not in the middle,
             # this parameter can be used to offset the middle

@@ -20,8 +20,8 @@ To show a calibrated 2D spectrum, use the following command:
     pylongslit_2dspec PATH_TO_CONFIG_FILE
 
 This will show all the reduced 2D spectra in the output directory specified in 
-the configuration file. You can hoover the cursor over the 2D spectrum to see the
-wavelength values at the top of the image. You can press ``h``  to 
+the configuration file. You can hover the cursor over the 2D spectrum to see the
+wavelength values at the top of the image. You can press ``h`` to 
 normalize the 2D spectrum to see the structure more clearly:
 
 .. image:: pictures/2dspec.png
@@ -30,10 +30,10 @@ normalize the 2D spectrum to see the structure more clearly:
 
 -----------------------
 
-:ref:`Inspecting of reduced 2d spectra <2dspec>` ← Previous pipeline step  
+:ref:`Modelled sky-subtraction <sky>` ← Previous pipeline step  
 
 Next pipeline step → :ref:`Object tracing <objtrace>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

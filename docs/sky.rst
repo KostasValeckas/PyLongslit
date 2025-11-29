@@ -4,14 +4,14 @@ Modelled sky subtraction
 ========================
 
 .. note:: 
-    For some datasets, if you already have subtracted the sky bacground by using
+    For some datasets, if you already have subtracted the sky background by using
     :ref:`A-B background subtraction <AB>`, you might be able to skip this step.
     This is the case for the SDSS_J213510+2728 tutorial dataset, where the sky
-    subtraction by the A-B method is so succesfull, that practically all background 
+    subtraction by the A-B method is so successful, that practically all background 
     is removed. However, for some datasets, you will need to perform this step 
     even if you have already subtracted the sky background by the A-B method - 
     inspect the files after the A-B routine to see if there is any remaining sky background.
-    It is imortant to note that any procedure performed in the pipeline introduces
+    It is important to note that any procedure performed in the pipeline introduces
     some error noise (see :ref:`note on uncertainties <uncertainties>`), so you must consider what is your best option, or test different 
     approaches.
 
@@ -46,12 +46,12 @@ GQ1218+0832 dataset, with prior and after object choice:
 
 From then on, the procedure will estimate the sky background using polynomial fitting, and subtract it.
 
-Quality Assesment
+Quality Assessment
 ------------------
 
 The routine fits a polynomial to the sky background for every spectral pixel. A 
-sample for one fit (corresponsing to the coordinates of the manually chosen object center) will be 
-shown for quality assesment:
+sample for one fit (corresponding to the coordinates of the manually chosen object center) will be 
+shown for quality assessment:
 
 .. image:: pictures/sky_QA.png
     :width: 100%
@@ -116,7 +116,7 @@ is the maximum number of iterations to perform (stops earlier if convergence is 
 The ``"fit_order"`` parameter decides what order polynomial to fit to the sky background.
 
 The ``"fwhm_guess"`` and ``"fwhm_thresh"`` parameters are used to estimate the limits of the objects 
-(can be set different for science and standard star frames). The red lines you see on the plot
+(can be set differently for science and standard star frames). The red lines you see on the plot
 above are defined as: object center +/- 3 ``"fwhm_guess"`` +/- ``"fwhm_thresh"`` (in pixels).
 
 For users new to data reduction - short introduction to sky background
@@ -124,16 +124,16 @@ For users new to data reduction - short introduction to sky background
 
 Sky background is the light from the sky and the atmosphere that is recorded by the detector together
 with the object spectrum. This background light covers
-the whole slit, and the bacground therefore shows itself as lines through the whole spatial direction
-(see above figures). The sky background consists both of strong sky lines (emission lines from the sky) and 
+the whole slit, and the background therefore shows itself as lines through the whole spatial direction
+(see above figures). The sky background consists of both strong sky lines (emission lines from the sky) and 
 a continuum background. These sky lines/background are mixed into the object signal, and must be removed.
 
 -----------------------
 
 :ref:`Cropping of 2d spectra <crop>` ← Previous pipeline step  
 
-Next pipeline step → :ref:`Inspecting of reduced 2d spectra <2dspec>`
+Next pipeline step → :ref:`Inspecting reduced 2d spectra <2dspec>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

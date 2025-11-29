@@ -4,7 +4,7 @@ Sensitivity function
 ====================
 
 This procedure is used to obtain a sensitivity function. The sensitivity function
-is essentially a conversion factor between observed counts pr. second and flux in physical units.
+is essentially a conversion factor between observed counts per second and flux in physical units.
 For further explanation, see the :ref:`further description of the sensitivity function <sensfunction_math>`.
 
 
@@ -40,7 +40,7 @@ the SDSS_J213510+2728 example dataset - with recommended cropping shown):
     :width: 100%
     :align: center
 
-Further, a following interactive plot will allow you to mask any strong 
+Furthermore, a following interactive plot will allow you to mask any strong 
 emission/absorption lines that would corrupt later fitting, by clicking on them
 (with recommended amount of masking shown):
 
@@ -61,7 +61,7 @@ A polynomial fit will then be performed to the sensitivity points:
 The goal is to see a smooth fit with mostly random residual distribution around zero.
 However, the star spectrum will still have some artifacts such as absorption lines from the sky,
 and these might show up as structures in the residual plot. Make sure that these are small compared 
-to the general order of magnitude of the data
+to the general order of magnitude of the data.
 
 The parameters that can control the fit are:
 
@@ -88,7 +88,7 @@ together with the observed standard star spectrum, now flux-calibrated with the 
 
 The two spectra should resemble each other closely, but you might see some
 deviations at the edges. If the two spectra are very different, you 
-will unfortunetly have to revise the whole pipeline process up to this point, 
+will unfortunately have to revise the whole pipeline process up to this point, 
 as the fault might be both in the sensitivity function and in the previous steps
 ending with the :ref:`1d extraction <extract_1d>`.
 
@@ -212,4 +212,4 @@ Next pipeline step → :ref:`Flux calibration <flux_calibrate>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`
