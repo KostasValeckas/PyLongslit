@@ -121,11 +121,11 @@ In order to produce a sensitivity function, you will need to have a flux-calibra
 standard star you have observed **in AB magnitude units**. For the tutorial data,
 these are already provided. 
 
-For the `SDSS_J213510+2728 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/bd33a.oke>`_ 
+For the `SDSS_J213510+2728 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/standard_stars/bd33a.oke>`_ 
 example dataset, the standard star is ``BD332642``, and the flux file is taken from: 
 `<https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/bd33.html>`_.
 
-For the `GQ1218+0832 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/mfeige110.dat>`_
+For the `GQ1218+0832 <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/standard_stars/mfeige110.dat>`_
 example dataset, the standard star is ``Feige110``, and the flux file is taken from: 
 `<https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/f110.htmls>`_.
 
@@ -151,7 +151,7 @@ Extinction curve and the transmission factor
 You will need to provide an extinction curve **in AB magnitude/airmass units** for the observatory your 
 data was taken at. The extinction curve is a function of wavelength that describes how much
 light is absorbed by the Earth's atmosphere at the observatory. The 
-`extinction curve for the example data <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/lapalma.dat>`_ 
+`extinction curve for the example data <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`_ 
 is provided in the same file, as both datasets are taken from the Roque de los Muchachos Observatory. 
 The extinction curve is taken from:
 `<https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`_.

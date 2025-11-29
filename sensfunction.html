@@ -116,10 +116,10 @@ in machine-readable format, with the filename <code class="docutils literal notr
 <p>In order to produce a sensitivity function, you will need to have a flux-calibrated spectrum of the
 standard star you have observed <strong>in AB magnitude units</strong>. For the tutorial data,
 these are already provided.</p>
-<p>For the <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/bd33a.oke">SDSS_J213510+2728</a>
+<p>For the <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/standard_stars/bd33a.oke">SDSS_J213510+2728</a>
 example dataset, the standard star is <code class="docutils literal notranslate"><span class="pre">BD332642</span></code>, and the flux file is taken from:
 <a class="reference external" href="https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/bd33.html">https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/bd33.html</a>.</p>
-<p>For the <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/mfeige110.dat">GQ1218+0832</a>
+<p>For the <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/standard_stars/mfeige110.dat">GQ1218+0832</a>
 example dataset, the standard star is <code class="docutils literal notranslate"><span class="pre">Feige110</span></code>, and the flux file is taken from:
 <a class="reference external" href="https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/f110.htmls">https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/f110.htmls</a>.</p>
 <p>The path to the reference spectrum is set in the configuration file, under the parameters:</p>
@@ -138,7 +138,7 @@ two columns: wavelength and flux in AB magnitude units.</p>
 <p>You will need to provide an extinction curve <strong>in AB magnitude/airmass units</strong> for the observatory your
 data was taken at. The extinction curve is a function of wavelength that describes how much
 light is absorbed by the Earth’s atmosphere at the observatory. The
-<a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/lapalma.dat">extinction curve for the example data</a>
+<a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat">extinction curve for the example data</a>
 is provided in the same file, as both datasets are taken from the Roque de los Muchachos Observatory.
 The extinction curve is taken from:
 <a class="reference external" href="https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html">https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html</a>.</p>
