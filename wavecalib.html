@@ -36,10 +36,10 @@
             
   <section id="wavelength-calibration">
 <span id="wavecalib"></span><h1>Wavelength Calibration<a class="headerlink" href="#wavelength-calibration" title="Link to this heading">¶</a></h1>
-<p>The wacecalibration procedure in the software is by far the most complex
-and abstract part of the pipeline. In order to utilize the spacial information
+<p>The wavelength calibration procedure in the software is by far the most complex
+and abstract part of the pipeline. In order to utilize the spatial information
 obtained by a long-slit spectrograph, the software needs to account for both
-spectral and spacial features in the wavelength calibration. This complicates the
+spectral and spatial features in the wavelength calibration. This complicates the
 code and the user interface, but it is deemed necessary in order to achieve the
 needed precision for a long-slit observation.</p>
 <section id="quick-start">
@@ -48,14 +48,14 @@ needed precision for a long-slit observation.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylongslit_wavecalib<span class="w"> </span>PATH_TO_CONFIG_FILE
 </pre></div>
 </div>
-<p>The routine will produce a large amount of quality assesment plots, and will
+<p>The routine will produce a large amount of quality assessment plots, and will
 write 4 files to the output directory:
 <code class="docutils literal notranslate"><span class="pre">good_lines.pkl,</span> <span class="pre">reidentified_lines.pkl,</span> <span class="pre">wavelen_fit.pkl,</span> <span class="pre">wavelength_map.fits</span></code>.
 The meaning of the plots and the files will be explained in the following sections.</p>
-<p>Since the wavelength calibration is a complex process, the quality assesment plots
+<p>Since the wavelength calibration is a complex process, the quality assessment plots
 and the parameters will be explained together in the following sections, as
-this might help to unsertand how the parameters effect the quality of the calibration.</p>
-<p>There are 2 major steps in te routine: <strong>line reidentification</strong> and
+this might help to understand how the parameters affect the quality of the calibration.</p>
+<p>There are 2 major steps in the routine: <strong>line reidentification</strong> and
 <strong>tilt tracing</strong>.</p>
 </section>
 <section id="line-reidentification">
@@ -65,7 +65,7 @@ are refined using generalized Gaussian fits. The refined line centers are then u
 fit a polynomial to the pixel vs. wavelength relation - this polynomial is
 called the <strong>1d wavelength solution</strong>. It will later, together with the <a class="reference internal" href="#tilts"><span class="std std-ref">tilt estimation</span></a>,
 be used to map every pixel in the detector to a wavelength.</p>
-<p>Firstly, the reidentification step will plot the gaussian fits of the lines,
+<p>Firstly, the reidentification step will plot the Gaussian fits of the lines,
 as shown in the following figure from the SDSS_J213510+2728 tutorial dataset:</p>
 <a class="reference internal image-reference" href="_images/reid_gauss.png"><img alt="_images/reid_gauss.png" class="align-center" src="_images/reid_gauss.png" style="width: 100%;" />
 </a>
@@ -82,15 +82,15 @@ by a certain amount of pixels</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;pixel_cut_extension&quot;</span></code>: this parameter is used to decide how many detector rows to use for the
 1d-spectrum cut. If <code class="docutils literal notranslate"><span class="pre">pixel_cut_extension</span></code> is set to 0, only one row will be used. If it is set to 2,
 the middle row +/- 2 rows will be used and then averaged and so forth. This is useful if the arc line spectrum
-is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessery, as the line centers change gradually
+is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessary, as the line centers change gradually
 in the spatial direction.</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;FWHM&quot;</span></code>: the initial guess for the FWHM of the lines.</p>
-<p><code class="docutils literal notranslate"><span class="pre">&quot;TOL_FWHM&quot;</span></code>: the tolerence for deviation the fitted FWHM may have from
+<p><code class="docutils literal notranslate"><span class="pre">&quot;TOL_FWHM&quot;</span></code>: the tolerance for deviation the fitted FWHM may have from
 the initial guess.</p>
-<p><code class="docutils literal notranslate"><span class="pre">&quot;TOL_MEAN&quot;</span></code>: the tolerence for deviation the fitted center may have from
+<p><code class="docutils literal notranslate"><span class="pre">&quot;TOL_MEAN&quot;</span></code>: the tolerance for deviation the fitted center may have from
 the <a class="reference internal" href="identify.html#identify"><span class="std std-ref">manually identified center</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;REIDENTIFY_R2_TOL&quot;</span></code>: the tolerance for the <span class="math notranslate nohighlight">\(R^2\)</span> value of the fit. If the <span class="math notranslate nohighlight">\(R^2\)</span> value is below this value, the fit is rejected.</p>
-<p>After the lines has been reidentified, the 1d wavelength solution is fitted to the
+<p>After the lines have been reidentified, the 1d wavelength solution is fitted to the
 reidentified lines. An example of the 1d wavelength solution is shown in the following figure:</p>
 <a class="reference internal image-reference" href="_images/1d_wavelen_sol.png"><img alt="_images/1d_wavelen_sol.png" class="align-center" src="_images/1d_wavelen_sol.png" style="width: 100%;" />
 </a>
@@ -104,8 +104,8 @@ with errors (e.g. too relaxed <span class="math notranslate nohighlight">\(R^2\)
 when inspecting the master arc from the GQ1218+5709 tutorial dataset:</p>
 <a class="reference internal image-reference" href="_images/master_arc_normalized.png"><img alt="_images/master_arc_normalized.png" class="align-center" src="_images/master_arc_normalized.png" style="width: 100%;" />
 </a>
-<p>As the wavelengt is constant along every arc line, we need to estimate the tilt
-through whole of the detector in order to map the 1d wavelength solution to the
+<p>As the wavelength is constant along every arc line, we need to estimate the tilt
+through the whole of the detector in order to map the 1d wavelength solution to the
 2d detector.</p>
 <p>Firstly, the tilt tracing algorithm esttimates the position of every line on the
 detector. This is done the same way as in the <a class="reference internal" href="#line-reidentification"><span class="std std-ref">line reidentification</span></a>,
@@ -113,11 +113,11 @@ but now the fit is not done for one center, but through the whole spacial direct
 shown below:</p>
 <a class="reference internal image-reference" href="_images/line_trace_zoom.png"><img alt="_images/line_trace_zoom.png" class="align-center" src="_images/line_trace_zoom.png" style="width: 100%;" />
 </a>
-<p>When the tracing is done, the spacial coordinate at where the 1d wavelength solution
-was evaluated is set to have tilt = 0. The tilt of every line is estimated based on how much a given spacial pixel
-deviates from the tilt = 0 spacial coordinate. The tilt is
+<p>When the tracing is done, the spatial coordinate at where the 1d wavelength solution
+was evaluated is set to have tilt = 0. The tilt of every line is estimated based on how much a given spatial pixel
+deviates from the tilt = 0 spatial coordinate. The tilt is
 then fitted with a polynomial for every line. The tilt fit for every line is
-plotted together with residuals for quality assesment, as shown here from the
+plotted together with residuals for quality assessment, as shown here from the
 GQ1218+5709 tutorial dataset:</p>
 <a class="reference internal image-reference" href="_images/tilt_all_gtc.png"><img alt="_images/tilt_all_gtc.png" class="align-center" src="_images/tilt_all_gtc.png" style="width: 100%;" />
 </a>
@@ -126,13 +126,13 @@ GQ1218+5709 tutorial dataset:</p>
 </a>
 <a class="reference internal image-reference" href="_images/tilt_resid_zoom.png"><img alt="_images/tilt_resid_zoom.png" class="align-center" src="_images/tilt_resid_zoom.png" style="width: 100%;" />
 </a>
-<p>The tilt in this example is estimated with tilt = 0 set at the spacial pixel
+<p>The tilt in this example is estimated with tilt = 0 set at the spatial pixel
 1028. The residuals show structure in the magnitude of 0.01 pixel. From experience,
 this is hard to avoid, and should not have a large impact on the final wavelength
 when the magnitude is this low.</p>
 <p>Several parameters can be set if the individual line tilt estimation is accepting
-bad fits, rejectng good fits, identifying lines in the wrong place or alike.</p>
-<p>For the individual center tracing through the spacial direction, the same parameters
+bad fits, rejecting good fits, identifying lines in the wrong place or alike.</p>
+<p>For the individual center tracing through the spatial direction, the same parameters
 apply as in <a class="reference internal" href="#line-reidentification"><span class="std std-ref">line reidentification</span></a>. The only difference
 is that the <span class="math notranslate nohighlight">\(R^2\)</span> threshold for the individual Gaussian fits is set by the
 <code class="docutils literal notranslate"><span class="pre">&quot;TILT_TRACE_R2_TOL&quot;</span></code> parameter. In experience, the <span class="math notranslate nohighlight">\(R^2\)</span> value can be
@@ -140,7 +140,7 @@ set lower than in the <code class="docutils literal notranslate"><span class="pr
 lastly estimated by a polynomial fit, so a few outliers are okay.</p>
 <p>The parameter <code class="docutils literal notranslate"><span class="pre">&quot;TILT_REJECT_LINE_FRACTION&quot;</span></code> is used to abort a line trace if the
 fraction of rejected fits is above this value. This optimizes the computational time
-and assures that badly identified lines do not get accepted as false postives.</p>
+and ensures that badly identified lines do not get accepted as false positives.</p>
 <p>The parameter <code class="docutils literal notranslate"><span class="pre">&quot;jump_tolerance&quot;</span></code> is used to set the maximum jump in pixels a line can
 have from one estimated center to another. This can help identify lines that are close
 to each other.</p>
@@ -148,10 +148,10 @@ to each other.</p>
 <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPATIAL_TILT&quot;</span></code> parameter. The <span class="math notranslate nohighlight">\(R^2\)</span> threshold for fit rejection
 is set by the <code class="docutils literal notranslate"><span class="pre">&quot;SPACIAL_R2_TOL&quot;</span></code> parameter.</p>
 <p>When the individual lines are identified, the line traces are plotted for
-quality assesment:</p>
+quality assessment:</p>
 <a class="reference internal image-reference" href="_images/all_line_trace.png"><img alt="_images/all_line_trace.png" class="align-center" src="_images/all_line_trace.png" style="width: 100%;" />
 </a>
-<p>Inspect if the lines are traced correctly, specially that traces do not
+<p>Inspect if the lines are traced correctly, especially that traces do not
 jump between neighboring lines.</p>
 <p>Lastly, the estimated tilts throughout the detector are used to perform
 a 2d tilt polynomial fit with the spacial order <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPATIAL_TILT&quot;</span></code> and the
@@ -159,7 +159,7 @@ spectral order <code class="docutils literal notranslate"><span class="pre">&quo
 the spacial and spectral direction for quality assesment:</p>
 <a class="reference internal image-reference" href="_images/tilt_2d_fit_residual.png"><img alt="_images/tilt_2d_fit_residual.png" class="align-center" src="_images/tilt_2d_fit_residual.png" style="width: 100%;" />
 </a>
-<p>In spacial direction the residuals should be random, but very small scale structure
+<p>In spatial direction the residuals should be random, but very small scale structure
 (order of 0.01 pixel) is hard to avoid. In the spectral direction, the residuals will be
 collected in columns where the arc lines are placed. The residuals here should also be
 dispersed around 0.</p>
@@ -185,7 +185,7 @@ combination:</p>
 <p>When adjusting the many parameters in this procedure, it is sometimes useful to
 reuse some of the products and for example jump straight to the tilt tracing
 if the line reidentification is already working correctly.</p>
-<p>The parameters fir this are (all can be set to either true or false):abbr:</p>
+<p>The parameters for this are (all can be set to either true or false):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;wavecalib&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;reuse_reided_lines&quot;</span><span class="p">:</span> <span class="c1"># loads the file reidentified_lines.pkl from the output directory, this file holds the reidentified line centers</span>
     <span class="s2">&quot;reuse_1d_sol&quot;</span><span class="p">:</span> <span class="c1"># loads the file wavelen_fit.pkl from the output directory, this file holds the 1d wavelength solution</span>
@@ -200,7 +200,7 @@ if the line reidentification is already working correctly.</p>
 <p>It can be conceptually hard to understand how the wavelengths get mapped to the
 detector pixels with the abstract procedure described above. The below explanation
 is an attempt to clarify this.</p>
-<p>For the spacial pixel <span class="math notranslate nohighlight">\(y_{0}\)</span> at which the 1d wavelength solution <span class="math notranslate nohighlight">\(f\)</span> is known, the
+<p>For the spatial pixel <span class="math notranslate nohighlight">\(y_{0}\)</span> at which the 1d wavelength solution <span class="math notranslate nohighlight">\(f\)</span> is known, the
 wavelength <span class="math notranslate nohighlight">\(\lambda\)</span> can be decided by
 <span class="math notranslate nohighlight">\(\lambda = f(x_{0})\)</span>, where <span class="math notranslate nohighlight">\(x_{0}\)</span> is the spectral pixel. For any other pixel <span class="math notranslate nohighlight">\((x,y)\)</span>, we
 know the tilt <span class="math notranslate nohighlight">\(\Delta x\)</span> that transforms <span class="math notranslate nohighlight">\(x\)</span> to <span class="math notranslate nohighlight">\(x_{0}\)</span> while keeping the wavelength constant.

@@ -14,7 +14,7 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Combinning arc frames" href="combine_arcs.html" />
+    <link rel="next" title="Combining arc frames" href="combine_arcs.html" />
     <link rel="prev" title="Bias" href="bias.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -39,12 +39,12 @@
 <p class="admonition-title">Note</p>
 <p>It is possible that the dark current is negligible for your detector,
 and you can skip this step. Check the documentation of your instrument.</p>
-<p><strong>Dark current subtraction is not performed in any of the tutorial data-sets.</strong></p>
+<p><strong>Dark current subtraction is not performed in any of the tutorial datasets.</strong></p>
 </div>
-<p>The dark current estimation is implemented differently than rest of the
+<p>The dark current estimation is implemented differently than the rest of the
 calibration steps, and <strong>does not need to be called explicitly</strong>.</p>
-<p>Instead, if you have dark frames for youre flat frames, science object frames
-or/and standard star frames, you have to create a directory named “dark”
+<p>Instead, if you have dark frames for your flat frames, science object frames
+and/or standard star frames, you have to create a directory named “dark”
 in the raw data directories and place the dark frames there.</p>
 <p>For example, if your raw science frame directory is called:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>/home/Documents/science
@@ -55,7 +55,7 @@ in the raw data directories and place the dark frames there.</p>
 </pre></div>
 </div>
 <p>And place the dark frames there.</p>
-<p>This is only possible for the flat, sciende and standard star frames, as for the
+<p>This is only possible for the flat, science and standard star frames, as for the
 arc frames we are only interested in the position of the lines, and
 subtracting the dark current would not change it. Furthermore, most arc frames
 are exposed for a very short time, so the dark current is negligible. This is
@@ -68,19 +68,19 @@ calibrating.</p>
 <p><strong>There are no parameters to set for the dark current estimation.</strong> The
 software takes a bias-subtracted median dark frame from the frames provided, and subtracts it
 from the corresponding frames. Technically, bias subtraction could be skipped for dark frames,
-and then the median-dark could be treated as a combination of the dark current and the bias level,
-but we choose to subtract the bias seperately, as we believe that the bias estimation from bias frames
+and then the median dark could be treated as a combination of the dark current and the bias level,
+but we choose to subtract the bias separately, as we believe that the bias estimation from bias frames
 is more correct, as it is common that more bias frames are present than dark frames.</p>
 <section id="for-users-new-to-data-reduction-short-introduction-to-dark-current">
 <h2>For users new to data reduction - short introduction to dark current<a class="headerlink" href="#for-users-new-to-data-reduction-short-introduction-to-dark-current" title="Link to this heading">¶</a></h2>
 <p>CCD detectors accumulate signal even when no light is present. This signal
 is called the dark current, and is caused by thermal excitation of the electrons
 in the detector. The dark current is usually very low, but can be significant
-for long exposure times, specially for not-cooled CCD detectors. The dark current is estimated by taking a series of dark frames - frames with no incoming light with same exposure time as the observations. The dark current is then subtracted
+for long exposure times, especially for non-cooled CCD detectors. The dark current is estimated by taking a series of dark frames - frames with no incoming light with the same exposure time as the observations. The dark current is then subtracted
 from the observations.</p>
 <hr class="docutils" />
 <p><a class="reference internal" href="bias.html#bias"><span class="std std-ref">Bias subtraction</span></a> ← Previous pipeline step</p>
-<p>Next pipeline step → <a class="reference internal" href="combine_arcs.html#combine-arcs"><span class="std std-ref">Combinning arc frames</span></a></p>
+<p>Next pipeline step → <a class="reference internal" href="combine_arcs.html#combine-arcs"><span class="std std-ref">Combining arc frames</span></a></p>
 <p><a class="reference internal" href="general_notes.html#general-notes"><span class="std std-ref">General Notes on using the pipeline</span></a></p>
 <p><a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">General info on the configuration file</span></a></p>
 </section>
@@ -133,7 +133,7 @@ from the observations.</p>
   <li><a href="index.html">Documentation overview</a><ul>
   <li><a href="getting_started.html">Getting started</a><ul>
       <li>Previous: <a href="bias.html" title="previous chapter">Bias</a></li>
-      <li>Next: <a href="combine_arcs.html" title="next chapter">Combinning arc frames</a></li>
+      <li>Next: <a href="combine_arcs.html" title="next chapter">Combining arc frames</a></li>
   </ul></li>
   </ul></li>
 </ul>

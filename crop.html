@@ -40,7 +40,7 @@
 <p>This procedure is not necessary for the pipeline to work, but can improve
 the quality of <a class="reference internal" href="sky.html#sky"><span class="std std-ref">sky-subtraction</span></a> and <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object-tracing</span></a>.
 If you are using <a class="reference internal" href="AB.html#ab"><span class="std std-ref">A-B background subtraction</span></a>, you should crop the images
-only after the A-B subtraction, else the subtraction can be miss-aligned.</p>
+only after the A-B subtraction, else the subtraction can be misaligned.</p>
 </div>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h2>
@@ -48,13 +48,13 @@ only after the A-B subtraction, else the subtraction can be miss-aligned.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylongslit_crop<span class="w"> </span>PATH_TO_CONFIG_FILE
 </pre></div>
 </div>
-<p>The procedure will start an interactive window where you can use two sliders in
-order to crop the image in the spatial direction (you can press “h” to normalize if the image is too dark):</p>
+<p>The procedure will start an interactive window where you can use two sliders
+to crop the image in the spatial direction (you can press “h” to normalize if the image is too dark):</p>
 <a class="reference internal image-reference" href="_images/crop_full.png"><img alt="_images/crop_full.png" class="align-center" src="_images/crop_full.png" style="width: 100%;" />
 </a>
 <p>This cropping can help with
 later <a class="reference internal" href="sky.html#sky"><span class="std std-ref">sky-subtraction</span></a> and <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object-tracing</span></a>. From experience,
-it is best to crop the image such that sufficient amount of sky is left on the image - around 100 pixels on each side of the object trace, as this allows for
+it is best to crop the image such that a sufficient amount of sky is left on the image - around 100 pixels on each side of the object trace, as this allows for
 better sky estimation. You also don’t want the object too close to the edges when
 performing <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object-tracing</span></a>. A cropped science image that shows good end-results
 for the GQ1218+0832 dataset is shown below as an example:</p>

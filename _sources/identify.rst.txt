@@ -7,7 +7,7 @@ Identify arc lines
 In this step, we manually identify the lines in the arc-lamp spectrum, by 
 cross-referencing with a known calibrated line spectrum. 
 
-For this step we use a application originally developed by 
+For this step we use an application originally developed by 
 Jens-Kristian Krogager for the `PyNOT software <https://github.com/jkrogager/PyNOT/tree/master>`_.
 
 
@@ -16,12 +16,12 @@ a fair amount of user work is needed. Expect this to be challenging
 at first, if you have not tried this type of routine before. Feel free to re-use 
 the** :ref:`already made tables <tested_instruments>`.
 
-For this procedure, you will need to acquire a calbrated arc lamp spectrum for
+For this procedure, you will need to acquire a calibrated arc lamp spectrum for
 your instrument (these will also differ for every different disperser used for
-the same instrument). For this tutorial, we are using NOT Alfosc disperser grating #4,
+the same instrument). For this tutorial, we are using NOT ALFOSC disperser grating #4,
 and an arc spectrum composed of helium and neon lines, taken from:
-`<https://www.not.iac.es/instruments/alfosc/lamps/>`_. Futhermore, you will need a 
-line-list with two columns, the first being the wavelentgh of the line in Angstroms,
+`<https://www.not.iac.es/instruments/alfosc/lamps/>`_. Furthermore, you will need a 
+line-list with two columns, the first being the wavelength of the line in Angstroms,
 and the second being the element of the line. For the HeNe lamp used in the tutorial,
 the beginning of the list looks like this:
 
@@ -37,8 +37,8 @@ the beginning of the list looks like this:
 You can see the full list at `<https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/line_lists/alfosc_he_ne_vac.dat>`_.
 
 This line list is taken from the same link as the arc lamp maps, and converted
-from air to vacuum line wavelengths. As user you can decide yourself whether to use
-the air or vacuum line , just know that your end product will also
+from air to vacuum line wavelengths. As a user you can decide yourself whether to use
+the air or vacuum line, just know that your end product will also
 be in the same system.
 
 The application is called by:
@@ -48,11 +48,11 @@ The application is called by:
    pylongslit_identify_arcs PATH_TO_CONFIG_FILE
 
 
-When the command is excecuted, a GUI/interactive plot window will open.
+When the command is executed, a GUI/interactive plot window will open.
 A 1d-spectrum cut will be taken from the ``master_arc.fits`` file produced
 in :ref:`the previous step<combine_arcs>`, and displayed in the window. You
 then have to manually load the above described line list by clicking on the
-``Load LineList`` button in upper left corner. When this is done, for the
+``Load LineList`` button in the upper left corner. When this is done, for the
 example dataset SDSS_J213510+2728, the window should look like this:
 
 .. image:: pictures/id_post_loading.png
@@ -62,7 +62,7 @@ example dataset SDSS_J213510+2728, the window should look like this:
 **Identifying the lines**
 
 Now, you have to use the reference spectra (also called the arc maps) to identify the
-wavelentghs of the lines in the arc spectrum. This is done by clicking on the
+wavelengths of the lines in the arc spectrum. This is done by clicking on the
 `Add Line` button, and then clicking on the arc spectrum where you think a line
 is, and then manually typing in the wavelength of the line. Below is an 
 example for a small Helium portion of the spectrum, with a zoom in of the corresponding 
@@ -76,11 +76,11 @@ reference spectrum, taken from `<https://www.not.iac.es/instruments/alfosc/lamps
     :width: 100%
     :align: center
 
-Here there is a small offset in between the reference spectrum 
-(lowest picture) and the line list (upper left corner) - this is beacause we
+Here there is a small offset between the reference spectrum 
+(lowest picture) and the line list (upper left corner) - this is because we
 use vacuum wavelengths, while the reference spectrum is in air.
 
-After you have found a handfull of lines, you can click on the `Fit` button to
+After you have found a handful of lines, you can click on the `Fit` button to
 make a polynomial fit for a function that describes wavelength as a function of
 pixel. You can use the `Residual/Data` button to change displays between the
 fit curve and the residuals of the fit in order to evaluate the fit quality. 
@@ -95,7 +95,7 @@ For the small amount of lines shown above, this looks like this:
 
 When you have obtained a fit, and try to `Add Line` again, the program will now 
 use the fit to extrapolate the wavelength of the line you are trying to add,
-and look for it in the linelist. If it finds a match, it will automatically
+and look for it in the line list. If it finds a match, it will automatically
 add it. If it does not find a match, it will show a message indicating so,
 but it will still add the line - you will then have to correct it manually.
 If your fit does not seem to be good, you can click on the `Clear fit` button
@@ -113,11 +113,11 @@ From here on, you have to (correctly) identify as many lines as possible by iter
 
    The end products of the pipeline will depend highly on the quality of the line identification.
    The :ref:`wavelength calibration routine <wavecalib>` will use the identified lines to refine the 
-   line centers and trace the lines through the whole detector - but it can not find new lines if they have not been manually identified. The line identification puts 
-   an upper boudanry on how well the :ref:`wavelength calibration routine <wavecalib>` can perform.
+   line centers and trace the lines through the whole detector - but it cannot find new lines if they have not been manually identified. The line identification puts 
+   an upper boundary on how well the :ref:`wavelength calibration routine <wavecalib>` can perform.
    Even though this step is by far the most time-consuming, it 
    should not be rushed. However, you will very likely be unable to identify
-   all lines, and the ones that causes uncertainty should be left out. Try to identify lines in all parts of the spectrum.
+   all lines, and the ones that cause uncertainty should be left out. Try to identify lines in all parts of the spectrum.
 
 
 **Saving the line list**: 
@@ -147,7 +147,7 @@ The relevant parameters for the identify procedure are (with example values):
       "center_guess_pixtable": "/home/kostas/Documents/PyLongslit/database/alfosc_grating4_hene_pixtable.dat", 
    },
 
-The GUI takes a 1d-spectrum spectrum from the ``master_arc.fits`` file. It takes the 
+The GUI takes a 1d-spectrum from the ``master_arc.fits`` file. It takes the 
 spectrum from the middle of the image. Sometimes, the middle of the image is not the best 
 place, so the ``offset_middle_cut`` parameter can be used to offset the cut from the middle 
 by a certain amount of pixels. 
@@ -155,7 +155,7 @@ by a certain amount of pixels.
 The ``pixel_cut_extension`` parameter is used to decide how many detector rows to use for the
 1d-spectrum cut. If ``pixel_cut_extension`` is set to 0, only one row will be used. If it is set to 2,
 the middle row +/- 2 rows will be used and then averaged and so forth. This is useful if the arc line spectrum 
-is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessery, as the line centers change gradually 
+is noisy, as averaging removes some of the noise. However, the cut should not be wider than necessary, as the line centers change gradually 
 in the spatial direction (see description of :ref:`line tilts <wavecalib>`).
 
 When you are done, you have to link the path to the pixel table to the
@@ -163,10 +163,10 @@ When you are done, you have to link the path to the pixel table to the
 
 -----------------------
 
-:ref:`Combinning arc frames <combine_arcs>` ← Previous pipeline step  
+:ref:`Combining arc frames <combine_arcs>` ← Previous pipeline step  
 
 Next pipeline step → :ref:`Wavelength Calibration <wavecalib>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

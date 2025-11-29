@@ -42,8 +42,8 @@ to this section by providing their own use-case examples, which will be added to
 <section id="extracting-closely-spaced-spectra">
 <h2>Extracting closely spaced spectra<a class="headerlink" href="#extracting-closely-spaced-spectra" title="Link to this heading">¶</a></h2>
 <p>With a longslit instrument, it is possible to obtain distinct spectra of closely
-spaced sources within the same object, such as lenssed quasars. The spectra in such cases are placed so
-closely that automatic modelling/fitting routines will sometimes fail. The software can deal with such cases, but a fair amount of manual work is required.
+spaced sources within the same object, such as lensed quasars. The spectra in such cases are placed so
+closely that automatic modeling/fitting routines will sometimes fail. The software can deal with such cases, but a fair amount of manual work is required.
 The following describes how to extract distinct 1d spectra of very closely spaced sources.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -54,7 +54,7 @@ need a basic understanding of the routines in order to perform the following ste
 <ol class="arabic">
 <li><p><strong>Follow the regular</strong> <a class="reference internal" href="getting_started.html#tutorial"><span class="std std-ref">pipeline steps</span></a> <strong>up to</strong> <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object tracing</span></a>.</p></li>
 <li><dl>
-<dt><strong>Create copies of the reduced files such that for every exposure, you have a copy corresponding to every spectra you want to extract.</strong></dt><dd><p>For example, if you have 3 reduced exposures of the same object:</p>
+<dt><strong>Create copies of the reduced files such that for every exposure, you have a copy corresponding to every spectrum you want to extract.</strong></dt><dd><p>For example, if you have 3 reduced exposures of the same object:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>├──<span class="w"> </span>output_directory
 │<span class="w">   </span>├──<span class="w"> </span>reduced_science_exposure_1.fits
 │<span class="w">   </span>├──<span class="w"> </span>reduced_science_exposure_2.fits
@@ -74,16 +74,16 @@ need a basic understanding of the routines in order to perform the following ste
 │<span class="w">   </span>├──<span class="w"> </span>reduced_science_exposure_3_B.fits
 </pre></div>
 </div>
-<p><strong>Notice</strong> that the files witout the <code class="docutils literal notranslate"><span class="pre">_A</span></code> or <code class="docutils literal notranslate"><span class="pre">_B</span></code> suffix have been deleted.
+<p><strong>Notice</strong> that the files without the <code class="docutils literal notranslate"><span class="pre">_A</span></code> or <code class="docutils literal notranslate"><span class="pre">_B</span></code> suffix have been deleted.
 In the later <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object tracing</span></a>, the software will connect the object traces
 to the reduced files by the filename, so it is important that the filenames
-are unique for every traced spectra.</p>
+are unique for every traced spectrum.</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
 <dt><strong>Run the</strong> <a class="reference internal" href="objtrace.html#man-trace"><span class="std std-ref">manual object tracing</span></a> <strong>routine on all of the copied files</strong>.</dt><dd><p>(Run the regular <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object tracing</span></a> for the standard star if you are using one - skip
-the science files in the regular <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object tracing</span></a> by pressing <code class="docutils literal notranslate"><span class="pre">q</span></code> at every science spectra.)</p>
+the science files in the regular <a class="reference internal" href="objtrace.html#objtrace"><span class="std std-ref">object tracing</span></a> by pressing <code class="docutils literal notranslate"><span class="pre">q</span></code> at every science spectrum.)</p>
 </dd>
 </dl>
 </li>

@@ -5,7 +5,7 @@ Installation
 .. note::
     The steps in this documentation have been tested on 
     Linux Ubuntu 24.04.2 LTS (which should also cover MacOS functionality
-    in broad sense) and Windows 10 Pro.
+    in a broad sense) and Windows 10 Pro.
 
 The software is run by executing a series of commands in a terminal.
 When the software is installed with the steps below, the command
@@ -17,13 +17,13 @@ The installation process consists of the following steps:
 2. :ref:`Install the software using pip <install>`.
 
 
-We provide both a quick guide for experienced python users and a more detailed guide for users who are new to Python environments.
+We provide both a quick guide for experienced Python users and a more detailed guide for users who are new to Python environments.
 
-Lastly, we also describe how to download and  :ref:`install an editable
+Lastly, we also describe how to download and :ref:`install an editable
 version of the software <dev_install>` if you wish to contribute to the development of the software.
 
-Quick guide for experienced python users
-----------------------------------------
+Quick guide for experienced Python users
+-----------------------------------------
 
 1. Create a new Python 3.10 environment.
 2. Install using ``pip``:
@@ -41,16 +41,16 @@ Detailed guide for users new to Python environments
 1. Create a clean Python environment
 ====================================
 
-To ensure best possible stability of the software and to avoid version conflicts with other Python packages on your system,  
+To ensure the best possible stability of the software and to avoid version conflicts with other Python packages on your system,  
 it is **strongly recommended** to create a clean Python environment for running the software.
 If you are unfamiliar with Python environments, see :ref:`our quick introduction to
-Python environments <envs_quick_into>`. You can skip directly to :ref:`installing the software <install>` if you prefer to not use a clean environment - in that case you might experience
+Python environments <envs_quick_into>`. You can skip directly to :ref:`installing the software <install>` if you prefer not to use a clean environment - in that case you might experience
 software bugs due to version conflicts that are not accounted for in this documentation.
 
-**Using Anaconda (conda) ( recommended):**
+**Using Anaconda (conda) (recommended):**
 
 To create a new virtual environment using Anaconda, run the following command in your terminal 
-(if you are using Windows, do this and all following from the Anaconda Prompt):
+(if you are using Windows, do this and all following commands from the Anaconda Prompt):
 
 .. code-block:: bash
 
@@ -73,7 +73,7 @@ then run the following command in your terminal:
 
     python3.10 -m venv PyLongslit
 
-You can replace ``PyLongslit`` with any name you like. This will create a new environment with the Python version 3.10 installed.
+You can replace ``PyLongslit`` with any name you like. This will create a new environment with Python version 3.10 installed.
 
 .. note::
 
@@ -126,18 +126,18 @@ Quick introduction to Python environments
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 *The following is a quick introduction to Python environments for users who would like one.
-Feel free to* :ref:`skip to next section <install>`.
+Feel free to* :ref:`skip to the next section <install>`.
 
 Python applications often depend on a specific version of Python and a specific set of Python packages.
 These packages can have dependencies on other packages, and these dependencies can have dependencies on other packages, and so on.
 This can lead to a situation where two applications require different versions of the same package, which can cause conflicts.
 By using Python environments, you can create isolated environments where you can install the specific versions of Python and Python 
 packages that you need for a specific application. This helps ensure that only the needed packages are installed, and that they do not
-conflict with other applications on your system. Furtermore, this ensures that 
+conflict with other applications on your system. Furthermore, this ensures that 
 updates to any packages do not break the application, as the environment will not be updated unless you explicitly update it.
 
 **Note:** The environment will need to be activated every time you open a new terminal.
-You can configure your terminal to automatically activate the environment upon startup. This will not be covered in this documentation - see documentation for your terminal for more information.
+You can configure your terminal to automatically activate the environment upon startup. This will not be covered in this documentation - see the documentation for your terminal for more information.
 
 **Example:**
 
@@ -205,7 +205,7 @@ cloned by using git.
 
 `Download Source Code (ZIP) <https://github.com/KostasValeckas/PyLongslit/archive/refs/heads/main.zip>`_
 
-**Using git: (if you don't know what git is just download the ZIP from link above)** 
+**Using git: (if you don't know what git is, just download the ZIP from the link above)** 
 
 SSH (recommended if you plan on developing)...
 
@@ -219,7 +219,7 @@ SSH (recommended if you plan on developing)...
 
     git clone https://github.com/KostasValeckas/PyLongslit.git
 
-Then, when in :ref:`clean python 3.10 environment <venv>`, 
+Then, when in :ref:`clean Python 3.10 environment <venv>`, 
 navigate to the directory where the software was downloaded (this is the directory with the file `setup.py` in it) and run the following command:
 
 .. code-block:: bash

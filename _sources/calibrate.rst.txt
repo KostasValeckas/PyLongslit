@@ -57,9 +57,9 @@ Furthermore, these parameters have to be set in the configuration file:
 - ``exptime``: The exposure time of the science frame in seconds.
 - ``airmass``: The airmass of the observation.
 
-You can not flux calibrate several frames with different exposure times or airmasses
-with the same call to this routine - but for frames that have same exposure time and
-(nearly) same airmass, you can flux calibrate them all at once.
+You cannot flux calibrate several frames with different exposure times or airmasses
+with the same call to this routine - but for frames that have the same exposure time and
+(nearly) the same airmass, you can flux calibrate them all at once.
 
 -----------------------
 
@@ -69,4 +69,4 @@ Next pipeline step → :ref:`Combining the spectra <combine_spec>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

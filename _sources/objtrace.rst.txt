@@ -3,7 +3,7 @@
 Object Tracing
 ==============
 
-In this routine the software estimate at what pixels the object is located in the 2D spectrum.
+In this routine the software estimates at what pixels the object is located in the 2D spectrum.
 
 
 There are 3 ways to trace the object in the software:
@@ -28,12 +28,12 @@ The routine is called by the command:
 The routine will fit a user chosen profile to the object in the 2D spectrum.
 There are a few interactive steps in the routine. 
 
-Firstly, you will have to choose the center of the object by clicking on it. 
+First, you will have to choose the center of the object by clicking on it. 
 This is exactly the same routine as in :ref:`sky subtraction <sky>`, please see
 the description there.
 
 Then, the software will fit a 1d profile to every spatial column in the 2D spectrum.
-A sample of the fits will be shown for you quality assesment (example here 
+A sample of the fits will be shown for your quality assessment (example here 
 is from the SDSS_J213510+2728 example dataset):
 
 .. image:: pictures/spacial_fit.png
@@ -74,13 +74,13 @@ their shape can be different, but the meaning of the parameters is the same.
 - ``fit_R2``: The minimum :math:`R^2` value for the fit to be accepted. You can later manually crop out noisy edges, so it is okay to be a bit lenient here.
 - ``model``: The model to fit to the object. The options are: ``"Gaussian"`` or ``"Cauchy"``. Gaussian is useful for point-like objects, while Cauchy is useful for extended objects. It is recommended that you use the same model for the standard star and the object, as none of the models are perfect representations of the object, so at least you will have the same systematic error in both when comparing counts to flux.
 
-Afterwards, you will be given the oppurtunity to crop out noisy edges of the trace:
+Afterwards, you will be given the opportunity to crop out noisy edges of the trace:
 
 .. image:: pictures/crop_image.png
     :width: 100%
     :align: center
 
-Here you can use the arrow keys to move the red lines if any of the excepted fits (green) 
+Here you can use the arrow keys to move the red lines if any of the accepted fits (green) 
 are false positives. 
 
 Lastly, the software will fit a polynomial to both the fitted centers and the fitted
@@ -118,7 +118,7 @@ These parameters can be changed to control the fitting:
 - ``use_bspline_fwhm``: If you want to use a bspline for the FWHM values. Use with same caution as described above.
 - ``knots_bspline``: The number of knots to use in the bspline.
 
-Finally, a quality assesment plot is created to show the 2d spectrum with the 2d 
+Finally, a quality assessment plot is created to show the 2d spectrum with the 2d 
 object trace overlaid:
 
 .. image:: pictures/QA_objtrace.png
@@ -126,7 +126,7 @@ object trace overlaid:
     :align: center
 
 If the object model does not fit the object well, revise the whole process, and take 
-extra good look at the earlier QA plots.
+an extra good look at the earlier QA plots.
 
 The trace is saved in the output directory defined in the configuration file, 
 and the filename is either ``obj_science_FILENAME.dat`` or ``obj_standard_FILENAME.dat``.
@@ -138,7 +138,7 @@ Cloning a trace
 
 Sometimes there are several objects present on the detector. If you have issues 
 tracing your object of interest (if it is too faint, for example), you can clone
-a trace from another object, if it is possible to fit a neibhoring object 
+a trace from another object, if it is possible to fit a neighboring object 
 instead. 
 
 You have to first set 2 parameters in the configuration file 
@@ -173,16 +173,16 @@ You have to move the trace to match the center of the object you want to trace:
     :width: 100%
     :align: center
 
-You will then be showed the same final QA plot as in the :ref:`profile fitting procedure <profile>`.
+You will then be shown the same final QA plot as in the :ref:`profile fitting procedure <profile>`.
 
 The file saving format is the same as in the :ref:`profile fitting procedure <profile>`.
 
 .. note:: 
     While cloning the object trace, you will clone the FWHM values as well. 
     This is not ideal, as the FWHM values can be different for different objects.
-    It is ususally best to clone an object where the archived object trace has larger FWHM than 
-    the object you want to trace, instead of smaller. Larger FWHM will result in more noise, but it will trace 
-    the whole object. Smaller FWHM will result in less noise, but it will miss
+    It is usually best to clone an object where the archived object trace has a larger FWHM than 
+    the object you want to trace, instead of smaller. A larger FWHM will result in more noise, but it will trace 
+    the whole object. A smaller FWHM will result in less noise, but it will miss
     some of the object.
 
 .. _man_trace :
@@ -200,8 +200,8 @@ The manual tracing is called by the command:
     pylongslit_objtrace_manual PATH_TO_CONFIG_FILE
 
 This will open an interactive plot where you can either skip the object by 
-closing the plot, or trace by hoovering the cursor over the object and clicking
-``"+"`` to add a point to the trace. Clickin ``"-"`` will remove the last point
+closing the plot, or trace by hovering the cursor over the object and clicking
+``"+"`` to add a point to the trace. Clicking ``"-"`` will remove the last point
 added - and can be clicked multiple times to remove multiple points. You can press 
 ``"h"`` to toggle histogram normalization, and ``"c"`` to toggle the color map:
 
@@ -223,10 +223,10 @@ The file saving format is the same as in the :ref:`profile fitting procedure <pr
 
 -----------------------
 
-:ref:`Inspecting of reduced 2d spectra <2dspec>` ← Previous pipeline step  
+:ref:`Inspecting reduced 2d spectra <2dspec>` ← Previous pipeline step  
 
 Next pipeline step → :ref:`Extracting 1d spectra <extract_1d>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

@@ -13,7 +13,7 @@ The command for running the bias procedure is called by:
 
     pylongslit_bias PATH_TO_CONFIG_FILE
 
-The bias procedure produces a master bias frame ``master_bias.fits`` by median-combinning the raw frames,
+The bias procedure produces a master bias frame ``master_bias.fits`` by median-combining the raw frames,
 and places it in the  output directory specified in the configuration file. Median combination
 is used as it is robust against outliers in the raw data.
 
@@ -24,11 +24,11 @@ will estimate a mean overscan bias individually for every raw bias frame
 and subtract it, before median-combining the bias frames. In this case, 
 the overscan bias is used as an estimate for the baseline bias-level frame-wise, while
 the master bias frame is used to correct for the 2D bias structure/gradient 
-through the detector. With ovsercan subtraction, the master bias can show negative values,
+through the detector. With overscan subtraction, the master bias can show negative values,
 as these values correspond to an offset from the baseline bias-level, 
 and not the absolute bias level.
 
-Quality Assesment
+Quality Assessment
 ------------------
 
 The bias procedure will show the final master bias and the error upon exiting. You can 
@@ -65,10 +65,10 @@ The relevant parameters for the bias procedure are (with example values):
         "bootstrap_errors": false
     }
 
-If you set ``"overscan_overscan": false``, the overscan subtraction will be skipped, 
+If you set ``"use_overscan": false``, the overscan subtraction will be skipped, 
 and you do not need to worry about the rest of the overscan parameters. However, 
-if you set ``"overscan_overscan": true``, you need to specify the overscan region
-in the raw frames by definning a rectangular region with the parameters 
+if you set ``"use_overscan": true``, you need to specify the overscan region
+in the raw frames by defining a rectangular region with the parameters 
 ``"overscan_x_start"``, ``"overscan_x_end"``, ``"overscan_y_start"``, and ``"overscan_y_end"``,
 with the orientation the raw data is provided in. You can call the command:
 
@@ -89,10 +89,10 @@ where the raw bias frames are stored. Make sure only bias frames are stored in t
 The ``"bootstrap_errors"`` parameter can be set to true in order to estimate the error on the
 master bias frame using bootstrap resampling. This is useful if you have 
 a small number of bias frames, and want to estimate the error with a higher
-precission. However, the bootstrap resampling is computationally expensive,
-and takes a while - specially for larger detectors. Whether bootstrap resampling is
+precision. However, the bootstrap resampling is computationally expensive,
+and takes a while - especially for larger detectors. Whether bootstrap resampling is
 necessary depends on the detector and your science case - if you do not 
-need very high precission on the error, or if you know your detector has a 
+need very high precision on the error, or if you know your detector has a 
 stable bias level, you can mostly set ``"bootstrap_errors"`` to false. You can
 read more about how the software estimates errors in the :ref:`note on uncertainties <uncertainties>`.
 
@@ -119,7 +119,7 @@ The bias frames carry the information about the bias level for every pixel indiv
 only at the time the frames were taken. The overscan regions carry the information
 about the bias level for the exact time the frame was taken, but only as an 
 overall estimate for the frame. Therefore, **a combination of both the overscan
-and the master bias is preffered**. However, only using the bias frames should
+and the master bias is preferred**. However, only using the bias frames should
 also be sufficient for most detectors. Only using the overscan is not allowed
 in the software, as the mean overscan completely neglects the 2D structure of the bias.
 
@@ -130,4 +130,4 @@ Next pipeline step → :ref:`Setting up for dark current subtraction <dark>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

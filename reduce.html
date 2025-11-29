@@ -49,32 +49,32 @@ and then applies the following steps:</p>
 <li><p><a class="reference internal" href="dark_current.html#dark"><span class="std std-ref">Dark current subtraction</span></a> (if dark frames are provided).</p></li>
 <li><p><a class="reference internal" href="flat.html#flat"><span class="std std-ref">Flat-fielding.</span></a></p></li>
 </ol>
-<p>The products are written to the ouput directory specified in the configuration file,
+<p>The products are written to the output directory specified in the configuration file,
 with the names <code class="docutils literal notranslate"><span class="pre">&quot;reduced_science_ORIGINAL_NAME&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;reduced_standard_ORIGINAL_NAME&quot;</span></code>,
 depending on the frame type. All further operations up to <a class="reference internal" href="extract_1d.html#extract-1d"><span class="std std-ref">1d spectrum extraction</span></a>
 will from now on be performed on these frames, and the raw frames will not be used anymore.
 The reduced frames will be altered in place. This also means that <strong>if you in further steps do
 any operations on the reduced frames that you regret, you can always reset by running the reduction procedure again.</strong></p>
-<p>5 fits headers are added to the reduced frames. These are non-standard headers,
+<p>5 FITS headers are added to the reduced frames. These are non-standard headers,
 and can be used only in the context of the PyLongslit software. The headers are:</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;CRRREMOVD&quot;</span></code> - true if <a class="reference internal" href="crr.html#crr"><span class="std std-ref">cosmic rays have been removed</span></a> from the frame.</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;BCGSUBBED&quot;</span></code> - true if <a class="reference internal" href="AB.html#ab"><span class="std std-ref">A-B sky background subtraction</span></a> has been performed on the frame.</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;CROPY1&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;CROPY2&quot;</span></code> - the y-pixel range of the frame after <a class="reference internal" href="crop.html#crop"><span class="std std-ref">cropping</span></a>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">&quot;SKYSUBBED&quot;</span></code> - true if the <a class="reference internal" href="sky.html#sky"><span class="std std-ref">modelled sky background</span></a> has been subtracted from the frame.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;SKYSUBBED&quot;</span></code> - true if the <a class="reference internal" href="sky.html#sky"><span class="std std-ref">modeled sky background</span></a> has been subtracted from the frame.</p>
 </section>
-<section id="quality-assesment">
-<h2>Quality Assesment<a class="headerlink" href="#quality-assesment" title="Link to this heading">¶</a></h2>
+<section id="quality-assessment">
+<h2>Quality Assessment<a class="headerlink" href="#quality-assessment" title="Link to this heading">¶</a></h2>
 <p>The reduced frames will be shown on the screen, and you can press <code class="docutils literal notranslate"><span class="pre">h</span></code> to normalize the frames.
 If you have detected no issues in the bias, dark and flat-frame procedures, you should not expect to see any
-issues in the reduced frames, assuming if your raw object data is healthy. The reduced frames at this point
+issues in the reduced frames, assuming your raw object data is healthy. The reduced frames at this point
 should resemble the raw frames very much to the naked eye. You should also check that the error
 image has reasonable values (in the order of <span class="math notranslate nohighlight">\(\sqrt{counts}\)</span>). This can be done by
-hoovering the mouse over the image, and the error value will be shown in the corner of the window
-(which corner can depends on your system).</p>
+hovering the mouse over the image, and the error value will be shown in the corner of the window
+(which corner depends on your system).</p>
 </section>
 <section id="parameter-options">
 <h2>Parameter options<a class="headerlink" href="#parameter-options" title="Link to this heading">¶</a></h2>
-<p>The only aprameters that can alter the reduction routine are</p>
+<p>The only parameters that can alter the reduction routine are</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;science&quot;</span> <span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;skip_science&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># true if you are only reducing standard star frames</span>
 <span class="p">},</span>

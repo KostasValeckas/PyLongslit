@@ -39,7 +39,7 @@
 <p class="admonition-title">Note</p>
 <p>This procedure can only be performed if you have several frames of the same object,
 taken continuously one after another, with the same exposure time, but where the
-objects’ spatial position is with purpose shifted slightly on the detector. <strong>Skip this procedure if you do not have
+object’s spatial position is purposely shifted slightly on the detector. <strong>Skip this procedure if you do not have
 such frames.</strong></p>
 </div>
 <section id="quickstart">
@@ -52,19 +52,19 @@ such frames.</strong></p>
 files as provided in the configuration file. The procedure will alter the
 reduced files in-place.</p>
 </section>
-<section id="quality-assesment">
-<h2>Quality Assesment<a class="headerlink" href="#quality-assesment" title="Link to this heading">¶</a></h2>
+<section id="quality-assessment">
+<h2>Quality Assessment<a class="headerlink" href="#quality-assessment" title="Link to this heading">¶</a></h2>
 <p>The procedure will show the frame prior and after background subtraction. An example for
 the SDSS_J213510+2728 dataset is shown below:</p>
 <a class="reference internal image-reference" href="_images/good_ab.png"><img alt="_images/good_ab.png" class="align-center" src="_images/good_ab.png" style="width: 100%;" />
 </a>
 <p>Besides a clear reduction of the sky-background, the most important thing to ensure is that the object from the B frame (the negative) is
-not laying too close to the object in the A frame (the positive), such so some of the
+not lying too close to the object in the A frame (the positive), such that some of the
 A object signal is subtracted by the B object signal. The software takes a
 sample of 1d-slices to help investigate this:</p>
 <a class="reference internal image-reference" href="_images/whole_AB_slice.png"><img alt="_images/whole_AB_slice.png" class="align-center" src="_images/whole_AB_slice.png" style="width: 100%;" />
 </a>
-<p>Zooming on the the negative and positive object signal, you can see that they
+<p>Zooming on the negative and positive object signal, you can see that they
 are not overlapping:</p>
 <a class="reference internal image-reference" href="_images/good_AB_slice.png"><img alt="_images/good_AB_slice.png" class="align-center" src="_images/good_AB_slice.png" style="width: 100%;" />
 </a>
@@ -103,10 +103,10 @@ to keep track of the pairs. The A and B files should be the filenames of the red
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>If the frames are taken with the telescope pointing far down from zenith, the
-airmass (and thereby instensity of the sky background) can change significantly
+airmass (and thereby intensity of the sky background) can change significantly
 between even subsequent frames. In this case, one of the subtracted frames will have a non-negligible
 negative sky background, and the other a non-negligible positive sky background. In principle,
-this effect will even out when <a class="reference internal" href="combine_spec.html#combine-spec"><span class="std std-ref">combinning the fluxed spectra</span></a>, but
+this effect will even out when <a class="reference internal" href="combine_spec.html#combine-spec"><span class="std std-ref">combining the fluxed spectra</span></a>, but
 this might still cause issues in the pipeline steps in-between the A-B subtraction
 and the combination. If you have frames with high airmass, you might
 want to consider deploying the <a class="reference internal" href="sky.html#sky"><span class="std std-ref">modelled sky background subtraction</span></a>
@@ -127,7 +127,7 @@ will remove the sky-background from the object signal. The procedure is called A
 <h2>For users new to data reduction - short introduction to sky background<a class="headerlink" href="#for-users-new-to-data-reduction-short-introduction-to-sky-background" title="Link to this heading">¶</a></h2>
 <p>Sky background is the light from the sky and the atmosphere that is recorded by the detector together
 with the object spectrum. This background light covers
-the whole slit, and the bacground therefore shows itself as lines through the whole spatial direction
+the whole slit, and the background therefore shows itself as lines through the whole spatial direction
 (see above figures). The sky background consists both of strong sky lines (emission lines from the sky) and
 a continuum background. These sky lines/background are mixed into the object signal, and must be removed.</p>
 <hr class="docutils" />

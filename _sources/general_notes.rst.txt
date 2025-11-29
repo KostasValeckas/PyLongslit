@@ -10,12 +10,12 @@ features of the pipeline.
 Controlling the plots displayed with `Matplotlib <https://matplotlib.org/>`_.
 -------------------------------------------------------------------------------
 
-The pipeline produces a large array of quality assesment plots. All of these
+The pipeline produces a large array of quality assessment plots. All of these
 are displayed using `Matplotlib <https://matplotlib.org/>`_. All the plots
-have a menu bar that gives you acess to a wide range of options. You can 
+have a menu bar that gives you access to a wide range of options. You can 
 zoom in and out, save the plot, set limits for the axes, limit image contrast,
 and many more. How the menu looks for different systems varies. For Linux 
-Ubuntu, the menu looks like this (located in upper left corner): 
+Ubuntu, the menu looks like this (located in the upper left corner): 
 
 .. image:: pictures/matplotlib.png
     :width: 100%
@@ -27,7 +27,7 @@ the same.
 Spectral axis vs. Spatial axis
 -------------------------------
 
-The software and the docs uses the terms *spectral axis* and *spatial axis*
+The software and the docs use the terms *spectral axis* and *spatial axis*
 to refer to the two axes of the 2D spectrum. The *spectral axis* is the
 axis along which the wavelength values are displayed, and the *spatial axis*
 is the axis along which the spatial position of the object is displayed:

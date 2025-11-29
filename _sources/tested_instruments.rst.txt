@@ -8,13 +8,13 @@ to be instrument-independent, as long as some primary assumptions are met
 (see the :ref:`pipeline overview <index>` for details).
 
 However, the :ref:`configuration files <conf>` for an instrument 
-setup can be viewed as an instrument-implementation, as for a fixed 
+setup can be viewed as an instrument implementation, as for a fixed 
 instrument setup, most of the parameters in the :ref:`configuration file <conf>`
 will be constant and very little will need to be changed between different datasets.
 Furthermore, resources like the products of :ref:`initial arc line identification <identify>` and 
 :ref:`extinction curves <sensfunction>` can be re-used. We therefore provide an 
 overview of already tested instrument setups with their resources and configuration files 
-in hope that these will be useful for users of the software.
+in the hope that these will be useful for users of the software.
 
 .. list-table::
     :header-rows: 1
@@ -23,7 +23,6 @@ in hope that these will be useful for users of the software.
     * - Instrument
       - Telescope
       - Disperser
-
       - Pixtable (Initial Arc Lines Guess)
       - Extinction Curve
       - Configuration File Example
@@ -45,9 +44,8 @@ in hope that these will be useful for users of the software.
     * - ALFOSC
       - Nordic Optical Telescope
       - Grism #19
-      - `Link (ThAr) <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_thar_pixtable.dat>`_ `Link (HeNe) <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_hene_pixtable.dat>`_
-       
-      - `Link  <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
+      - `Link (ThAr) <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_thar_pixtable.dat>`__ `Link (HeNe) <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/alfosc_grating19_hene_pixtable.dat>`__
+      - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/lapalma.dat>`__ `Source <https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html>`__
       - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/ALFOSC/grism19.json>`__
 
     * - ALFOSC
@@ -77,4 +75,22 @@ in hope that these will be useful for users of the software.
       - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/pixtables/fors2_test_pixtable.dat>`__
       - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/database/extinction_curves/paranal.dat>`__ `Source <https://www.aanda.org/articles/aa/full_html/2011/03/aa15537-10/T4.html>`__
       - `Link <https://github.com/KostasValeckas/PyLongslit_dev/blob/main/example_configuration_files/FORS2/300i.json>`__
+
+Contributing new instrument configurations
+-------------------------------------------
+
+We encourage users to contribute configurations for new instruments or instrument setups. 
+If you have successfully used PyLongslit with an instrument not listed above, please consider 
+sharing your configuration files and resources with the community.
+
+To contribute a new instrument configuration, please provide:
+
+1. A working configuration file for your instrument setup.
+2. A pixel table (arc line identification file) if available.
+3. An appropriate extinction curve for your observatory.
+4. A brief description of any instrument-specific considerations or parameter choices.
+
+to kostas.valeckas@nbi.ku.dk .
+
+Your contribution will help expand the software's utility for the broader astronomical community.
 

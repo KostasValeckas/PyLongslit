@@ -39,13 +39,13 @@
 to be instrument-independent, as long as some primary assumptions are met
 (see the <a class="reference internal" href="index.html#index"><span class="std std-ref">pipeline overview</span></a> for details).</p>
 <p>However, the <a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">configuration files</span></a> for an instrument
-setup can be viewed as an instrument-implementation, as for a fixed
+setup can be viewed as an instrument implementation, as for a fixed
 instrument setup, most of the parameters in the <a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">configuration file</span></a>
 will be constant and very little will need to be changed between different datasets.
 Furthermore, resources like the products of <a class="reference internal" href="identify.html#identify"><span class="std std-ref">initial arc line identification</span></a> and
 <a class="reference internal" href="sensfunction.html#sensfunction"><span class="std std-ref">extinction curves</span></a> can be re-used. We therefore provide an
 overview of already tested instrument setups with their resources and configuration files
-in hope that these will be useful for users of the software.</p>
+in the hope that these will be useful for users of the software.</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 16.7%" />
@@ -116,6 +116,21 @@ in hope that these will be useful for users of the software.</p>
 </tr>
 </tbody>
 </table>
+<section id="contributing-new-instrument-configurations">
+<h2>Contributing new instrument configurations<a class="headerlink" href="#contributing-new-instrument-configurations" title="Link to this heading">¶</a></h2>
+<p>We encourage users to contribute configurations for new instruments or instrument setups.
+If you have successfully used PyLongslit with an instrument not listed above, please consider
+sharing your configuration files and resources with the community.</p>
+<p>To contribute a new instrument configuration, please provide:</p>
+<ol class="arabic simple">
+<li><p>A working configuration file for your instrument setup.</p></li>
+<li><p>A pixel table (arc line identification file) if available.</p></li>
+<li><p>An appropriate extinction curve for your observatory.</p></li>
+<li><p>A brief description of any instrument-specific considerations or parameter choices.</p></li>
+</ol>
+<p>to <a class="reference external" href="mailto:kostas&#46;valeckas&#37;&#52;&#48;nbi&#46;ku&#46;dk">kostas<span>&#46;</span>valeckas<span>&#64;</span>nbi<span>&#46;</span>ku<span>&#46;</span>dk</a> .</p>
+<p>Your contribution will help expand the software’s utility for the broader astronomical community.</p>
+</section>
 </section>
 
 
@@ -148,7 +163,10 @@ in hope that these will be useful for users of the software.</p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Tested Instruments and Configurations</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tested Instruments and Configurations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#contributing-new-instrument-configurations">Contributing new instrument configurations</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="special_use_cases.html">Special Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Interested in developing?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="uncertainties.html">Note on how the software estimates uncertainties</a></li>

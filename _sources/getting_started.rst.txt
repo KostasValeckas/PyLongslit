@@ -6,7 +6,7 @@ using it can be a bit overwhelming. The software is designed to be
 simple, but it is also designed to be instrument-independent. This means that there are
 many parameters that can be set to match your data and setup. 
 
-We provide 2 tutorial datasets that have all the prameters pre-set, so that
+We provide 2 tutorial datasets that have all the parameters pre-set, so that
 you can run the software without having to change anything to get a feel
 for how it works.
 
@@ -23,13 +23,13 @@ to get familiar with the software.** The two datasets are:
 
 `GQ1218+0832 (from OSIRIS - Gran Telescopio Canarias) (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/GQ1218%2B0832>`_
 
-To complete the tutorial, you will also need to use some complimentary files that 
+To complete the tutorial, you will also need to use some complementary files that 
 can be `downloaded here (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database>`_.
 
 
-**Using git (if you are not familiar with git, just download the ZIP from link above):** 
+**Using git (if you are not familiar with git, just download the ZIP from the link above):** 
 
-You can download the entire tutorial and developtment repository using git.
+You can download the entire tutorial and development repository using git.
 
 SSH (recommended if you plan on developing)...
 
@@ -60,7 +60,7 @@ with bold in the example below:
 For some systems, you will need 
 to change the forward slash ``/`` to a backslash ``\`` in the paths.
 
-The above described changes can be made easily by using *find and replace* functionality in a text editor.
+The above described changes can be made easily by using the *find and replace* functionality in a text editor.
 
 The configuration files in the tutorial and developer repository are placed as shown below:
 

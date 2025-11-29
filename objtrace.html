@@ -36,7 +36,7 @@
             
   <section id="object-tracing">
 <span id="objtrace"></span><h1>Object Tracing<a class="headerlink" href="#object-tracing" title="Link to this heading">¶</a></h1>
-<p>In this routine the software estimate at what pixels the object is located in the 2D spectrum.</p>
+<p>In this routine the software estimates at what pixels the object is located in the 2D spectrum.</p>
 <p>There are 3 ways to trace the object in the software:</p>
 <ol class="arabic simple">
 <li><p><strong>Profile fitting</strong>: This is the default method.</p></li>
@@ -52,11 +52,11 @@
 </div>
 <p>The routine will fit a user chosen profile to the object in the 2D spectrum.
 There are a few interactive steps in the routine.</p>
-<p>Firstly, you will have to choose the center of the object by clicking on it.
+<p>First, you will have to choose the center of the object by clicking on it.
 This is exactly the same routine as in <a class="reference internal" href="sky.html#sky"><span class="std std-ref">sky subtraction</span></a>, please see
 the description there.</p>
 <p>Then, the software will fit a 1d profile to every spatial column in the 2D spectrum.
-A sample of the fits will be shown for you quality assesment (example here
+A sample of the fits will be shown for your quality assessment (example here
 is from the SDSS_J213510+2728 example dataset):</p>
 <a class="reference internal image-reference" href="_images/spacial_fit.png"><img alt="_images/spacial_fit.png" class="align-center" src="_images/spacial_fit.png" style="width: 100%;" />
 </a>
@@ -92,10 +92,10 @@ their shape can be different, but the meaning of the parameters is the same.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">fit_R2</span></code>: The minimum <span class="math notranslate nohighlight">\(R^2\)</span> value for the fit to be accepted. You can later manually crop out noisy edges, so it is okay to be a bit lenient here.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">model</span></code>: The model to fit to the object. The options are: <code class="docutils literal notranslate"><span class="pre">&quot;Gaussian&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;Cauchy&quot;</span></code>. Gaussian is useful for point-like objects, while Cauchy is useful for extended objects. It is recommended that you use the same model for the standard star and the object, as none of the models are perfect representations of the object, so at least you will have the same systematic error in both when comparing counts to flux.</p></li>
 </ul>
-<p>Afterwards, you will be given the oppurtunity to crop out noisy edges of the trace:</p>
+<p>Afterwards, you will be given the opportunity to crop out noisy edges of the trace:</p>
 <a class="reference internal image-reference" href="_images/crop_image.png"><img alt="_images/crop_image.png" class="align-center" src="_images/crop_image.png" style="width: 100%;" />
 </a>
-<p>Here you can use the arrow keys to move the red lines if any of the excepted fits (green)
+<p>Here you can use the arrow keys to move the red lines if any of the accepted fits (green)
 are false positives.</p>
 <p>Lastly, the software will fit a polynomial to both the fitted centers and the fitted
 FWHM values (fit only showed for centers, but FWHM is fitted in the same way):</p>
@@ -128,12 +128,12 @@ These parameters can be changed to control the fitting:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">use_bspline_fwhm</span></code>: If you want to use a bspline for the FWHM values. Use with same caution as described above.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">knots_bspline</span></code>: The number of knots to use in the bspline.</p></li>
 </ul>
-<p>Finally, a quality assesment plot is created to show the 2d spectrum with the 2d
+<p>Finally, a quality assessment plot is created to show the 2d spectrum with the 2d
 object trace overlaid:</p>
 <a class="reference internal image-reference" href="_images/QA_objtrace.png"><img alt="_images/QA_objtrace.png" class="align-center" src="_images/QA_objtrace.png" style="width: 100%;" />
 </a>
 <p>If the object model does not fit the object well, revise the whole process, and take
-extra good look at the earlier QA plots.</p>
+an extra good look at the earlier QA plots.</p>
 <p>The trace is saved in the output directory defined in the configuration file,
 and the filename is either <code class="docutils literal notranslate"><span class="pre">obj_science_FILENAME.dat</span></code> or <code class="docutils literal notranslate"><span class="pre">obj_standard_FILENAME.dat</span></code>.
 In the file there are 3 columns: the spectral pixel, the center of the object, and the FWHM
@@ -143,7 +143,7 @@ of the object.</p>
 <h2>Cloning a trace<a class="headerlink" href="#cloning-a-trace" title="Link to this heading">¶</a></h2>
 <p>Sometimes there are several objects present on the detector. If you have issues
 tracing your object of interest (if it is too faint, for example), you can clone
-a trace from another object, if it is possible to fit a neibhoring object
+a trace from another object, if it is possible to fit a neighboring object
 instead.</p>
 <p>You have to first set 2 parameters in the configuration file
 (from the SDSS_J213510+2728 example dataset):</p>
@@ -168,15 +168,15 @@ spatial axis (up/down) using the arrow keys:</p>
 <p>You have to move the trace to match the center of the object you want to trace:</p>
 <a class="reference internal image-reference" href="_images/cloned_zoom.png"><img alt="_images/cloned_zoom.png" class="align-center" src="_images/cloned_zoom.png" style="width: 100%;" />
 </a>
-<p>You will then be showed the same final QA plot as in the <a class="reference internal" href="#profile"><span class="std std-ref">profile fitting procedure</span></a>.</p>
+<p>You will then be shown the same final QA plot as in the <a class="reference internal" href="#profile"><span class="std std-ref">profile fitting procedure</span></a>.</p>
 <p>The file saving format is the same as in the <a class="reference internal" href="#profile"><span class="std std-ref">profile fitting procedure</span></a>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>While cloning the object trace, you will clone the FWHM values as well.
 This is not ideal, as the FWHM values can be different for different objects.
-It is ususally best to clone an object where the archived object trace has larger FWHM than
-the object you want to trace, instead of smaller. Larger FWHM will result in more noise, but it will trace
-the whole object. Smaller FWHM will result in less noise, but it will miss
+It is usually best to clone an object where the archived object trace has a larger FWHM than
+the object you want to trace, instead of smaller. A larger FWHM will result in more noise, but it will trace
+the whole object. A smaller FWHM will result in less noise, but it will miss
 some of the object.</p>
 </div>
 </section>
@@ -189,8 +189,8 @@ you can always trace the object by hand.</p>
 </pre></div>
 </div>
 <p>This will open an interactive plot where you can either skip the object by
-closing the plot, or trace by hoovering the cursor over the object and clicking
-<code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> to add a point to the trace. Clickin <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> will remove the last point
+closing the plot, or trace by hovering the cursor over the object and clicking
+<code class="docutils literal notranslate"><span class="pre">&quot;+&quot;</span></code> to add a point to the trace. Clicking <code class="docutils literal notranslate"><span class="pre">&quot;-&quot;</span></code> will remove the last point
 added - and can be clicked multiple times to remove multiple points. You can press
 <code class="docutils literal notranslate"><span class="pre">&quot;h&quot;</span></code> to toggle histogram normalization, and <code class="docutils literal notranslate"><span class="pre">&quot;c&quot;</span></code> to toggle the color map:</p>
 <a class="reference internal image-reference" href="_images/manual_clean.png"><img alt="_images/manual_clean.png" class="align-center" src="_images/manual_clean.png" style="width: 100%;" />
@@ -203,7 +203,7 @@ All the parameters are the same as in the <a class="reference internal" href="#p
 set to control the fitting.</p>
 <p>The file saving format is the same as in the <a class="reference internal" href="#profile"><span class="std std-ref">profile fitting procedure</span></a>.</p>
 <hr class="docutils" />
-<p><a class="reference internal" href="show_2dspec.html#dspec"><span class="std std-ref">Inspecting of reduced 2d spectra</span></a> ← Previous pipeline step</p>
+<p><a class="reference internal" href="show_2dspec.html#dspec"><span class="std std-ref">Inspecting reduced 2d spectra</span></a> ← Previous pipeline step</p>
 <p>Next pipeline step → <a class="reference internal" href="extract_1d.html#extract-1d"><span class="std std-ref">Extracting 1d spectra</span></a></p>
 <p><a class="reference internal" href="general_notes.html#general-notes"><span class="std std-ref">General Notes on using the pipeline</span></a></p>
 <p><a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">General info on the configuration file</span></a></p>

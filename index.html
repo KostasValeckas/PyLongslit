@@ -42,7 +42,7 @@
 <a class="reference external image-reference" href="https://arxiv.org/abs/2504.00973"><img alt="https://img.shields.io/badge/arXiv-astro--ph-blue" src="https://img.shields.io/badge/arXiv-astro--ph-blue" />
 </a>
 <p>PyLongslit is a simple manual Python pipeline for processing of astronomical long-slit spectra
-recorded with CCD detectors. At the current version, the software can produce following products:</p>
+recorded with CCD detectors. At the current version, the software can produce the following products:</p>
 <ol class="arabic simple">
 <li><p>A calibrated 2D spectrum in counts/wavelength.</p></li>
 <li><p>A 1D spectrum extracted from the 2D spectrum in counts/wavelength (for point-like objects).</p></li>
@@ -58,17 +58,17 @@ information along one axis and spectral information along the other.</p></li>
 <li><p>The data is in counts, and has not been reduced in any way.</p></li>
 <li><p>Bias, flat-field and arc-lamp calibration frames are available. For the arc-lamp, accompanying
 data is available with a list of lines and their wavelengths, with the lines identified in the arc-lamp spectrum.
-<em>(Wavelength-calibrating using sky-lines should be fine aswell, but it is not yet a tested approach).</em></p></li>
+<em>(Wavelength-calibrating using sky-lines should be fine as well, but it is not yet a tested approach).</em></p></li>
 </ol>
 <p>If these conditions are met, the software should be able to reduce the data to 2D and 1D spectra
 in counts/wavelength. For further processing, you will also need to acquire a standard star observation
 with a reference spectrum, and an extinction curve for your observatory.</p>
 <p>If your data does not meet these conditions, you can still try to use the software, but
-please know that the software is not designed/tested for data does not meet the above conditions.</p>
+please know that the software is not designed/tested for data that does not meet the above conditions.</p>
 <p><strong>Principles behind the software:</strong></p>
 <ol class="arabic simple">
 <li><p>We strive for <strong>simplicity</strong>. <em>The main motivation for the software is to create a tool that is
-easy to understand and use, specially for novice astronomers and students.
+easy to understand and use, especially for novice astronomers and students.
 There are many high-fidelity software solutions that are more sophisticated and
 precise than PyLongslit, and we do not aim to out-perform them. Our goal is to
 create an entry-level pipeline that is approachable.</em></p></li>
@@ -80,11 +80,11 @@ We accept the trade-off of this pipeline being only useful for single-object-at-
 processing, and do not compromise on this principle.</em></p></li>
 <li><p>We strive for <strong>transparency</strong>. <em>We look at documentation as an active part of the code.
 No line of code is deemed complete if it is not documented appropriately.
-We specially aim to disclose the limitations of the software, and to provide
-guidance on how to interpret the results - specially through carefully designed quality-assesment plots.</em></p></li>
+We especially aim to disclose the limitations of the software, and to provide
+guidance on how to interpret the results - especially through carefully designed quality-assessment plots.</em></p></li>
 <li><p>We strive for <strong>robustness</strong>. <em>We pay special attention to error handling and to
 providing guidance on how to troubleshoot common issues. We commit to providing
-support to users who are struggling with the software to our best ability.</em></p></li>
+support to users who are struggling with the software to the best of our ability.</em></p></li>
 </ol>
 <p><strong>Citing the software</strong></p>
 <p>If you use PyLongslit in your research, please cite the software using the following:</p>
@@ -106,7 +106,7 @@ support to users who are struggling with the software to our best ability.</em><
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="installation.html#quick-guide-for-experienced-python-users">Quick guide for experienced python users</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#quick-guide-for-experienced-python-users">Quick guide for experienced Python users</a></li>
 <li class="toctree-l2"><a class="reference internal" href="installation.html#detailed-guide-for-users-new-to-python-environments">Detailed guide for users new to Python environments</a></li>
 </ul>
 </li>
@@ -115,7 +115,10 @@ support to users who are struggling with the software to our best ability.</em><
 <li class="toctree-l2"><a class="reference internal" href="getting_started.html#tutorial">Tutorial</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tested_instruments.html">Tested Instruments and Configurations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tested_instruments.html">Tested Instruments and Configurations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tested_instruments.html#contributing-new-instrument-configurations">Contributing new instrument configurations</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="special_use_cases.html">Special Use Cases</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="special_use_cases.html#extracting-closely-spaced-spectra">Extracting closely spaced spectra</a></li>
 </ul>

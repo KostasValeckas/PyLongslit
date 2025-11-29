@@ -6,7 +6,7 @@ A-B Background subtraction
 .. note:: 
     This procedure can only be performed if you have several frames of the same object,
     taken continuously one after another, with the same exposure time, but where the 
-    objects' spatial position is with purpose shifted slightly on the detector. **Skip this procedure if you do not have
+    object's spatial position is purposely shifted slightly on the detector. **Skip this procedure if you do not have
     such frames.**
 
 Quickstart
@@ -22,7 +22,7 @@ The procedure will perform A-B background subtraction for the pairs of reduced
 files as provided in the configuration file. The procedure will alter the 
 reduced files in-place.
 
-Quality Assesment
+Quality Assessment
 ------------------
 
 The procedure will show the frame prior and after background subtraction. An example for
@@ -33,7 +33,7 @@ the SDSS_J213510+2728 dataset is shown below:
     :align: center
 
 Besides a clear reduction of the sky-background, the most important thing to ensure is that the object from the B frame (the negative) is
-not laying too close to the object in the A frame (the positive), such so some of the 
+not lying too close to the object in the A frame (the positive), such that some of the 
 A object signal is subtracted by the B object signal. The software takes a 
 sample of 1d-slices to help investigate this:
 
@@ -41,7 +41,7 @@ sample of 1d-slices to help investigate this:
     :width: 100%
     :align: center
 
-Zooming on the the negative and positive object signal, you can see that they 
+Zooming on the negative and positive object signal, you can see that they 
 are not overlapping:
 
 .. image:: pictures/good_AB_slice.png
@@ -93,10 +93,10 @@ to keep track of the pairs. The A and B files should be the filenames of the red
 
 .. note:: 
     If the frames are taken with the telescope pointing far down from zenith, the
-    airmass (and thereby instensity of the sky background) can change significantly
+    airmass (and thereby intensity of the sky background) can change significantly
     between even subsequent frames. In this case, one of the subtracted frames will have a non-negligible
     negative sky background, and the other a non-negligible positive sky background. In principle, 
-    this effect will even out when :ref:`combinning the fluxed spectra <combine_spec>`, but
+    this effect will even out when :ref:`combining the fluxed spectra <combine_spec>`, but
     this might still cause issues in the pipeline steps in-between the A-B subtraction
     and the combination. If you have frames with high airmass, you might 
     want to consider deploying the :ref:`modelled sky background subtraction <sky>`
@@ -118,7 +118,7 @@ For users new to data reduction - short introduction to sky background
 
 Sky background is the light from the sky and the atmosphere that is recorded by the detector together
 with the object spectrum. This background light covers
-the whole slit, and the bacground therefore shows itself as lines through the whole spatial direction
+the whole slit, and the background therefore shows itself as lines through the whole spatial direction
 (see above figures). The sky background consists both of strong sky lines (emission lines from the sky) and 
 a continuum background. These sky lines/background are mixed into the object signal, and must be removed.
 
@@ -130,4 +130,4 @@ Next pipeline step → :ref:`Cropping of 2d spectra <crop>`
 
 :ref:`General Notes on using the pipeline <general_notes>` 
 
-:ref:`General info on the configuration file <conf>` 
+:ref:`General info on the configuration file <conf>`

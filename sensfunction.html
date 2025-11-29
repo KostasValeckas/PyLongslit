@@ -37,7 +37,7 @@
   <section id="sensitivity-function">
 <span id="sensfunction"></span><h1>Sensitivity function<a class="headerlink" href="#sensitivity-function" title="Link to this heading">¶</a></h1>
 <p>This procedure is used to obtain a sensitivity function. The sensitivity function
-is essentially a conversion factor between observed counts pr. second and flux in physical units.
+is essentially a conversion factor between observed counts per second and flux in physical units.
 For further explanation, see the <a class="reference internal" href="#sensfunction-math"><span class="std std-ref">further description of the sensitivity function</span></a>.</p>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Link to this heading">¶</a></h2>
@@ -59,7 +59,7 @@ the SDSS_J213510+2728 example dataset - with recommended cropping shown):</p>
 </a>
 <a class="reference internal image-reference" href="_images/sens_crop_past.png"><img alt="_images/sens_crop_past.png" class="align-center" src="_images/sens_crop_past.png" style="width: 100%;" />
 </a>
-<p>Further, a following interactive plot will allow you to mask any strong
+<p>Furthermore, a following interactive plot will allow you to mask any strong
 emission/absorption lines that would corrupt later fitting, by clicking on them
 (with recommended amount of masking shown):</p>
 <a class="reference internal image-reference" href="_images/sens_mask_prior.png"><img alt="_images/sens_mask_prior.png" class="align-center" src="_images/sens_mask_prior.png" style="width: 100%;" />
@@ -72,7 +72,7 @@ emission/absorption lines that would corrupt later fitting, by clicking on them
 <p>The goal is to see a smooth fit with mostly random residual distribution around zero.
 However, the star spectrum will still have some artifacts such as absorption lines from the sky,
 and these might show up as structures in the residual plot. Make sure that these are small compared
-to the general order of magnitude of the data</p>
+to the general order of magnitude of the data.</p>
 <p>The parameters that can control the fit are:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;sensfunc&quot;</span><span class="p">:</span> <span class="p">{</span>
     <span class="s2">&quot;fit_order&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
@@ -92,7 +92,7 @@ together with the observed standard star spectrum, now flux-calibrated with the 
 </a>
 <p>The two spectra should resemble each other closely, but you might see some
 deviations at the edges. If the two spectra are very different, you
-will unfortunetly have to revise the whole pipeline process up to this point,
+will unfortunately have to revise the whole pipeline process up to this point,
 as the fault might be both in the sensitivity function and in the previous steps
 ending with the <a class="reference internal" href="extract_1d.html#extract-1d"><span class="std std-ref">1d extraction</span></a>.</p>
 <p>If the two spectra are similar, you can accept this as a strong indication that

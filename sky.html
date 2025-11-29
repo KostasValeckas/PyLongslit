@@ -37,14 +37,14 @@
 <span id="sky"></span><h1>Modelled sky subtraction<a class="headerlink" href="#modelled-sky-subtraction" title="Link to this heading">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>For some datasets, if you already have subtracted the sky bacground by using
+<p>For some datasets, if you already have subtracted the sky background by using
 <a class="reference internal" href="AB.html#ab"><span class="std std-ref">A-B background subtraction</span></a>, you might be able to skip this step.
 This is the case for the SDSS_J213510+2728 tutorial dataset, where the sky
-subtraction by the A-B method is so succesfull, that practically all background
+subtraction by the A-B method is so successful, that practically all background
 is removed. However, for some datasets, you will need to perform this step
 even if you have already subtracted the sky background by the A-B method -
 inspect the files after the A-B routine to see if there is any remaining sky background.
-It is imortant to note that any procedure performed in the pipeline introduces
+It is important to note that any procedure performed in the pipeline introduces
 some error noise (see <a class="reference internal" href="uncertainties.html#uncertainties"><span class="std std-ref">note on uncertainties</span></a>), so you must consider what is your best option, or test different
 approaches.</p>
 </div>
@@ -70,11 +70,11 @@ GQ1218+0832 dataset, with prior and after object choice:</p>
 </a>
 <p>From then on, the procedure will estimate the sky background using polynomial fitting, and subtract it.</p>
 </section>
-<section id="quality-assesment">
-<h2>Quality Assesment<a class="headerlink" href="#quality-assesment" title="Link to this heading">¶</a></h2>
+<section id="quality-assessment">
+<h2>Quality Assessment<a class="headerlink" href="#quality-assessment" title="Link to this heading">¶</a></h2>
 <p>The routine fits a polynomial to the sky background for every spectral pixel. A
-sample for one fit (corresponsing to the coordinates of the manually chosen object center) will be
-shown for quality assesment:</p>
+sample for one fit (corresponding to the coordinates of the manually chosen object center) will be
+shown for quality assessment:</p>
 <a class="reference internal image-reference" href="_images/sky_QA.png"><img alt="_images/sky_QA.png" class="align-center" src="_images/sky_QA.png" style="width: 100%;" />
 </a>
 <p>A good fit is defined by:</p>
@@ -123,19 +123,19 @@ where <code class="docutils literal notranslate"><span class="pre">&quot;sigma_c
 is the maximum number of iterations to perform (stops earlier if convergence is reached).
 The <code class="docutils literal notranslate"><span class="pre">&quot;fit_order&quot;</span></code> parameter decides what order polynomial to fit to the sky background.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">&quot;fwhm_guess&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;fwhm_thresh&quot;</span></code> parameters are used to estimate the limits of the objects
-(can be set different for science and standard star frames). The red lines you see on the plot
+(can be set differently for science and standard star frames). The red lines you see on the plot
 above are defined as: object center +/- 3 <code class="docutils literal notranslate"><span class="pre">&quot;fwhm_guess&quot;</span></code> +/- <code class="docutils literal notranslate"><span class="pre">&quot;fwhm_thresh&quot;</span></code> (in pixels).</p>
 </section>
 <section id="for-users-new-to-data-reduction-short-introduction-to-sky-background">
 <h2>For users new to data reduction - short introduction to sky background<a class="headerlink" href="#for-users-new-to-data-reduction-short-introduction-to-sky-background" title="Link to this heading">¶</a></h2>
 <p>Sky background is the light from the sky and the atmosphere that is recorded by the detector together
 with the object spectrum. This background light covers
-the whole slit, and the bacground therefore shows itself as lines through the whole spatial direction
-(see above figures). The sky background consists both of strong sky lines (emission lines from the sky) and
+the whole slit, and the background therefore shows itself as lines through the whole spatial direction
+(see above figures). The sky background consists of both strong sky lines (emission lines from the sky) and
 a continuum background. These sky lines/background are mixed into the object signal, and must be removed.</p>
 <hr class="docutils" />
 <p><a class="reference internal" href="crop.html#crop"><span class="std std-ref">Cropping of 2d spectra</span></a> ← Previous pipeline step</p>
-<p>Next pipeline step → <a class="reference internal" href="show_2dspec.html#dspec"><span class="std std-ref">Inspecting of reduced 2d spectra</span></a></p>
+<p>Next pipeline step → <a class="reference internal" href="show_2dspec.html#dspec"><span class="std std-ref">Inspecting reduced 2d spectra</span></a></p>
 <p><a class="reference internal" href="general_notes.html#general-notes"><span class="std std-ref">General Notes on using the pipeline</span></a></p>
 <p><a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">General info on the configuration file</span></a></p>
 </section>

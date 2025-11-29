@@ -41,7 +41,7 @@
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylongslit_bias<span class="w"> </span>PATH_TO_CONFIG_FILE
 </pre></div>
 </div>
-<p>The bias procedure produces a master bias frame <code class="docutils literal notranslate"><span class="pre">master_bias.fits</span></code> by median-combinning the raw frames,
+<p>The bias procedure produces a master bias frame <code class="docutils literal notranslate"><span class="pre">master_bias.fits</span></code> by median-combining the raw frames,
 and places it in the  output directory specified in the configuration file. Median combination
 is used as it is robust against outliers in the raw data.</p>
 <section id="overscan-subtraction">
@@ -51,13 +51,13 @@ will estimate a mean overscan bias individually for every raw bias frame
 and subtract it, before median-combining the bias frames. In this case,
 the overscan bias is used as an estimate for the baseline bias-level frame-wise, while
 the master bias frame is used to correct for the 2D bias structure/gradient
-through the detector. With ovsercan subtraction, the master bias can show negative values,
+through the detector. With overscan subtraction, the master bias can show negative values,
 as these values correspond to an offset from the baseline bias-level,
 and not the absolute bias level.</p>
 </section>
 </section>
-<section id="quality-assesment">
-<h2>Quality Assesment<a class="headerlink" href="#quality-assesment" title="Link to this heading">¶</a></h2>
+<section id="quality-assessment">
+<h2>Quality Assessment<a class="headerlink" href="#quality-assessment" title="Link to this heading">¶</a></h2>
 <p>The bias procedure will show the final master bias and the error upon exiting. You can
 press <code class="docutils literal notranslate"><span class="pre">h</span></code> to normalize the master bias to see the structure of the bias
 frame more clearly. How the bias should look like depends on the detector,
@@ -85,10 +85,10 @@ tutorial data):</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>If you set <code class="docutils literal notranslate"><span class="pre">&quot;overscan_overscan&quot;:</span> <span class="pre">false</span></code>, the overscan subtraction will be skipped,
+<p>If you set <code class="docutils literal notranslate"><span class="pre">&quot;use_overscan&quot;:</span> <span class="pre">false</span></code>, the overscan subtraction will be skipped,
 and you do not need to worry about the rest of the overscan parameters. However,
-if you set <code class="docutils literal notranslate"><span class="pre">&quot;overscan_overscan&quot;:</span> <span class="pre">true</span></code>, you need to specify the overscan region
-in the raw frames by definning a rectangular region with the parameters
+if you set <code class="docutils literal notranslate"><span class="pre">&quot;use_overscan&quot;:</span> <span class="pre">true</span></code>, you need to specify the overscan region
+in the raw frames by defining a rectangular region with the parameters
 <code class="docutils literal notranslate"><span class="pre">&quot;overscan_x_start&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;overscan_x_end&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;overscan_y_start&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;overscan_y_end&quot;</span></code>,
 with the orientation the raw data is provided in. You can call the command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pylongslit_check_config<span class="w"> </span>PATH_TO_CONFIG_FILE
@@ -103,10 +103,10 @@ where the raw bias frames are stored. Make sure only bias frames are stored in t
 <p>The <code class="docutils literal notranslate"><span class="pre">&quot;bootstrap_errors&quot;</span></code> parameter can be set to true in order to estimate the error on the
 master bias frame using bootstrap resampling. This is useful if you have
 a small number of bias frames, and want to estimate the error with a higher
-precission. However, the bootstrap resampling is computationally expensive,
-and takes a while - specially for larger detectors. Whether bootstrap resampling is
+precision. However, the bootstrap resampling is computationally expensive,
+and takes a while - especially for larger detectors. Whether bootstrap resampling is
 necessary depends on the detector and your science case - if you do not
-need very high precission on the error, or if you know your detector has a
+need very high precision on the error, or if you know your detector has a
 stable bias level, you can mostly set <code class="docutils literal notranslate"><span class="pre">&quot;bootstrap_errors&quot;</span></code> to false. You can
 read more about how the software estimates errors in the <a class="reference internal" href="uncertainties.html#uncertainties"><span class="std std-ref">note on uncertainties</span></a>.</p>
 </section>
@@ -130,7 +130,7 @@ acquired by combination of all the bias frames (these are usually taken before o
 only at the time the frames were taken. The overscan regions carry the information
 about the bias level for the exact time the frame was taken, but only as an
 overall estimate for the frame. Therefore, <strong>a combination of both the overscan
-and the master bias is preffered</strong>. However, only using the bias frames should
+and the master bias is preferred</strong>. However, only using the bias frames should
 also be sufficient for most detectors. Only using the overscan is not allowed
 in the software, as the mean overscan completely neglects the 2D structure of the bias.</p>
 <hr class="docutils" />
