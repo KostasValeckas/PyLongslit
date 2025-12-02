@@ -1,6 +1,7 @@
 import numpy as np
 import glob as glob
 import argparse
+from sys import exit
 
 """
 PyLongslit module for reducing frames (bias subtraction and flat-fielding). 
@@ -268,7 +269,7 @@ def reduce_frame(frame, master_bias, master_flat, use_overscan, type):
     return frame, error
 
 
-def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime, type):
+def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime_default, type):
     """
     Driver for 'reduce_frame' function. Reduces a list of frames.
 
@@ -309,6 +310,17 @@ def reduce_group(file_list, BIAS, FLAT, use_overscan, exptime, type):
 
         print("---------------------------------")
         logger.info(f"Reducing frame {file} ...")
+
+        if ("files" in science_params and
+            file in science_params["files"] and
+            "exptime" in science_params["files"][file]):
+
+            exptime = science_params["files"][file]["exptime"]
+            logger.info(f"Using exposure time of {exptime} seconds for {file}.")
+
+        else:
+
+            exptime = exptime_default
 
         hdu = (
             open_fits(science_params["science_dir"], file)
@@ -412,13 +424,62 @@ def reduce_all():
 
         reduce_group(science_files, BIAS, FLAT, use_overscan, exptime, "science")
 
+'''
+        if "files" in science_params and science_params["files"] is not None:
+            if set(science_params["files"].keys()) - set(science_files.files) != set():
+                logger.critical(
+                    "Some of the science files listed in the config file "
+                    "are not found in the science directory."
+                )
+                logger.error("Please check the config file and the directory.")
+
+                exit()
+
+            elif set(science_files.files) - set(science_params["files"].keys()) != set():
+                logger.warning(
+                    "Some of the science files in the science directory "
+                    "are not listed in the config file. They will be reduced by "
+                    "the default setting in configuration file."
+                )
+
+                other_files = list(set(science_files.files) - set(science_params["files"].keys()))
+                other_files.sort()
+                other_file_list = FileList(science_params["science_dir"])
+                other_file_list.files = other_files
+                other_file_list.num_files = len(other_files)
+                reduce_group(other_file_list, BIAS, FLAT, use_overscan, exptime, "science")
+
+                for file in science_params["files"].keys():
+                    reduce_file = FileList(science_params["science_dir"])
+                    reduce_file.files = [file]
+                    reduce_file.num_files = 1
+                    if science_params["files"][file]["exptime"]:
+                        exptime = science_params["files"][file]["exptime"]
+                    else:
+                        exptime = science_params["exptime"]
+                    reduce_group(reduce_file, BIAS, FLAT, use_overscan, exptime, "science")
+
+            else:
+
+                for file in science_params["files"].keys():
+                    reduce_file = FileList(science_params["science_dir"])
+                    reduce_file.files = [file]
+                    reduce_file.num_files = 1
+                    if science_params["files"][file]["exptime"]:
+                        exptime = science_params["files"][file]["exptime"]
+                    else:
+                        exptime = science_params["exptime"]
+                    reduce_group(reduce_file, BIAS, FLAT, use_overscan, exptime, "science")
+
+        else:
+            reduce_group(science_files, BIAS, FLAT, use_overscan, exptime, "science")
+'''
 
 def main():
     parser = argparse.ArgumentParser(
         description="Run the pylongslit cosmic-ray removal procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
-    # Add more arguments as needed
 
     args = parser.parse_args()
 

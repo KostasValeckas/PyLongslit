@@ -1,4 +1,3 @@
-import os
 import numpy as np
 from photutils.aperture import RectangularAperture
 import matplotlib.pyplot as plt
@@ -230,7 +229,6 @@ def main():
         description="Run the pylongslit simple extract-1d procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
-    # Add more arguments as needed
 
     args = parser.parse_args()
 
