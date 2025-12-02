@@ -140,6 +140,28 @@ def calibrate_flux(spectra, fit, error, good_wavelength_start, good_wavelength_e
         # calibrate the spectrum
 
         logger.info(f"Calibrating the spectrum for {filename}...")
+        fits_filename = filename.removeprefix("1d_science_").replace(".dat",".fits")
+        if ("files" in science_params and
+            fits_filename in science_params["files"] and
+            "exptime" in science_params["files"][fits_filename]):
+
+            exptime = science_params["files"][fits_filename]["exptime"]
+            logger.info(f"Using exposure time of {exptime} seconds for {filename}.")
+
+        else:
+
+            exptime = science_params["exptime"]
+
+        if ("files" in science_params and
+            fits_filename in science_params["files"] and
+            "airmass" in science_params["files"][fits_filename]):
+
+            airmass = science_params["files"][fits_filename]["airmass"]
+            logger.info(f"Using air mass of {airmass} for {filename}.")
+
+        else:
+
+            airmass = science_params["airmass"]
 
         calibrated_flux, calibrated_var = calibrate_spectrum(
             wavelength,
