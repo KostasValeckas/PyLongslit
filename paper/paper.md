@@ -45,16 +45,16 @@ bibliography: paper.bib
 
 # Summary
 
-We present a new Python pipeline for processing data from astronomical 
+We present a new Python package for processing data from astronomical 
 long-slit spectroscopy observations recorded with CCD detectors.
 
-The pipeline is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The goal for the pipeline is to provide a manual and simple counterpart to the 
+The software is designed to aim for **simplicity**, **manual execution**, **transparency** and **robustness**. The goal for the software is to provide a manual and simple counterpart to the 
 well-established semi-automated and automated pipelines. The intended use-cases are **teaching** and **cases where 
 automated pipelines fail**. For further elaboration,
 please see the [Statement of need](#statement-of-need). 
 
 From raw data, the
-pipeline can produce the following output:
+software can produce the following output:
 
 - A calibrated 2D spectrum in counts and wavelength for every detector pixel.
 - A 1D spectrum extracted from the 2D spectrum in counts per wavelength (for point-like objects).
@@ -83,7 +83,7 @@ An early beta-version of the software was user-tested during the [Nordic Optical
 without any significant assistance. 
 
 During the development of software it became apparent that the manual nature of the pipeline is 
-also useful for observations where automated pipelines might fail. The PyLongslit pipeline can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
+also useful for observations where automated pipelines might fail. The PyLongslit software can revert to manual methods instead of using mathematical modelling when estimating the observed object trace on the 
 detector. This is especially useful for objects
 that have low signal-to-noise ratio, or where several objects are very close to each other on the detector. Furthermore, extraction can be performed with either optimal extraction methods [@Horne_1986], 
 or by summing detector counts for a box-like object shape [@photutils] (this can be useful for emission-line dominated objects).
@@ -106,14 +106,14 @@ and pipeline products.
 
 ![Step 3 - 1d spectrum extraction. In this step, objects are traced, extracted, flux calibrated and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
 
-The pipeline is controlled by a configuration file that has to be passed as an 
+The software is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
 file are described in the [documentation](https://kostasvaleckas.github.io/PyLongslit/index.html).
 
 
 # Evaluation
 
-To test the pipeline for correctness, we run the pipeline on data from two long-slit instruments: [NOT ALFOSC](https://www.not.iac.es/instruments/alfosc/) and [GTC OSIRIS](https://www.gtc.iac.es/instruments/osiris/), and compare the results with the results from the well-established, 
+To test the software for correctness, we run the pipeline on data from two long-slit instruments: [NOT ALFOSC](https://www.not.iac.es/instruments/alfosc/) and [GTC OSIRIS](https://www.gtc.iac.es/instruments/osiris/), and compare the results with the results from the well-established, 
 semi-automated PypeIt Python pipeline  [@pypeit:joss_pub ; @pypeit:joss_arXiv ; @pypeit:zenodo]:
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
@@ -132,16 +132,16 @@ the PyLongslit noise indeed is smaller in magnitude:
 
 We disclose the data and parameters used for both pipeline executions. 
 
-PyLongslit: https://github.com/KostasValeckas/PyLongslit_dev.
+PyLongslit: the data and instructions needed to reproduce these results can be found at: https://kostasvaleckas.github.io/PyLongslit/getting_started.html
 
-PypeIt: https://sid.erda.dk/share_redirect/efiQfMWqqe
+PypeIt: the raw data and all pipeline output can be downloaded at https://1drv.ms/u/c/1f8eedcff5109e73/IQBwoG16mZaMS6hCXgi7RZ18AVouIotby9lLh5WfoZM9dkA?e=w0JSOQ. Instructions on how to re-create the results using the raw data can be found in PypeIt docutmentation: https://pypeit.readthedocs.io/en/stable/ (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
 
 # Limitations
 
 As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
-simplicity over high precision. Furthermore, the pipeline is designed to be 
-**instrument independent**. Due to these design choices, the pipeline does not account for any instrument-specific phenomena, such as detector fringing and alike. The pipeline will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
-is written with focus on **loose-coupling**, and therefore the pipeline code can be used 
+simplicity over high precision. Furthermore, the software is designed to be 
+**instrument independent**. Due to these design choices, the software does not account for any instrument-specific phenomena, such as detector fringing and alike. The software will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
+is written with focus on **loose-coupling**, and therefore the software code can be used 
 as a starting-point for an instrument-specific pipeline.
 
 
