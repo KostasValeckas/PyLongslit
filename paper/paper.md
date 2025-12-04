@@ -134,7 +134,7 @@ We disclose the data and parameters used for both pipeline executions.
 
 PyLongslit: the data and instructions needed to reproduce these results can be found at: https://kostasvaleckas.github.io/PyLongslit/getting_started.html
 
-PypeIt: the raw data and all pipeline output can be downloaded at https://1drv.ms/u/c/1f8eedcff5109e73/IQBwoG16mZaMS6hCXgi7RZ18AVouIotby9lLh5WfoZM9dkA?e=w0JSOQ. Instructions on how to re-create the results using the raw data can be found in PypeIt docutmentation: https://pypeit.readthedocs.io/en/stable/ (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
+PypeIt: the raw data and all pipeline output can be downloaded at https://1drv.ms/u/c/1f8eedcff5109e73/IQBwoG16mZaMS6hCXgi7RZ18AVouIotby9lLh5WfoZM9dkA?e=w0JSOQ. Instructions on how to re-create the results using the raw data can be found in the PypeIt docutmentation: https://pypeit.readthedocs.io/en/stable/ (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
 
 # Limitations
 
