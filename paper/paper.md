@@ -114,7 +114,9 @@ file are described in the [documentation](https://kostasvaleckas.github.io/PyLon
 # Evaluation
 
 To test the software for correctness, we run the pipeline on data from two long-slit instruments: [NOT ALFOSC](https://www.not.iac.es/instruments/alfosc/) and [GTC OSIRIS](https://www.gtc.iac.es/instruments/osiris/), and compare the results with the results from the well-established, 
-semi-automated PypeIt Python pipeline  [@pypeit:joss_pub ; @pypeit:joss_arXiv ; @pypeit:zenodo]:
+semi-automated PypeIt Python pipeline[^1] [@pypeit:joss_pub; @pypeit:zenodo]:
+
+[^1]: https://github.com/pypeit/PypeIt
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
 
