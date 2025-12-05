@@ -74,8 +74,7 @@ In research, this is a reasonable trade-off, as a certain level of user-skill an
 in a teaching paradigm, simplicity and transparency are often more favorable, even when this means loss of 
 precision and automation. The PyLongslit pipeline is designed to rely on simple code and manual execution,
 supported by a large array of quality-assessment plots and extensive documentation. The algorithms are designed to produce research-quality results, yet while prioritizing simplicity over high precision. The reason for this is 
-to create a robust and transparent pipeline, where every step of the execution is visualized and explained. We see this as being specially valuable in teaching scenarios and for users that 
-are new to spectroscopic data processing. Furthermore, we hope that 
+to create a robust and transparent pipeline, where every step of the execution is visualized and explained. We see this as being especially valuable in teaching scenarios and for users who are new to spectroscopic data processing. Furthermore, we hope that 
 the simple coding style will invite users of all skill-levels to contribute to the code.
 
 An early beta-version of the software was user-tested during the [Nordic Optical Telescope](https://www.not.iac.es/) [IDA summer-course 
@@ -141,7 +140,7 @@ PypeIt: the raw data and all pipeline output can be downloaded at https://1drv.m
 As mentioned in the [Statement of need](#statement-of-need), PyLongslit favors
 simplicity over high precision. Furthermore, the software is designed to be 
 **instrument independent**. Due to these design choices, the software does not account for any instrument-specific phenomena, such as detector fringing and alike. The software will likely be less precise than an instrument-specific pipeline (depending on the implementation of the latter). The code 
-is written with focus on **loose-coupling**, and therefore the software code can be used 
+is written with focus on **loose-coupling**, and therefore the software can be used 
 as a starting-point for an instrument-specific pipeline.
 
 
