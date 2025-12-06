@@ -195,19 +195,20 @@ like this in the terminal:
 Developer installation
 ===========================
 
-An editable version of the software can be installed if you plan on developing the code.
+An editable version of the software can be installed if you plan on developing the PyLongslit code.
 This allows you to make changes to the software and see the changes reflected in the command line tools without having to reinstall the software.
 
-The software can be downloaded from the `GitHub repository website <https://github.com/KostasValeckas/PyLongslit/>`_ or 
-cloned by using git.
+It is recommended that you `fork the repository <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo>`_ 
+and develop from your own fork. If you think that your changes to the code would benefit all users of PyLongslit, feel free to create a `pull request <https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests>`_.
+We are always grateful for any contributions, but make sure your changes reflect :ref:`our software principles <index>`.
 
-**Direct link to download from the repository website:**
+The below guide on installation shows how to clone the repository, and it will work for your own fork if you exchange 
+the URL links to the links to your own fork. 
 
-`Download Source Code (ZIP) <https://github.com/KostasValeckas/PyLongslit/archive/refs/heads/main.zip>`_
 
-**Using git: (if you don't know what git is, just download the ZIP from the link above)** 
+**Using git:** 
 
-SSH (recommended if you plan on developing)...
+SSH (recommended - help on SSH keys can be found `here <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`_):
 
 .. code-block:: bash
 
@@ -219,8 +220,11 @@ SSH (recommended if you plan on developing)...
 
     git clone https://github.com/KostasValeckas/PyLongslit.git
 
+**You can also** `download a snapshot of the repository as a ZIP file <https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github#downloading-a-repositorys-files>`_ 
+, **but this is not recommended for developing.**
+
 Then, when in :ref:`clean Python 3.10 environment <venv>`, 
-navigate to the directory where the software was downloaded (this is the directory with the file `setup.py` in it) and run the following command:
+navigate to the directory where the software was downloaded (this is the directory with the file `setup.cfg` in it) and run the following command:
 
 .. code-block:: bash
 
@@ -228,5 +232,10 @@ navigate to the directory where the software was downloaded (this is the directo
 
 
 This will install the software in "editable" mode. The flag ``.[all]`` ensures that all optional dependencies are also installed. These will allow you to update/build the documentation and run the test suite.
+
+There exists a `secondary code repository <https://github.com/KostasValeckas/PyLongslit_dev>`_ for holding test/tutorial data,
+files needed to use the software for specific instruments, and other development-related files. It is recommended that you fork this 
+repository as well if you plan on developing the software, and update it in tandem with your PyLongslit fork. 
+
 
 

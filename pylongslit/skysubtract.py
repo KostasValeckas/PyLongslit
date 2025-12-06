@@ -4,6 +4,7 @@ from astropy.stats import sigma_clip
 from numpy.polynomial.chebyshev import chebfit, chebval
 from tqdm import tqdm
 import argparse
+import os
 
 """
 PyLongslit sky-subtraction module for polynomial sky-fitting.
@@ -294,6 +295,11 @@ def make_sky_map(
         RMS_residuals = np.sqrt(np.mean(residuals**2))
         sky_error[:, column] = np.full(n_spacial, RMS_residuals)
 
+    # strip .fits extension if present - for naming consistency
+    base, ext = os.path.splitext(filename)
+    if ext.lower() == ".fits":
+        filename = base
+
     sky_frame = PyLongslit_frame(sky_map, sky_error, None, "skymap_" + filename)
     sky_frame.show_frame()
     sky_frame.write_to_disc()
@@ -492,7 +498,7 @@ def main():
 
     args = parser.parse_args()
 
-    from pylongslit import set_config_file_path
+    from pylongslit import set_config_file_path  
 
     set_config_file_path(args.config)
 
