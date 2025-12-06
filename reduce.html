@@ -55,7 +55,7 @@ depending on the frame type. All further operations up to <a class="reference in
 will from now on be performed on these frames, and the raw frames will not be used anymore.
 The reduced frames will be altered in place. This also means that <strong>if you in further steps do
 any operations on the reduced frames that you regret, you can always reset by running the reduction procedure again.</strong></p>
-<p>5 FITS headers are added to the reduced frames. These are non-standard headers,
+<p>5 FITS keywords are added to the reduced frames. These are non-standard headers,
 and can be used only in the context of the PyLongslit software. The headers are:</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;CRRREMOVD&quot;</span></code> - true if <a class="reference internal" href="crr.html#crr"><span class="std std-ref">cosmic rays have been removed</span></a> from the frame.</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;BCGSUBBED&quot;</span></code> - true if <a class="reference internal" href="AB.html#ab"><span class="std std-ref">A-B sky background subtraction</span></a> has been performed on the frame.</p>
@@ -126,6 +126,7 @@ hovering the mouse over the image, and the error value will be shown in the corn
 <li class="toctree-l2 current"><a class="reference internal" href="getting_started.html#tutorial">Tutorial</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Overview of all pipeline procedures and their products</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tested_instruments.html">Tested Instruments and Configurations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="special_use_cases.html">Special Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Interested in developing?</a></li>

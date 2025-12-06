@@ -177,14 +177,15 @@ options:
 </section>
 <section id="developer-installation">
 <span id="dev-install"></span><h3>Developer installation<a class="headerlink" href="#developer-installation" title="Link to this heading">¶</a></h3>
-<p>An editable version of the software can be installed if you plan on developing the code.
+<p>An editable version of the software can be installed if you plan on developing the PyLongslit code.
 This allows you to make changes to the software and see the changes reflected in the command line tools without having to reinstall the software.</p>
-<p>The software can be downloaded from the <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit/">GitHub repository website</a> or
-cloned by using git.</p>
-<p><strong>Direct link to download from the repository website:</strong></p>
-<p><a class="reference external" href="https://github.com/KostasValeckas/PyLongslit/archive/refs/heads/main.zip">Download Source Code (ZIP)</a></p>
-<p><strong>Using git: (if you don’t know what git is, just download the ZIP from the link above)</strong></p>
-<p>SSH (recommended if you plan on developing)…</p>
+<p>It is recommended that you <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo">fork the repository</a>
+and develop from your own fork. If you think that your changes to the code would benefit all users of PyLongslit, feel free to create a <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">pull request</a>.
+We are always grateful for any contributions, but make sure your changes reflect <a class="reference internal" href="index.html#index"><span class="std std-ref">our software principles</span></a>.</p>
+<p>The below guide on installation shows how to clone the repository, and it will work for your own fork if you exchange
+the URL links to the links to your own fork.</p>
+<p><strong>Using git:</strong></p>
+<p>SSH (recommended - help on SSH keys can be found <a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">here</a>):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:KostasValeckas/PyLongslit.git
 </pre></div>
 </div>
@@ -192,12 +193,17 @@ cloned by using git.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KostasValeckas/PyLongslit.git
 </pre></div>
 </div>
+<p><strong>You can also</strong> <a class="reference external" href="https://docs.github.com/en/get-started/start-your-journey/downloading-files-from-github#downloading-a-repositorys-files">download a snapshot of the repository as a ZIP file</a>
+, <strong>but this is not recommended for developing.</strong></p>
 <p>Then, when in <a class="reference internal" href="#venv"><span class="std std-ref">clean Python 3.10 environment</span></a>,
-navigate to the directory where the software was downloaded (this is the directory with the file <cite>setup.py</cite> in it) and run the following command:</p>
+navigate to the directory where the software was downloaded (this is the directory with the file <cite>setup.cfg</cite> in it) and run the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>all<span class="o">]</span>
 </pre></div>
 </div>
 <p>This will install the software in “editable” mode. The flag <code class="docutils literal notranslate"><span class="pre">.[all]</span></code> ensures that all optional dependencies are also installed. These will allow you to update/build the documentation and run the test suite.</p>
+<p>There exists a <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev">secondary code repository</a> for holding test/tutorial data,
+files needed to use the software for specific instruments, and other development-related files. It is recommended that you fork this
+repository as well if you plan on developing the software, and update it in tandem with your PyLongslit fork.</p>
 </section>
 </section>
 </section>
@@ -236,6 +242,7 @@ navigate to the directory where the software was downloaded (this is the directo
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Overview of all pipeline procedures and their products</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tested_instruments.html">Tested Instruments and Configurations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="special_use_cases.html">Special Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Interested in developing?</a></li>

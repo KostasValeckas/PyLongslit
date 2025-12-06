@@ -45,21 +45,26 @@ for how it works.</p>
 <section id="downloading-the-tutorial-data">
 <span id="tutorial-data"></span><h2>Downloading the tutorial data<a class="headerlink" href="#downloading-the-tutorial-data" title="Link to this heading">¶</a></h2>
 <p>There are two tutorial datasets available. <strong>Execution of either one is enough
-to get familiar with the software.</strong> The two datasets are:</p>
-<p><a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/SDSS_J213510%2B2728">SDSS_J213510+2728 (from ALFOSC - Nordic Optical Telescope) (ZIP)</a></p>
-<p><a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/GQ1218%2B0832">GQ1218+0832 (from OSIRIS - Gran Telescopio Canarias) (ZIP)</a></p>
-<p>To complete the tutorial, you will also need to use some complementary files that
-can be <a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database">downloaded here (ZIP)</a>.</p>
-<p><strong>Using git (if you are not familiar with git, just download the ZIP from the link above):</strong></p>
-<p>You can download the entire tutorial and development repository using git.</p>
-<p>SSH (recommended if you plan on developing)…</p>
+to get familiar with the software.</strong></p>
+<p>The tutorial data can be downloaded in two ways: either by clonning the <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev">PyLongslit developtment
+repository</a>  or by downloading the ZIP files directly from the links below.
+We recommend clonning the whole repository (or at least downloading the whole repository as a ZIP) as it will also provide you with additional files needed to complete the tutorial, and in the directory structure that resembles the provided tutorial <a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">configuration files</span></a>.
+If you prefer just downloading the tutorial data, the links for that are also provided below.</p>
+<p><strong>Cloning using git (if you are not familiar with git, you can download the ZIP from the link below):</strong></p>
+<p>SSH (recommended - help on SSH keys can be found <a class="reference external" href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">here</a>):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>git@github.com:KostasValeckas/PyLongslit_dev.git
 </pre></div>
 </div>
-<p>… or HTTPS (works too, but you will need to enter your username and password on every pull/push):</p>
+<p>… or HTTPS (works too, but you will need to enter your username and password when dowloading or getting the latest updates to the repository):</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/KostasValeckas/PyLongslit_dev.git
 </pre></div>
 </div>
+<p><strong>Downloading a snapshot of the repository as a ZIP file:</strong></p>
+<p>Follow the download link <a class="reference external" href="https://github.com/KostasValeckas/PyLongslit_dev/archive/refs/heads/main.zip">here</a> .</p>
+<p><strong>Downloading only the tutorial data as ZIP files</strong> (this will not include the complementary files needed to complete the tutorial):</p>
+<p><a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/SDSS_J213510%2B2728">SDSS_J213510+2728 (from ALFOSC - Nordic Optical Telescope) (ZIP)</a></p>
+<p><a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/GQ1218%2B0832">GQ1218+0832 (from OSIRIS - Gran Telescopio Canarias) (ZIP)</a></p>
+<p>The missing additional files can be downloaded <a class="reference external" href="https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database">here</a>.</p>
 <section id="changing-the-file-paths-in-the-configuration-files">
 <h3>Changing the file paths in the configuration files<a class="headerlink" href="#changing-the-file-paths-in-the-configuration-files" title="Link to this heading">¶</a></h3>
 <p>As stated above, the configuration files for the tutorials have the parameters pre-set.
@@ -86,7 +91,7 @@ to change the forward slash <code class="docutils literal notranslate"><span cla
 </section>
 </section>
 <section id="tutorial">
-<span id="id1"></span><h2>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">¶</a></h2>
+<span id="id3"></span><h2>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">¶</a></h2>
 <p>You can now follow the steps described below to run the software on the tutorial data.</p>
 <p>You have to execute the steps exactly in the order they are presented in the
 contents table below.</p>
@@ -94,7 +99,7 @@ contents table below.</p>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="general_notes.html">General Notes on using the pipeline</a></li>
-<li class="toctree-l1"><a class="reference internal" href="configuration_file.html">Configuration file</a></li>
+<li class="toctree-l1"><a class="reference internal" href="configuration_file.html">Configuration files</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bias.html">Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="dark_current.html">Dark current subtraction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="combine_arcs.html">Combining arc frames</a></li>
@@ -151,6 +156,7 @@ contents table below.</p>
 <li class="toctree-l2"><a class="reference internal" href="#tutorial">Tutorial</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="structure.html">Overview of all pipeline procedures and their products</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tested_instruments.html">Tested Instruments and Configurations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="special_use_cases.html">Special Use Cases</a></li>
 <li class="toctree-l1"><a class="reference internal" href="develop.html">Interested in developing?</a></li>

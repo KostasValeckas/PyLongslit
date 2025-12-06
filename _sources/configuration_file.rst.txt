@@ -1,7 +1,7 @@
 .. _conf:
 
-Configuration file
-==================
+Configuration files
+===================
 
 The configuration file is a ``.json`` file that contains all the parameters
 that are needed to run the software. The file is divided into sections, 

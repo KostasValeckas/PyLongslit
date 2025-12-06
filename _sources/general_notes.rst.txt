@@ -22,7 +22,13 @@ Ubuntu, the menu looks like this (located in the upper left corner):
     :align: center
 
 For your system the menu might look different, but the options are pretty much
-the same. 
+the same.
+
+A few outliers in a frame can make the colormap of ``matplotlib`` disproportionate in 
+the sense that the details in the frame are not visible. Therefore, most of the detector 
+image plots produced by the software can be aggressively normalized by pressing the ``h`` button 
+on your keyboard. Please note that the errors then are also normalized from 0 to 1 - and not 
+re-calculated based on the normalized data.
 
 Spectral axis vs. Spatial axis
 -------------------------------

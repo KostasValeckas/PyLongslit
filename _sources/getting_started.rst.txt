@@ -16,32 +16,42 @@ Downloading the tutorial data
 ----------------------------------------------------
 
 There are two tutorial datasets available. **Execution of either one is enough 
-to get familiar with the software.** The two datasets are:
+to get familiar with the software.**
+
+The tutorial data can be downloaded in two ways: either by clonning the `PyLongslit developtment
+repository  <https://github.com/KostasValeckas/PyLongslit_dev>`_  or by downloading the ZIP files directly from the links below.
+We recommend clonning the whole repository (or at least downloading the whole repository as a ZIP) as it will also provide you with additional files needed to complete the tutorial, and in the directory structure that resembles the provided tutorial :ref:`configuration files <conf>`. 
+If you prefer just downloading the tutorial data, the links for that are also provided below.
+
+**Cloning using git (if you are not familiar with git, you can download the ZIP from the link below):** 
+
+SSH (recommended - help on SSH keys can be found `here <https://docs.github.com/en/authentication/connecting-to-github-with-ssh>`_):
+
+.. code-block:: bash
+
+    git clone git@github.com:KostasValeckas/PyLongslit_dev.git
+
+... or HTTPS (works too, but you will need to enter your username and password when dowloading or getting the latest updates to the repository):
+
+.. code-block:: bash
+
+    git clone https://github.com/KostasValeckas/PyLongslit_dev.git
+
+**Downloading a snapshot of the repository as a ZIP file:**
+
+Follow the download link `here <https://github.com/KostasValeckas/PyLongslit_dev/archive/refs/heads/main.zip>`_ .
+
+**Downloading only the tutorial data as ZIP files** (this will not include the complementary files needed to complete the tutorial):
 
 `SDSS_J213510+2728 (from ALFOSC - Nordic Optical Telescope) (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/SDSS_J213510%2B2728>`_
 
 
 `GQ1218+0832 (from OSIRIS - Gran Telescopio Canarias) (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/GQ1218%2B0832>`_
 
-To complete the tutorial, you will also need to use some complementary files that 
-can be `downloaded here (ZIP) <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database>`_.
+The missing additional files can be downloaded `here <https://downgit.github.io/#/home?url=https://github.com/KostasValeckas/PyLongslit_dev/tree/main/database>`_.
 
 
-**Using git (if you are not familiar with git, just download the ZIP from the link above):** 
 
-You can download the entire tutorial and development repository using git.
-
-SSH (recommended if you plan on developing)...
-
-.. code-block:: bash
-
-    git clone git@github.com:KostasValeckas/PyLongslit_dev.git
-
-... or HTTPS (works too, but you will need to enter your username and password on every pull/push):
-
-.. code-block:: bash
-
-    git clone https://github.com/KostasValeckas/PyLongslit_dev.git
 
 
 Changing the file paths in the configuration files
