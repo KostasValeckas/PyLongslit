@@ -26,7 +26,7 @@ will from now on be performed on these frames, and the raw frames will not be us
 The reduced frames will be altered in place. This also means that **if you in further steps do 
 any operations on the reduced frames that you regret, you can always reset by running the reduction procedure again.**
 
-5 FITS headers are added to the reduced frames. These are non-standard headers,
+5 FITS keywords are added to the reduced frames. These are non-standard headers,
 and can be used only in the context of the PyLongslit software. The headers are:
 
 ``"CRRREMOVD"`` - true if :ref:`cosmic rays have been removed <crr>` from the frame.

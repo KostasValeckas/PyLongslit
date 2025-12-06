@@ -109,20 +109,20 @@ class ResidualView(object):
             line.set_visible(visible)
 
     def set_scatter(self, sig, scatter):
-        self.u68_line.set_ydata(self.mean + sig)
-        self.l68_line.set_ydata(self.mean - sig)
+        self.u68_line.set_ydata([self.mean + sig])
+        self.l68_line.set_ydata([self.mean - sig])
         self.scatter = scatter
 
     def set_mean(self, mean):
-        self.u68_line.set_ydata(mean + self.scatter)
-        self.l68_line.set_ydata(mean - self.scatter)
+        self.u68_line.set_ydata([mean + self.scatter])
+        self.l68_line.set_ydata([mean - self.scatter])
         self.mean = mean
 
     def set_values(self, mean, scatter):
         self.mean = mean
         self.scatter = scatter
-        self.u68_line.set_ydata(mean + scatter)
-        self.l68_line.set_ydata(mean - scatter)
+        self.u68_line.set_ydata([mean + scatter])
+        self.l68_line.set_ydata([mean - scatter])
 
 
 def load_linelist(fname):
@@ -792,6 +792,15 @@ class GraphicInterface(QMainWindow):
         self.resid_view.set_visible(False)
         pixvals, wavelengths = self.get_table_values()
         self.ax2.lines[0].set_data(pixvals, wavelengths)
+        
+        # Update the fit line to show wavelength solution if fit exists
+        if self._fit_ref is not None and self.cheb_fit is not None:
+            wave_solution = self.cheb_fit(self.pix)
+            scatter_label = r"$\sigma_{\lambda} = %.2f$ Å" % self._scatter
+            self._fit_ref.set_ydata(wave_solution)
+            self._fit_ref.set_label(scatter_label)
+            self._fit_ref.set_visible(True)  # Make sure it's visible in data view
+        
         self.set_ylimits()
         self.canvas.draw()
         self.canvas.setFocus()
@@ -802,6 +811,9 @@ class GraphicInterface(QMainWindow):
             self.ax2.set_ylabel("Residual Wavelength")
             self._fit_view = "resid"
             self.resid_view.set_visible(True)
+            # Hide the fit line in residual view
+            if self._fit_ref is not None:
+                self._fit_ref.set_visible(False)
             # Set data to residuals:
             residuals = wavelengths - self.cheb_fit(pixvals)
             mean = np.nanmean(residuals)

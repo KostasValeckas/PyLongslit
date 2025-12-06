@@ -97,6 +97,7 @@ In this documentation, we provide guidance on installation and usage of the soft
 
    installation
    getting_started
+   structure
    tested_instruments
    special_use_cases
    develop
