@@ -14,7 +14,7 @@ The command for running the bias procedure is called by:
     pylongslit_bias PATH_TO_CONFIG_FILE
 
 The bias procedure produces a master bias frame ``master_bias.fits`` by median-combining the raw frames,
-and places it in the  output directory specified in the configuration file. Median combination
+and places it in the  output directory specified in the :ref:`configuration file <conf>`. Median combination
 is used as it is robust against outliers in the raw data.
 
 Overscan subtraction
@@ -26,7 +26,9 @@ the overscan bias is used as an estimate for the baseline bias-level frame-wise,
 the master bias frame is used to correct for the 2D bias structure/gradient 
 through the detector. With overscan subtraction, the master bias can show negative values,
 as these values correspond to an offset from the baseline bias-level, 
-and not the absolute bias level.
+and not the absolute bias level. **If you choose to disable the overscan subtraction
+in the** :ref:`configuration file <conf>` (not recommended) **, it is important that 
+you do not enable it at any point during the other data-processing steps**.  
 
 Quality Assessment
 ------------------
@@ -113,14 +115,14 @@ readout cycles are performed to readout pseudo-pixels that are not physical pixe
 this is done for every frame (not only bias frames). These pseudo-pixels are called the overscan, and they have a value that corresponds
 to the bias level for the frame the overscan is attached to. The overscan regions can be used to estimate the bias level
 frame-wise (as the bias level can drift through the night), while the master bias is a statistical estimate of the bias level 
-acquired by combination of all the bias frames (these are usually taken before or after the observing night).
+acquired by combination of all the bias frames (these are usually taken before or/and after the observing night).
 
 The bias frames carry the information about the bias level for every pixel individually, but 
 only at the time the frames were taken. The overscan regions carry the information
 about the bias level for the exact time the frame was taken, but only as an 
 overall estimate for the frame. Therefore, **a combination of both the overscan
-and the master bias is preferred**. However, only using the bias frames should
-also be sufficient for most detectors. Only using the overscan is not allowed
+and the master bias is preferred**. The software can run without using the overscan (this is set in the :ref:`configuration file <conf>`), 
+but this method will ignore any bias level drift between the individual frames. Only using the overscan is not allowed
 in the software, as the mean overscan completely neglects the 2D structure of the bias.
 
 

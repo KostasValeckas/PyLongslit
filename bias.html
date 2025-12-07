@@ -42,7 +42,7 @@
 </pre></div>
 </div>
 <p>The bias procedure produces a master bias frame <code class="docutils literal notranslate"><span class="pre">master_bias.fits</span></code> by median-combining the raw frames,
-and places it in the  output directory specified in the configuration file. Median combination
+and places it in the  output directory specified in the <a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">configuration file</span></a>. Median combination
 is used as it is robust against outliers in the raw data.</p>
 <section id="overscan-subtraction">
 <h3>Overscan subtraction<a class="headerlink" href="#overscan-subtraction" title="Link to this heading">¶</a></h3>
@@ -53,7 +53,9 @@ the overscan bias is used as an estimate for the baseline bias-level frame-wise,
 the master bias frame is used to correct for the 2D bias structure/gradient
 through the detector. With overscan subtraction, the master bias can show negative values,
 as these values correspond to an offset from the baseline bias-level,
-and not the absolute bias level.</p>
+and not the absolute bias level. <strong>If you choose to disable the overscan subtraction
+in the</strong> <a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">configuration file</span></a> (not recommended) <strong>, it is important that
+you do not enable it at any point during the other data-processing steps</strong>.</p>
 </section>
 </section>
 <section id="quality-assessment">
@@ -125,13 +127,13 @@ readout cycles are performed to readout pseudo-pixels that are not physical pixe
 this is done for every frame (not only bias frames). These pseudo-pixels are called the overscan, and they have a value that corresponds
 to the bias level for the frame the overscan is attached to. The overscan regions can be used to estimate the bias level
 frame-wise (as the bias level can drift through the night), while the master bias is a statistical estimate of the bias level
-acquired by combination of all the bias frames (these are usually taken before or after the observing night).</p>
+acquired by combination of all the bias frames (these are usually taken before or/and after the observing night).</p>
 <p>The bias frames carry the information about the bias level for every pixel individually, but
 only at the time the frames were taken. The overscan regions carry the information
 about the bias level for the exact time the frame was taken, but only as an
 overall estimate for the frame. Therefore, <strong>a combination of both the overscan
-and the master bias is preferred</strong>. However, only using the bias frames should
-also be sufficient for most detectors. Only using the overscan is not allowed
+and the master bias is preferred</strong>. The software can run without using the overscan (this is set in the <a class="reference internal" href="configuration_file.html#conf"><span class="std std-ref">configuration file</span></a>),
+but this method will ignore any bias level drift between the individual frames. Only using the overscan is not allowed
 in the software, as the mean overscan completely neglects the 2D structure of the bias.</p>
 <hr class="docutils" />
 <p>Next pipeline step → <a class="reference internal" href="dark_current.html#dark"><span class="std std-ref">Setting up for dark current subtraction</span></a></p>

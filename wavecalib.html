@@ -91,7 +91,7 @@ the initial guess.</p>
 the <a class="reference internal" href="identify.html#identify"><span class="std std-ref">manually identified center</span></a>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">&quot;REIDENTIFY_R2_TOL&quot;</span></code>: the tolerance for the <span class="math notranslate nohighlight">\(R^2\)</span> value of the fit. If the <span class="math notranslate nohighlight">\(R^2\)</span> value is below this value, the fit is rejected.</p>
 <p>After the lines have been reidentified, the 1d wavelength solution is fitted to the
-reidentified lines. An example of the 1d wavelength solution is shown in the following figure:</p>
+reidentified lines. An example of the 1d wavelength solution is shown in the following figure (RMS is given Å):</p>
 <a class="reference internal image-reference" href="_images/1d_wavelen_sol.png"><img alt="_images/1d_wavelen_sol.png" class="align-center" src="_images/1d_wavelen_sol.png" style="width: 100%;" />
 </a>
 <p>You should try to get a good fit with random residuals with the lowest possible degree of the polynomial.
@@ -109,7 +109,7 @@ through the whole of the detector in order to map the 1d wavelength solution to 
 2d detector.</p>
 <p>Firstly, the tilt tracing algorithm esttimates the position of every line on the
 detector. This is done the same way as in the <a class="reference internal" href="#line-reidentification"><span class="std std-ref">line reidentification</span></a>,
-but now the fit is not done for one center, but through the whole spacial direction, as
+but now the fit is not done for one center, but through the whole spatial direction, as
 shown below:</p>
 <a class="reference internal image-reference" href="_images/line_trace_zoom.png"><img alt="_images/line_trace_zoom.png" class="align-center" src="_images/line_trace_zoom.png" style="width: 100%;" />
 </a>
@@ -154,9 +154,9 @@ quality assessment:</p>
 <p>Inspect if the lines are traced correctly, especially that traces do not
 jump between neighboring lines.</p>
 <p>Lastly, the estimated tilts throughout the detector are used to perform
-a 2d tilt polynomial fit with the spacial order <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPATIAL_TILT&quot;</span></code> and the
+a 2d tilt polynomial fit with the spatial order <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPATIAL_TILT&quot;</span></code> and the
 spectral order <code class="docutils literal notranslate"><span class="pre">&quot;ORDER_SPECTRAL_TILT&quot;</span></code>. The residuals are plottet along both
-the spacial and spectral direction for quality assesment:</p>
+the spatial and spectral direction for quality assesment:</p>
 <a class="reference internal image-reference" href="_images/tilt_2d_fit_residual.png"><img alt="_images/tilt_2d_fit_residual.png" class="align-center" src="_images/tilt_2d_fit_residual.png" style="width: 100%;" />
 </a>
 <p>In spatial direction the residuals should be random, but very small scale structure
