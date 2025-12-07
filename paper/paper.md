@@ -103,7 +103,7 @@ and pipeline products.
 ![Step 2 - further processing of the calibrated 2D spectra. In this step, the user can deploy cosmic-ray removal, sky-background subtraction, and crop the spectra. All procedures alter the 2D spectra in place. All of the steps are optional, but there are some dependencies — these are described in the figure.\label{fig:further_processing}](further_processing.png)
 
 
-![Step 3 - 1d spectrum extraction. In this step, objects are traced, extracted, flux calibrated and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
+![Step 3 - 1d spectrum extraction. In this step, objects are traced, extracted, flux-calibrated and combined (if several spectra of the same object exist).\label{fig:1d_extraction}](1d_extraction.png)
 
 The software is controlled by a configuration file that has to be passed as an 
 argument to every pipeline procedure. The different parameters of the configuration 
@@ -133,7 +133,7 @@ We disclose the data and parameters used for both pipeline executions.
 
 PyLongslit: the data and instructions needed to reproduce these results can be found [here](https://kostasvaleckas.github.io/PyLongslit/getting_started.html).
 
-PypeIt: the raw data and all pipeline output can be downloaded at [here](https://1drv.ms/u/c/1f8eedcff5109e73/IQCDsH7Kb7-rSKGVdDq4NcWQASfXO-LmNjDqQuR2lP80Zs4?e=WfeR6K). Instructions on how to re-create the results using the raw data can be found in the [PypeIt docutmentation](https://pypeit.readthedocs.io/en/stable/) (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
+PypeIt: the raw data and all pipeline output can be downloaded [here](https://1drv.ms/u/c/1f8eedcff5109e73/IQCDsH7Kb7-rSKGVdDq4NcWQASfXO-LmNjDqQuR2lP80Zs4?e=WfeR6K). Instructions on how to re-create the results using the raw data can be found in the [PypeIt docutmentation](https://pypeit.readthedocs.io/en/stable/) (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
 
 # Limitations
 
