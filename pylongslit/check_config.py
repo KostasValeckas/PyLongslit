@@ -386,7 +386,6 @@ def run_config_checks():
 def main():
 
     from pylongslit.version import get_version
-
     parser = argparse.ArgumentParser(
         description="Run the pylongslit config-file checker."
     )
