@@ -60,7 +60,7 @@ The reduced and wavelength calibrated 2d spectra can be inspected using the :ref
 
 1. :ref:`Object tracing <objtrace>`: Trace and model the object spectrum. The procedure will produce files with the name  ``"obj_science_ORIGINAL_FILENAME.dat"`` or ``"obj_standard_ORIGINAL_FILENAME.dat"``.
 2. :ref:`1D-spectra extraction <extract_1d>`: Extract the 1D-spectra in counts vs. wavelength. The spectra are saved as ``"1d_science_ORIGINAL_NAME.dat"`` or ``"1d_standard_ORIGINAL_NAME.dat"``.
-3. :ref:`Sensitivity function <sensfunction>`: Calculate the response/sensitivity function for the detector. This is need for flux-calibration. The sensitivity function is stored as ``"sensfunc.dat"``.
+3. :ref:`Sensitivity function <sensfunction>`: Calculate the response/sensitivity function for the detector. This is needed for flux-calibration. The sensitivity function is stored as ``"sensfunc.dat"``.
 4. :ref:`Flux-calibration <flux_calibrate>`: Applies the :ref:`sensitivity function <sensfunction>` to calibrate the spectra from counts vs. wavelength to :math:`\text{erg}/\text{cm}^2/\text{Å}/\text{s}` vs. wavelength. The files are saved as ``"1d_fluxed_science_ORIGINAL_FILENAME.dat"``.
 5. :ref:`Combining of fluxed spectra <combine_spec>`: Combine the fluxed spectra from different exposures into a single 1D spectrum. The file is saved as defined by the user in the :ref:`configuration file <conf>`.
 

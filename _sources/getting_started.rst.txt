@@ -18,9 +18,9 @@ Downloading the tutorial data
 There are two tutorial datasets available. **Execution of either one is enough 
 to get familiar with the software.**
 
-The tutorial data can be downloaded in two ways: either by clonning the `PyLongslit developtment
+The tutorial data can be downloaded in two ways: either by cloning the `PyLongslit development
 repository  <https://github.com/KostasValeckas/PyLongslit_dev>`_  or by downloading the ZIP files directly from the links below.
-We recommend clonning the whole repository (or at least downloading the whole repository as a ZIP) as it will also provide you with additional files needed to complete the tutorial, and in the directory structure that resembles the provided tutorial :ref:`configuration files <conf>`. 
+We recommend cloning the whole repository (or at least downloading the whole repository as a ZIP) as it will also provide you with additional files needed to complete the tutorial, and in the directory structure that resembles the provided tutorial :ref:`configuration files <conf>`. 
 If you prefer just downloading the tutorial data, the links for that are also provided below.
 
 **Cloning using git (if you are not familiar with git, you can download the ZIP from the link below):** 
