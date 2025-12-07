@@ -566,10 +566,16 @@ def run_extract_1d():
 
 
 def main():
+    from pylongslit.version import get_version
     parser = argparse.ArgumentParser(
         description="Run the pylongslit extract-1d procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
+    parser.add_argument(
+        "-v", "--version", 
+        action="version", 
+        version=f"PyLongslit {get_version()}"
+    )
 
     args = parser.parse_args()
 
