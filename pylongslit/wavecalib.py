@@ -268,7 +268,7 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
         Master arc image.
 
     center_row : int
-        Spacial index from where to start the fitting. User can shift it from the center, calling it "center-row" is just a convention.
+        spatial index from where to start the fitting. User can shift it from the center, calling it "center-row" is just a convention.
 
     fitter : `~astropy.modeling.fitting.LevMarLSQFitter`
         Fitter object.
@@ -284,8 +284,8 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
     all_centers : array
         Centers of the lines.
 
-    used_spacial : array
-        Spacial coordinates used for the fit of the line.
+    used_spatial : array
+        spatial coordinates used for the fit of the line.
 
     keep_mask : array
         Mask for keeping the good fits.
@@ -300,7 +300,7 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
     # further developtment or debugging.
     all_params = {}
 
-    # This amount of pixels is used +/- around the spacial pixel
+    # This amount of pixels is used +/- around the spatial pixel
     # in order to create a mean count array for the line (reduces noise).
     pixel_cut_extension = wavecalib_params["pixel_cut_extension"]
 
@@ -334,7 +334,7 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
     # new variable to deal with python indexing - the end pixel is not included
     cut_width = pixel_cut_extension + 1
 
-    # for book-keeping what index corresponds to what spacial pixel
+    # for book-keeping what index corresponds to what spatial pixel
     index_dict = {}
     num_it = 0
     for i in chain(
@@ -361,10 +361,10 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
     # the fitter checks that the next fit is not too far from the previous one
     last_good_center = g_model.mean_0.value
 
-    # container for what spacial pixels the fits were successful for
+    # container for what spatial pixels the fits were successful for
     used_spacial = []
 
-    # This is the driver loop - we loop over the spacial pixels from the center row
+    # This is the driver loop - we loop over the spatial pixels from the center row
     # and go in both directions until we reach the edge of the detector.
 
     for i in chain(
@@ -407,7 +407,7 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
                 print(start_pixel, end_pixel)
             continue
 
-        # extract the subimage around the line, and average over the spacial pixels
+        # extract the subimage around the line, and average over the spatial pixels
         center_row_spec = np.mean(
             master_arc.data[
                 i - pixel_cut_extension : i + pixel_cut_extension + 1,
@@ -492,7 +492,7 @@ def trace_line_tilt(master_arc, center_row, fitter, g_model, FWHM_guess):
                 # for several bad fits, might be that the center guess is off
                 # if enough good fits are present. Try to fit for the line tilt
                 # and use the tilt to estimate the center of the line at the current
-                # spacial row
+                # spatial row
 
                 # at least 10 good fits are needed to try this - hardcoded value for now
                 if np.sum(keep_mask) > 10:
@@ -814,7 +814,7 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(10, 6))
 
     title_text = (
         f"Line Tilt Tracing Results. Green: accepted, Red: rejected. Polynomial order: {spacial_fit_order}.\n"
-        f"Acceptance Criteria: R2 of the spacial polynomial fit > {R2_TOL}.\n"
+        f"Acceptance Criteria: R2 of the spatial polynomial fit > {R2_TOL}.\n"
         f"Residuals should be randomly distributed around 0, but some small-scale structure is hard to avoid.\n"
         f"These parameters can be changed in the configuration file."
     )
@@ -936,7 +936,7 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(10, 6))
         # bad fit - show in QA but do not save
         if R2_offsets < R2_TOL:
             arc_trace_warning(
-                f"Good line trace, but the RMS={R2_offsets} of the spacial polynomial is higher than the tolerance {R2_TOL}. "
+                f"Good line trace, but the RMS={R2_offsets} of the spatial polynomial is higher than the tolerance {R2_TOL}. "
                 f"Current user defined fitting order: {spacial_fit_order}."
             )
 
@@ -993,8 +993,8 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(10, 6))
                 fig,
                 ax,
                 title_text,
-                "Spacial Pixels",
-                f"Line tilt compared to spacial pixel {center_row} (in pixels)",
+                "Spatial Pixels",
+                f"Line tilt compared to spatial pixel {center_row} (in pixels)",
             )
 
             if j != len(lines.keys()) - 1:
@@ -1011,8 +1011,8 @@ def trace_tilts(lines, master_arc, plot_height=6, plot_width=2, figsize=(10, 6))
         fig,
         ax,
         title_text,
-        "Spacial Pixels",
-        f"Line tilt compared to spacial pixel {center_row} (in pixels)",
+        "Spatial Pixels",
+        f"Line tilt compared to spatial pixel {center_row} (in pixels)",
     )
 
     # show the traced lines
@@ -1431,7 +1431,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(10, 6)):
         # plot a scatter plot for QA
         plt.scatter(spectral_pixels, spacial_pixels, c=offset_values)
         plt.xlabel("Spectral Pixels")
-        plt.ylabel("Spacial Pixels")
+        plt.ylabel("Spatial Pixels")
         plt.title("Scatter plot of the reidentified lines")
         plt.colorbar(label="Offsets (Pixel)")
         plt.show()
@@ -1458,7 +1458,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(10, 6)):
             spacial_pixels, spectral_pixels, residuals, c=residuals, cmap="viridis"
         )
         ax.set_ylabel("Spectral Pixels")
-        ax.set_xlabel("Spacial Pixels")
+        ax.set_xlabel("Spatial Pixels")
         ax.set_zlabel("Residuals (Å)")
         ax.set_title("Residuals of the 2D Fit")
         fig.colorbar(sc, label="Residuals (Å)")
@@ -1477,7 +1477,7 @@ def fit_2d_tilts(good_lines: dict, figsize=(10, 6)):
     )
 
     axs[0].plot(spacial_pixels, residuals, "x")
-    axs[0].set_xlabel("Spacial Pixels")
+    axs[0].set_xlabel("Spatial Pixels")
     axs[0].set_ylabel("Tilt in pixels.")
     axs[0].axhline(0, color="red", linestyle="--")
 
@@ -1657,7 +1657,7 @@ def plot_tiltmap(tilt_map, figsize=(10, 6)):
 
     plt.figure(figsize=figsize)
     plt.imshow(tilt_map, origin="lower")
-    plt.colorbar(label="Spacial offset from center pixel (in pixels)")
+    plt.colorbar(label="Spatial offset from center pixel (in pixels)")
     plt.title(
         "Detector tilt map.\n"
         "Inspect the map for any irregularities - it should be a smooth continuum.\n"

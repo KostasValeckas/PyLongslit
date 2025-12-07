@@ -48,7 +48,9 @@ software takes a bias-subtracted median dark frame from the frames provided, and
 from the corresponding frames. Technically, bias subtraction could be skipped for dark frames, 
 and then the median dark could be treated as a combination of the dark current and the bias level, 
 but we choose to subtract the bias separately, as we believe that the bias estimation from bias frames
-is more correct, as it is common that more bias frames are present than dark frames.
+is more correct, as it is common that more bias frames are present than dark frames. Furthermore, treating 
+bias and dark current separately allows us to invoke the overscan regions, allowing to correct for 
+the bias drift between the individual frames (see :ref:`bias documentation <bias>`).
 
 For users new to data reduction - short introduction to dark current
 ---------------------------------------------------------------------
