@@ -180,28 +180,32 @@ will now get normalized when dividing the observations with the master flat:
     :align: center
 
 The stripes seen in the SDSS_J213510+2728 tutorial data are inherited from the raw
-frames and are not caused by the flat-fielding procedure: 
+frames and are not caused by the flat-fielding procedure, but by dust flakes on the entrance slit, 
+also visible on a raw (non-normalized) spectral flat image: 
 
 .. image:: pictures/fringes.png
     :width: 50%
     :align: center
 
-There are ways to remove these stripes (fringing), but they are not implemented
-in the software in order to keep the pipeline simple. The pictures above are 
-aggressively normalized to show the stripes - they are not as prominent as they
-appear in the pictures.
-
 
 Considerations on spatial normalization
 -----------------------------------------
 
-The normalization in spatial direction is performed under the assumption that
-the uneven spatial illumination of the detector flat-field is caused by the flat-field 
-source itself being uneven through the length of the slit. This infers another
-assumption that the uneven spatial illumination is not caused by the optical
-system itself - and that the light of the science object can be assumed
-to have the same intensity (on the large scale), regardless of where the object
-is placed on the slit. This assumption might not be valid for some instruments. 
+The software can optionally normalize the flat-field in the spatial direction (this option is set in the :ref:`configuration file <conf>`).
+This operation assumes that any large-scale variation along the slit in a dome or internal flat
+is caused by the flat-field illumination source itself (for example, an uneven lamp). 
+Under that assumption, dividing by the spatial profile of the flat removes the illumination pattern
+of the lamp while preserving the true detector and pixel response.
+
+However, this assumption is not always valid. The telescope and instrument optics can
+also imprint a position-dependent throughput along the slit. This instrumental response 
+is present in science exposures, but it may not be reproduced by the internal/dome-flat illumination.
+As a result, the spatial profile of an internal/dome flat may not match the true slit illumination seen
+in on-sky frames. In such cases, applying spatial normalization based on the internal/dome flat
+can introduce incorrect corrections in the reduced data.
+
+**Because of this, spatial normalization is optional and may not be appropriate for all instruments.**
+
 You can try to do a reduction run with spatial normalization, and if you start
 seeing strange artifacts in the reduced science frames, you can try to do the
 reduction without spatial normalization.
@@ -220,7 +224,9 @@ through calibration.
 Theoretically, the flat-field calibration procedure requires exposing the detector with completely uniform light throughout
 the detector. Since every pixel receives the same amount of light, any differences in registered counts between pixels
 can be used to evaluate the difference in pixel-to-pixel sensitivity. This kind of exposure of uniform light is called a
-flat-field. In practice, the procedure for flat-fielding the detector while performing spectroscopy is more complicated.
+flat-field. In practice, the procedure for flat-fielding the detector while performing spectroscopy is more complicated,
+as it requires a substantial amount of modelling and removing of any other sensitivity variations that are not pixel-to-pixel - 
+such as wavelength-dependent sensitivity and spatial illumination patterns.
 From personal experience, the flat-fielding procedure is the most controversial step in spectroscopic data reduction, as
 the ideological assumption of uniform illumination is practically impossible to achieve.
 

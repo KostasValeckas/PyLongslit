@@ -144,7 +144,7 @@ The relevant parameters for the identify procedure are (with example values):
    "wavecalib" : {
       "offset_middle_cut": 0,
       "pixel_cut_extension": 2,
-      "center_guess_pixtable": "/home/kostas/Documents/PyLongslit/database/alfosc_grating4_hene_pixtable.dat", 
+      "center_guess_pixtable": "/home/kostas/Documents/PyLongslit_dev/database/pixtables/alfosc_grating4_hene_pixtable.dat", 
    },
 
 The GUI takes a 1d-spectrum from the ``master_arc.fits`` file. It takes the 

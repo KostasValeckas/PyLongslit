@@ -86,8 +86,8 @@ def show_overscan(figsize=(10, 6)):
         "Overscan region overlayed on a raw (normalized) flat frame.\n"
         "The overscan region should be dark compared to the rest of the frame.\n"
         "If it is not, check the overscan region definition in the config file.\n"
-        "Remember that the overscan subtraction is optional, and can be disabled in the configuration file."
     )
+    plt.tight_layout()
     plt.show()
 
     return

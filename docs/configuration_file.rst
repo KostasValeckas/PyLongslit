@@ -37,7 +37,8 @@ the parameters that are corrupting the run.
 
 The software has a method for checking the configuration file for errors 
 (it checks if the provided file paths exist, the raw data directories have files in them, some sanity checks 
-on the parameters, etc.). The method can be called by:
+on the parameters, etc.). It also displays the selected overscan region used for the :ref:`bias <bias>` subtraction. 
+The method can be called by:
 
 .. code:: bash
 
@@ -88,12 +89,12 @@ detailed explanation of the parameters is given.
         "flat": {
             "flat_dir": "/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/flats",
             "bootstrap_errors": false,
-            "skip_spacial": false,
+            "skip_spatial": false,
             "knots_spectral_bspline": 70,
             "degree_spectral_bspline": 3,
-            "knots_spacial_bspline": 4,
-            "degree_spacial_bspline": 3,
-            "R2_spacial_bspline": 0.4
+            "knots_spatial_bspline": 4,
+            "degree_spatial_bspline": 3,
+            "R2_spatial_bspline": 0.4
 
         },
 
@@ -171,7 +172,7 @@ detailed explanation of the parameters is given.
             "ORDER_SPATIAL_TILT": 4,
             "TILT_TRACE_R2_TOL": 0.99,
             "TILT_REJECT_LINE_FRACTION": 0.1,
-            "SPACIAL_R2_TOL": 0.97,
+            "SPATIAL_R2_TOL": 0.97,
             "reuse_reided_lines": false,
             "reuse_1d_sol": false,
             "reuse_line_traces": false,
@@ -241,212 +242,479 @@ detailed explanation of the parameters is given.
         }
     }
 
-A brief explanation of every parameter (see the :ref:`tutorial <tutorial>` for more detailed explanation 
-of every step):
+A brief explanation of every parameter is provided below. Please see the :ref:`tutorial <tutorial>` for more detailed explanation 
+of every step and their relevant parameters. 
 
-.. code:: 
+Instrument Configuration
+------------------------
 
-    {
-        "instrument": {
-            "name": # The name of the instrument, simply for logging purposes
-            "disperser": # The disperser used, simply for logging purposes
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        "detector": {
-            # the below sizes are used to check that all raw data has the same size
-            "xsize": # The number of pixels along the x axis
-            "ysize": # The number of pixels along the y axis
-            "dispersion": {
-                "spectral_dir": # The direction of the spectral axis in raw data, either "x" or "y"
-                "wavelength_grows_with_pixel": # true if the wavelength increases with pixel number for the spectral direction
-                # given in the parameter above, false otherwise
-            },
-            "gain": # detector gain in electrons per count (ADU)
-            "read_out_noise": # read-out noise in electrons
-            "overscan" : {
-                "use_overscan": # true if overscan is to be used, false otherwise (then the bias is estimated only from bias frames)
-                "overscan_x_start": # The starting pixel of the overscan region along the x axis
-                "overscan_x_end": # The ending pixel of the overscan region along the x axis
-                "overscan_y_start": # The starting pixel of the overscan region along the y axis
-                "overscan_y_end": # The ending pixel of the overscan region along the y axis
-            }
-        },
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``instrument.name``
+      - string
+      - The name of the instrument, simply for logging purposes.
+    * - ``instrument.disperser``
+      - string
+      - The disperser used, simply for logging purposes.
 
-        "data": {
-            "raw_data_hdu_index": # Index of the HDU in the raw data FITS file that contains the data
-            # (usually 0 for single-extension FITS files, 1 for multi-extension FITS files)
-        },
+Detector Configuration
+----------------------
 
-        "bias": {
-            "bias_dir": # The directory where the bias frames are located (this directory may not countain any other files)
-            "bootstrap_errors": # true if bootstrapping should be used to estimate the error in the bias frames, false otherwise
-            # (bootstrapping takes longer, but is more accurate)
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        "flat": {
-            "flat_dir": # The directory where the flat-field frames are located (this directory may not countain any other files)
-            "bootstrap_errors": # true if bootstrapping should be used to estimate the error in the flat-field frames, false otherwise
-            # (bootstrapping takes longer, but is more accurate)
-            "skip_spacial": # true if slit-illumination correction should be skipped, false otherwise (see the tutorial for more info)
-            "knots_spectral_bspline": # The number of knots in the bspline when fitting the detector spectral response
-            "degree_spectral_bspline": # The degree of the bspline when fitting the detector spectral response
-            "knots_spacial_bspline": # The number of knots in the bspline when fitting the detector spacial response
-            "degree_spacial_bspline": # The degree of the bspline when fitting the detector spacial response
-            "R2_spacial_bspline": # The rejection threshold for the bspline when fitting the detector spacial response
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``detector.xsize``
+      - integer
+      - The number of pixels along the x axis.
+    * - ``detector.ysize``
+      - integer
+      - The number of pixels along the y axis.
+    * - ``detector.dispersion.spectral_dir``
+      - string
+      - The direction of the spectral axis in raw data, either "x" or "y".
+    * - ``detector.dispersion.wavelength_grows_with_pixel``
+      - boolean
+      - true if the wavelength increases with pixel number for the spectral axis.
+    * - ``detector.gain``
+      - float
+      - detector gain in electrons per count (ADU).
+    * - ``detector.read_out_noise``
+      - float
+      - read-out noise in electrons.
+    * - ``detector.overscan.use_overscan``
+      - boolean
+      - true if overscan is to be used, false otherwise (then the bias is estimated only from bias frames).
+    * - ``detector.overscan.overscan_x_start``
+      - integer
+      - The starting pixel of the overscan region along the x axis.
+    * - ``detector.overscan.overscan_x_end``
+      - integer
+      - The ending pixel of the overscan region along the x axis.
+    * - ``detector.overscan.overscan_y_start``
+      - integer
+      - The starting pixel of the overscan region along the y axis.
+    * - ``detector.overscan.overscan_y_end``
+      - integer
+      - The ending pixel of the overscan region along the y axis.
 
-        },
+Data Configuration
+------------------
 
-        "output": {
-            "out_dir": # The directory where the output files should be saved (should not contain any other files)
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        # the below 2 sets of parameters have same meaning, but are used for science and standard frames, respectively (see tutorial)
-        "crr_removal" : {
-            "science":{
-                "frac": # The fraction of sigclip to use for the lower limit of the contrast detection (see tutorial).
-                "objlim": # The minimum contrast between the cosmic ray and the object (see tutorial).
-                "sigclip": # The number of sigma to use for the sigclip algorithm (see tutorial).
-                "niter": # The number of iterations to use for the algorithm (see tutorial).
-            },
-            "standard":{
-                "frac": # The fraction of sigclip to use for the lower limit of the contrast detection (see tutorial).
-                "objlim": # The minimum contrast between the cosmic ray and the object (see tutorial).
-                "sigclip": # The number of sigma to use for the sigclip algorithm (see tutorial).
-                "niter": # The number of iterations to use for the algorithm (see tutorial).
-            }
-        },
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``data.raw_data_hdu_index``
+      - integer
+      - Index of the HDU in the raw data FITS file that contains the data (usually 0 for single-extension FITS files, 1 for multi-extension FITS files).
 
-        "background_sub" : {
-            "pairs": {
-                # The pairs of frames to use for the background subtraction (B is subtracted from A)
-                "1": { # The pair number (start with 1 and increment by 1 for every pair)
-                    "A": # filename (just the name, not the full path, ex. "filename.fits")
-                    "B": # filename (just the name, not the full path, ex. "filename.fits")
-                },
-                "2": { # The pair number
-                    "A": # filename (just the name, not the full path, ex. "filename.fits"),
-                    "B": # filename (just the name, not the full path, ex. "filename.fits")
-                }
-            }
-        },
+Bias Configuration
+------------------
 
-        "science" : {
-            "skip_science": # true if the science frames should be skipped (only standard star reduction), false otherwise
-            "science_dir": # The directory where the science frames are located (this directory may not countain any other files)
-            "exptime": # The exposure time of the science frames
-            "airmass": # The airmass of the science frames (if several frames, the average airmass)
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        "standard" : {
-            "skip_standard": # true if the standard star frames should be skipped (only science reduction), false otherwise
-            "standard_dir": # The directory where the standard star frames are located (this directory may not countain any other files)
-            "exptime": # The exposure time of the standard star frames
-            "airmass": # The airmass of the standard star frames (if several frames, the average airmass)
-            "starname": # The name of the standard star (logging purposes only)
-            "flux_file_path": # The path to the file containing the flux of the standard star IN AB MAGNITUDES (see tutorial)
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``bias.bias_dir``
+      - string
+      - The directory where the bias frames are located (this directory should not contain any other files).
+    * - ``bias.bootstrap_errors``
+      - boolean
+      - true if bootstrapping should be used to estimate the error in the bias frames, false otherwise (bootstrapping takes longer, but is more accurate).
 
-        },
+Flat Field Configuration
+------------------------
 
-        "arc" : {
-            "arc_dir": # The directory where the arc-lamp frames are located (this directory may not countain any other files)
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        "combine_arcs" : {
-            "skip_bias": # true if the bias subtraction should be skipped for the arc-lamp frames, false otherwise
-        },
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``flat.flat_dir``
+      - string
+      - The directory where the flat-field frames are located (this directory should not contain any other files).
+    * - ``flat.bootstrap_errors``
+      - boolean
+      - true if bootstrapping should be used to estimate the error in the flat-field frames, false otherwise (bootstrapping takes longer, but is more accurate).
+    * - ``flat.skip_spacial``
+      - boolean
+      - true if slit-illumination correction should be skipped, false otherwise.
+    * - ``flat.knots_spectral_bspline``
+      - integer
+      - The number of knots in the bspline when fitting the detector spectral response.
+    * - ``flat.degree_spectral_bspline``
+      - integer
+      - The degree of the bspline when fitting the detector spectral response.
+    * - ``flat.knots_spacial_bspline``
+      - integer
+      - The number of knots in the bspline when fitting the detector spatial response.
+    * - ``flat.degree_spacial_bspline``
+      - integer
+      - The degree of the bspline when fitting the detector spatial response.
+    * - ``flat.R2_spacial_bspline``
+      - float
+      - The rejection threshold for the bspline when fitting the detector spatial response.
 
-        # the wavelength procedure is the most complex, and has the most parameters. 
-        # The descriptions here won't make much sense without the tutorial, so please see the tutorial if you are new to the software.
-        "wavecalib" : {
-            "offset_middle_cut": # Normally the software uses the middle of the arc-lamp frame to find the lines, but if the lines are not in the middle,
-            # this parameter can be used to offset the middle
-            "pixel_cut_extension": # The number of pixels to average over when taking the 1d spectrum of the arc-lamp frame
-            "arcline_start": # The starting spatial pixel of the lines (useful to avoid noisy edges)
-            "arcline_end": # The ending spatial pixel of the lines (useful to avoid noisy edges)
-            "jump_tolerance": # The tolerance for the jump in the lines
-            "center_guess_pixtable": # The path to the file containing the lines and their wavelengths from the  pylongslit_identify_arcs procedure
-            "FWHM": # The FWHM guess of the lines in the arc-lamp frame
-            "TOL_MEAN": # The tolerance for the correction of the line center compared to the ones in the pixtable
-            "TOL_FWHM": # The tolerance for the correction of the line FWHM compared to the initial guess
-            "REIDENTIFY_R2_TOL": # Threshold for the R2 value of the fit for reidentified lines
-            "ORDER_WAVELEN_1D": # The order of the polynomial used to fit the wavelength solution
-            "ORDER_SPECTRAL_TILT": # The order of the polynomial used to fit the spectral tilt
-            "ORDER_SPATIAL_TILT": # The order of the polynomial used to fit the spatial tilt
-            "TILT_TRACE_R2_TOL": # The R2 threshold for the fit of the tilt traces
-            "TILT_REJECT_LINE_FRACTION": # The fraction of bad fits at when to abort a line trace
-            "SPACIAL_R2_TOL": # The R2 threshold for the fit of the spatial direction
-            "reuse_reided_lines": # true if use the reidentified lines that are saved in the output directory, false otherwise
-            "reuse_1d_sol": # true if use the 1d solution that is saved in the output directory, false otherwise
-            "reuse_line_traces": # true if use the line traces that are saved in the output directory, false otherwise
-            "reuse_2d_tilt_fit": # true if use the 2d tilt fit that is saved in the output directory, false otherwise
-        },
+Output Configuration
+--------------------
 
-        "sky" : {
-            "sigma_cut": # the number of sigma to use to reject outliers in sky-fitting
-            "sigma_clip_iters": # the number of iterations to use for the sigma-clip algorithm for sky-fitting
-            "fit_order": # the order of the polynomial to fit to the sky
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        # the two below sets of parameters have the same meaning, but are used for science and standard star frames, respectively
-        "trace" : {
-            "object": {
-                "spectral_pixel_extension": # The number of pixels to average the 1d spectrum over when fitting the object trace (see tutorial)
-                "fwhm_guess": # The spatial FWHM guess of the object 
-                "fwhm_thresh": # The threshold by which the fitted FWHM can deviate from the guess
-                "center_thresh": # The threshold by which the fitted center can deviate from the manually set center
-                "fit_order_trace": # The order of the polynomial to fit to the object center trace
-                "fit_order_fwhm": # The order of the polynomial to fit to the object FWHM trace
-                "fit_R2": # The R2 threshold for the fit of the object trace
-                "use_bspline_obj": # true if a bspline should be used to fit the object center trace, false otherwise (should only be used if regular fit fails)
-                "use_bspline_fwhm": # true if a bspline should be used to fit the object FWHM trace, false otherwise (should only be used if regular fit fails)
-                "knots_bspline": # The number of knots in the bspline
-                "model": # The model to use for the object trace ("Gaussian" or "Cauchy") (see tutorial)
-            },
-            "standard": {
-                "spectral_pixel_extension": # The number of pixels to average the 1d spectrum over when fitting the object trace (see tutorial)
-                "fwhm_guess": # The spatial FWHM guess of the object 
-                "fwhm_thresh": # The threshold by which the fitted FWHM can deviate from the guess
-                "center_thresh": # The threshold by which the fitted center can deviate from the manually set center
-                "fit_order_trace": # The order of the polynomial to fit to the object center trace
-                "fit_order_fwhm": # The order of the polynomial to fit to the object FWHM trace
-                "fit_R2": # The R2 threshold for the fit of the object trace
-                "use_bspline_obj": # true if a bspline should be used to fit the object center trace, false otherwise (should only be used if regular fit fails)
-                "use_bspline_fwhm": # true if a bspline should be used to fit the object FWHM trace, false otherwise (should only be used if regular fit fails)
-                "knots_bspline": # The number of knots in the bspline
-                "model": # The model to use for the object trace ("Gaussian" or "Cauchy") (see tutorial)
-            }
-        },
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``output.out_dir``
+      - string
+      - The directory where the output files should be saved.
 
-        # object trace cloning is used to clone the object trace from one frame to another
-        "obj_trace_clone" : {
-            "archived_spec_root": # The path to the 1d spectrum to clone
-            "frame_root": # The path to the 2d frame to clone the 1d spectrum onto
-        },
+Cosmic Ray Removal Configuration
+--------------------------------
+**Note:** The parameters below live under either ``crr_removal.science`` or ``crr_removal.standard``.
+    
+.. list-table::
+    :header-rows: 1
+    :widths: 30 20 50
 
-        "sensfunc": {
-            "fit_order": # The order of the polynomial to fit to the sensitivity function
-            "use_bspline": # true if a bspline should be used to fit the sensitivity function, false otherwise (should only be used if regular fit fails)
-            "knots_bspline": # The number of knots in the bspline
-        },
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``crr_removal.<type>.frac``
+      - float
+      - The fraction of sigclip to use for the lower limit of the contrast detection.
+    * - ``crr_removal.<type>.objlim``
+      - float
+      - The minimum contrast between the cosmic ray and the object.
+    * - ``crr_removal.<type>.sigclip``
+      - float
+      - The number of sigma to use for the sigclip algorithm.
+    * - ``crr_removal.<type>.niter``
+      - integer
+      - The number of iterations to use for the algorithm.
 
-        "flux_calib": {
-            "path_extinction_curve": # The path to the extinction curve for the observatory ! IN AB MAGNITUDES !
-        },
+Background Subtraction Configuration
+------------------------------------
 
-        "combine": {
-            #"name" : ["filename1.fits", "filename2.fits", ... ] # The name of the object and the frames to combine for the object
-            # several objects can be added 
-        },
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
 
-        # the below parameters are for developer purposes only, activates aggresive printing and plotting
-        # code may crash if these are set to true - only for debugging purposes for developers, but might be 
-        # useful when adapting the configuration file for a new instrument
-        "developer": {
-            "debug_plots": # true if debug plots should be shown, false otherwise
-            "verbose_print": # true if verbose print should be used, false otherwise
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``background_sub.pairs``
+      - see :ref:`the tutorial <ab>`
+      - The pairs of frames to use for the background subtraction when dithering.
 
-        }
-    }
+Science Frames Configuration
+----------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``science.skip_science``
+      - boolean
+      - true if the science frames should be skipped (only standard star reduction), false otherwise.
+    * - ``science.science_dir``
+      - string
+      - The directory where the science frames are located (this directory should not contain any other files).
+    * - ``science.exptime``
+      - float
+      - The exposure time of the science frames.
+    * - ``science.airmass``
+      - float
+      - The airmass of the science frames (if several frames, the average airmass).
+
+Standard Star Configuration
+---------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``standard.skip_standard``
+      - boolean
+      - true if the standard star frames should be skipped (only science reduction), false otherwise.
+    * - ``standard.standard_dir``
+      - string
+      - The directory where the standard star frames are located (this directory should not contain any other files).
+    * - ``standard.exptime``
+      - float
+      - The exposure time of the standard star frames.
+    * - ``standard.airmass``
+      - float
+      - The airmass of the standard star frames (if several frames, the average airmass).
+    * - ``standard.starname``
+      - string
+      - The name of the standard star (logging purposes only).
+    * - ``standard.flux_file_path``
+      - string
+      - The path to the file containing the flux of the standard star **in ab magnitudes**.
+
+Arc Lamp Configuration
+----------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``arc.arc_dir``
+      - string
+      - The directory where the arc-lamp frames are located (this directory should not contain any other files).
+    * - ``combine_arcs.skip_bias``
+      - boolean
+      - true if the bias subtraction should be skipped for the arc-lamp frames, false otherwise.
+
+Wavelength Calibration Configuration
+------------------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``wavecalib.offset_middle_cut``
+      - integer
+      - Normally the software uses the middle of the arc-lamp frame to find the lines, but if the lines are not in the middle, this parameter can be used to offset the middle.
+    * - ``wavecalib.pixel_cut_extension``
+      - integer
+      - The number of pixels to average over when taking the 1d spectrum of the arc-lamp frame.
+    * - ``wavecalib.arcline_start``
+      - integer
+      - The starting spatial pixel of the lines (useful to avoid noisy edges).
+    * - ``wavecalib.arcline_end``
+      - integer
+      - The ending spatial pixel of the lines (useful to avoid noisy edges).
+    * - ``wavecalib.jump_tolerance``
+      - float
+      - The tolerance for the jump in the lines.
+    * - ``wavecalib.center_guess_pixtable``
+      - string
+      - The path to the file containing the lines and their wavelengths from the :ref:`pylongslit_identify_arcs procedure <identify>`.
+    * - ``wavecalib.FWHM``
+      - float
+      - The FWHM guess of the lines in the arc-lamp frame.
+    * - ``wavecalib.TOL_MEAN``
+      - float
+      - The tolerance for the correction of the line center compared to the ones in the :ref:`pixtable <identify>`.
+    * - ``wavecalib.TOL_FWHM``
+      - float
+      - The tolerance for the correction of the line FWHM compared to the initial guess.
+    * - ``wavecalib.REIDENTIFY_R2_TOL``
+      - float
+      - Threshold for the R² value of the fit for reidentified lines.
+    * - ``wavecalib.ORDER_WAVELEN_1D``
+      - integer
+      - The order of the polynomial used to fit the wavelength solution.
+    * - ``wavecalib.ORDER_SPECTRAL_TILT``
+      - integer
+      - The order of the polynomial used to fit the spectral tilt.
+    * - ``wavecalib.ORDER_SPATIAL_TILT``
+      - integer
+      - The order of the polynomial used to fit the spatial tilt.
+    * - ``wavecalib.TILT_TRACE_R2_TOL``
+      - float
+      - The R² threshold for the fit of the tilt traces.
+    * - ``wavecalib.TILT_REJECT_LINE_FRACTION``
+      - float
+      - The fraction of bad fits at when to abort a line trace.
+    * - ``wavecalib.SPATIAL_R2_TOL``
+      - float
+      - The R² threshold for the fit of the spatial direction.
+    * - ``wavecalib.reuse_reided_lines``
+      - boolean
+      - true if use the reidentified lines that are saved in the output directory, false otherwise.
+    * - ``wavecalib.reuse_1d_sol``
+      - boolean
+      - true if use the 1d solution that is saved in the output directory, false otherwise.
+    * - ``wavecalib.reuse_line_traces``
+      - boolean
+      - true if use the line traces that are saved in the output directory, false otherwise.
+    * - ``wavecalib.reuse_2d_tilt_fit``
+      - boolean
+      - true if use the 2d tilt fit that is saved in the output directory, false otherwise.
+
+Sky Subtraction Configuration
+-----------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``sky.sigma_cut``
+      - float
+      - the number of sigma to use to reject outliers in sky-fitting.
+    * - ``sky.sigma_clip_iters``
+      - integer
+      - the number of iterations to use for the sigma-clip algorithm for sky-fitting.
+    * - ``sky.fit_order``
+      - integer
+      - the order of the polynomial to fit to the sky.
+
+Object Tracing Configuration
+----------------------------
+
+**Note: the parameters below live under either** ``trace.object`` **or**
+``trace.standard`` **.**
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``trace.<type>.spectral_pixel_extension``
+      - integer
+      - Number of pixels to average the 1D spectrum over when fitting the trace.
+    * - ``trace.<type>.fwhm_guess``
+      - float
+      - Spatial FWHM initial guess.
+    * - ``trace.<type>.fwhm_thresh``
+      - float
+      - Allowed deviation of the fitted FWHM from the guess.
+    * - ``trace.<type>.center_thresh``
+      - float
+      - Allowed deviation of the fitted center from the manual center.
+    * - ``trace.<type>.SNR``
+      - float
+      - Required signal-to-noise ratio for detecting the trace.
+    * - ``trace.<type>.fit_order_trace``
+      - integer
+      - Polynomial order to fit the center trace.
+    * - ``trace.<type>.fit_order_fwhm``
+      - integer
+      - Polynomial order to fit the FWHM trace.
+    * - ``trace.<type>.fit_R2``
+      - float
+      - Minimum R² for accepting fits.
+    * - ``trace.<type>.use_bspline_obj``
+      - boolean
+      - Use a bspline for the center trace.
+    * - ``trace.<type>.use_bspline_fwhm``
+      - boolean
+      - Use a bspline for the FWHM trace.
+    * - ``trace.<type>.knots_bspline``
+      - integer
+      - Number of bspline knots.
+    * - ``trace.<type>.model``
+      - string
+      - Profile model to fit; allowed values: ``"Gaussian"`` or ``"Cauchy"``.
+
+Object Trace Cloning Configuration
+----------------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``obj_trace_clone.archived_spec_root``
+      - string
+      - The path to the 1d spectrum to clone.
+    * - ``obj_trace_clone.frame_root``
+      - string
+      - The path to the 2d frame to clone the 1d spectrum onto.
+
+Sensitivity Function Configuration
+----------------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``sensfunc.fit_order``
+      - integer
+      - The order of the polynomial to fit to the sensitivity function.
+    * - ``sensfunc.use_bspline``
+      - boolean
+      - true if a bspline should be used to fit the sensitivity function, false otherwise.
+    * - ``sensfunc.knots_bspline``
+      - integer
+      - The number of knots in the bspline.
+
+Flux Calibration Configuration
+------------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``flux_calib.path_extinction_curve``
+      - string
+      - The path to the extinction curve for the observatory **in AB magnitudes**.
+
+Spectral Combination Configuration
+----------------------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``combine``
+      - see :ref:`the tutorial <combine_spec>`
+      - Object names as keys with arrays of filenames as values for frames to combine.
+
+Developer Configuration
+-----------------------
+
+.. list-table:: 
+    :header-rows: 1
+    :widths: 30 20 50
+
+    * - Parameter Path
+      - Data Type
+      - Description.
+    * - ``developer.debug_plots``
+      - boolean
+      - true if debug plots should be shown, false otherwise (for development only).
+    * - ``developer.verbose_print``
+      - boolean
+      - true if verbose print should be used, false otherwise (for development only).
 
 -----------------------    
 
