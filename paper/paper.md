@@ -113,7 +113,7 @@ file are described in the [documentation](https://kostasvaleckas.github.io/PyLon
 # Evaluation
 
 To test the software for correctness, we run the pipeline on data from two long-slit instruments: [NOT ALFOSC](https://www.not.iac.es/instruments/alfosc/) and [GTC OSIRIS](https://www.gtc.iac.es/instruments/osiris/), and compare the results with the results from the well-established, 
-semi-automated [PypeIt Python pipeline](https://github.com/pypeit/PypeIt) [@pypeit:joss_pub; @pypeit:zenodo]:
+semi-automated [PypeIt Python pipeline](https://github.com/pypeit/PypeIt) [@pypeit:joss_pub; @pypeit:zenodo] (version 1.17.1):
 
 ![GTC OSIRIS observation of GQ1218+0823.\label{fig:gtc}](gtc_comp.png)
 
@@ -133,7 +133,7 @@ We disclose the data and parameters used for both pipeline executions.
 
 PyLongslit: the data and instructions needed to reproduce these results can be found [here](https://kostasvaleckas.github.io/PyLongslit/getting_started.html).
 
-PypeIt: the raw data and all pipeline output can be downloaded at [here](https://1drv.ms/u/c/1f8eedcff5109e73/IQBwoG16mZaMS6hCXgi7RZ18AVouIotby9lLh5WfoZM9dkA?e=w0JSOQ). Instructions on how to re-create the results using the raw data can be found in the [PypeIt docutmentation](https://pypeit.readthedocs.io/en/stable/) (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
+PypeIt: the raw data and all pipeline output can be downloaded at [here](https://1drv.ms/u/c/1f8eedcff5109e73/IQCDsH7Kb7-rSKGVdDq4NcWQASfXO-LmNjDqQuR2lP80Zs4?e=WfeR6K). Instructions on how to re-create the results using the raw data can be found in the [PypeIt docutmentation](https://pypeit.readthedocs.io/en/stable/) (all the needed input to the pipeline (such as the .pypeit files) are provided together with the raw data.)
 
 # Limitations
 
