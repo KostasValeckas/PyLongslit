@@ -81,7 +81,7 @@ the :ref:`manually identified center <identify>`.
 ``"REIDENTIFY_R2_TOL"``: the tolerance for the :math:`R^2` value of the fit. If the :math:`R^2` value is below this value, the fit is rejected.
 
 After the lines have been reidentified, the 1d wavelength solution is fitted to the
-reidentified lines. An example of the 1d wavelength solution is shown in the following figure (RMS is given Å):
+reidentified lines. An example of the 1d wavelength solution is shown in the following figure (RMS is given in Å):
 
 .. image:: pictures/1d_wavelen_sol.png
     :width: 100%
@@ -107,7 +107,7 @@ As the wavelength is constant along every arc line, we need to estimate the tilt
 through the whole of the detector in order to map the 1d wavelength solution to the
 2d detector.
 
-Firstly, the tilt tracing algorithm esttimates the position of every line on the 
+Firstly, the tilt tracing algorithm estimates the position of every line on the 
 detector. This is done the same way as in the :ref:`line reidentification <line_reidentification>`,
 but now the fit is not done for one center, but through the whole spatial direction, as 
 shown below:
@@ -176,8 +176,8 @@ jump between neighboring lines.
 
 Lastly, the estimated tilts throughout the detector are used to perform 
 a 2d tilt polynomial fit with the spatial order ``"ORDER_SPATIAL_TILT"`` and the
-spectral order ``"ORDER_SPECTRAL_TILT"``. The residuals are plottet along both
-the spatial and spectral direction for quality assesment:
+spectral order ``"ORDER_SPECTRAL_TILT"``. The residuals are plotted along both
+the spatial and spectral direction for quality assessment:
 
 .. image:: pictures/tilt_2d_fit_residual.png
     :width: 100%
