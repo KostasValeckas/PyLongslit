@@ -129,6 +129,18 @@ def run_crremoval(figsize=(10, 6)):
             print("-----------------------------------")
             logger.info(f"Removing cosmic rays from {file}...")
 
+            if key == "science":
+                if ("files" in science_params and
+                    file.removeprefix("reduced_science_") in science_params["files"] and
+                    "exptime" in science_params["files"][file.removeprefix("reduced_science_")]):
+
+                    exptime = science_params["files"][file.removeprefix("reduced_science_")]["exptime"]
+                    logger.info(f"Using exposure time of {exptime} seconds for {file}.")
+
+                else:
+
+                    exptime = science_params["exptime"]
+
             frame = PyLongslit_frame.read_from_disc(file)
 
             # for stability, don't allow the same file to be processed twice
