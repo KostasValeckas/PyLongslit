@@ -8,7 +8,7 @@ tags:
 authors:
   - name: Kostas Valeckas
     orcid: 0009-0007-7275-0619
-    affiliation: 1
+    affiliation: "1, 4"
   - name: Johan Peter Uldall Fynbo
     orcid: 0000-0002-8149-8298
     affiliation: 2
@@ -33,6 +33,10 @@ affiliations:
 
  - name: Centre de Recherche Astrophysique de Lyon, France
    index: 3
+
+ - name: Nordic Optical Telescope, Spain
+   index: 4
+
 
 date: 27 March 2025
 bibliography: paper.bib
