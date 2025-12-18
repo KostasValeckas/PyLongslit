@@ -70,21 +70,25 @@ please know that the software is not designed/tested for data that does not meet
 
 If you use PyLongslit in your research, please cite the software using the following:
 
-*Valeckas, K., Fynbo, J., Krogager, J.-K., & Elm Heintz, K. (2025). PyLongslit. Zenodo. https://doi.org/10.5281/zenodo.15091602*
+Valeckas et al., (2025). PyLongslit: a simple manual Python pipeline for processing of astronomical long-slit 
+spectra recorded with CCD detectors. Journal of Open Source Software, 10(116), 9264, https://doi.org/10.21105/joss.09264
 
 Bibtex:
 
 
 .. code:: 
 
-   @misc{valeckas2025pylongslit,
-      author    = {Valeckas, K. and Fynbo, J. and Krogager, J.-K. and Elm Heintz, K.},
-      title     = {PyLongslit},
-      year      = {2025},
-      publisher = {Zenodo},
-      doi       = {10.5281/zenodo.15091602},
-      url       = {https://doi.org/10.5281/zenodo.15091602}
-   }
+@article{Valeckas2025, 
+         doi = {10.21105/joss.09264}, 
+         url = {https://doi.org/10.21105/joss.09264}, 
+         year = {2025}, publisher = {The Open Journal}, 
+         volume = {10}, number = {116}, pages = {9264}, 
+         author = {Valeckas, Kostas and Fynbo, 
+         Johan Peter Uldall and Krogager, 
+         Jens-Kristian and Heintz, Kasper Elm}, 
+         title = {PyLongslit: a simple manual Python pipeline for processing of astronomical long-slit spectra recorded with CCD detectors}, 
+         journal = {Journal of Open Source Software} 
+}
 
 -----------------------------------------------
 
