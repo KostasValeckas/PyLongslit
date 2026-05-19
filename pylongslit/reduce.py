@@ -416,7 +416,7 @@ def reduce_all():
 def main():
     from pylongslit.version import get_version
     parser = argparse.ArgumentParser(
-        description="Run the pylongslit cosmic-ray removal procedure."
+        description="Run the pylongslit reduction procedure."
     )
     parser.add_argument("config", type=str, help="Configuration file path")
     parser.add_argument(
