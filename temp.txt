@@ -1,0 +1,612 @@
+commit 6f57fc72ff8b5bcc036a6773254021e84429bb50
+Author: KostasValeckas <kostas.valeckas@nbi.ku.dk>
+Date:   Mon Sep 21 16:07:01 2026 -0300
+
+    interactive plot 1d limits extended to input box option
+    Co-authored-by: Raith9 <zvn840@alumni.ku.dk>
+
+diff --git a/pylongslit/utils.py b/pylongslit/utils.py
+index a07bcf9..276e547 100644
+--- a/pylongslit/utils.py
++++ b/pylongslit/utils.py
+@@ -10,7 +10,7 @@ import numpy as np
+ import matplotlib.pyplot as plt
+ from skimage import exposure
+ from numpy.polynomial.chebyshev import chebval
+-from matplotlib.widgets import Slider
++from matplotlib.widgets import Slider, TextBox
+ 
+ 
+ class PyLongslit_frame:
+@@ -1252,35 +1252,28 @@ def interactively_crop_spec(
+ ):
+     """
+     A method for interactively cropping spectrum edges for noise.
+-
++ 
+     Parameters
+     ----------
+     x : array-like
+         The x data.
+-
+     y : array-like
+         The y data.
+-
+     x_label : str, optional
+         The label for the x-axis.
+-
+     y_label : str, optional
+         The label for the y-axis.
+-
+     label : str, optional
+         The label for the plot legend.
+-
+     title : str, optional
+         The title of the plot.
+-
+     figsize : tuple, optional
+         The size of the figure.
+-
++ 
+     Returns
+     -------
+     min_val : int
+         The minimum x value.
+-
+     max_val : int
+         The maximum x value.
+     """
+@@ -1293,12 +1286,12 @@ def interactively_crop_spec(
+     if label not in [None, ""]:
+         plt.legend()
+     plt.title(title)
+-
+-    # Add sliders for selecting the range
++ 
++    # Add sliders for selecting the range (narrower now, to leave room for text boxes)
+     axcolor = "lightgoldenrodyellow"
+-    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+-    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+-
++    axmin = plt.axes([0.25, 0.1, 0.55, 0.03], facecolor=axcolor)
++    axmax = plt.axes([0.25, 0.15, 0.55, 0.03], facecolor=axcolor)
++ 
+     smin = Slider(
+         axmin,
+         "Min " + x_label,
+@@ -1313,23 +1306,85 @@ def interactively_crop_spec(
+         np.max(x),
+         valinit=np.max(x),
+     )
+-
+-    # this function will be called when the sliders are moved
++ 
++    # Text boxes -- type an exact wavelength and press Enter to jump
++    # straight there, instead of fine-tuning by dragging.
++    axmin_box = plt.axes([0.85, 0.1, 0.1, 0.04])
++    axmax_box = plt.axes([0.85, 0.15, 0.1, 0.04])
++    box_min = TextBox(axmin_box, "", initial=f"{np.min(x):.2f}")
++    box_max = TextBox(axmax_box, "", initial=f"{np.max(x):.2f}")
++ 
++    def _set_textbox_silently(box, value):
++        box.eventson = False
++        box.set_val(f"{value:.2f}")
++        box.eventson = True
++ 
++    def _release_textbox(box):
++        # Explicitly exit "typing mode" after a value is submitted. Without
++        # this, matplotlib's TextBox leaves keymap.quit (and every other
++        # keymap.* shortcut) disabled globally until you happen to click
++        # somewhere outside a text box -- which means pressing 'q' right
++        # after typing a value can silently do nothing instead of closing
++        # the window.
++        box.eventson = False
++        box.stop_typing()
++        box.eventson = True
++ 
++    # this function will be called when the sliders (or text boxes) are moved
+     def update(val):
+-        min = smin.val.copy()
+-        max = smax.val.copy()
+-        valid_indices = (x >= min) & (x <= max)
++        min_val = smin.val
++        max_val = smax.val
++        valid_indices = (x >= min_val) & (x <= max_val)
+         l.set_xdata(x[valid_indices])
+         l.set_ydata(y[valid_indices])
++ 
++        _set_textbox_silently(box_min, min_val)
++        _set_textbox_silently(box_max, max_val)
++ 
+         fig.canvas.draw_idle()
+-
++ 
++    def on_min_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_min, smin.val)
++            return
++        val = min(val, smin.valmax)
++        val = max(val, smin.valmin)
++        smin.set_val(val)  # fires update() via smin.on_changed
++        _release_textbox(box_min)
++ 
++    def on_max_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_max, smax.val)
++            return
++        val = min(val, smax.valmax)
++        val = max(val, smax.valmin)
++        smax.set_val(val)
++        _release_textbox(box_max)
++ 
++    box_min.on_submit(on_min_submit)
++    box_max.on_submit(on_max_submit)
++ 
+     smin.on_changed(update)
+     smax.on_changed(update)
+-
++ 
+     plt.show()
+-
++ 
+     return int(smin.val), int(smax.val)
++ 
++ 
++
++"""
++Drop-in replacement for pylongslit.utils.plot_1d_spec_interactive_limits.
+ 
++Adds a text box next to each slider so you can type an exact wavelength
++to crop to, instead of only dragging. Typing a value and pressing Enter
++sets the corresponding slider (which re-runs the same update logic
++dragging does); dragging a slider keeps its text box in sync too.
++"""
+ 
+ def plot_1d_spec_interactive_limits(
+     x,
+@@ -1342,8 +1397,9 @@ def plot_1d_spec_interactive_limits(
+     figsize=(10, 6),
+ ):
+     """
+-    Plot a 1D spectrum with interactive sliders to adjust the x and y-axis limits.
+-
++    Plot a 1D spectrum with interactive sliders (and matching text boxes)
++    to adjust the x and y-axis limits.
++ 
+     Parameters
+     ----------
+     x : array-like
+@@ -1363,7 +1419,7 @@ def plot_1d_spec_interactive_limits(
+     figsize : tuple, optional
+         The size of the figure.
+     """
+-
++ 
+     # Create the figure and axis
+     fig, ax = plt.subplots(figsize=figsize)
+     plt.subplots_adjust(bottom=0.25)
+@@ -1376,12 +1432,12 @@ def plot_1d_spec_interactive_limits(
+     plt.ylabel(y_label)
+     plt.legend()
+     plt.title(title)
+-
+-    # Add sliders for selecting the range
++ 
++    # Add sliders for selecting the range (narrower now, to leave room for text boxes)
+     axcolor = "lightgoldenrodyellow"
+-    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+-    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+-
++    axmin = plt.axes([0.25, 0.1, 0.55, 0.03], facecolor=axcolor)
++    axmax = plt.axes([0.25, 0.15, 0.55, 0.03], facecolor=axcolor)
++ 
+     smin = Slider(
+         axmin,
+         "Min " + x_label,
+@@ -1396,18 +1452,37 @@ def plot_1d_spec_interactive_limits(
+         np.max(x),
+         valinit=np.max(x),
+     )
+-
+-    # this function will be called when the sliders are moved
++ 
++    # Text boxes -- type an exact wavelength and press Enter to jump
++    # straight there, instead of fine-tuning by dragging.
++    axmin_box = plt.axes([0.85, 0.1, 0.1, 0.04])
++    axmax_box = plt.axes([0.85, 0.15, 0.1, 0.04])
++    box_min = TextBox(axmin_box, "", initial=f"{np.min(x):.2f}")
++    box_max = TextBox(axmax_box, "", initial=f"{np.max(x):.2f}")
++ 
++    def _set_textbox_silently(box, value):
++        # Update the displayed text without re-firing on_submit (which
++        # would otherwise call slider.set_val -> update() again).
++        box.eventson = False
++        box.set_val(f"{value:.2f}")
++        box.eventson = True
++
++    def _release_textbox(box):
++        box.eventson = False
++        box.stop_typing()
++        box.eventson = True
++ 
++    # this function will be called when the sliders (or text boxes) are moved
+     def update(val):
+         min_val = smin.val
+         max_val = smax.val
+-
++ 
+         # Ensure the sliders do not pass each other
+         if min_val >= (max_val - 10):
+             smin.set_val(np.min(x))
+             smax.set_val(np.max(x))
+             return
+-
++ 
+         valid_indices = (x >= min_val) & (x <= max_val)
+         ax.set_xlim([min_val, max_val])
+         ax.set_ylim([0, 1.1 * np.max(y[valid_indices])])
+@@ -1416,11 +1491,38 @@ def plot_1d_spec_interactive_limits(
+         if y_error is not None:
+             l_error.set_xdata(x[valid_indices])
+             l_error.set_ydata(y_error[valid_indices])
++ 
++        _set_textbox_silently(box_min, min_val)
++        _set_textbox_silently(box_max, max_val)
++ 
+         fig.canvas.draw_idle()
+-
++ 
++    def on_min_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_min, smin.val)
++            return
++        val = min(max(val, smin.valmin), smin.valmax)
++        smin.set_val(val)  # fires update() via smin.on_changed
++        _release_textbox(box_min)
++ 
++    def on_max_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_max, smax.val)
++            return
++        val = min(max(val, smax.valmin), smax.valmax)
++        smax.set_val(val)
++        _release_textbox(box_max)
++ 
++    box_min.on_submit(on_min_submit)
++    box_max.on_submit(on_max_submit)
++ 
+     smin.on_changed(update)
+     smax.on_changed(update)
+-
++ 
+     plt.show()
+ 
+ 
+diff --git a/setup.cfg b/setup.cfg
+index b328aa3..9b0e243 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -1,7 +1,7 @@
+ [metadata]
+ name = pylongslit
+ author = Kostas Valeckas
+-version = 1.1.5
++version = 1.1.6
+ author_email = kostas.valeckas@nbi.ku.dk
+ description = PyLongslit is a simple manual Python pipeline for processing astronomical long-slit spectra recorded with CCD detectors.
+ long_description = file: README.md
+commit 6f57fc72ff8b5bcc036a6773254021e84429bb50
+Author:     KostasValeckas <kostas.valeckas@nbi.ku.dk>
+AuthorDate: Mon Sep 21 16:07:01 2026 -0300
+Commit:     KostasValeckas <kostas.valeckas@nbi.ku.dk>
+CommitDate: Mon Sep 21 16:07:01 2026 -0300
+
+    interactive plot 1d limits extended to input box option
+    Co-authored-by: Raith9 <zvn840@alumni.ku.dk>
+
+diff --git a/pylongslit/utils.py b/pylongslit/utils.py
+index a07bcf9..276e547 100644
+--- a/pylongslit/utils.py
++++ b/pylongslit/utils.py
+@@ -10,7 +10,7 @@ import numpy as np
+ import matplotlib.pyplot as plt
+ from skimage import exposure
+ from numpy.polynomial.chebyshev import chebval
+-from matplotlib.widgets import Slider
++from matplotlib.widgets import Slider, TextBox
+ 
+ 
+ class PyLongslit_frame:
+@@ -1252,35 +1252,28 @@ def interactively_crop_spec(
+ ):
+     """
+     A method for interactively cropping spectrum edges for noise.
+-
++ 
+     Parameters
+     ----------
+     x : array-like
+         The x data.
+-
+     y : array-like
+         The y data.
+-
+     x_label : str, optional
+         The label for the x-axis.
+-
+     y_label : str, optional
+         The label for the y-axis.
+-
+     label : str, optional
+         The label for the plot legend.
+-
+     title : str, optional
+         The title of the plot.
+-
+     figsize : tuple, optional
+         The size of the figure.
+-
++ 
+     Returns
+     -------
+     min_val : int
+         The minimum x value.
+-
+     max_val : int
+         The maximum x value.
+     """
+@@ -1293,12 +1286,12 @@ def interactively_crop_spec(
+     if label not in [None, ""]:
+         plt.legend()
+     plt.title(title)
+-
+-    # Add sliders for selecting the range
++ 
++    # Add sliders for selecting the range (narrower now, to leave room for text boxes)
+     axcolor = "lightgoldenrodyellow"
+-    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+-    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+-
++    axmin = plt.axes([0.25, 0.1, 0.55, 0.03], facecolor=axcolor)
++    axmax = plt.axes([0.25, 0.15, 0.55, 0.03], facecolor=axcolor)
++ 
+     smin = Slider(
+         axmin,
+         "Min " + x_label,
+@@ -1313,23 +1306,85 @@ def interactively_crop_spec(
+         np.max(x),
+         valinit=np.max(x),
+     )
+-
+-    # this function will be called when the sliders are moved
++ 
++    # Text boxes -- type an exact wavelength and press Enter to jump
++    # straight there, instead of fine-tuning by dragging.
++    axmin_box = plt.axes([0.85, 0.1, 0.1, 0.04])
++    axmax_box = plt.axes([0.85, 0.15, 0.1, 0.04])
++    box_min = TextBox(axmin_box, "", initial=f"{np.min(x):.2f}")
++    box_max = TextBox(axmax_box, "", initial=f"{np.max(x):.2f}")
++ 
++    def _set_textbox_silently(box, value):
++        box.eventson = False
++        box.set_val(f"{value:.2f}")
++        box.eventson = True
++ 
++    def _release_textbox(box):
++        # Explicitly exit "typing mode" after a value is submitted. Without
++        # this, matplotlib's TextBox leaves keymap.quit (and every other
++        # keymap.* shortcut) disabled globally until you happen to click
++        # somewhere outside a text box -- which means pressing 'q' right
++        # after typing a value can silently do nothing instead of closing
++        # the window.
++        box.eventson = False
++        box.stop_typing()
++        box.eventson = True
++ 
++    # this function will be called when the sliders (or text boxes) are moved
+     def update(val):
+-        min = smin.val.copy()
+-        max = smax.val.copy()
+-        valid_indices = (x >= min) & (x <= max)
++        min_val = smin.val
++        max_val = smax.val
++        valid_indices = (x >= min_val) & (x <= max_val)
+         l.set_xdata(x[valid_indices])
+         l.set_ydata(y[valid_indices])
++ 
++        _set_textbox_silently(box_min, min_val)
++        _set_textbox_silently(box_max, max_val)
++ 
+         fig.canvas.draw_idle()
+-
++ 
++    def on_min_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_min, smin.val)
++            return
++        val = min(val, smin.valmax)
++        val = max(val, smin.valmin)
++        smin.set_val(val)  # fires update() via smin.on_changed
++        _release_textbox(box_min)
++ 
++    def on_max_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_max, smax.val)
++            return
++        val = min(val, smax.valmax)
++        val = max(val, smax.valmin)
++        smax.set_val(val)
++        _release_textbox(box_max)
++ 
++    box_min.on_submit(on_min_submit)
++    box_max.on_submit(on_max_submit)
++ 
+     smin.on_changed(update)
+     smax.on_changed(update)
+-
++ 
+     plt.show()
+-
++ 
+     return int(smin.val), int(smax.val)
++ 
++ 
++
++"""
++Drop-in replacement for pylongslit.utils.plot_1d_spec_interactive_limits.
+ 
++Adds a text box next to each slider so you can type an exact wavelength
++to crop to, instead of only dragging. Typing a value and pressing Enter
++sets the corresponding slider (which re-runs the same update logic
++dragging does); dragging a slider keeps its text box in sync too.
++"""
+ 
+ def plot_1d_spec_interactive_limits(
+     x,
+@@ -1342,8 +1397,9 @@ def plot_1d_spec_interactive_limits(
+     figsize=(10, 6),
+ ):
+     """
+-    Plot a 1D spectrum with interactive sliders to adjust the x and y-axis limits.
+-
++    Plot a 1D spectrum with interactive sliders (and matching text boxes)
++    to adjust the x and y-axis limits.
++ 
+     Parameters
+     ----------
+     x : array-like
+@@ -1363,7 +1419,7 @@ def plot_1d_spec_interactive_limits(
+     figsize : tuple, optional
+         The size of the figure.
+     """
+-
++ 
+     # Create the figure and axis
+     fig, ax = plt.subplots(figsize=figsize)
+     plt.subplots_adjust(bottom=0.25)
+@@ -1376,12 +1432,12 @@ def plot_1d_spec_interactive_limits(
+     plt.ylabel(y_label)
+     plt.legend()
+     plt.title(title)
+-
+-    # Add sliders for selecting the range
++ 
++    # Add sliders for selecting the range (narrower now, to leave room for text boxes)
+     axcolor = "lightgoldenrodyellow"
+-    axmin = plt.axes([0.25, 0.1, 0.65, 0.03], facecolor=axcolor)
+-    axmax = plt.axes([0.25, 0.15, 0.65, 0.03], facecolor=axcolor)
+-
++    axmin = plt.axes([0.25, 0.1, 0.55, 0.03], facecolor=axcolor)
++    axmax = plt.axes([0.25, 0.15, 0.55, 0.03], facecolor=axcolor)
++ 
+     smin = Slider(
+         axmin,
+         "Min " + x_label,
+@@ -1396,18 +1452,37 @@ def plot_1d_spec_interactive_limits(
+         np.max(x),
+         valinit=np.max(x),
+     )
+-
+-    # this function will be called when the sliders are moved
++ 
++    # Text boxes -- type an exact wavelength and press Enter to jump
++    # straight there, instead of fine-tuning by dragging.
++    axmin_box = plt.axes([0.85, 0.1, 0.1, 0.04])
++    axmax_box = plt.axes([0.85, 0.15, 0.1, 0.04])
++    box_min = TextBox(axmin_box, "", initial=f"{np.min(x):.2f}")
++    box_max = TextBox(axmax_box, "", initial=f"{np.max(x):.2f}")
++ 
++    def _set_textbox_silently(box, value):
++        # Update the displayed text without re-firing on_submit (which
++        # would otherwise call slider.set_val -> update() again).
++        box.eventson = False
++        box.set_val(f"{value:.2f}")
++        box.eventson = True
++
++    def _release_textbox(box):
++        box.eventson = False
++        box.stop_typing()
++        box.eventson = True
++ 
++    # this function will be called when the sliders (or text boxes) are moved
+     def update(val):
+         min_val = smin.val
+         max_val = smax.val
+-
++ 
+         # Ensure the sliders do not pass each other
+         if min_val >= (max_val - 10):
+             smin.set_val(np.min(x))
+             smax.set_val(np.max(x))
+             return
+-
++ 
+         valid_indices = (x >= min_val) & (x <= max_val)
+         ax.set_xlim([min_val, max_val])
+         ax.set_ylim([0, 1.1 * np.max(y[valid_indices])])
+@@ -1416,11 +1491,38 @@ def plot_1d_spec_interactive_limits(
+         if y_error is not None:
+             l_error.set_xdata(x[valid_indices])
+             l_error.set_ydata(y_error[valid_indices])
++ 
++        _set_textbox_silently(box_min, min_val)
++        _set_textbox_silently(box_max, max_val)
++ 
+         fig.canvas.draw_idle()
+-
++ 
++    def on_min_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_min, smin.val)
++            return
++        val = min(max(val, smin.valmin), smin.valmax)
++        smin.set_val(val)  # fires update() via smin.on_changed
++        _release_textbox(box_min)
++ 
++    def on_max_submit(text):
++        try:
++            val = float(text)
++        except ValueError:
++            _set_textbox_silently(box_max, smax.val)
++            return
++        val = min(max(val, smax.valmin), smax.valmax)
++        smax.set_val(val)
++        _release_textbox(box_max)
++ 
++    box_min.on_submit(on_min_submit)
++    box_max.on_submit(on_max_submit)
++ 
+     smin.on_changed(update)
+     smax.on_changed(update)
+-
++ 
+     plt.show()
+ 
+ 
+diff --git a/setup.cfg b/setup.cfg
+index b328aa3..9b0e243 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -1,7 +1,7 @@
+ [metadata]
+ name = pylongslit
+ author = Kostas Valeckas
+-version = 1.1.5
++version = 1.1.6
+ author_email = kostas.valeckas@nbi.ku.dk
+ description = PyLongslit is a simple manual Python pipeline for processing astronomical long-slit spectra recorded with CCD detectors.
+ long_description = file: README.md
