@@ -72,190 +72,190 @@ actually starting to process the data.</p>
 explanation of every parameter. In the <a class="reference internal" href="getting_started.html#tutorial"><span class="std std-ref">tutorial</span></a>, even more
 detailed explanation of the parameters is given.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;instrument&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;ALFOSC&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;disperser&quot;</span><span class="p">:</span> <span class="s2">&quot;Grating #4&quot;</span>
+    <span class="s2">"instrument"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"ALFOSC"</span><span class="p">,</span>
+        <span class="s2">"disperser"</span><span class="p">:</span> <span class="s2">"Grating #4"</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;detector&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;xsize&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
-        <span class="s2">&quot;ysize&quot;</span><span class="p">:</span> <span class="mi">2102</span><span class="p">,</span>
-        <span class="s2">&quot;dispersion&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;spectral_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;wavelength_grows_with_pixel&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="s2">"detector"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"xsize"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="s2">"ysize"</span><span class="p">:</span> <span class="mi">2102</span><span class="p">,</span>
+        <span class="s2">"dispersion"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"spectral_dir"</span><span class="p">:</span> <span class="s2">"y"</span><span class="p">,</span>
+            <span class="s2">"wavelength_grows_with_pixel"</span><span class="p">:</span> <span class="n">false</span>
         <span class="p">},</span>
-        <span class="s2">&quot;gain&quot;</span><span class="p">:</span> <span class="mf">0.16</span><span class="p">,</span>
-        <span class="s2">&quot;read_out_noise&quot;</span><span class="p">:</span> <span class="mf">4.3</span><span class="p">,</span>
-        <span class="s2">&quot;overscan&quot;</span> <span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;use_overscan&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-            <span class="s2">&quot;overscan_x_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;overscan_x_end&quot;</span><span class="p">:</span> <span class="mi">499</span><span class="p">,</span>
-            <span class="s2">&quot;overscan_y_start&quot;</span><span class="p">:</span> <span class="mi">2064</span><span class="p">,</span>
-            <span class="s2">&quot;overscan_y_end&quot;</span><span class="p">:</span> <span class="mi">2102</span>
+        <span class="s2">"gain"</span><span class="p">:</span> <span class="mf">0.16</span><span class="p">,</span>
+        <span class="s2">"read_out_noise"</span><span class="p">:</span> <span class="mf">4.3</span><span class="p">,</span>
+        <span class="s2">"overscan"</span> <span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"use_overscan"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+            <span class="s2">"overscan_x_start"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">"overscan_x_end"</span><span class="p">:</span> <span class="mi">499</span><span class="p">,</span>
+            <span class="s2">"overscan_y_start"</span><span class="p">:</span> <span class="mi">2064</span><span class="p">,</span>
+            <span class="s2">"overscan_y_end"</span><span class="p">:</span> <span class="mi">2102</span>
         <span class="p">}</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;raw_data_hdu_index&quot;</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="s2">"data"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"raw_data_hdu_index"</span><span class="p">:</span> <span class="mi">1</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;bias&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;bias_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/bias&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bootstrap_errors&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="s2">"bias"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"bias_dir"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/bias"</span><span class="p">,</span>
+        <span class="s2">"bootstrap_errors"</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;flat&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;flat_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/flats&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;bootstrap_errors&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;skip_spatial&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;knots_spectral_bspline&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
-        <span class="s2">&quot;degree_spectral_bspline&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;knots_spatial_bspline&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s2">&quot;degree_spatial_bspline&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;R2_spatial_bspline&quot;</span><span class="p">:</span> <span class="mf">0.4</span>
-
-    <span class="p">},</span>
-
-    <span class="s2">&quot;output&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;out_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output&quot;</span>
+    <span class="s2">"flat"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"flat_dir"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/flats"</span><span class="p">,</span>
+        <span class="s2">"bootstrap_errors"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"skip_spatial"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"knots_spectral_bspline"</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+        <span class="s2">"degree_spectral_bspline"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"knots_spatial_bspline"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">"degree_spatial_bspline"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"R2_spatial_bspline"</span><span class="p">:</span> <span class="mf">0.4</span>
 
     <span class="p">},</span>
 
-    <span class="s2">&quot;crr_removal&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;science&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;frac&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-            <span class="s2">&quot;objlim&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-            <span class="s2">&quot;sigclip&quot;</span><span class="p">:</span> <span class="mf">6.0</span><span class="p">,</span>
-            <span class="s2">&quot;niter&quot;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="s2">"output"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"out_dir"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output"</span>
+
+    <span class="p">},</span>
+
+    <span class="s2">"crr_removal"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"science"</span><span class="p">:{</span>
+            <span class="s2">"frac"</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="s2">"objlim"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s2">"sigclip"</span><span class="p">:</span> <span class="mf">6.0</span><span class="p">,</span>
+            <span class="s2">"niter"</span><span class="p">:</span> <span class="mi">2</span>
         <span class="p">},</span>
-        <span class="s2">&quot;standard&quot;</span><span class="p">:{</span>
-            <span class="s2">&quot;frac&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
-            <span class="s2">&quot;objlim&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s2">&quot;sigclip&quot;</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
-            <span class="s2">&quot;niter&quot;</span><span class="p">:</span> <span class="mi">3</span>
+        <span class="s2">"standard"</span><span class="p">:{</span>
+            <span class="s2">"frac"</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+            <span class="s2">"objlim"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">"sigclip"</span><span class="p">:</span> <span class="mf">4.0</span><span class="p">,</span>
+            <span class="s2">"niter"</span><span class="p">:</span> <span class="mi">3</span>
         <span class="p">}</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;background_sub&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;pairs&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;ALHh080251.fits&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;ALHh080252.fits&quot;</span>
+    <span class="s2">"background_sub"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"pairs"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"1"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"A"</span><span class="p">:</span> <span class="s2">"ALHh080251.fits"</span><span class="p">,</span>
+                <span class="s2">"B"</span><span class="p">:</span> <span class="s2">"ALHh080252.fits"</span>
             <span class="p">},</span>
-            <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="s2">&quot;ALHh080252.fits&quot;</span><span class="p">,</span>
-                <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="s2">&quot;ALHh080251.fits&quot;</span>
+            <span class="s2">"2"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"A"</span><span class="p">:</span> <span class="s2">"ALHh080252.fits"</span><span class="p">,</span>
+                <span class="s2">"B"</span><span class="p">:</span> <span class="s2">"ALHh080251.fits"</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;science&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;skip_science&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;science_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/science&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;exptime&quot;</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
-        <span class="s2">&quot;airmass&quot;</span><span class="p">:</span> <span class="mf">1.20</span>
+    <span class="s2">"science"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"skip_science"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"science_dir"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/science"</span><span class="p">,</span>
+        <span class="s2">"exptime"</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+        <span class="s2">"airmass"</span><span class="p">:</span> <span class="mf">1.20</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;standard&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;skip_standard&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;standard_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/standard&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;exptime&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-        <span class="s2">&quot;airmass&quot;</span><span class="p">:</span> <span class="mf">1.0421315680187</span><span class="p">,</span>
-        <span class="s2">&quot;starname&quot;</span><span class="p">:</span> <span class="s2">&quot;BD332642&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;flux_file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit/database/bd33a.oke&quot;</span>
+    <span class="s2">"standard"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"skip_standard"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"standard_dir"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/standard"</span><span class="p">,</span>
+        <span class="s2">"exptime"</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+        <span class="s2">"airmass"</span><span class="p">:</span> <span class="mf">1.0421315680187</span><span class="p">,</span>
+        <span class="s2">"starname"</span><span class="p">:</span> <span class="s2">"BD332642"</span><span class="p">,</span>
+        <span class="s2">"flux_file_path"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit/database/bd33a.oke"</span>
 
     <span class="p">},</span>
 
-    <span class="s2">&quot;arc&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;arc_dir&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/arcs&quot;</span>
+    <span class="s2">"arc"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"arc_dir"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/arcs"</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;combine_arcs&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;skip_bias&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="s2">"combine_arcs"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"skip_bias"</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;wavecalib&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;offset_middle_cut&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;pixel_cut_extension&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s2">&quot;arcline_start&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;arcline_end&quot;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
-        <span class="s2">&quot;jump_tolerance&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
-        <span class="s2">&quot;center_guess_pixtable&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit/database/alfosc_grating4_hene_pixtable.dat&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;FWHM&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-        <span class="s2">&quot;TOL_MEAN&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s2">&quot;TOL_FWHM&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;REIDENTIFY_R2_TOL&quot;</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>
-        <span class="s2">&quot;ORDER_WAVELEN_1D&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-        <span class="s2">&quot;ORDER_SPECTRAL_TILT&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;ORDER_SPATIAL_TILT&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s2">&quot;TILT_TRACE_R2_TOL&quot;</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
-        <span class="s2">&quot;TILT_REJECT_LINE_FRACTION&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
-        <span class="s2">&quot;SPATIAL_R2_TOL&quot;</span><span class="p">:</span> <span class="mf">0.97</span><span class="p">,</span>
-        <span class="s2">&quot;reuse_reided_lines&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;reuse_1d_sol&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;reuse_line_traces&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;reuse_2d_tilt_fit&quot;</span><span class="p">:</span> <span class="n">false</span>
+    <span class="s2">"wavecalib"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"offset_middle_cut"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">"pixel_cut_extension"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">"arcline_start"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">"arcline_end"</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="s2">"jump_tolerance"</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+        <span class="s2">"center_guess_pixtable"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit/database/alfosc_grating4_hene_pixtable.dat"</span><span class="p">,</span>
+        <span class="s2">"FWHM"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="s2">"TOL_MEAN"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">"TOL_FWHM"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"REIDENTIFY_R2_TOL"</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>
+        <span class="s2">"ORDER_WAVELEN_1D"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">"ORDER_SPECTRAL_TILT"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"ORDER_SPATIAL_TILT"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">"TILT_TRACE_R2_TOL"</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
+        <span class="s2">"TILT_REJECT_LINE_FRACTION"</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+        <span class="s2">"SPATIAL_R2_TOL"</span><span class="p">:</span> <span class="mf">0.97</span><span class="p">,</span>
+        <span class="s2">"reuse_reided_lines"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"reuse_1d_sol"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"reuse_line_traces"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"reuse_2d_tilt_fit"</span><span class="p">:</span> <span class="n">false</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;sky&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;sigma_cut&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;sigma_clip_iters&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
-        <span class="s2">&quot;fit_order&quot;</span><span class="p">:</span> <span class="mi">2</span>
+    <span class="s2">"sky"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"sigma_cut"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"sigma_clip_iters"</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+        <span class="s2">"fit_order"</span><span class="p">:</span> <span class="mi">2</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;trace&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;spectral_pixel_extension&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="s2">&quot;fwhm_guess&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
-            <span class="s2">&quot;fwhm_thresh&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;center_thresh&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;SNR&quot;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-            <span class="s2">&quot;fit_order_trace&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;fit_order_fwhm&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;fit_R2&quot;</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>
-            <span class="s2">&quot;use_bspline_obj&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-            <span class="s2">&quot;use_bspline_fwhm&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-            <span class="s2">&quot;knots_bspline&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Gaussian&quot;</span>
+    <span class="s2">"trace"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"object"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"spectral_pixel_extension"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s2">"fwhm_guess"</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+            <span class="s2">"fwhm_thresh"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"center_thresh"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">"SNR"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+            <span class="s2">"fit_order_trace"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">"fit_order_fwhm"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">"fit_R2"</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>
+            <span class="s2">"use_bspline_obj"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">"use_bspline_fwhm"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+            <span class="s2">"knots_bspline"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"Gaussian"</span>
         <span class="p">},</span>
-        <span class="s2">&quot;standard&quot;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s2">&quot;spectral_pixel_extension&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-            <span class="s2">&quot;fwhm_guess&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s2">&quot;fwhm_thresh&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-            <span class="s2">&quot;center_thresh&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;SNR&quot;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
-            <span class="s2">&quot;fit_order_trace&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s2">&quot;fit_order_fwhm&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="s2">&quot;fit_R2&quot;</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
-            <span class="s2">&quot;use_bspline_obj&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-            <span class="s2">&quot;use_bspline_fwhm&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-            <span class="s2">&quot;knots_bspline&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-            <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Gaussian&quot;</span>
+        <span class="s2">"standard"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">"spectral_pixel_extension"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">"fwhm_guess"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">"fwhm_thresh"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+            <span class="s2">"center_thresh"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">"SNR"</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span>
+            <span class="s2">"fit_order_trace"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">"fit_order_fwhm"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="s2">"fit_R2"</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
+            <span class="s2">"use_bspline_obj"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+            <span class="s2">"use_bspline_fwhm"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+            <span class="s2">"knots_bspline"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"Gaussian"</span>
         <span class="p">}</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;obj_trace_clone&quot;</span> <span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;archived_spec_root&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/obj_science_ALHh080251.dat&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;frame_root&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/reduced_science_ALHh080252.fits&quot;</span>
+    <span class="s2">"obj_trace_clone"</span> <span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"archived_spec_root"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/obj_science_ALHh080251.dat"</span><span class="p">,</span>
+        <span class="s2">"frame_root"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/reduced_science_ALHh080252.fits"</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;sensfunc&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;fit_order&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;use_bspline&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-        <span class="s2">&quot;knots_bspline&quot;</span><span class="p">:</span> <span class="mi">15</span>
+    <span class="s2">"sensfunc"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"fit_order"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"use_bspline"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">"knots_bspline"</span><span class="p">:</span> <span class="mi">15</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;flux_calib&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;path_extinction_curve&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit/database/lapalma.dat&quot;</span>
+    <span class="s2">"flux_calib"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"path_extinction_curve"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit/database/lapalma.dat"</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;combine&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;SDSS_J213510+2728&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ALHh080251.fits&quot;</span><span class="p">,</span> <span class="s2">&quot;ALHh080252.fits&quot;</span><span class="p">]</span>
+    <span class="s2">"combine"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"SDSS_J213510+2728"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ALHh080251.fits"</span><span class="p">,</span> <span class="s2">"ALHh080252.fits"</span><span class="p">]</span>
     <span class="p">},</span>
 
-    <span class="s2">&quot;developer&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;debug_plots&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-        <span class="s2">&quot;verbose_print&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="s2">"developer"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"debug_plots"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">"verbose_print"</span><span class="p">:</span> <span class="n">true</span>
 
     <span class="p">}</span>
 <span class="p">}</span>

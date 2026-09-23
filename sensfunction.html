@@ -74,10 +74,10 @@ However, the star spectrum will still have some artifacts such as absorption lin
 and these might show up as structures in the residual plot. Make sure that these are small compared
 to the general order of magnitude of the data.</p>
 <p>The parameters that can control the fit are:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;sensfunc&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;fit_order&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="s2">&quot;use_bspline&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;knots_bspline&quot;</span><span class="p">:</span> <span class="mi">15</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"sensfunc"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"fit_order"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="s2">"use_bspline"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">"knots_bspline"</span><span class="p">:</span> <span class="mi">15</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -100,9 +100,9 @@ the pipeline run until this point has been successful.</p>
 <p>You can see the chater about <a class="reference internal" href="calibrate.html#flux-calibrate"><span class="std std-ref">flux calibration</span></a> on how
 the standard star gets calibrated with the sensitivity function. Yo will have
 to set these parameters to get a succesful calibration (with example values):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;standard&quot;</span> <span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;exptime&quot;</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
-    <span class="s2">&quot;airmass&quot;</span><span class="p">:</span> <span class="mf">1.0421315680187</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"standard"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"exptime"</span><span class="p">:</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="s2">"airmass"</span><span class="p">:</span> <span class="mf">1.0421315680187</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -123,9 +123,9 @@ example dataset, the standard star is <code class="docutils literal notranslate"
 example dataset, the standard star is <code class="docutils literal notranslate"><span class="pre">Feige110</span></code>, and the flux file is taken from:
 <a class="reference external" href="https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/f110.htmls">https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/tech_notes/tn065-100/f110.htmls</a>.</p>
 <p>The path to the reference spectrum is set in the configuration file, under the parameters:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;standard&quot;</span> <span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;starname&quot;</span><span class="p">:</span> <span class="s2">&quot;BD332642&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;flux_file_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/database/bd33a.oke&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"standard"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"starname"</span><span class="p">:</span> <span class="s2">"BD332642"</span><span class="p">,</span>
+    <span class="s2">"flux_file_path"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/database/bd33a.oke"</span>
 
 <span class="p">}</span>
 </pre></div>
@@ -143,8 +143,8 @@ is provided in the same file, as both datasets are taken from the Roque de los M
 The extinction curve is taken from:
 <a class="reference external" href="https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html">https://www.ing.iac.es/Astronomy/observing/manuals/html_manuals/wht_instr/pfip/node244.html</a>.</p>
 <p>The path to the extinction curve is set in the configuration file, under the parameter:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;flux_calib&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;path_extinction_curve&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/database/lapalma.dat&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"flux_calib"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"path_extinction_curve"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/database/lapalma.dat"</span>
 <span class="p">}</span>
 </pre></div>
 </div>

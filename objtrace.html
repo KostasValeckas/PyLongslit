@@ -62,22 +62,22 @@ is from the SDSS_J213510+2728 example dataset):</p>
 </a>
 <p>The following parameters can be set in the configuration file to control the fitting
 (with example values):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;trace&quot;</span> <span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;spectral_pixel_extension&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
-        <span class="s2">&quot;fwhm_guess&quot;</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
-        <span class="s2">&quot;fwhm_thresh&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s2">&quot;center_thresh&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;fit_R2&quot;</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>
-        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Gaussian&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"trace"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"object"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"spectral_pixel_extension"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+        <span class="s2">"fwhm_guess"</span><span class="p">:</span> <span class="mf">2.5</span><span class="p">,</span>
+        <span class="s2">"fwhm_thresh"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"center_thresh"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"fit_R2"</span><span class="p">:</span> <span class="mf">0.90</span><span class="p">,</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"Gaussian"</span>
     <span class="p">},</span>
-    <span class="s2">&quot;standard&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;spectral_pixel_extension&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="s2">&quot;fwhm_guess&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s2">&quot;fwhm_thresh&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
-        <span class="s2">&quot;center_thresh&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;fit_R2&quot;</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
-        <span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="s2">&quot;Gaussian&quot;</span>
+    <span class="s2">"standard"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"spectral_pixel_extension"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">"fwhm_guess"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">"fwhm_thresh"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="s2">"center_thresh"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"fit_R2"</span><span class="p">:</span> <span class="mf">0.99</span><span class="p">,</span>
+        <span class="s2">"model"</span><span class="p">:</span> <span class="s2">"Gaussian"</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -103,20 +103,20 @@ FWHM values (fit only showed for centers, but FWHM is fitted in the same way):</
 </a>
 <p>The goal is random residuals around 0, with a smooth trace of the object.
 These parameters can be changed to control the fitting:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;trace&quot;</span> <span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;object&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;fit_order_trace&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;fit_order_fwhm&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="s2">&quot;use_bspline_obj&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;use_bspline_fwhm&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
-        <span class="s2">&quot;knots_bspline&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"trace"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"object"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"fit_order_trace"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"fit_order_fwhm"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="s2">"use_bspline_obj"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"use_bspline_fwhm"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span>
+        <span class="s2">"knots_bspline"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
     <span class="p">},</span>
-    <span class="s2">&quot;standard&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;fit_order_trace&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s2">&quot;fit_order_fwhm&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="s2">&quot;use_bspline_obj&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-        <span class="s2">&quot;use_bspline_fwhm&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
-        <span class="s2">&quot;knots_bspline&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="s2">"standard"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"fit_order_trace"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">"fit_order_fwhm"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="s2">"use_bspline_obj"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">"use_bspline_fwhm"</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+        <span class="s2">"knots_bspline"</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -147,9 +147,9 @@ a trace from another object, if it is possible to fit a neighboring object
 instead.</p>
 <p>You have to first set 2 parameters in the configuration file
 (from the SDSS_J213510+2728 example dataset):</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;obj_trace_clone&quot;</span> <span class="p">:</span> <span class="p">{</span>
-    <span class="s2">&quot;archived_spec_root&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/obj_science_ALHh080251.dat&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;frame_root&quot;</span><span class="p">:</span> <span class="s2">&quot;/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/reduced_science_ALHh080252.fits&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"obj_trace_clone"</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"archived_spec_root"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/obj_science_ALHh080251.dat"</span><span class="p">,</span>
+    <span class="s2">"frame_root"</span><span class="p">:</span> <span class="s2">"/home/kostas/Documents/PyLongslit_dev/SDSS_J213510+2728/output/reduced_science_ALHh080252.fits"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
